@@ -55,6 +55,11 @@
                                 <label for="apellido2">Segundo Apellido</label>
                                 <input id="apellido2" name="apellido2" type="text" placeholder="Segundo Apellido" class="form-control" value="<?php echo $row->segundoApellido ?>">
                             </div>
+                            <div class="form-group">
+                                <label for="emailAddress">E-mail</label>
+                                <input type="email" name="email" parsley-trigger="change" value="<?php echo $row->email ?>"
+                                        placeholder="Enter email" class="form-control" id="emailAddress">
+                            </div>
 
                             <div class="form-group">
                                 <label for="rol">Rol</label>

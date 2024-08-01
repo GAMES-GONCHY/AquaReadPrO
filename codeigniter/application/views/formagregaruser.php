@@ -80,11 +80,20 @@
                                             class="form-control">
                                 </div>
                             </div>
+
                             <div class="form-group row">
                                 <label for="apellido2" class="col-4 col-form-label">Segundo Apellido<span class="text-danger">*</span></label>
                                 <div class="col-7">
                                     <input id="apellido2" name="apellido2" type="text" placeholder="Segundo Apellido" required
                                             class="form-control">
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="inputEmail3" class="col-4 col-form-label">Email<span class="text-danger">*</span></label>
+                                <div class="col-7">
+                                    <input type="email" required parsley-type="email" class="form-control"
+                                            id="inputEmail3" name="email" placeholder="Email">
                                 </div>
                             </div>
 

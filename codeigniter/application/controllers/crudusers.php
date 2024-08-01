@@ -35,6 +35,7 @@ class Crudusers extends CI_Controller
 		$data['nombre']=strtoupper($_POST['nombre']);
 		$data['primerApellido']=strtoupper($_POST['apellido1']);
 		$data['segundoApellido']=strtoupper($_POST['apellido2']);
+		$data['email']=$_POST['email'];
 		$data['rol']=$_POST['rol'];
 		$data['fono']=$_POST['fono'];
 		$data['sexo']=$_POST['genero'];
@@ -58,6 +59,7 @@ class Crudusers extends CI_Controller
 		$data['nombre']=strtoupper($_POST['nombre']);
 		$data['primerApellido']=strtoupper($_POST['apellido1']);
 		$data['segundoApellido']=strtoupper($_POST['apellido2']);
+		$data['email']=$_POST['email'];
 		$data['rol']=$_POST['rol'];
 		$data['fono']=$_POST['fono'];
 		$data['sexo']=$_POST['genero'];

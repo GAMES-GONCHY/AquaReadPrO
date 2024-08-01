@@ -58,12 +58,12 @@
                                         <th>Nombre</th>
                                         <th>Primer Apellido</th>
                                         <th>Segundo Apellido</th>
+                                        <th>E-Mail</th>
                                         <th>Rol</th>
                                         <th>Fono</th>
                                         <th>Fecha Registro</th>
                                         <th>Modificar</th>
                                         <th>Eliminar</th>
-                                        <th>Deshabiltar</th>
                                     </tr>
                                 </thead>
                             
@@ -97,7 +97,7 @@
                                                     echo form_open_multipart("crudusers/subirfoto");// <form>
                                                 ?>
                                                     <input type="hidden" name="id" value="<?php echo $row->idUsuario ?>" >
-                                                    <button type="submit" class="btn btn-warning">Subir</button>
+                                                    <button type="submit" class="btn btn-primary">Subir</button>
                                                 <?php 
                                                     echo form_close();// </form>
                                                 ?>		
@@ -106,6 +106,7 @@
                                             <td><?php echo $row->nombre ?></td>
                                             <td><?php echo $row->primerApellido ?></td>
                                             <td><?php echo $row->segundoApellido ?></td>
+                                            <td><?php echo $row->email ?></td>
                                             <td><?php echo $row->rol ?></td>
                                             <td><?php echo $row->fono ?></td>
                                             <td><?php echo $row->fechaRegistro ?></td>
@@ -119,25 +120,12 @@
                                         echo form_close();// </form>
                                         ?>				
                                                     </td>
-
-                                                    <td>
-                                        <?php
-                                        echo form_open_multipart("crudusers/eliminarbd");// <form>
-                                        ?>
-                                        <input type="hidden" name="id" value="<?php echo $row->idUsuario ?>" >
-                                        <button type="submit" class="btn btn-danger">Eliminar</button>
-                                        <?php
-                                        echo form_close();// </form>
-                                        ?>
-
-                                                    </td>
-
                                                     <td>
                                         <?php
                                         echo form_open_multipart("crudusers/deshabilitarbd");// <form>
                                         ?>
                                         <input type="hidden" name="id" value="<?php echo $row->idUsuario ?>" >
-                                        <button type="submit" class="btn btn-primary">Deshabilitar</button>
+                                        <button type="submit" class="btn btn-danger">Eliminar</button>
                                         <?php
                                         echo form_close();// </form>
                                         ?>
@@ -158,12 +146,12 @@
                                         <th>Nombre</th>
                                         <th>Primer Apellido</th>
                                         <th>Segundo Apellido</th>
+                                        <th>E-Mail</th>
                                         <th>Rol</th>
                                         <th>Fono</th>
                                         <th>Fecha Registro</th>
                                         <th>Modificar</th>
                                         <th>Eliminar</th>
-                                        <th>Deshabiltar</th>
                                     </tr>
                                 </tfoot>
                             </table>
