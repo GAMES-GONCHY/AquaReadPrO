@@ -22,13 +22,17 @@ class Usuario extends CI_Controller
 				$this->session->set_userdata('idUsuario',$row->idUsuario);
 				$this->session->set_userdata('nickName',$row->nickName);
 				$this->session->set_userdata('rol',$row->rol);
+				$this->session->set_userdata('nombre',$row->nombre);
+				$this->session->set_userdata('primerApellido',$row->primerApellido);
+				$this->session->set_userdata('segundoApellido',$row->segundoApellido);
+				$this->session->set_userdata('email',$row->email);
 				redirect('usuario/panel','refresh');
 			}
 		}
 		else
 		{
 			//usuario incorrecto - > volvemos al login
-			sredirect('usuario/index','refresh');
+			redirect('usuario/index','refresh');
 		}
 	}
 	public function panel()

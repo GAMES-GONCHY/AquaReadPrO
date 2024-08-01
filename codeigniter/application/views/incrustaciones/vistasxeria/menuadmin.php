@@ -126,7 +126,7 @@
                             </div>
 
                             <!-- item-->
-                            <a href="javascript:void(0);" class="dropdown-item notify-item">
+                            <a href="<?php echo base_url(); ?>index.php/usuario/panel" class="dropdown-item notify-item">
                                 <i class="fe-user"></i>
                                 <span>Mi cuenta</span>
                             </a>

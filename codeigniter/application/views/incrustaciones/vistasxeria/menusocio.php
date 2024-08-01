@@ -155,7 +155,7 @@
                                 <span>Logout</span>
                             </a> -->
 
-                            <a href="<?php echo base_url(); ?>index.php/usuario/logout" id="cerrarsesion" class="dropdown-item notify-item">
+                            <a href="#custom-modal" id="cerrarsesion" class="dropdown-item notify-item" data-animation="door" data-plugin="custommodal" data-overlayColor="#38414a">
                                 <i class="fe-log-out"></i>
                                 <span>Cerrar Sesión</span>
                             </a>

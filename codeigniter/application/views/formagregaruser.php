@@ -31,7 +31,7 @@
                 <div class="col-lg-12">
                     <div class="card-box">
                         <?php
-                            echo form_open_multipart("crudusers/agregarbd", ['data-parsley-validate' => '']);//es igual q el tag <form>
+                            echo form_open_multipart("crudusers/agregarbd");
                         ?>
                             <div class="form-group row">
                                 <label for="nickName" class="col-4 col-form-label">Nick Name<span class="text-danger">*</span></label>
@@ -137,16 +137,15 @@
                             <div class="form-group row">
                                 <div class="col-8 offset-4">
                                     <button type="submit" class="btn btn-success waves-effect waves-light">
-                                        Register
+                                        Registrar
                                     </button>
 
                                     <button type="reset"
                                             class="btn btn-secondary waves-effect m-l-5">
-                                        Cancel
+                                        Cancelar
                                     </button>
                                 </div>
-                            </div>
-                        <!-- </form> -->
+                            </div>  
                         <?php
                             echo form_close();
                         ?>

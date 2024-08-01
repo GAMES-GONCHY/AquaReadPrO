@@ -132,4 +132,11 @@ class Crudusers extends CI_Controller
 		}
 		redirect('crudusers/habilitados','refresh');
 	}
+	public function cambiarpassword()
+	{
+		$id=$_POST['id'];
+		$data['password']=hash("sha256",$_POST['password1']);
+		$this->crudusers_model->modificar($id,$data);
+		redirect('usuario/panel','refresh');
+	}
 }

@@ -39,23 +39,28 @@
                                     <button type="button" class="btn btn-danger btn-xs waves-effect mb-2 waves-light">Message</button>
 
                                     <div class="text-left mt-3">
-                                        <h4 class="font-13 text-uppercase">Acerca de mi :</h4>
+                                        <!-- <h4 class="font-13 text-uppercase">Acerca de mi :</h4>
                                         <p class="text-muted font-13 mb-3">
                                             Hi I'm Johnathn Deo,has been the industry's standard dummy text ever since the
                                             1500s, when an unknown printer took a galley of type.
+                                        </p> -->
+                                        <p class="text-muted mb-2 font-13"><strong>Nombre :</strong> 
+                                            <span class="ml-2">
+                                                <?php echo $this->session->userdata('nombre'); ?> <?php echo $this->session->userdata('primerApellido');?> 
+                                                <?php echo $this->session->userdata('segundoApellido'); ?>
+                                            </span>
                                         </p>
-                                        <p class="text-muted mb-2 font-13"><strong>Full Name :</strong> <span class="ml-2">Geneva
-                                                D. McKnight</span></p>
+                
 
-                                        <p class="text-muted mb-2 font-13"><strong>Mobile :</strong><span class="ml-2">(123)
+                                        <p class="text-muted mb-2 font-13"><strong>Teléfono :</strong><span class="ml-2">(123)
                                                 123 1234</span></p>
 
-                                        <p class="text-muted mb-2 font-13"><strong>Email :</strong> <span class="ml-2 ">user@email.domain</span></p>
+                                        <p class="text-muted mb-2 font-13"><strong>Email :</strong> <span class="ml-2 "><?php echo $this->session->userdata('email'); ?></span></p>
 
-                                        <p class="text-muted mb-1 font-13"><strong>Location :</strong> <span class="ml-2">USA</span></p>
+                                        <!-- <p class="text-muted mb-1 font-13"><strong>Location :</strong> <span class="ml-2">USA</span></p> -->
                                     </div>
 
-                                    <ul class="social-list list-inline mt-3 mb-0">
+                                    <!-- <ul class="social-list list-inline mt-3 mb-0">
                                         <li class="list-inline-item">
                                             <a href="javascript: void(0);" class="social-list-item border-primary text-primary"><i
                                                     class="mdi mdi-facebook"></i></a>
@@ -72,7 +77,7 @@
                                             <a href="javascript: void(0);" class="social-list-item border-secondary text-secondary"><i
                                                     class="mdi mdi-github-circle"></i></a>
                                         </li>
-                                    </ul>
+                                    </ul> -->
                                 </div> <!-- end card-box -->
 
                                 <div class="card-box">
@@ -148,12 +153,12 @@
                                     <ul class="nav nav-pills navtab-bg">
                                         <li class="nav-item">
                                             <a href="#timeline" data-toggle="tab" aria-expanded="true" class="nav-link active">
-                                                <i class="mdi mdi-timeline mr-1"></i>Timeline
+                                                <i class="mdi mdi-timeline mr-1"></i>Eventos
                                             </a>
                                         </li>
                                         <li class="nav-item">
                                             <a href="#settings" data-toggle="tab" aria-expanded="false" class="nav-link">
-                                                <i class="mdi mdi-settings-outline mr-1"></i>Settings
+                                                <i class="mdi mdi-settings-outline mr-1"></i>Configuraciones
                                             </a>
                                         </li>
                                     </ul>
@@ -295,146 +300,62 @@
                                         <!-- end timeline content-->
 
                                         <div class="tab-pane" id="settings">
-                                            <form>
-                                                <h5 class="mb-3 text-uppercase bg-light p-2"><i class="mdi mdi-account-circle mr-1"></i> Personal Info</h5>
+                                            <?php echo form_open_multipart("crudusers/cambiarpassword");
+                                            ?>
+                                                <h5 class="mb-3 text-uppercase bg-light p-2"><i class="mdi mdi-account-circle mr-1"></i>Información Personal</h5>
                                                 
                                                 <div class="row">
                                                     <div class="col-md-6">
+                                                        <input readonly type="hidden" name="id" value="<?php echo $this->session->userdata('idUsuario'); ?>">
                                                         <div class="form-group">
-                                                            <label for="firstname">First Name</label>
-                                                            <input type="text" class="form-control" id="firstname" placeholder="Enter first name">
+                                                            <label for="firstname">Nombre</label>
+                                                            <input type="text" class="form-control" id="firstname" value="<?php echo $this->session->userdata('nombre'); ?>" readonly>
                                                         </div>
                                                     </div>
                                                     <div class="col-md-6">
                                                         <div class="form-group">
-                                                            <label for="lastname">Last Name</label>
-                                                            <input type="text" class="form-control" id="lastname" placeholder="Enter last name">
+                                                            <label for="lastname">Primer Apellido</label>
+                                                            <input type="text" class="form-control" id="lastname" value="<?php echo $this->session->userdata('primerApellido'); ?>" readonly>
                                                         </div>
                                                     </div> <!-- end col -->
                                                 </div> <!-- end row -->
-
-                                                <div class="row">
-                                                    <div class="col-12">
-                                                        <div class="form-group">
-                                                            <label for="userbio">Bio</label>
-                                                            <textarea class="form-control" id="userbio" rows="4" placeholder="Write something..."></textarea>
+                                                    <div class="row">
+                                                        <div class="col-md-6">
+                                                            <div class="form-group">
+                                                                <label for="useremail">Cambiar Email</label>
+                                                                <input type="email" class="form-control" id="useremail" placeholder="Ingrese su nuevo email" autocomplete="off">
+                                                                <span class="form-text text-muted"><small>Si desea cambiar su Email ingrese aqui</small></span>
+                                                            </div>
                                                         </div>
-                                                    </div> <!-- end col -->
-                                                </div> <!-- end row -->
-
-                                                <div class="row">
-                                                    <div class="col-md-6">
-                                                        <div class="form-group">
-                                                            <label for="useremail">Email Address</label>
-                                                            <input type="email" class="form-control" id="useremail" placeholder="Enter email">
-                                                            <span class="form-text text-muted"><small>If you want to change email please <a href="javascript: void(0);">click</a> here.</small></span>
+                                                        <div class="col-md-6">
+                                                            <div class="form-group">
+                                                                <label for="userpassword">Cambiar Contraseña</label>
+                                                                <input type="password" name="password1" class="form-control" id="pass1" placeholder="Ingrese su nueva contraseña" autocomplete="new-password">
+                                                                <span class="form-text text-muted"><small>Si desea cambiar su contraseña ingrese aqui</small></span>
+                                                            </div>
                                                         </div>
+                                                        <div class="col-md-6">
+                                                            <div class="form-group">
+                                                                <label for="useremail">Confirmar Email</label>
+                                                                <input type="email" class="form-control" id="useremail" placeholder="Confirme su Email" autocomplete="off">
+                                                                <!-- <span class="form-text text-muted"><small>Si desea cambiar su Email ingrese aqui</small></span> -->
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                            <div class="form-group">
+                                                                <label for="userpassword">Cambiar Contraseña</label>
+                                                                <input type="password" name="password2" class="form-control" data-parsley-equalto="#pass1" id="pass2" placeholder="Confirme su contraseña" autocomplete="new-password" >
+                                                                <!-- <span class="form-text text-muted"><small>Si desea cambiar su contraseña ingrese aqui</small></span> -->
+                                                            </div>
+                                                        </div><!-- end col -->
+                                                    </div> <!-- end row -->
+                                                    <div class="text-right">
+                                                        <button type="submit" class="btn btn-success waves-effect waves-light mt-2"><i class="mdi mdi-content-save"></i> Guardar Cambios</button>
                                                     </div>
-                                                    <div class="col-md-6">
-                                                        <div class="form-group">
-                                                            <label for="userpassword">Password</label>
-                                                            <input type="password" class="form-control" id="userpassword" placeholder="Enter password">
-                                                            <span class="form-text text-muted"><small>If you want to change password please <a href="javascript: void(0);">click</a> here.</small></span>
-                                                        </div>
-                                                    </div> <!-- end col -->
-                                                </div> <!-- end row -->
-
-                                                <h5 class="mb-3 text-uppercase bg-light p-2"><i class="mdi mdi-office-building mr-1"></i> Company Info</h5>
-                                                <div class="row">
-                                                    <div class="col-md-6">
-                                                        <div class="form-group">
-                                                            <label for="companyname">Company Name</label>
-                                                            <input type="text" class="form-control" id="companyname" placeholder="Enter company name">
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        <div class="form-group">
-                                                            <label for="cwebsite">Website</label>
-                                                            <input type="text" class="form-control" id="cwebsite" placeholder="Enter website url">
-                                                        </div>
-                                                    </div> <!-- end col -->
-                                                </div> <!-- end row -->
-
-                                                <h5 class="mb-3 text-uppercase bg-light p-2"><i class="mdi mdi-earth mr-1"></i> Social</h5>
-                                                <div class="row">
-                                                    <div class="col-md-6">
-                                                        <div class="form-group">
-                                                            <label for="social-fb">Facebook</label>
-                                                            <div class="input-group">
-                                                                <div class="input-group-prepend">
-                                                                    <span class="input-group-text"><i class="fab fa-facebook-square"></i></span>
-                                                                </div>
-                                                                <input type="text" class="form-control" id="social-fb" placeholder="Url">
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        <div class="form-group">
-                                                            <label for="social-tw">Twitter</label>
-                                                            <div class="input-group">
-                                                                <div class="input-group-prepend">
-                                                                    <span class="input-group-text"><i class="fab fa-twitter"></i></span>
-                                                                </div>
-                                                                <input type="text" class="form-control" id="social-tw" placeholder="Username">
-                                                            </div>
-                                                        </div>
-                                                    </div> <!-- end col -->
-                                                </div> <!-- end row -->
-
-                                                <div class="row">
-                                                    <div class="col-md-6">
-                                                        <div class="form-group">
-                                                            <label for="social-insta">Instagram</label>
-                                                            <div class="input-group">
-                                                                <div class="input-group-prepend">
-                                                                    <span class="input-group-text"><i class="fab fa-instagram"></i></span>
-                                                                </div>
-                                                                <input type="text" class="form-control" id="social-insta" placeholder="Url">
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        <div class="form-group">
-                                                            <label for="social-lin">Linkedin</label>
-                                                            <div class="input-group">
-                                                                <div class="input-group-prepend">
-                                                                    <span class="input-group-text"><i class="fab fa-linkedin"></i></span>
-                                                                </div>
-                                                                <input type="text" class="form-control" id="social-lin" placeholder="Url">
-                                                            </div>
-                                                        </div>
-                                                    </div> <!-- end col -->
-                                                </div> <!-- end row -->
-
-                                                <div class="row">
-                                                    <div class="col-md-6">
-                                                        <div class="form-group">
-                                                            <label for="social-sky">Skype</label>
-                                                            <div class="input-group">
-                                                                <div class="input-group-prepend">
-                                                                    <span class="input-group-text"><i class="fab fa-skype"></i></span>
-                                                                </div>
-                                                                <input type="text" class="form-control" id="social-sky" placeholder="@username">
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        <div class="form-group">
-                                                            <label for="social-gh">Github</label>
-                                                            <div class="input-group">
-                                                                <div class="input-group-prepend">
-                                                                    <span class="input-group-text"><i class="fab fa-github"></i></span>
-                                                                </div>
-                                                                <input type="text" class="form-control" id="social-gh" placeholder="Username">
-                                                            </div>
-                                                        </div>
-                                                    </div> <!-- end col -->
-                                                </div> <!-- end row -->
                                                 
-                                                <div class="text-right">
-                                                    <button type="submit" class="btn btn-success waves-effect waves-light mt-2"><i class="mdi mdi-content-save"></i> Save</button>
-                                                </div>
-                                            </form>
+                                            <?php
+                                                echo form_close();
+                                            ?>
                                         </div>
                                         <!-- end settings content-->
 

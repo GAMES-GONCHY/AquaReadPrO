@@ -162,6 +162,11 @@
 
         <!-- Plugin js-->
         <script src="<?php echo base_url(); ?>xeria/light/dist/assets/libs/parsleyjs/parsley.min.js"></script>
+        <script>
+            $(document).ready(function() {
+                $('#demo-form').parsley();
+            });
+        </script>
 
         <!-- Validation init js-->
         <script src="<?php echo base_url(); ?>xeria/light/dist/assets/js/pages/form-validation.init.js"></script>
