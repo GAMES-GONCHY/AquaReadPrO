@@ -122,6 +122,34 @@
         <!-- Right bar overlay-->
         <div class="rightbar-overlay"></div>
 
+        <!-- Custom Modal -->
+        <div id="custom-modal" class="modal-demo custom-modal-width">
+            <button type="button" class="close" onclick="Custombox.modal.close();">
+                <span>&times;</span><span class="sr-only">Close</span>
+            </button>
+            <h4 class="custom-modal-title text-center">¿Está seguro de cerrar sesión?</h4>
+            <div class="custom-modal-text">
+                <div class="row justify-content-center">
+                    <div class="col-md-4">
+                        <a href="<?php echo base_url(); ?>index.php/usuario/logout" id="cerrarsesion" class="w-100">
+                            <button type="button" class="btn btn-outline-danger btn-rounded waves-effect waves-light w-100">Confirmar</button>
+                        </a>
+                    </div>
+                    <div class="col-md-4">
+                        <a href="#" class="w-100">
+                            <button type="button" class="btn btn-outline-success btn-rounded waves-effect waves-light w-100" onclick="Custombox.modal.close();">Cancelar</button>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+
+        <!-- Modal-Effect -->
+        <script src="<?php echo base_url(); ?>xeria/light/dist/assets/libs/custombox/custombox.min.js"></script>
+
         <!-- Vendor js -->
         <script src="<?php echo base_url(); ?>xeria/light/dist/assets/js/vendor.min.js"></script>
 

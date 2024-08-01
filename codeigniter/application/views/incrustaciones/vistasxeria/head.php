@@ -30,7 +30,17 @@
         <link href="<?php echo base_url(); ?>xeria/light/dist/assets/css/app.min.css" rel="stylesheet" type="text/css" />
 
 
-        
+
+        <!-- Custom box css -->
+        <link href="<?php echo base_url(); ?>xeria/light/dist/assets/libs/custombox/custombox.min.css" rel="stylesheet">
+
+        <style>
+            .custom-modal-width 
+            {
+                width: 50% !important; /* Ajusta al 75% del ancho original */
+                max-width:400px; /* Opcional: establece un ancho máximo si es necesario */
+            }
+        </style>
     </head>
 
     <body>

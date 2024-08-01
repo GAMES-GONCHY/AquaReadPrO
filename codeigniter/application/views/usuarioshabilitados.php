@@ -58,10 +58,10 @@
                                         <th>Nombre</th>
                                         <th>Primer Apellido</th>
                                         <th>Segundo Apellido</th>
-                                        <th>E-Mail</th>
+                                        <th>E-mail</th>
                                         <th>Rol</th>
                                         <th>Fono</th>
-                                        <th>Fecha Registro</th>
+                                        <th>Creado</th>
                                         <th>Modificar</th>
                                         <th>Eliminar</th>
                                     </tr>
@@ -146,10 +146,10 @@
                                         <th>Nombre</th>
                                         <th>Primer Apellido</th>
                                         <th>Segundo Apellido</th>
-                                        <th>E-Mail</th>
+                                        <th>E-mail</th>
                                         <th>Rol</th>
                                         <th>Fono</th>
-                                        <th>Fecha Registro</th>
+                                        <th>Creado</th>
                                         <th>Modificar</th>
                                         <th>Eliminar</th>
                                     </tr>
