@@ -5,7 +5,7 @@ class Usuario extends CI_Controller
 {
 	public function index()
 	{
-		$this->load->view('pagelogin');
+		$this->load->view('pagelogin2');
 	}
 	public function validarusuario()
 	{
@@ -32,7 +32,7 @@ class Usuario extends CI_Controller
 		else
 		{
 			//usuario incorrecto - > volvemos al login
-			redirect('usuario/index','refresh');
+			//redirect('usuario/index','refresh');
 		}
 	}
 	public function panel()
@@ -40,19 +40,19 @@ class Usuario extends CI_Controller
 		if($this->session->userdata('nickName'))
 		{
 			
-			$this->load->view('incrustaciones/vistasxeria/head');
+			$this->load->view('incrustaciones/vistascoloradmin/head');
 			
-			if(($this->session->userdata('rol'))=='Administrador')
+			if(($this->session->userdata('rol'))=='Admin')
 			{
-				$this->load->view('incrustaciones/vistasxeria/menuadmin');
+				$this->load->view('incrustaciones/vistascoloradmin/menuadmin');
 				$this->load->view('paneladmin.php');
 			}
 			else
 			{
-				$this->load->view('incrustaciones/vistasxeria/menusocio');
+				$this->load->view('incrustaciones/vistascoloradmin/menusocio');
 				$this->load->view('panelsocio.php');
 			}
-			$this->load->view('incrustaciones/vistasxeria/footer');
+			$this->load->view('incrustaciones/vistascoloradmin/footer');
 		}
 		else
 		{

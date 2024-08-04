@@ -7,10 +7,10 @@ class Crudusers extends CI_Controller
 	{
 		$lista=$this->crudusers_model->habilitados();
 		$data['usuarios']=$lista;
-		$this->load->view('incrustaciones/vistasxeria/head');
-		$this->load->view('incrustaciones/vistasxeria/menuadmin');
-		$this->load->view('usuarioshabilitados',$data);
-		$this->load->view('incrustaciones/vistasxeria/footer');
+		$this->load->view('incrustaciones/vistascoloradmin/head');
+		$this->load->view('incrustaciones/vistascoloradmin/menuadmin');
+		$this->load->view('usuarioshabilitados1',$data);
+		$this->load->view('incrustaciones/vistascoloradmin/footer');
 	}
 	public function deshabilitados()
 	{

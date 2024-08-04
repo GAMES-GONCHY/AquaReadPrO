@@ -14,7 +14,7 @@
         <link href="<?php echo base_url(); ?>xeria/light/dist/assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
         <link href="<?php echo base_url(); ?>xeria/light/dist/assets/css/icons.min.css" rel="stylesheet" type="text/css" />
         <link href="<?php echo base_url(); ?>xeria/light/dist/assets/css/app.min.css" rel="stylesheet" type="text/css" />
-
+        
     </head>
 
     <body class="authentication-bg authentication-bg-pattern">
