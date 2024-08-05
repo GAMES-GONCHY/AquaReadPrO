@@ -1,91 +1,125 @@
 <?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') or exit('No direct script access allowed');
 
-class Crudusers extends CI_Controller 
+class Crudusers extends CI_Controller
 {
 	public function habilitados()
 	{
-		$lista=$this->crudusers_model->habilitados();
-		$data['usuarios']=$lista;
+		$lista = $this->crudusers_model->habilitados();
+		$data['usuarios'] = $lista;
 		$this->load->view('incrustaciones/vistascoloradmin/head');
 		$this->load->view('incrustaciones/vistascoloradmin/menuadmin');
-		$this->load->view('usuarioshabilitados1',$data);
+		$this->load->view('usuarioshabilitados1', $data);
 		$this->load->view('incrustaciones/vistascoloradmin/footer');
 	}
 	public function deshabilitados()
 	{
-		$lista=$this->crudusers_model->deshabilitados();
-		$data['usuarios']=$lista;
-		$this->load->view('incrustaciones/vistasxeria/head');
-		$this->load->view('incrustaciones/vistasxeria/menuadmin');
-		$this->load->view('usuariosdeshabilitados',$data);
-		$this->load->view('incrustaciones/vistasxeria/footer');
+		$lista = $this->crudusers_model->deshabilitados();
+		$data['usuarios'] = $lista;
+		$this->load->view('incrustaciones/vistascoloradmin/head');
+		$this->load->view('incrustaciones/vistascoloradmin/menuadmin');
+		$this->load->view('usuariosdeshabilitados1', $data);
+		$this->load->view('incrustaciones/vistascoloradmin/footer');
 	}
 	public function agregar()
 	{
-		$this->load->view('incrustaciones/vistasxeria/head');
-		$this->load->view('incrustaciones/vistasxeria/menuadmin');
-		$this->load->view('formagregaruser');
-		$this->load->view('incrustaciones/vistasxeria/footer');
+		$this->load->view('incrustaciones/vistascoloradmin/head');
+		$this->load->view('incrustaciones/vistascoloradmin/menuadmin');
+		$this->load->view('formagregaruser1');
+		$this->load->view('incrustaciones/vistascoloradmin/footer');
 	}
 	public function agregarbd()
 	{
-		$data['nickname']=$_POST['nick'];
-		$data['password']=hash("sha256",$_POST['password1']);
-		$data['nombre']=strtoupper($_POST['nombre']);
-		$data['primerApellido']=strtoupper($_POST['apellido1']);
-		$data['segundoApellido']=strtoupper($_POST['apellido2']);
-		$data['email']=$_POST['email'];
-		$data['rol']=$_POST['rol'];
-		$data['fono']=$_POST['fono'];
-		$data['sexo']=$_POST['genero'];
+		$data['nickname'] = $_POST['nickname'];
+		// $data['password']=hash("sha256",$_POST['password1']);
+		$data['nombre'] = strtoupper($_POST['nombre']);
+		$data['primerApellido'] = strtoupper($_POST['primerapellido']);
+		$data['segundoApellido'] = strtoupper($_POST['segundoapellido']);
+		$data['email'] = $_POST['email'];
+		$data['rol'] = $_POST['rol'];
+		$data['fono'] = $_POST['fono'];
+		$data['sexo'] = $_POST['genero'];
 		$this->crudusers_model->agregar($data);
-		redirect('crudusers/habilitados','refresh');//Aqui se refresca la vista para incluir el registro agregado
+		redirect('crudusers/habilitados', 'refresh'); //Aqui se refresca la vista para incluir el registro agregado
 	}
 	public function modificar()
 	{
-		$id=$_POST['id'];
-		$data['info']=$this->crudusers_model->recuperarusuario($id);
 
-		$this->load->view('incrustaciones/vistasxeria/head');
-		$this->load->view('incrustaciones/vistasxeria/menuadmin');
-		$this->load->view('formmodificaruser',$data);
-		$this->load->view('incrustaciones/vistasxeria/footer');
+		$id = $this->input->post('id'); // Si el id viene desde un formulario, debe estar aquí
+
+		// Recuperar datos de la sesión si existen
+		$data['info'] =$this->session->userdata('form_data');
+		
+		if (empty($data['info']))
+		{
+			$data['info'] = $this->crudusers_model->recuperarusuario($id)->row_array();;
+		}
+
+		// Mostrar el mensaje de error si existe
+		$mensaje['error'] = $this->session->flashdata('error');
+
+		$this->load->view('incrustaciones/vistascoloradmin/head');
+		$this->load->view('incrustaciones/vistascoloradmin/menuadmin');
+		$this->load->view('formmodificaruser1', $data);
+		$this->load->view('incrustaciones/vistascoloradmin/footer');
 	}
 	public function modificarbd()
 	{
-		$id=$_POST['id'];
-		$data['nickname']=$_POST['nick'];
-		$data['nombre']=strtoupper($_POST['nombre']);
-		$data['primerApellido']=strtoupper($_POST['apellido1']);
-		$data['segundoApellido']=strtoupper($_POST['apellido2']);
-		$data['email']=$_POST['email'];
-		$data['rol']=$_POST['rol'];
-		$data['fono']=$_POST['fono'];
-		$data['sexo']=$_POST['genero'];
-		
-		$this->crudusers_model->modificar($id,$data);
-		redirect('crudusers/habilitados','refresh');
+
+		$id = $this->input->post('id');
+		// Recuperar el usuario actual para verificar el email
+
+		$usuarioactual = $this->crudusers_model->recuperarusuario($id)->row_array();
+		$emailactual = $usuarioactual['email'];
+		$nuevoemail = $_POST['email'];
+
+
+
+		$data['nickName'] = $_POST['nickname'];
+		$data['nombre'] = strtoupper($_POST['nombre']);
+		$data['primerApellido'] = strtoupper($_POST['primerapellido']);
+		$data['segundoApellido'] = strtoupper($_POST['segundoapellido']);
+		//$data['email']=$_POST['email'];
+		$data['email'] = $nuevoemail;
+		$data['rol'] = $_POST['rol'];
+		$data['fono'] = $_POST['fono'];
+		$data['sexo'] = $_POST['genero'];
+
+		if ($nuevoemail != $emailactual) 
+		{
+			if ($this->crudusers_model->comprobaremail($nuevoemail)) 
+			{
+				$data['idUsuario']=$id;
+				// Si el email ya existe, redirigir con un mensaje de error
+				$this->session->set_flashdata('error', 'El E-mail ingresado ya esta en uso!');
+				// Guardar datos del usuario para redirigir a la vista de modificar
+				$this->session->set_userdata('form_data', $data);
+				redirect('crudusers/modificar');
+				return;
+			}
+		}
+		$this->crudusers_model->modificar($id, $data);
+		redirect('crudusers/habilitados', 'refresh');
 	}
 	public function eliminarbd()
 	{
-		$id=$_POST['id'];
+		$id = $_POST['id'];
 		$this->crudusers_model->eliminar($id);
-		redirect('crudusers/habilitados','refresh');
+		redirect('crudusers/habilitados', 'refresh');
 	}
 	public function deshabilitarbd()
 	{
-		$id=$_POST['id'];
-		$data['estado']=0;
-		$this->crudusers_model->deshabilitar($id,$data);
-		redirect('crudusers/habilitados','refresh');
+		$id = $_POST['id'];
+		$data['estado'] = 0;
+		$this->crudusers_model->deshabilitar($id, $data);
+		redirect('crudusers/habilitados', 'refresh');
 	}
 	public function habilitarbd()
 	{
-		$id=$_POST['id'];
-		$data['estado']=1;
-		$this->crudusers_model->modificar($id,$data);
-		redirect('crudusers/deshabilitados','refresh');
+		$id = $_POST['id'];
+		$data['estado'] = 1;
+		$this->crudusers_model->modificar($id, $data);
+		redirect('crudusers/deshabilitados', 'refresh');
 	}
 	public function login()
 	{
@@ -93,50 +127,47 @@ class Crudusers extends CI_Controller
 	}
 	public function subirfoto()
 	{
-		$data['id']=$_POST['id'];
-		$this->load->view('incrustaciones/vistasxeria/head');
-		$this->load->view('incrustaciones/vistasxeria/menuadmin');
-		$this->load->view('subirform',$data);
-		$this->load->view('incrustaciones/vistasxeria/footer');
+		$data['id'] = $_POST['id'];
+		$this->load->view('incrustaciones/vistascoloradmin/head');
+		$this->load->view('incrustaciones/vistascoloradmin/menuadmin');
+		$this->load->view('subirform', $data);
+		$this->load->view('incrustaciones/vistascoloradmin/footer');
 	}
 	public function subir()
 	{
-		$id=$_POST['id'];
-		$nombrearchivo=$id.".jpg";
+		$id = $_POST['id'];
+		$nombrearchivo = $id . ".jpg";
 
 		//Ruta donde se guardan los archivos
-		$config['upload_path']='./uploads/usersphoto';
+		$config['upload_path'] = './uploads/usersphoto';
 		//nombre del archivo
-		$config['file_name']=$nombrearchivo;
+		$config['file_name'] = $nombrearchivo;
 
-		$direccion=".uploads/usersphoto".$nombrearchivo;
-		
-		if(file_exists($direccion))
-		{
+		$direccion = ".uploads/usersphoto" . $nombrearchivo;
+
+		if (file_exists($direccion)) {
 			unlink($direccion);
 		}
 
-		$config['allowed_types']='jpg|png';
-		$this->load->library('upload',$config);
-		
+		$config['allowed_types'] = 'jpg|png';
+		$this->load->library('upload', $config);
 
-		if(!$this->upload->do_upload())//si realiza la carga 
+
+		if (!$this->upload->do_upload()) //si realiza la carga 
 		{
-			$data['error']=$this->upload->display_errors();
-		}
-		else
-		{
-			$data['foto']=$nombrearchivo;
-			$this->crudusers_model->modificar($id,$data);
+			$data['error'] = $this->upload->display_errors();
+		} else {
+			$data['foto'] = $nombrearchivo;
+			$this->crudusers_model->modificar($id, $data);
 			$this->upload->data();
 		}
-		redirect('crudusers/habilitados','refresh');
+		redirect('crudusers/habilitados', 'refresh');
 	}
 	public function cambiarpassword()
 	{
-		$id=$_POST['id'];
-		$data['password']=hash("sha256",$_POST['password1']);
-		$this->crudusers_model->modificar($id,$data);
-		redirect('usuario/panel','refresh');
+		$id = $_POST['id'];
+		$data['password'] = hash("sha256", $_POST['password1']);
+		$this->crudusers_model->modificar($id, $data);
+		redirect('usuario/panel', 'refresh');
 	}
 }

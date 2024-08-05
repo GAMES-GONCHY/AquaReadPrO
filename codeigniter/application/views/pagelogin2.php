@@ -43,7 +43,7 @@
 						<small>Telemetría inteligente para control preciso del agua</small>
 					</div>
 					<div class="icon">
-					<span><img src="<?php echo base_url(); ?>xeria/light/dist/assets/images/logo13.png" alt="" height="108"></span>
+						<span><img src="<?php echo base_url(); ?>xeria/light/dist/assets/images/logo13.png" alt="" height="108"></span>
 					</div>
 				</div>
 
@@ -53,12 +53,17 @@
 					<?php
 					echo form_open_multipart("usuario/validarusuario");
 					?>
+					<?php if ($error = $this->session->flashdata('error')) : ?>
+						<div class="alert alert-danger">
+							<?php echo $error; ?>
+						</div>
+					<?php endif; ?>
 					<div class="form-floating mb-20px">
-						<input type="text" class="form-control fs-13px h-45px border-0" name="nickname" placeholder="Nickname" id="nickName" autocomplete="off"/>
+						<input type="text" class="form-control fs-13px h-45px border-0" name="nickname" placeholder="Nickname" id="nickName" autocomplete="off" />
 						<label for="nickName" class="d-flex align-items-center text-gray-300 fs-13px">Nickname</label>
 					</div>
 					<div class="form-floating mb-20px">
-						<input type="password" name="password" class="form-control fs-13px h-45px border-0" placeholder="Password" autocomplete="new-password"/>
+						<input type="password" name="password" class="form-control fs-13px h-45px border-0" placeholder="Password" autocomplete="new-password" />
 						<label for="password" name="password" class="d-flex align-items-center text-gray-300 fs-13px">Password</label>
 					</div>
 					<div class="form-check mb-20px">
@@ -93,7 +98,7 @@
 		</div>
 
 
-		
+
 
 
 		<a href="javascript:;" class="btn btn-icon btn-circle btn-success btn-scroll-to-top" data-toggle="scroll-to-top"><i class="fa fa-angle-up"></i></a>

@@ -44,12 +44,9 @@
     <link rel="stylesheet" href="<?php echo base_url(); ?>coloradmin/assets/css/transparent/theme/indigo.min.css">
     <link rel="stylesheet" href="<?php echo base_url(); ?>coloradmin/assets/css/transparent/theme/black.min.css">
     <link rel="stylesheet" href="<?php echo base_url(); ?>coloradmin/assets/css/transparent/theme/blue.min.css">
-    
     <link href="<?php echo base_url(); ?>coloradmin/assets/plugins/jvectormap-next/jquery-jvectormap.css" rel="stylesheet" />
     <link href="<?php echo base_url(); ?>coloradmin/assets/plugins/nvd3/build/nv.d3.css" rel="stylesheet" />
     <link href="<?php echo base_url(); ?>coloradmin/assets/plugins/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet" />
-
-
 
 
 

@@ -61,6 +61,7 @@
                                         <th>E-mail</th>
                                         <th>Rol</th>
                                         <th>Fono</th>
+                                        <th>Género</th>
                                         <th>Creado</th>
                                         <th>Modificar</th>
                                         <th>Eliminar</th>
@@ -109,6 +110,7 @@
                                             <td><?php echo $row->email ?></td>
                                             <td><?php echo $row->rol ?></td>
                                             <td><?php echo $row->fono ?></td>
+                                            <td><?php echo $row->sexo ?></td>
                                             <td><?php echo $row->fechaRegistro ?></td>
                                                     <td>
                                                 <?php
@@ -149,6 +151,7 @@
                                         <th>E-mail</th>
                                         <th>Rol</th>
                                         <th>Fono</th>
+                                        <th>Género</th>
                                         <th>Creado</th>
                                         <th>Modificar</th>
                                         <th>Eliminar</th>

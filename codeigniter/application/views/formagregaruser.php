@@ -99,9 +99,9 @@
                                 <label for="rol" class="col-4 col-form-label">Rol<span class="text-danger">*</span></label>
                                 <div class="col-7">
                                     <select class="selectpicker" data-style="btn-danger" id="rol" name="rol">
-                                        <option>Socio</option>
-                                        <option>Administrador</option>
-                                        <option>Invitado</option>
+                                        <option value="Socio" >Socio</option>
+                                        <option value="Administrador" selected>Administrador</option>
+                                        <option value="Auxiliar">Invitado</option>
                                     </select>
                                 </div>
                             </div>

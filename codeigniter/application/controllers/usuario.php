@@ -5,7 +5,16 @@ class Usuario extends CI_Controller
 {
 	public function index()
 	{
-		$this->load->view('pagelogin2');
+		if ($this->session->userdata('nickName')) 
+		{
+            // Si el usuario ya está logueado, redirige al panel
+            redirect('usuario/panel', 'refresh');
+        } 
+		else 
+		{
+            // Si no está logueado, muestra la página de login
+            $this->load->view('pagelogin2');
+        }
 	}
 	public function validarusuario()
 	{
@@ -32,7 +41,8 @@ class Usuario extends CI_Controller
 		else
 		{
 			//usuario incorrecto - > volvemos al login
-			//redirect('usuario/index','refresh');
+			$this->session->set_flashdata('error', 'Nickname o contraseña incorrectos');
+			redirect('usuario/index','refresh');
 		}
 	}
 	public function panel()
@@ -42,7 +52,7 @@ class Usuario extends CI_Controller
 			
 			$this->load->view('incrustaciones/vistascoloradmin/head');
 			
-			if(($this->session->userdata('rol'))=='Admin')
+			if(($this->session->userdata('rol'))==2)
 			{
 				$this->load->view('incrustaciones/vistascoloradmin/menuadmin');
 				$this->load->view('paneladmin.php');

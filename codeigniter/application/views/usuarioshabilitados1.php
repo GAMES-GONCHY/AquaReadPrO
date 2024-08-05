@@ -51,6 +51,7 @@
                   <th>E-mail</th>
                   <th>Rol</th>
                   <th>Fono</th>
+                  <th>Género</th>
                   <th>Creado</th>
                   <th>Modificar</th>
                   <th>Eliminar</th>
@@ -94,13 +95,14 @@
                     <td><?php echo $row->email ?></td>
                     <td><?php echo $row->rol ?></td>
                     <td><?php echo $row->fono ?></td>
+                    <td><?php echo $row->sexo ?></td>
                     <td><?php echo $row->fechaRegistro ?></td>
                     <td>
                       <?php
                       echo form_open_multipart("crudusers/modificar"); // <form>
                       ?>
                       <input type="hidden" name="id" value="<?php echo $row->idUsuario ?>">
-                      <button type="submit" class="btn btn-warning">Modificar</button>
+                      <button type="submit" class="btn btn-indigo me-1 mb-1">Modificar</button>
                       <?php
                       echo form_close(); // </form>
                       ?>
@@ -133,6 +135,7 @@
                   <th>E-mail</th>
                   <th>Rol</th>
                   <th>Fono</th>
+                  <th>Género</th>
                   <th>Creado</th>
                   <th>Modificar</th>
                   <th>Eliminar</th>
