@@ -1,5 +1,7 @@
 <div class="navbar-header">
-    <a href="index.html" class="navbar-brand"><span class="navbar-logo"></span> <b>Aqua</b>ReadPro</a>
+    <a href="index.html" class="navbar-brand">
+        <span class="navbar-logo"></span> <b>Aqua</b>ReadPro <img src="<?php echo base_url(); ?>xeria/light/dist/assets/images/logo14.png" alt="" width="50" />
+    </a>
     <button type="button" class="navbar-mobile-toggler" data-toggle="app-sidebar-mobile">
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
@@ -12,7 +14,7 @@
     <div class="navbar-item navbar-form">
         <form action="" method="POST" name="search">
             <div class="form-group">
-                <input type="text" class="form-control" placeholder="Enter keyword" />
+                <input type="text" class="form-control" placeholder="Buscar" />
                 <button type="submit" class="btn btn-search"><i class="fa fa-search"></i></button>
             </div>
         </form>
@@ -90,11 +92,11 @@
         </a>
         <div class="dropdown-menu dropdown-menu-end me-1">
             <a href="javascript:;" class="dropdown-item">Edit Profile</a>
-            <a href="javascript:;" class="dropdown-item"><span class="badge bg-danger float-end rounded-pill">2</span> Inbox</a>
+            <a href="javascript:;" class="dropdown-item"><span class="badge bg-danger float-end rounded-pill">3</span> Inbox</a>
             <a href="javascript:;" class="dropdown-item">Calendar</a>
             <a href="javascript:;" class="dropdown-item">Setting</a>
             <div class="dropdown-divider"></div>
-            
+
             <a href="javascript:;" id="showAlert" data-bs-toggle="modal" data-bs-target="#modal-dialog" class="dropdown-item">Cerrar sesion</a>
         </div>
     </div>
@@ -118,14 +120,26 @@
                     <div class="menu-profile-image">
                         <img src="<?php echo base_url(); ?>coloradmin/assets/img/user/user-13.jpg" alt="" />
                     </div>
+                   
+                        
                     <div class="menu-profile-info">
                         <div class="d-flex align-items-center">
                             <div class="flex-grow-1">
-                                <?php echo ($this->session->userdata('nombre'))." ".$this->session->userdata('primerApellido')." ".$this->session->userdata('segundoApellido'); ?>
+                                <?php echo ($this->session->userdata('nombre')) . " " . $this->session->userdata('primerApellido') . " " . $this->session->userdata('segundoApellido'); ?>
                             </div>
                             <div class="menu-caret ms-auto"></div>
                         </div>
-                        <small> <?php echo ($this->session->userdata('rol')) ?>  </small>
+                        <small>
+                            
+                            <?php if ($this->session->userdata('rol') == 0) : ?>
+                                Socio
+                            <?php elseif ($this->session->userdata('rol') == 1) : ?>
+                                Auxiliar
+                            <?php else : ?>
+                                Administrador
+                            <?php endif; ?>
+
+                        </small>
                     </div>
                 </a>
             </div>

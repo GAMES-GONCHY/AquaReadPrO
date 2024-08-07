@@ -30,7 +30,7 @@
                                 <?php
                                 echo form_open_multipart("crudusers/subir");//es igual q el tag <form>
                                 ?>
-                                    <input type="hidden" class="form-control" name="id" value="<?php echo $id; ?>" >
+                                    <input type="text" class="form-control" name="id" value="<?php echo $id; ?>" >
 
                                     <input type="file" name="userfile" >
                                     <button type="submit" class="btn btn-primary">Subir</button>

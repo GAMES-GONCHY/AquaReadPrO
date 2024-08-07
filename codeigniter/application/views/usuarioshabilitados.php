@@ -70,17 +70,17 @@
                             
                                 <tbody>
                                     <?php
-                                    $cont=1;
-                                    foreach($usuarios->result() as $row)
-                                    {
+                                        $cont=1;
+                                        foreach($usuarios->result() as $row)
+                                        {
                                     ?>
                                     <tr>
                                             <td><?php echo $cont ?></td>
                                             <td>
                                                 <?php 
-                                                $foto=$row->foto;
-                                                if($foto=="")
-                                                {
+                                                    $foto=$row->foto;
+                                                    if($foto=="")
+                                                    {
                                                 ?>
                                                     <img src="<?php echo base_url(); ?>uploads/usersphoto/perfil.jpg" width="40">
                                                 <?php

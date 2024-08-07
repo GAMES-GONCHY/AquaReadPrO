@@ -1,3 +1,9 @@
+  <div id="footer" class="app-footer mx-0 px-0">
+    <h5 class="mb-0">&copy; 2024 <b>Aqua</b>ReadPro - by G@mes Rights Reserved</h5>
+  </div>
+</div>
+<!-- BOTON VERDE SUSPENCION -->
+  <a href="javascript:;" class="btn btn-icon btn-circle btn-success btn-scroll-to-top" data-toggle="scroll-to-top"><i class="fa fa-angle-up"></i></a>
 </div>
 <!-- END APP HEADER -->
 
@@ -23,7 +29,9 @@
 
 
 <!-- jQuery primero -->
-<!-- <script src="<?php echo base_url(); ?>coloradmin/assets/plugins/jquery/jquery.min.js"></script> -->
+<script src="<?php echo base_url(); ?>coloradmin/assets/plugins/jquery/jquery.min.js"></script>
+
+
 
 
 
@@ -32,6 +40,140 @@
 <!-- Scripts de ColorAdmin -->
 <script src="<?php echo base_url(); ?>coloradmin/assets/js/vendor.min.js"></script>
 <script src="<?php echo base_url(); ?>coloradmin/assets/js/app.min.js"></script>
+
+<!-- Upload -->
+<script src="<?php echo base_url(); ?>coloradmin/assets/plugins/blueimp-file-upload/js/vendor/jquery.ui.widget.js"></script>
+<script src="<?php echo base_url(); ?>coloradmin/assets/plugins/blueimp-tmpl/js/tmpl.js"></script>
+<script src="<?php echo base_url(); ?>coloradmin/assets/plugins/blueimp-load-image/js/load-image.all.min.js"></script>
+<script src="<?php echo base_url(); ?>coloradmin/assets/plugins/blueimp-canvas-to-blob/js/canvas-to-blob.js"></script>
+<script src="<?php echo base_url(); ?>coloradmin/assets/plugins/blueimp-gallery/js/jquery.blueimp-gallery.min.js"></script>
+<script src="<?php echo base_url(); ?>coloradmin/assets/plugins/blueimp-file-upload/js/jquery.iframe-transport.js"></script>
+<script src="<?php echo base_url(); ?>coloradmin/assets/plugins/blueimp-file-upload/js/jquery.fileupload.js"></script>
+<script src="<?php echo base_url(); ?>coloradmin/assets/plugins/blueimp-file-upload/js/jquery.fileupload-process.js"></script>
+<script src="<?php echo base_url(); ?>coloradmin/assets/plugins/blueimp-file-upload/js/jquery.fileupload-image.js"></script>
+<script src="<?php echo base_url(); ?>coloradmin/assets/plugins/blueimp-file-upload/js/jquery.fileupload-audio.js"></script>
+<script src="<?php echo base_url(); ?>coloradmin/assets/plugins/blueimp-file-upload/js/jquery.fileupload-video.js"></script>
+<script src="<?php echo base_url(); ?>coloradmin/assets/plugins/blueimp-file-upload/js/jquery.fileupload-validate.js"></script>
+<script src="<?php echo base_url(); ?>coloradmin/assets/plugins/blueimp-file-upload/js/jquery.fileupload-ui.js"></script>
+<script src="<?php echo base_url(); ?>coloradmin/assets/js/demo/form-multiple-upload.demo.js"></script>
+
+<!-- INICIO INCRUSTACIONES ADICIONALES UPLOAD -->
+<script id="template-upload" type="text/x-tmpl">
+  {% for (var i=0, file; file=o.files[i]; i++) { %}
+		<tr class="template-upload fade show">
+			<td>
+				<span class="preview"></span>
+			</td>
+			<td>
+				<div class="bg-light rounded p-3 mb-2">
+					<dl class="mb-0">
+						<dt class="text-inverse">Nombre de archivo:</dt>
+						<dd class="name">{%=file.name%}</dd>
+						<hr />
+						<dt class="text-inverse mt-10px">Tamaño de archivo:</dt>
+						<dd class="size mb-0">Procesando...</dd>
+					</dl>
+				</div>
+				<strong class="error text-danger h-auto d-block text-left"></strong>
+			</td>
+			<td>
+				<dl>
+					<dt class="text-inverse mt-3px">Progreso:</dt>
+					<dd class="mt-5px">
+						<div class="progress progress-sm progress-striped active rounded-pill"><div class="progress-bar progress-bar-primary" style="width:0%; min-width: 40px;">0%</div></div>
+					</dd>
+				</dl>
+			</td>
+			<td nowrap> 
+				{% if (!i && !o.options.autoUpload) { %}
+					<button class="btn btn-primary hidden start w-100px pe-20px mb-2 d-block">
+						<i class="fa fa-upload fa-fw text-inverse"></i>
+						<span>Start</span>
+					</button>
+				{% } %}
+				{% if (!i) { %}
+					<!-- <button class="btn btn-default cancel w-100px pe-20px d-block">
+						<i class="fa fa-trash fa-fw text-muted"></i>
+						<span>Cancel</span>
+					</button> -->
+				{% } %}
+			</td>
+		</tr>
+		{% } %}
+</script>
+
+<!-- <script id="template-download" type="text/x-tmpl">
+  {% for (var i=0, file; file=o.files[i]; i++) { %}
+			<tr class="template-download fade show">
+				<td width="1%">
+					<span class="preview">
+						{% if (file.thumbnailUrl) { %}
+							<a href="{%=file.url%}" title="{%=file.name%}" download="{%=file.name%}" data-gallery><img src="{%=file.thumbnailUrl%}" class="rounded"></a>
+						{% } else { %}
+							<div class="bg-light text-center fs-20px" style="width: 80px; height: 80px; line-height: 80px; border-radius: 6px;">
+								<i class="fa fa-file-image fa-lg text-gray-500"></i>
+							</div>
+						{% } %}
+					</span>
+				</td>
+				<td>
+					<div class="bg-light p-3 mb-2">
+						<dl class="mb-0">
+							<dt class="text-inverse">File Name:</dt>
+							<dd class="name">
+								{% if (file.url) { %}
+									<a href="{%=file.url%}" title="{%=file.name%}" download="{%=file.name%}" {%=file.thumbnailUrl?'data-gallery':''%}>{%=file.name%}</a>
+								{% } else { %}
+									<span>{%=file.name%}</span>
+								{% } %}
+							</dd>
+							<hr />
+							<dt class="text-inverse mt-10px">File Size:</dt>
+							<dd class="size mb-0">{%=o.formatFileSize(file.size)%}</dd>
+						</dl>
+						{% if (file.error) { %}
+							<hr />
+							<div><span class="badge bg-danger me-1">ERROR</span> {%=file.error%}</div>
+						{% } %}
+					</div>
+				</td>
+				<td></td>
+				<td>
+					{% if (file.deleteUrl) { %}
+						<button class="btn btn-danger delete w-100px mb-2 pe-20px" data-type="{%=file.deleteType%}" data-url="{%=file.deleteUrl%}"{% if (file.deleteWithCredentials) { %} data-xhr-fields='{"withCredentials":true}'{% } %}>
+							<i class="fa fa-trash float-start fa-fw text-inverse mt-2px"></i>
+							<span>Delete</span>
+						</button>
+						<input type="checkbox" name="delete" value="1" class="toggle">
+					{% } else { %}
+						<button class="btn btn-default cancel w-100px me-3px pe-20px">
+							<i class="fa fa-trash float-start fa-fw text-muted mt-2px"></i>
+							<span>Cancel</span>
+						</button>
+					{% } %}
+				</td>
+			</tr>
+		{% } %}
+</script> -->
+
+<script>
+  $('#fileupload').fileupload({
+    autoUpload: false,
+    disableImageResize: /Android(?!.*Chrome)|Opera/.test(window.navigator.userAgent),
+    maxFileSize: 5000000,
+    acceptFileTypes: /(\.|\/)(gif|jpe?g|png)$/i
+  });
+
+  $('#fileupload').bind('fileuploadadd', function(e, data) {
+
+  });
+
+  $('#fileupload').bind('fileuploadfail', function(e, data) {
+
+  });
+</script>
+<!-- FIN INCRUSTACIONES ADICIONALES UPLOAD -->
+
 
 
 <!-- Plugins de DataTables -->
@@ -84,6 +226,14 @@
 <script src="<?php echo base_url(); ?>coloradmin/assets/plugins/parsleyjs/dist/messages.es.js"></script>
 
 
+
+
+
+
+
+
+
+
 <!-- esta incrustacion contiene codigo html en lugar de js -->
 <!-- <script src="<?php echo base_url(); ?>coloradmin/assets/js/demo/render.highlight.js"></script> -->
 
@@ -129,6 +279,7 @@
   ga('send', 'pageview');
 </script>
 
+<!-- Botones de exportacion dataTable -->
 <script>
   var options = {
     dom: '<"dataTables_wrapper dt-bootstrap"<"row"<"col-xl-7 d-block d-sm-flex d-xl-block justify-content-center"<"d-block d-lg-inline-flex me-0 me-md-3"l><"d-block d-lg-inline-flex"B>><"col-xl-5 d-flex d-xl-block justify-content-center"fr>>t<"row"<"col-md-5"i><"col-md-7"p>>>',
@@ -168,6 +319,7 @@
   $('#data-table-combine').DataTable(options);
 </script>
 
+<!-- Sweet alart -->
 <script>
   $(document).ready(function() {
     $('#showAlert').on('click', function() {
@@ -205,6 +357,7 @@
     });
   });
 </script>
+
 
 
 </body>
