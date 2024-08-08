@@ -30,22 +30,57 @@ class Crudusers extends CI_Controller
 	}
 	public function agregarbd()
 	{
-		$data['nickname'] = $_POST['nickname'];
-		// $data['password']=hash("sha256",$_POST['password1']);
-		$data['nombre'] = strtoupper($_POST['nombre']);
-		$data['primerApellido'] = strtoupper($_POST['primerapellido']);
-		$data['segundoApellido'] = strtoupper($_POST['segundoapellido']);
-		$data['email'] = $_POST['email'];
-		$data['rol'] = $_POST['rol'];
-		$data['fono'] = $_POST['fono'];
-		$data['sexo'] = $_POST['genero'];
-		$this->crudusers_model->agregar($data);
-		redirect('crudusers/habilitados', 'refresh'); //Aqui se refresca la vista para incluir el registro agregado
+		$newdata['nickname'] = $_POST['nickname'];
+		$newdata['email']=$_POST['email'];
+
+
+		
+
+		$consulta=$this->crudusers_model->comprobarduplicados($newdata);
+
+		if (!empty($consulta)) 
+		{
+			if(!(isset($consulta['email'])&&isset($consulta['nickName'])))
+			{
+				if (isset($consulta['email'])) 
+				{
+					$this->session->set_flashdata('error', 'El E-mail ya está registrado en el sistema.');
+				}
+				if (isset($consulta['nickName'])) 
+				{
+					$this->session->set_flashdata('error', 'El Nickname ya está registrado en el sistema.');
+				}
+			}
+			else
+			{
+				$this->session->set_flashdata('error', 'El E-mail y Nickname ya están registrados en el sistema.');
+			}
+			redirect('crudusers/agregar', 'refresh');
+		} 
+		else
+		{
+			$data['nickname'] = $_POST['nickname'];
+			$data['nombre'] = strtoupper($_POST['nombre']);
+			$data['primerApellido'] = strtoupper($_POST['primerapellido']);
+			$data['segundoApellido'] = strtoupper($_POST['segundoapellido']);
+			$data['email'] = $_POST['email'];
+			$data['rol'] = $_POST['rol'];
+			$data['fono'] = $_POST['fono'];
+			$data['sexo'] = $_POST['genero'];
+
+			$this->crudusers_model->agregar($data);
+
+
+			redirect('crudusers/habilitados', 'refresh'); //Aqui se refresca la vista para incluir el registro agregado
+		}
 	}
+
+
+
 	public function modificar()
 	{
 
-		$id = $this->input->post('id'); // Si el id viene desde un formulario, debe estar aquí
+		$id = $this->input->post('id'); 
 
 		// Recuperar datos de la sesión si existen
 		$data['info'] = $this->session->userdata('form_data');
@@ -133,17 +168,16 @@ class Crudusers extends CI_Controller
 	public function subir()
 	{
 		$id = $_POST['id'];
-		$nombrearchivo = $id.".jpg";
+		$nombrearchivo = $id . ".jpg";
 
 		//Ruta donde se guardan los archivos
 		$config['upload_path'] = './uploads/usersphoto/';
 		//nombre del archivo
 		$config['file_name'] = $nombrearchivo;
 
-		$direccion = "./uploads/usersphoto/".$nombrearchivo;
+		$direccion = "./uploads/usersphoto/" . $nombrearchivo;
 
-		if (file_exists($direccion)) 
-		{
+		if (file_exists($direccion)) {
 			unlink($direccion);
 		}
 		$config['allowed_types'] = 'jpg|png|GIF';
@@ -153,22 +187,18 @@ class Crudusers extends CI_Controller
 		if (!$this->upload->do_upload()) //sino realiza la carga 
 		{
 			//$data['error'] = $this->upload->display_errors();
-			
-			$data=array
-			(
-				'error'=> $this->upload->display_errors()
+
+			$data = array(
+				'error' => $this->upload->display_errors()
 			);
-			
+
 			//echo json_encode($data);
-		} 
-		else 
-		{
+		} else {
 			//$data['foto'] = $nombrearchivo;
 			$upload_data = $this->upload->data(); // Obtener los datos del archivo subido
-			$data=array
-			(
-				'foto'=> $nombrearchivo,
-				
+			$data = array(
+				'foto' => $nombrearchivo,
+
 				'file_name' => $upload_data['file_name'],
 				'file_size' => $upload_data['file_size']
 			);
@@ -177,15 +207,15 @@ class Crudusers extends CI_Controller
 			//$this->upload->data();
 
 			//echo json_encode($data);
-			
+
 		}
 		redirect('crudusers/habilitados', 'refresh');
 	}
-	public function cambiarpassword()
-	{
-		$id = $_POST['id'];
-		$data['password'] = hash("sha256", $_POST['password1']);
-		$this->crudusers_model->modificar($id, $data);
-		redirect('usuario/panel', 'refresh');
-	}
+	// public function cambiarpassword()
+	// {
+	// 	$id = $_POST['id'];
+	// 	$data['password'] = hash("sha256", $_POST['password1']);
+	// 	$this->crudusers_model->modificar($id, $data);
+	// 	redirect('usuario/panel', 'refresh');
+	// }
 }

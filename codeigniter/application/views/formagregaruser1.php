@@ -25,6 +25,11 @@
         </div>
         <div class="panel-body">
           <!-- <form class="form-horizontal" data-parsley-validate="true" name="demo-form"> -->
+          <?php if ($error = $this->session->flashdata('error')) : ?>
+            <div class="alert alert-danger">
+              <?php echo $error; ?>
+            </div>
+          <?php endif; ?>
           <form class="form-horizontal" data-parsley-validate="true" name="demo-form" method="post" action="<?php echo base_url(); ?>index.php/crudusers/agregarbd">
             <div class="form-group row mb-3">
               <label class="col-lg-4 col-form-label form-label" for="nickname">Nickname * :</label>
@@ -107,4 +112,3 @@
     </div>
   </div>
 
-<!-- END PAGE CONTENT -->

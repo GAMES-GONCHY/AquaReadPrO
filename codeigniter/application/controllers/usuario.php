@@ -25,8 +25,8 @@ class Usuario extends CI_Controller
 		if($consulta->num_rows()>0)
 		{
 			//usuario válido
-			
-			foreach($consulta->result() as $row)
+			$row = $consulta->row();
+			if($row->estado == 1 || $row->estado == 2)
 			{
 				$this->session->set_userdata('idUsuario',$row->idUsuario);
 				$this->session->set_userdata('nickName',$row->nickName);
@@ -35,7 +35,15 @@ class Usuario extends CI_Controller
 				$this->session->set_userdata('primerApellido',$row->primerApellido);
 				$this->session->set_userdata('segundoApellido',$row->segundoApellido);
 				$this->session->set_userdata('email',$row->email);
+				$this->session->set_userdata('foto',$row->foto);
+				$this->session->set_userdata('estado',$row->estado);
 				redirect('usuario/panel','refresh');
+			}
+			else
+			{
+				// Usuario tiene estado no permitido
+				$this->session->set_flashdata('error', 'Tu cuenta no está activa.');
+				redirect('usuario/index', 'refresh');
 			}
 		}
 		else
@@ -60,7 +68,8 @@ class Usuario extends CI_Controller
 			else
 			{
 				$this->load->view('incrustaciones/vistascoloradmin/menusocio');
-				$this->load->view('panelsocio.php');
+				$this->load->view('panelsocio1.php');
+
 			}
 			$this->load->view('incrustaciones/vistascoloradmin/footer');
 		}

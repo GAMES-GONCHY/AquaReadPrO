@@ -8,8 +8,9 @@
 	<meta content="" name="description" />
 	<meta content="" name="author" />
 
-	<link href="<?php echo base_url(); ?>xeria/light/dist/assets/css/vendor1.min.css" rel="stylesheet" />
-	<link href="<?php echo base_url(); ?>xeria/light/dist/assets/css/app1.min.css" rel="stylesheet" />
+
+	<link href="<?php echo base_url(); ?>coloradmin/assets/css/vendor.min.css" rel="stylesheet" />
+	<link href="<?php echo base_url(); ?>coloradmin/assets/css/transparent/app.min.css" rel="stylesheet" />
 
 </head>
 
@@ -105,15 +106,13 @@
 
 	</div>
 
+	<script src="<?php echo base_url(); ?>coloradmin/assets/js/vendor.min.js"></script>
+	<script src="<?php echo base_url(); ?>coloradmin/assets/js/app.min.js"></script>
+	<script src="<?php echo base_url(); ?>coloradmin/assets/js/theme/transparent.min.js"></script>
 
-	<script src="<?php echo base_url(); ?>xeria/light/dist/assets/js/vendor1.min.js" type="b59459780534ecad3c37b6ce-text/javascript"></script>
-	<script src="<?php echo base_url(); ?>xeria/light/dist/assets/js/app1.min.js" type="b59459780534ecad3c37b6ce-text/javascript"></script>
-	<script src="<?php echo base_url(); ?>xeria/light/dist/assets/js/transparent1.min.js" type="b59459780534ecad3c37b6ce-text/javascript"></script>
+	<script src="<?php echo base_url(); ?>coloradmin/assets/js/demo/login-v2.demo.js"></script>
 
-
-	<script src="<?php echo base_url(); ?>xeria/light/dist/assets/js/login-v21.demo.js" type="b59459780534ecad3c37b6ce-text/javascript"></script>
-
-	<script type="b59459780534ecad3c37b6ce-text/javascript">
+	<script>
 		(function(i, s, o, g, r, a, m) {
 			i['GoogleAnalyticsObject'] = r;
 			i[r] = i[r] || function() {
@@ -129,8 +128,8 @@
 		ga('create', 'UA-53034621-1', 'auto');
 		ga('send', 'pageview');
 	</script>
-	<script src="https://ajax.cloudflare.com/cdn-cgi/scripts/7d0fa10a/cloudflare-static/rocket-loader.min.js" data-cf-settings="b59459780534ecad3c37b6ce-|49" defer=""></script>
-	<script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"rayId":"66b229bb1b4421bb","version":"2021.6.0","r":1,"token":"4db8c6ef997743fda032d4f73cfeff63","si":10}'></script>
+	<script src="https://ajax.cloudflare.com/cdn-cgi/scripts/7d0fa10a/cloudflare-static/rocket-loader.min.js" data-cf-settings="b59459780534ecad3c37b6ce-|49" defer=""></script> -->
+	<!-- <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"rayId":"66b229bb1b4421bb","version":"2021.6.0","r":1,"token":"4db8c6ef997743fda032d4f73cfeff63","si":10}'></script> -->
 </body>
 
 </html>

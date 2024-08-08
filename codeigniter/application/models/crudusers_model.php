@@ -53,4 +53,30 @@ class Crudusers_model extends CI_Model
 		// Devuelve TRUE si el email ya está en uso, FALSE en caso contrario
 		return $query->num_rows() > 0;
 	}
+	public function comprobarduplicados($newdata)
+	{
+
+		$duplicate = [];
+
+		// Verificar duplicado por email
+		$this->db->where('email', $newdata['email']);
+		$query = $this->db->get('usuario');
+	
+		if ($query->num_rows() > 0) 
+		{
+			$duplicate['email'] = true;
+		}
+	
+		// Verificar duplicado por nickname
+		$this->db->where('nickName', $newdata['nickname']);
+		
+		$query = $this->db->get('usuario');
+	
+		if ($query->num_rows() > 0) 
+		{
+			$duplicate['nickName'] = true;
+		}
+	
+		return $duplicate;
+	}
 }
