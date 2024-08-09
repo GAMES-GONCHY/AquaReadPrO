@@ -69,43 +69,64 @@ class Crudusers extends CI_Controller
 
 	public function modificar()
 	{
-		$id = $_POST['id'];
-		$data['info'] = $this->crudusers_model->recuperarusuario($id);
+
+		$id = $this->input->post('id');
+		$data['info'] = $this->crudusers_model->recuperarusuario($id)->row_array();
+
 
 		$this->load->view('incrustaciones/vistascoloradmin/head');
 		$this->load->view('incrustaciones/vistascoloradmin/menuadmin');
-		$this->load->view('formmodificaruser1', $data);
+		if($this->session->userdata('form1')!==null)
+		{
+			$this->load->view('formmodificaruser1', $this->session->userdata('form1'));
+		}
+		else
+		{
+			$this->load->view('formmodificaruser1', $data);
+		}
 		$this->load->view('incrustaciones/vistascoloradmin/footer');
+
 	}
 	public function modificarbd()
 	{
 
 		$id = $_POST['id'];
+		
 		$newdata['nickname'] = $_POST['nickname'];
 		$newdata['email'] = $_POST['email'];
 	
-		// Recuperar el usuario actual para verificar el email y nickname
+		
 		$consulta = $this->crudusers_model->comprobarmodificacion($newdata, $id);
-	
-		if (!empty($consulta)) {
-			$error_message = '';
-			if (!(isset($consulta['email']) && isset($consulta['nickName']))) {
-				if (isset($consulta['email'])) {
-					$error_message = 'El E-mail ya está registrado en el sistema.';
+		
+		// Recuperar el usuario actual para verificar el email y nickname
+		
+
+		
+		if (!empty($consulta)) 
+		{
+			$data['info']= $this->crudusers_model->recuperarusuario($id)->row_array();
+			$this->session->set_userdata('form1', $data);
+			if ((isset($consulta['email']) && isset($consulta['nickName']))) 
+			{
+				$this->session->set_flashdata('error', 'El E-mail y Nickname ya están registrados en el sistema.');
+				
+			} 
+			else 
+			{
+				if (isset($consulta['email'])) 
+				{
+					$this->session->set_flashdata('error', 'El E-mail ya está registrado en el sistema.');
 				}
-				if (isset($consulta['nickName'])) {
-					$error_message = 'El Nickname ya está registrado en el sistema.';
+				if (isset($consulta['nickName'])) 
+				{
+					$this->session->set_flashdata('error', 'El Nickname ya está registrado en el sistema.');
 				}
-			} else {
-				$error_message = 'El E-mail y Nickname ya están registrados en el sistema.';
 			}
-	
-			// Guardar datos en la sesión
-			$this->session->set_flashdata('error', $error_message);
-			$this->session->set_flashdata('form_data', $_POST);
-	
+
 			redirect('crudusers/modificar', 'refresh');
-		} else {
+		} 
+		else 
+		{
 			$data = [
 				'nickName' => $_POST['nickname'],
 				'nombre' => strtoupper($_POST['nombre']),
