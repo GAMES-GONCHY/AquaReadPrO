@@ -33,24 +33,30 @@ class Crudusers extends CI_Controller
 		$newdata['nickname'] = $_POST['nickname'];
 		$newdata['email'] = $_POST['email'];
 
-
-
-
 		$consulta = $this->crudusers_model->comprobarinsercion($newdata);
 
-		if (!empty($consulta)) {
-			if (!(isset($consulta['email']) && isset($consulta['nickName']))) {
-				if (isset($consulta['email'])) {
+		if (!empty($consulta)) 
+		{
+			if (!(isset($consulta['email']) && isset($consulta['nickName']))) 
+			{
+				if (isset($consulta['email'])) 
+				{
 					$this->session->set_flashdata('error', 'El E-mail ya está registrado en el sistema.');
 				}
-				if (isset($consulta['nickName'])) {
+				if (isset($consulta['nickName']))
+				{
 					$this->session->set_flashdata('error', 'El Nickname ya está registrado en el sistema.');
 				}
-			} else {
+			} 
+			else 
+			{
 				$this->session->set_flashdata('error', 'El E-mail y Nickname ya están registrados en el sistema.');
 			}
+			
 			redirect('crudusers/agregar', 'refresh');
-		} else {
+		} 
+		else 
+		{
 			$data['nickname'] = $_POST['nickname'];
 			$data['nombre'] = strtoupper($_POST['nombre']);
 			$data['primerApellido'] = strtoupper($_POST['primerapellido']);

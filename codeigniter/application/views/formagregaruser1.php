@@ -25,11 +25,17 @@
         </div>
         <div class="panel-body">
           <!-- <form class="form-horizontal" data-parsley-validate="true" name="demo-form"> -->
+          <?php if ($error = $this->session->flashdata('error')) : ?>
+            <div class="alert alert-danger">
+              <?php echo $error; ?>
+            </div>
+          <?php endif; ?>
+          
           <form class="form-horizontal" data-parsley-validate="true" name="demo-form" method="post" action="<?php echo base_url(); ?>index.php/crudusers/agregarbd">
             <div class="form-group row mb-3">
               <label class="col-lg-4 col-form-label form-label" for="nickname">Nickname * :</label>
               <div class="col-lg-8">
-                <input class="form-control" type="text" id="nickname" name="nickname" placeholder="Nickname" data-parsley-required="true" />
+                <input class="form-control" type="text" id="nickname" name="nickname" placeholder="Nickname" data-parsley-required="true"  />
               </div>
             </div>
 
@@ -63,7 +69,7 @@
               <label class="col-lg-4 col-form-label form-label">Tipo usuario * :</label>
               <div class="col-lg-8">
                 <select class="form-select" id="select-required" name="rol" data-parsley-required="true">
-                  <option value="0" selected>Socio</option>
+                  <option value="0" selected >Socio</option>
                   <option value="1">Auxiliar</option>
                   <option value="2">Administrador</option>
                 </select>
@@ -106,4 +112,3 @@
       </div>
     </div>
   </div>
-

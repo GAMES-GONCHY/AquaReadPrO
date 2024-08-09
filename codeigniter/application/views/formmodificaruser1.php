@@ -26,9 +26,9 @@
         <div class="panel-body">
           <!-- <form class="form-horizontal" data-parsley-validate="true" name="demo-form"> -->
           <?php if ($error = $this->session->flashdata('error')) : ?>
-            <div class="alert alert-danger">
-              <?php echo $error; ?>
-            </div>
+              <div class="alert alert-danger">
+                <?php echo $error; ?>
+              </div>
           <?php endif; ?>
 
           <?php if (!empty($info)): ?>
