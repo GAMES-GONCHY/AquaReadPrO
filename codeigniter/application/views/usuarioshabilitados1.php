@@ -80,12 +80,12 @@
                     </td>
                     <td>
                       <?php
-                      echo form_open_multipart("crudusers/subirfoto"); // <form>
+                      echo form_open_multipart("crudusers/subirfoto");
                       ?>
                       <input type="hidden" name="id" value="<?php echo $row->idUsuario ?>">
                       <button type="submit" class="btn btn-primary">Subir</button>
                       <?php
-                      echo form_close(); // </form>
+                      echo form_close();
                       ?>
                     </td>
                     <td><?php echo $row->nickName ?></td>

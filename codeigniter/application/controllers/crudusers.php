@@ -31,34 +31,26 @@ class Crudusers extends CI_Controller
 	public function agregarbd()
 	{
 		$newdata['nickname'] = $_POST['nickname'];
-		$newdata['email']=$_POST['email'];
+		$newdata['email'] = $_POST['email'];
 
 
-		
 
-		$consulta=$this->crudusers_model->comprobarduplicados($newdata);
 
-		if (!empty($consulta)) 
-		{
-			if(!(isset($consulta['email'])&&isset($consulta['nickName'])))
-			{
-				if (isset($consulta['email'])) 
-				{
+		$consulta = $this->crudusers_model->comprobarinsercion($newdata);
+
+		if (!empty($consulta)) {
+			if (!(isset($consulta['email']) && isset($consulta['nickName']))) {
+				if (isset($consulta['email'])) {
 					$this->session->set_flashdata('error', 'El E-mail ya está registrado en el sistema.');
 				}
-				if (isset($consulta['nickName'])) 
-				{
+				if (isset($consulta['nickName'])) {
 					$this->session->set_flashdata('error', 'El Nickname ya está registrado en el sistema.');
 				}
-			}
-			else
-			{
+			} else {
 				$this->session->set_flashdata('error', 'El E-mail y Nickname ya están registrados en el sistema.');
 			}
 			redirect('crudusers/agregar', 'refresh');
-		} 
-		else
-		{
+		} else {
 			$data['nickname'] = $_POST['nickname'];
 			$data['nombre'] = strtoupper($_POST['nombre']);
 			$data['primerApellido'] = strtoupper($_POST['primerapellido']);
@@ -75,22 +67,10 @@ class Crudusers extends CI_Controller
 		}
 	}
 
-
-
 	public function modificar()
 	{
-
-		$id = $this->input->post('id'); 
-
-		// Recuperar datos de la sesión si existen
-		$data['info'] = $this->session->userdata('form_data');
-
-		if (empty($data['info'])) {
-			$data['info'] = $this->crudusers_model->recuperarusuario($id)->row_array();;
-		}
-
-		// Mostrar el mensaje de error si existe
-		$mensaje['error'] = $this->session->flashdata('error');
+		$id = $_POST['id'];
+		$data['info'] = $this->crudusers_model->recuperarusuario($id);
 
 		$this->load->view('incrustaciones/vistascoloradmin/head');
 		$this->load->view('incrustaciones/vistascoloradmin/menuadmin');
@@ -100,38 +80,46 @@ class Crudusers extends CI_Controller
 	public function modificarbd()
 	{
 
-		$id = $this->input->post('id');
-		// Recuperar el usuario actual para verificar el email
-
-		$usuarioactual = $this->crudusers_model->recuperarusuario($id)->row_array();
-		$emailactual = $usuarioactual['email'];
-		$nuevoemail = $_POST['email'];
-
-
-
-		$data['nickName'] = $_POST['nickname'];
-		$data['nombre'] = strtoupper($_POST['nombre']);
-		$data['primerApellido'] = strtoupper($_POST['primerapellido']);
-		$data['segundoApellido'] = strtoupper($_POST['segundoapellido']);
-		//$data['email']=$_POST['email'];
-		$data['email'] = $nuevoemail;
-		$data['rol'] = $_POST['rol'];
-		$data['fono'] = $_POST['fono'];
-		$data['sexo'] = $_POST['genero'];
-
-		if ($nuevoemail != $emailactual) {
-			if ($this->crudusers_model->comprobaremail($nuevoemail)) {
-				$data['idUsuario'] = $id;
-				// Si el email ya existe, redirigir con un mensaje de error
-				$this->session->set_flashdata('error', 'El E-mail ingresado ya esta en uso!');
-				// Guardar datos del usuario para redirigir a la vista de modificar
-				$this->session->set_userdata('form_data', $data);
-				redirect('crudusers/modificar');
-				return;
+		$id = $_POST['id'];
+		$newdata['nickname'] = $_POST['nickname'];
+		$newdata['email'] = $_POST['email'];
+	
+		// Recuperar el usuario actual para verificar el email y nickname
+		$consulta = $this->crudusers_model->comprobarmodificacion($newdata, $id);
+	
+		if (!empty($consulta)) {
+			$error_message = '';
+			if (!(isset($consulta['email']) && isset($consulta['nickName']))) {
+				if (isset($consulta['email'])) {
+					$error_message = 'El E-mail ya está registrado en el sistema.';
+				}
+				if (isset($consulta['nickName'])) {
+					$error_message = 'El Nickname ya está registrado en el sistema.';
+				}
+			} else {
+				$error_message = 'El E-mail y Nickname ya están registrados en el sistema.';
 			}
+	
+			// Guardar datos en la sesión
+			$this->session->set_flashdata('error', $error_message);
+			$this->session->set_flashdata('form_data', $_POST);
+	
+			redirect('crudusers/modificar', 'refresh');
+		} else {
+			$data = [
+				'nickName' => $_POST['nickname'],
+				'nombre' => strtoupper($_POST['nombre']),
+				'primerApellido' => strtoupper($_POST['primerapellido']),
+				'segundoApellido' => strtoupper($_POST['segundoapellido']),
+				'email' => $_POST['email'],
+				'rol' => (int)$_POST['rol'],
+				'fono' => $_POST['fono'],
+				'sexo' => $_POST['genero']
+			];
+	
+			$this->crudusers_model->modificar($id, $data);
+			redirect('crudusers/habilitados', 'refresh');
 		}
-		$this->crudusers_model->modificar($id, $data);
-		redirect('crudusers/habilitados', 'refresh');
 	}
 	public function eliminarbd()
 	{
