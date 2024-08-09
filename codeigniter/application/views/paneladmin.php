@@ -8,7 +8,15 @@
 			</ol>
 
 
-			<h1 class="page-header mb-3">Bienvenido <?php echo $this->session->userdata('rol'); ?></h1>
+			<h1 class="page-header mb-3">Bienvenido 
+				<?php if ($this->session->userdata('rol') == 0) : ?>
+					Socio
+				<?php elseif ($this->session->userdata('rol') == 1) : ?>
+					Auxiliar
+				<?php else : ?>
+					Administrador
+				<?php endif; ?>
+			</h1>
 
 
 			<div class="d-sm-flex align-items-center mb-3">
