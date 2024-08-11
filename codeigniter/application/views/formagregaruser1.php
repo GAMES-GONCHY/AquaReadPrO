@@ -25,13 +25,17 @@
         </div>
         <div class="panel-body">
           <!-- <form class="form-horizontal" data-parsley-validate="true" name="demo-form"> -->
-          <?php if ($error = $this->session->flashdata('error')) : ?>
+          <?php 
+            $mensaje = $this->session->flashdata('mensaje'); 
+            $alertType = $this->session->flashdata('alert_type');
+          ?>
+          <?php if ($alertType === 'error' && $mensaje): ?>
             <div class="alert alert-danger">
-              <?php echo $error; ?>
+              <?php echo $mensaje; ?>
             </div>
           <?php endif; ?>
           
-          <form class="form-horizontal" data-parsley-validate="true" name="demo-form" method="post" action="<?php echo base_url(); ?>index.php/crudusers/agregarbd">
+          <form class="form-horizontal" data-parsley-validate="true" id="form-add-user" name="demo-form" method="post" action="<?php echo base_url(); ?>index.php/crudusers/agregarbd">
             <div class="form-group row mb-3">
               <label class="col-lg-4 col-form-label form-label" for="nickname">Nickname * :</label>
               <div class="col-lg-8">
@@ -104,7 +108,7 @@
             <div class="form-group row">
               <label class="col-lg-4 col-form-label form-label">&nbsp;</label>
               <div class="col-lg-8">
-                <button type="submit" class="btn btn-success btn-lg btn-block text-uppercase font-weight-bold w-100">Agregar</button>
+                <button type="submit" id="btnagregar" class="btn btn-success btn-lg btn-block text-uppercase font-weight-bold w-100">Agregar</button>
               </div>
             </div>
           </form>

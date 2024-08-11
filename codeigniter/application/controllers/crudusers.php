@@ -1,9 +1,11 @@
 
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
+
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;
 use PHPMailer\PHPMailer\Exception;
+
 class Crudusers extends CI_Controller
 {
 	public function habilitados()
@@ -37,21 +39,34 @@ class Crudusers extends CI_Controller
 		$newdata['email'] = $_POST['email'];
 
 		$consulta = $this->crudusers_model->comprobarinsercion($newdata);
-
-		if (!empty($consulta)) {
-			if (!(isset($consulta['email']) && isset($consulta['nickName']))) {
-				if (isset($consulta['email'])) {
-					$this->session->set_flashdata('error', 'El E-mail ya está registrado en el sistema.');
+		
+		if (!empty($consulta)) 
+		{
+			
+			if (!(isset($consulta['email']) && isset($consulta['nickName']))) 
+			{
+				if (isset($consulta['email'])) 
+				{
+					$this->session->set_flashdata('mensaje', 'ERROR: El E-mail ya está registrado en el sistema.');
+					$this->session->set_flashdata('alert_type', 'error');
 				}
-				if (isset($consulta['nickName'])) {
-					$this->session->set_flashdata('error', 'El Nickname ya está registrado en el sistema.');
+				if (isset($consulta['nickName'])) 
+				{
+					$this->session->set_flashdata('mensaje', 'ERROR: El Nickname ya está registrado en el sistema.');
+					$this->session->set_flashdata('alert_type', 'error');
 				}
-			} else {
-				$this->session->set_flashdata('error', 'El E-mail y Nickname ya están registrados en el sistema.');
 			}
-
-			redirect('crudusers/agregar', 'refresh');
-		} else {
+			else 
+			{
+				$this->session->set_flashdata('mensaje', 'ERROR: El E-mail y Nickname ya están registrados en el sistema.');
+				$this->session->set_flashdata('alert_type', 'error');
+			}
+			redirect('crudusers/agregar');
+			
+		} 
+		else 
+		{
+			$this->session->set_userdata('flag', false);
 			$data['nickname'] = $_POST['nickname'];
 			$data['nombre'] = strtoupper($_POST['nombre']);
 			$data['primerApellido'] = strtoupper($_POST['primerapellido']);
@@ -66,50 +81,53 @@ class Crudusers extends CI_Controller
 			// Envía el correo
             if ($this->enviaremail($data)) 
 			{
-                $this->session->set_flashdata('error', 'Usuario agregado y correo enviado.');
+				$this->session->set_flashdata('mensaje', 'Usuario registrado exitosamente');
+				$this->session->set_flashdata('alert_type', 'success');
             } 
 			else 
 			{
-                $this->session->set_flashdata('error', 'Usuario agregado, pero el correo no se pudo enviar.');
+                $this->session->set_flashdata('mensaje', 'Usuario registrado, sin envío de correo electronico');
+				$this->session->set_flashdata('alert_type', 'warning');
             }
-
-			redirect('crudusers/agregar', 'refresh');
+			redirect('crudusers/agregar');
+			
 		}
 	}
-	private function enviaremail($data) 
+
+	private function enviaremail($data)
 	{
 		// Cargar el autoloader de Composer
-        require 'C:/xampp/htdocs/tercerAnio/aquaReadPro/vendor/autoload.php';
+		require 'C:/xampp/htdocs/tercerAnio/aquaReadPro/vendor/autoload.php';
 
 		$mail = new PHPMailer(true);
 		try {
 			//Server settings
-			$mail->SMTPDebug = 0;                      
-			$mail->isSMTP();                                          
-			$mail->Host       = 'smtp.gmail.com';                    
-			$mail->SMTPAuth   = true;                                   
-			$mail->Username   = 'games.gonzalo.883@gmail.com';                    
-			$mail->Password   = 'jsmrkomgwhphyoac';                          
-			$mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;          
-			$mail->Port       = 587;                                 
-		
+			$mail->SMTPDebug = 0;
+			$mail->isSMTP();
+			$mail->Host       = 'smtp.gmail.com';
+			$mail->SMTPAuth   = true;
+			$mail->Username   = 'games.gonzalo.883@gmail.com';
+			$mail->Password   = 'jsmrkomgwhphyoac';
+			$mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+			$mail->Port       = 587;
+
 			//Recipients
 			$mail->setFrom('games.gonzalo.883@gmail.com', 'AquaReadPRo');
 			$mail->addAddress($data['email']);
-		
+
 			//Content
-			$mail->isHTML(true);                                  
+			$mail->isHTML(true);
 			$mail->Subject = 'prueba de envio';
 			$body = $this->load->view('emailmessage', $data, TRUE);
 			$mail->Body = $body;
-		
+
 			$mail->send();
 			return true;
 		} 
 		catch (Exception $e) 
 		{
 			log_message('error', "Error al enviar el correo: {$mail->ErrorInfo}");
-        	return false;
+			return false;
 		}
 	}
 	public function modificar()

@@ -305,7 +305,7 @@
     $('#data-table-combine').DataTable(options);
   </script>
 
-  <!-- Sweet alart -->
+  <!-- Sweet alart cierre de sesión -->
   <script>
     $(document).ready(function() {
       $('#showAlert').on('click', function() {
@@ -343,6 +343,65 @@
       });
     });
   </script>
+
+<script>
+    $(document).ready(function() 
+    {
+      $('#').on('click', function()
+      {
+        var bander = '<?php echo $this->session->userdata('flag'); ?>';
+        console.log('Mensaje de sesión:', bander); // Depura el mensaje aquí
+        if (bander) 
+        {
+          swal({
+            title: 'ERROR',
+            icon: 'error',
+            timer: 6000,
+            buttons: false
+          }).then(() => {
+              setTimeout(function() 
+              {
+                  //window.location.href = 'http://localhost/tercerAnio/aquaReadPro/codeigniter/index.php/crudusers/agregar';
+              }, 1000); // Redirige después de 1 segundo
+          });
+        }
+        else
+        {
+          console.log('Mensaje de sesión:', $bander); // Depura el mensaje aquí
+          swal({
+            title: 'Usuario creado con exitooooooooooooo',
+            icon: 'success',
+            timer: 3000,
+            buttons: false
+          }).then(() => {
+            window.location.href = '<?php echo base_url(); ?>index.php/crudusers/agregar';
+          });
+        }
+      });
+    });
+</script>
+
+<script>
+  $(document).ready(function() {
+      <?php if ($this->session->flashdata('mensaje')): ?>
+          var alertType = '<?php echo $this->session->flashdata('alert_type'); ?>';
+          var mensaje = '<?php echo $this->session->flashdata('mensaje'); ?>';
+          
+          swal({
+              title: alertType === 'success' ? 'Registro exitoso' : 'Error',
+              text: mensaje,
+              type: alertType, // 'success', 'error', 'warning'
+              timer: 2000,
+              showConfirmButton: false
+          }).then(function() {
+              <?php if ($this->session->flashdata('alert_type') === 'success'): ?>
+                  window.location.href = '<?php echo base_url(); ?>index.php/crudusers/agregar';
+              <?php endif; ?>
+          });
+      <?php endif; ?>
+  });
+</script>
+
 
 
 
