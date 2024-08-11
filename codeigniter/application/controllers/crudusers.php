@@ -1,6 +1,9 @@
+
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
-
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\SMTP;
+use PHPMailer\PHPMailer\Exception;
 class Crudusers extends CI_Controller
 {
 	public function habilitados()
@@ -35,28 +38,20 @@ class Crudusers extends CI_Controller
 
 		$consulta = $this->crudusers_model->comprobarinsercion($newdata);
 
-		if (!empty($consulta)) 
-		{
-			if (!(isset($consulta['email']) && isset($consulta['nickName']))) 
-			{
-				if (isset($consulta['email'])) 
-				{
+		if (!empty($consulta)) {
+			if (!(isset($consulta['email']) && isset($consulta['nickName']))) {
+				if (isset($consulta['email'])) {
 					$this->session->set_flashdata('error', 'El E-mail ya está registrado en el sistema.');
 				}
-				if (isset($consulta['nickName']))
-				{
+				if (isset($consulta['nickName'])) {
 					$this->session->set_flashdata('error', 'El Nickname ya está registrado en el sistema.');
 				}
-			} 
-			else 
-			{
+			} else {
 				$this->session->set_flashdata('error', 'El E-mail y Nickname ya están registrados en el sistema.');
 			}
-			
+
 			redirect('crudusers/agregar', 'refresh');
-		} 
-		else 
-		{
+		} else {
 			$data['nickname'] = $_POST['nickname'];
 			$data['nombre'] = strtoupper($_POST['nombre']);
 			$data['primerApellido'] = strtoupper($_POST['primerapellido']);
@@ -68,11 +63,55 @@ class Crudusers extends CI_Controller
 
 			$this->crudusers_model->agregar($data);
 
+			// Envía el correo
+            if ($this->enviaremail($data)) 
+			{
+                $this->session->set_flashdata('error', 'Usuario agregado y correo enviado.');
+            } 
+			else 
+			{
+                $this->session->set_flashdata('error', 'Usuario agregado, pero el correo no se pudo enviar.');
+            }
 
-			redirect('crudusers/habilitados', 'refresh'); //Aqui se refresca la vista para incluir el registro agregado
+			redirect('crudusers/agregar', 'refresh');
 		}
 	}
+	private function enviaremail($data) 
+	{
+		// Cargar el autoloader de Composer
+        require 'C:/xampp/htdocs/tercerAnio/aquaReadPro/vendor/autoload.php';
 
+		$mail = new PHPMailer(true);
+		try {
+			//Server settings
+			$mail->SMTPDebug = 0;                      
+			$mail->isSMTP();                                          
+			$mail->Host       = 'smtp.gmail.com';                    
+			$mail->SMTPAuth   = true;                                   
+			$mail->Username   = 'games.gonzalo.883@gmail.com';                    
+			$mail->Password   = 'jsmrkomgwhphyoac';                          
+			$mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;          
+			$mail->Port       = 587;                                 
+		
+			//Recipients
+			$mail->setFrom('games.gonzalo.883@gmail.com', 'AquaReadPRo');
+			$mail->addAddress($data['email']);
+		
+			//Content
+			$mail->isHTML(true);                                  
+			$mail->Subject = 'prueba de envio';
+			$body = $this->load->view('emailmessage', $data, TRUE);
+			$mail->Body = $body;
+		
+			$mail->send();
+			return true;
+		} 
+		catch (Exception $e) 
+		{
+			log_message('error', "Error al enviar el correo: {$mail->ErrorInfo}");
+        	return false;
+		}
+	}
 	public function modificar()
 	{
 
@@ -82,57 +121,44 @@ class Crudusers extends CI_Controller
 
 		$this->load->view('incrustaciones/vistascoloradmin/head');
 		$this->load->view('incrustaciones/vistascoloradmin/menuadmin');
-		if($this->session->userdata('form1')!==null)
-		{
+		if ($this->session->userdata('form1') !== null) {
 			$this->load->view('formmodificaruser1', $this->session->userdata('form1'));
-		}
-		else
-		{
+		} else {
 			$this->load->view('formmodificaruser1', $data);
 		}
 		$this->load->view('incrustaciones/vistascoloradmin/footer');
-
 	}
 	public function modificarbd()
 	{
 
 		$id = $_POST['id'];
-		
+
 		$newdata['nickname'] = $_POST['nickname'];
 		$newdata['email'] = $_POST['email'];
-	
-		
-		$consulta = $this->crudusers_model->comprobarmodificacion($newdata, $id);
-		
-		// Recuperar el usuario actual para verificar el email y nickname
-		
 
-		
-		if (!empty($consulta)) 
-		{
-			$data['info']= $this->crudusers_model->recuperarusuario($id)->row_array();
+
+		$consulta = $this->crudusers_model->comprobarmodificacion($newdata, $id);
+
+		// Recuperar el usuario actual para verificar el email y nickname
+
+
+
+		if (!empty($consulta)) {
+			$data['info'] = $this->crudusers_model->recuperarusuario($id)->row_array();
 			$this->session->set_userdata('form1', $data);
-			if ((isset($consulta['email']) && isset($consulta['nickName']))) 
-			{
+			if ((isset($consulta['email']) && isset($consulta['nickName']))) {
 				$this->session->set_flashdata('error', 'El E-mail y Nickname ya están registrados en el sistema.');
-				
-			} 
-			else 
-			{
-				if (isset($consulta['email'])) 
-				{
+			} else {
+				if (isset($consulta['email'])) {
 					$this->session->set_flashdata('error', 'El E-mail ya está registrado en el sistema.');
 				}
-				if (isset($consulta['nickName'])) 
-				{
+				if (isset($consulta['nickName'])) {
 					$this->session->set_flashdata('error', 'El Nickname ya está registrado en el sistema.');
 				}
 			}
 
 			redirect('crudusers/modificar', 'refresh');
-		} 
-		else 
-		{
+		} else {
 			$data = [
 				'nickName' => $_POST['nickname'],
 				'nombre' => strtoupper($_POST['nombre']),
@@ -143,7 +169,7 @@ class Crudusers extends CI_Controller
 				'fono' => $_POST['fono'],
 				'sexo' => $_POST['genero']
 			];
-	
+
 			$this->crudusers_model->modificar($id, $data);
 			redirect('crudusers/habilitados', 'refresh');
 		}
@@ -226,6 +252,7 @@ class Crudusers extends CI_Controller
 		}
 		redirect('crudusers/habilitados', 'refresh');
 	}
+
 	// public function cambiarpassword()
 	// {
 	// 	$id = $_POST['id'];

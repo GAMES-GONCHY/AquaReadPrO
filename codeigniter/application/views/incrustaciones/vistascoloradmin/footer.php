@@ -297,7 +297,7 @@
       select: true
     };
 
-    if ($(window).width() <= 1500) {
+    if ($(window).width() <= 1200) {
       options.rowReorder = false;
       options.colReorder = false;
     }
