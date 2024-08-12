@@ -354,13 +354,15 @@
           
           swal({
               title: alertType === 'success' ? 'Registro exitoso' : 'Error',
+              icon: alertType === 'success' ? 'success': 'error',
               text: mensaje,
               type: alertType, // 'success', 'error', 'warning'
+              buttons: false,
               timer: 2000,
-              showConfirmButton: false
+              showConfirmButton: true
           }).then(function() {
               <?php if ($this->session->flashdata('alert_type') === 'success'): ?>
-                  window.location.href = '<?php echo base_url(); ?>index.php/crudusers/agregar';
+                  //window.location.href = '<?php echo base_url(); ?>index.php/crudusers/agregar';
               <?php endif; ?>
           });
       <?php endif; ?>
