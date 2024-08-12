@@ -270,7 +270,6 @@ class Crudusers extends CI_Controller
 		}
 		redirect('crudusers/habilitados', 'refresh');
 	}
-
 	// public function cambiarpassword()
 	// {
 	// 	$id = $_POST['id'];

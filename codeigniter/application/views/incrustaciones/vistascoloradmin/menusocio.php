@@ -84,7 +84,7 @@
     </div>
     <div class="navbar-item navbar-user dropdown">
         <a href="#" class="navbar-link dropdown-toggle d-flex align-items-center" data-bs-toggle="dropdown">
-        <img src="<?php echo base_url('uploads/usersphoto/' . $this->session->userdata('foto')); ?>" alt="User Photo"/>
+        <img src="<?php echo base_url('uploads/usersphoto/' . $this->session->userdata('foto')); ?>" onerror="this.onerror=null; this.src='<?php echo base_url('uploads/usersphoto/perfil.jpg'); ?>';">
             <span>
                 <span class="d-none d-md-inline"><?php echo $this->session->userdata('nickName'); ?></span>
                 <b class="caret"></b>
@@ -119,7 +119,7 @@
                     <div class="menu-profile-cover with-shadow"></div>
                     <div class="menu-profile-image">
                         
-                        <img src="<?php echo base_url('uploads/usersphoto/' . $this->session->userdata('foto')); ?>" alt="User Photo" />
+                    <img src="<?php echo base_url('uploads/usersphoto/' . $this->session->userdata('foto')); ?>" onerror="this.onerror=null; this.src='<?php echo base_url('uploads/usersphoto/perfil.jpg'); ?>';">
                     </div>
                    
                         

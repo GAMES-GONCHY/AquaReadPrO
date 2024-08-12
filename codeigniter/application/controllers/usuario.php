@@ -37,6 +37,7 @@ class Usuario extends CI_Controller
 				$this->session->set_userdata('email',$row->email);
 				$this->session->set_userdata('foto',$row->foto);
 				$this->session->set_userdata('estado',$row->estado);
+				$this->session->set_userdata('password',$row->password);
 				redirect('usuario/panel','refresh');
 			}
 			else
@@ -57,21 +58,27 @@ class Usuario extends CI_Controller
 	{
 		if($this->session->userdata('nickName'))
 		{
-			
-			$this->load->view('incrustaciones/vistascoloradmin/head');
-			
-			if(($this->session->userdata('rol'))==2)
+			if(($this->session->userdata('estado'))==1)
 			{
-				$this->load->view('incrustaciones/vistascoloradmin/menuadmin');
-				$this->load->view('paneladmin.php');
+				$this->load->view('incrustaciones/vistascoloradmin/head');
+				
+				if(($this->session->userdata('rol'))==2)
+				{
+					$this->load->view('incrustaciones/vistascoloradmin/menuadmin');
+					$this->load->view('paneladmin.php');
+				}
+				else
+				{
+					$this->load->view('incrustaciones/vistascoloradmin/menusocio');
+					$this->load->view('panelsocio1.php');
+
+				}
+				$this->load->view('incrustaciones/vistascoloradmin/footer');
 			}
 			else
 			{
-				$this->load->view('incrustaciones/vistascoloradmin/menusocio');
-				$this->load->view('panelsocio1.php');
-
+				$this->load->view('form_pass_change.php');
 			}
-			$this->load->view('incrustaciones/vistascoloradmin/footer');
 		}
 		else
 		{
@@ -86,5 +93,20 @@ class Usuario extends CI_Controller
         // Redirige a la página de inicio de sesión
         redirect('usuario/index','refresh');
     }
+	public function firstlogin() 
+	{
+		$id=$this->session->userdata('idUsuario');
+		$data['password']=hash("sha256",$_POST['password1']);
+		$data['estado']=1;
+
+		
+		if($data['password']!=($this->session->userdata('password'))&&$data['password']!=hash("sha256",123))
+		{
+			$this->crudusers_model->deshabilitar($id,$data);
+			$this->session->set_userdata('estado',1);
+		}
+		
+		redirect('usuario/panel','refresh');
+	}
 	
 }

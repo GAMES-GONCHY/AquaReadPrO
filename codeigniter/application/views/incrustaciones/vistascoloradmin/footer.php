@@ -223,7 +223,8 @@
   <!-- esta incrustacion contiene codigo html en lugar de js -->
   <!-- <script src="<?php echo base_url(); ?>coloradmin/assets/js/demo/render.highlight.js"></script> -->
 
-
+<!-- Formulario cambio de password -->
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
 
   <!-- Google Analytics y otros scripts externos -->
   <script src="https://www.google-analytics.com/analytics.js" async></script>
@@ -344,43 +345,7 @@
     });
   </script>
 
-<script>
-    $(document).ready(function() 
-    {
-      $('#').on('click', function()
-      {
-        var bander = '<?php echo $this->session->userdata('flag'); ?>';
-        console.log('Mensaje de sesión:', bander); // Depura el mensaje aquí
-        if (bander) 
-        {
-          swal({
-            title: 'ERROR',
-            icon: 'error',
-            timer: 6000,
-            buttons: false
-          }).then(() => {
-              setTimeout(function() 
-              {
-                  //window.location.href = 'http://localhost/tercerAnio/aquaReadPro/codeigniter/index.php/crudusers/agregar';
-              }, 1000); // Redirige después de 1 segundo
-          });
-        }
-        else
-        {
-          console.log('Mensaje de sesión:', $bander); // Depura el mensaje aquí
-          swal({
-            title: 'Usuario creado con exitooooooooooooo',
-            icon: 'success',
-            timer: 3000,
-            buttons: false
-          }).then(() => {
-            window.location.href = '<?php echo base_url(); ?>index.php/crudusers/agregar';
-          });
-        }
-      });
-    });
-</script>
-
+<!-- sweet alert agragar usuario -->
 <script>
   $(document).ready(function() {
       <?php if ($this->session->flashdata('mensaje')): ?>

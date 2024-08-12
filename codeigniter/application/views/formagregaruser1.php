@@ -65,7 +65,7 @@
             <div class="form-group row mb-3">
               <label class="col-lg-4 col-form-label form-label" for="email">Email * :</label>
               <div class="col-lg-8">
-                <input class="form-control" type="text" id="email" name="email" data-parsley-type="email" placeholder="Email" data-parsley-required="true" />
+                <input class="form-control" type="email" id="email" name="email" data-parsley-type="email" placeholder="Email" data-parsley-required="true" />
               </div>
             </div>
 

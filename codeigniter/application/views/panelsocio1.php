@@ -9,7 +9,7 @@
 
 			<div class="profile-header-content">
 				<div class="profile-header-img">
-					<img src="<?php echo base_url('uploads/usersphoto/' . $this->session->userdata('foto')); ?>" alt="User Photo" width="120" height="113"/>
+				<img src="<?php echo base_url('uploads/usersphoto/' . $this->session->userdata('foto')); ?>" onerror="this.onerror=null; this.src='<?php echo base_url('uploads/usersphoto/perfil.jpg'); ?>';">
 				</div>
 
 
@@ -58,7 +58,7 @@
 						<div class="timeline-content">
 
 							<div class="timeline-header">
-								<div class="userimage"><img src="<?php echo base_url(); ?>coloradmin/assets/img/user/user-1.jpg" alt="" /></div>
+								<div class="userimage"><img src="<?php echo base_url('uploads/usersphoto/' . $this->session->userdata('foto')); ?>" onerror="this.onerror=null; this.src='<?php echo base_url('uploads/usersphoto/perfil.jpg'); ?>';"></div>
 								<div class="username">
 									<a href="javascript:;">John Smith <i class="fa fa-check-circle text-blue ms-1"></i></a>
 									<div class="text-muted fs-12px">8 mins <i class="fa fa-globe-americas opacity-5 ms-1"></i></div>
