@@ -16,14 +16,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');?>
 
                 <div class="card">
                     <div class="card-body">
-                        <p>Hola <?php echo $nombre; ?>!,</p>
+                        <p>Hola <?php echo $nombre; ?>!, tu solicitud de membresía fue aceptada!</p>
                         <p>Estos son tus credenciales de autentificación:</p>
                         <ul class="list-unstyled">
-                            <li><strong>Nickname:</strong>  <?php echo $nickname; ?>! </li>
+                            <li><strong>Nickname:</strong>  <?php echo $nickname; ?></li>
                             <li><strong>Password:</strong> 123 (Este es un password genérico) </li>
                         </ul>
                         <h4>Nota: por su seguridad, deberá cambiar su password en el primer inicio de sesión</h4>
-                        <p>Saludos,<br>AquaReadPro Team!</p>
+                        <p>Saludos,<br>AquaReadPrO Team!</p>
                     </div>
                 </div>
 
