@@ -154,30 +154,37 @@ class Crudusers extends CI_Controller
 		$newdata['nickname'] = $_POST['nickname'];
 		$newdata['email'] = $_POST['email'];
 
-
+		//verificar el email y nickname
 		$consulta = $this->crudusers_model->comprobarmodificacion($newdata, $id);
 
-		// Recuperar el usuario actual para verificar el email y nickname
-
-
-
-		if (!empty($consulta)) {
+		if (!empty($consulta)) 
+		{
 			$data['info'] = $this->crudusers_model->recuperarusuario($id)->row_array();
 			$this->session->set_userdata('form1', $data);
-			if ((isset($consulta['email']) && isset($consulta['nickName']))) {
-				$this->session->set_flashdata('error', 'El E-mail y Nickname ya están registrados en el sistema.');
-			} else {
-				if (isset($consulta['email'])) {
-					$this->session->set_flashdata('error', 'El E-mail ya está registrado en el sistema.');
+			if ((isset($consulta['email']) && isset($consulta['nickName']))) 
+			{
+				$this->session->set_flashdata('mensaje', 'El E-mail y Nickname ya están registrados en el sistema.');
+				$this->session->set_flashdata('alert_type', 'error');
+			} else 
+			{
+				if (isset($consulta['email'])) 
+				{
+					$this->session->set_flashdata('mensaje', 'El E-mail ya está registrado en el sistema.');
+					$this->session->set_flashdata('alert_type', 'error');
 				}
-				if (isset($consulta['nickName'])) {
-					$this->session->set_flashdata('error', 'El Nickname ya está registrado en el sistema.');
+				if (isset($consulta['nickName'])) 
+				{
+					$this->session->set_flashdata('mensaje', 'El Nickname ya está registrado en el sistema.');
+					$this->session->set_flashdata('alert_type', 'error');
 				}
 			}
 
 			redirect('crudusers/modificar', 'refresh');
-		} else {
-			$data = [
+		} 
+		else 
+		{
+			$data = 
+			[
 				'nickName' => $_POST['nickname'],
 				'nombre' => strtoupper($_POST['nombre']),
 				'primerApellido' => strtoupper($_POST['primerapellido']),
@@ -189,6 +196,8 @@ class Crudusers extends CI_Controller
 			];
 
 			$this->crudusers_model->modificar($id, $data);
+			$this->session->set_flashdata('mensaje', 'Registrado modificado exitosamente');
+			$this->session->set_flashdata('alert_type', 'success');
 			redirect('crudusers/habilitados', 'refresh');
 		}
 	}

@@ -353,7 +353,7 @@
           var mensaje = '<?php echo $this->session->flashdata('mensaje'); ?>';
           
           swal({
-              title: alertType === 'success' ? 'Registro exitoso' : 'Error',
+              title: alertType === 'success' ? 'Éxito' : 'Error',
               icon: alertType === 'success' ? 'success': 'error',
               text: mensaje,
               type: alertType, // 'success', 'error', 'warning'
