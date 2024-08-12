@@ -75,7 +75,7 @@ class Crudusers extends CI_Controller
 			$data['rol'] = $_POST['rol'];
 			$data['fono'] = $_POST['fono'];
 			$data['sexo'] = $_POST['genero'];
-
+			$data['idAutor']=$this->session->userdata('idUsuario');
 			$this->crudusers_model->agregar($data);
 
 			// Envía el correo
@@ -195,7 +195,10 @@ class Crudusers extends CI_Controller
 				'email' => $_POST['email'],
 				'rol' => (int)$_POST['rol'],
 				'fono' => $_POST['fono'],
-				'sexo' => $_POST['genero']
+				'sexo' => $_POST['genero'],
+				'idAutor' => 2,
+				//'idAutor' => $this->session->userdata('idUsuario'),
+				'fechaActualizacion' => date('Y/m/d H:i:s')
 			];
 
 			$this->crudusers_model->modificar($id, $data);

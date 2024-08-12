@@ -14,7 +14,8 @@ class Crudusers_model extends CI_Model
 	{
 		$this->db->select('*');
 		$this->db->from('usuario');
-		$this->db->where('estado', 0);
+		//$this->db->where('estado', 0);
+		$this->db->where_in('estado', [0, 2]);
 		return $this->db->get();
 	}
 	public function agregar($data)

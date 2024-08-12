@@ -7,7 +7,7 @@
 			</ol>
 
 
-			<h1 class="page-header mb-3">Bienvenido 
+			<h1 class="page-header mb-3 text-center">Bienvenido 
 				<?php if ($this->session->userdata('rol') == 0) : ?>
 					Socio
 				<?php elseif ($this->session->userdata('rol') == 1) : ?>
@@ -110,7 +110,7 @@
 								<div class="card-body">
 
 									<div class="mb-3 ">
-										<b class="mb-3">CONVERSION RATE</b>
+										<b class="mb-3">TAZA DE CONVERSIÓN</b>
 										<span class="ms-2"><i class="fa fa-info-circle" data-bs-toggle="popover" data-bs-trigger="hover" data-bs-title="Conversion Rate" data-bs-placement="top" data-bs-content="Percentage of sessions that resulted in orders from total number of sessions." data-original-title="" title=""></i></span>
 									</div>
 
@@ -177,7 +177,7 @@
 								<div class="card-body">
 
 									<div class="mb-3">
-										<b class="mb-3">STORE SESSIONS</b>
+										<b class="mb-3">SESIONES DE TIENDA</b>
 										<span class="ms-2"><i class="fa fa-info-circle" data-bs-toggle="popover" data-bs-trigger="hover" data-bs-title="Store Sessions" data-bs-placement="top" data-bs-content="Number of sessions on your online store. A session is a period of continuous activity from a visitor." data-original-title="" title=""></i></span>
 									</div>
 
@@ -249,7 +249,7 @@
 
 					<div class="card border-0 mb-3 ">
 						<div class="card-body">
-							<div class="mb-3"><b>VISITORS ANALYTICS</b> <span class="ms-2"><i class="fa fa-info-circle" data-bs-toggle="popover" data-bs-trigger="hover" data-bs-title="Top products with units sold" data-bs-placement="top" data-bs-content="Products with the most individual units sold. Includes orders from all sales channels." data-original-title="" title=""></i></span></div>
+							<div class="mb-3"><b>ANÁLISIS DE VISITANTES</b> <span class="ms-2"><i class="fa fa-info-circle" data-bs-toggle="popover" data-bs-trigger="hover" data-bs-title="Top products with units sold" data-bs-placement="top" data-bs-content="Products with the most individual units sold. Includes orders from all sales channels." data-original-title="" title=""></i></span></div>
 							<div class="row">
 								<div class="col-xl-3 col-4">
 									<h3 class="mb-1 text-white"><span data-animation="number" data-value="127.1">0</span>K</h3>
@@ -283,7 +283,7 @@
 					<div class="card border-0 mb-3 ">
 						<div class="card-body">
 							<div class="mb-2">
-								<b>SESSION BY LOCATION</b>
+								<b>SESIONES POR UBICACION</b>
 								<span class="ms-2"><i class="fa fa-info-circle" data-bs-toggle="popover" data-bs-trigger="hover" data-bs-title="Total sales" data-bs-placement="top" data-bs-content="Net sales (gross sales minus discounts and returns) plus taxes and shipping. Includes orders from all sales channels."></i></span>
 							</div>
 							<div id="visitors-map" class="mb-2" style="height: 200px"></div>

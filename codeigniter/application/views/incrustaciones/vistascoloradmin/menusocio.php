@@ -25,14 +25,14 @@
             <span class="badge">5</span>
         </a>
         <div class="dropdown-menu media-list dropdown-menu-end">
-            <div class="dropdown-header">NOTIFICATIONS (5)</div>
+            <div class="dropdown-header">NOTIFICACIONES (5)</div>
             <a href="javascript:;" class="dropdown-item media">
                 <div class="media-left">
                     <i class="fa fa-bug media-object bg-gray-500"></i>
                 </div>
                 <div class="media-body">
-                    <h6 class="media-heading">Server Error Reports <i class="fa fa-exclamation-circle text-danger"></i></h6>
-                    <div class="text-muted fs-10px">3 minutes ago</div>
+                    <h6 class="media-heading">Errores de servidor <i class="fa fa-exclamation-circle text-danger"></i></h6>
+                    <div class="text-muted fs-10px">3 minutos atras</div>
                 </div>
             </a>
             <a href="javascript:;" class="dropdown-item media">
@@ -91,10 +91,10 @@
             </span>
         </a>
         <div class="dropdown-menu dropdown-menu-end me-1">
-            <a href="javascript:;" class="dropdown-item">Edit Profile</a>
-            <a href="javascript:;" class="dropdown-item"><span class="badge bg-danger float-end rounded-pill">3</span> Inbox</a>
-            <a href="javascript:;" class="dropdown-item">Calendar</a>
-            <a href="javascript:;" class="dropdown-item">Setting</a>
+            <a href="javascript:;" class="dropdown-item">Editar Perfil</a>
+            <a href="javascript:;" class="dropdown-item"><span class="badge bg-danger float-end rounded-pill">3</span> Mesanjes</a>
+            <a href="javascript:;" class="dropdown-item">Calendario</a>
+            <a href="javascript:;" class="dropdown-item">Configuraciones</a>
             <div class="dropdown-divider"></div>
 
             <a href="javascript:;" id="showAlert" data-bs-toggle="modal" data-bs-target="#modal-dialog" class="dropdown-item">Cerrar sesion</a>

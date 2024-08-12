@@ -167,13 +167,13 @@
 									<div class="row mb-3">
 										<label class="form-label col-form-label col-md-3">Contraseña * :</label>
 										<div class="col-md-9">
-											<input type="password" id="pass1" name="password1" class="form-control" data-parsley-required="true" placeholder="Contraseña" />
+											<input type="password" id="pass1" name="password1" class="form-control" data-parsley-required="true" minlength="5" maxlength="20" placeholder="Contraseña" />
 										</div>
 									</div>
 									<div class="row mb-3">
 										<label class="form-label col-form-label col-md-3">Confirmar contraseña * :</label>
 										<div class="col-md-9">
-											<input type="password" data-parsley-equalto="#pass1" id="pass2" name="password2" class="form-control" data-parsley-required="true" placeholder="Confirmar contraseña" />
+											<input type="password" data-parsley-equalto="#pass1" id="pass2" name="password2" class="form-control" data-parsley-required="true" minlength="5" maxlength="20" placeholder="Confirmar contraseña" />
 										</div>
 									</div>
 									<div class="row">
@@ -222,6 +222,39 @@
 	<script src="<?php echo base_url(); ?>coloradmin/assets/plugins/sweetalert/dist/sweetalert.min.js"></script>
   	<script src="<?php echo base_url(); ?>coloradmin/assets/js/demo/ui-modal-notification.demo.js"></script>
 
+
+	<!-- Forms validation -->
+	<script src="<?php echo base_url(); ?>coloradmin/assets/plugins/parsleyjs/dist/parsley.min.js"></script>
+  	<script src="<?php echo base_url(); ?>coloradmin/assets/plugins/parsleyjs/dist/parsley.es.min.js"></script>
+  	<script>
+        // Configura Parsley para usar el idioma español
+        Parsley.addMessages('es', {
+            defaultMessage: "Este valor parece ser inválido.",
+            type: {
+                email:        "Este valor debe ser una dirección de correo electrónico válida.",
+                url:          "Este valor debe ser una URL válida.",
+                number:       "Este valor debe ser un número válido.",
+                integer:      "Este valor debe ser un número entero válido.",
+                digits:       "Este valor debe ser un número entero.",
+                alphanum:     "Este valor debe ser alfanumérico."
+            },
+            notblank:       "Este valor no debe estar en blanco.",
+            required:       "Este campo es obligatorio.",
+            pattern:        "Este valor es incorrecto.",
+            min:            "Este valor debe ser mayor o igual a %s.",
+            max:            "Este valor debe ser menor o igual a %s.",
+            range:          "Este valor debe estar entre %s y %s.",
+            minlength:      "Este valor es demasiado corto. Debe contener al menos %s caracteres.",
+            maxlength:      "Este valor es demasiado largo. Debe contener %s caracteres o menos.",
+            length:         "Este valor debe tener entre %s y %s caracteres.",
+            mincheck:       "Debes seleccionar al menos %s opción.",
+            maxcheck:       "No puedes seleccionar más de %s opciones.",
+            check:          "Debes seleccionar entre %s y %s opciones.",
+            equalto:        "Este valor debe ser idéntico."
+        });
+
+        Parsley.setLocale('es');
+    </script>
 
 	<script src="<?php echo base_url(); ?>coloradmin/assets/plugins/@highlightjs/cdn-assets/highlight.min.js"></script>
 
@@ -288,6 +321,32 @@
 		data-cf-settings="f16c081c8d85661a9325d769-|49" defer=""></script> -->
 	<script defer src="https://static.cloudflareinsights.com/beacon.min.js"
 		data-cf-beacon='{"rayId":"66b2298e982c21bb","version":"2021.6.0","r":1,"token":"4db8c6ef997743fda032d4f73cfeff63","si":10}'></script>
+
+
+<!-- sweet alert agragar usuario -->
+<script>
+  $(document).ready(function() {
+      <?php if ($this->session->flashdata('mensaje')): ?>
+          var alertType = '<?php echo $this->session->flashdata('alert_type'); ?>';
+          var mensaje = '<?php echo $this->session->flashdata('mensaje'); ?>';
+          
+          swal({
+              title: alertType === 'success' ? 'Éxito' : 'Error',
+              icon: alertType === 'success' ? 'success': 'error',
+              text: mensaje,
+              type: alertType, // 'success', 'error', 'warning'
+              buttons: false,
+              timer: 2000,
+              showConfirmButton: true
+          }).then(function() {
+              <?php if ($this->session->flashdata('alert_type') === 'success'): ?>
+                  //window.location.href = '<?php echo base_url(); ?>index.php/crudusers/agregar';
+              <?php endif; ?>
+          });
+      <?php endif; ?>
+  });
+</script>
+
 </body>
 
 </html>

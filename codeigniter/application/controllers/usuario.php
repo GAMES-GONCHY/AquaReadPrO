@@ -38,12 +38,13 @@ class Usuario extends CI_Controller
 				$this->session->set_userdata('foto',$row->foto);
 				$this->session->set_userdata('estado',$row->estado);
 				$this->session->set_userdata('password',$row->password);
+				//$this->session->set_userdata('idAutor',$row->idAutor);
 				redirect('usuario/panel','refresh');
 			}
 			else
 			{
 				// Usuario tiene estado no permitido
-				$this->session->set_flashdata('error', 'Tu cuenta no está activa.');
+				$this->session->set_flashdata('error', 'Tu cuenta no está activa comunícate con el administrador.');
 				redirect('usuario/index', 'refresh');
 			}
 		}
@@ -99,13 +100,19 @@ class Usuario extends CI_Controller
 		$data['password']=hash("sha256",$_POST['password1']);
 		$data['estado']=1;
 
-		
 		if($data['password']!=($this->session->userdata('password'))&&$data['password']!=hash("sha256",123))
 		{
 			$this->crudusers_model->deshabilitar($id,$data);
 			$this->session->set_userdata('estado',1);
+
+			$this->session->set_flashdata('mensaje', 'Contraseña modificada exitosamente!');
+			$this->session->set_flashdata('alert_type', 'success');
 		}
-		
+		else
+		{
+			$this->session->set_flashdata('mensaje', 'Porfavor, modifique su contraseña.');
+			$this->session->set_flashdata('alert_type', 'error');
+		}
 		redirect('usuario/panel','refresh');
 	}
 	

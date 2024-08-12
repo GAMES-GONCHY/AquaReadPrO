@@ -25,14 +25,14 @@
             <span class="badge">5</span>
         </a>
         <div class="dropdown-menu media-list dropdown-menu-end">
-            <div class="dropdown-header">NOTIFICATIONS (5)</div>
+            <div class="dropdown-header">NOTIFICACIONES (5)</div>
             <a href="javascript:;" class="dropdown-item media">
                 <div class="media-left">
                     <i class="fa fa-bug media-object bg-gray-500"></i>
                 </div>
                 <div class="media-body">
-                    <h6 class="media-heading">Server Error Reports <i class="fa fa-exclamation-circle text-danger"></i></h6>
-                    <div class="text-muted fs-10px">3 minutes ago</div>
+                    <h6 class="media-heading">Errores de servidor <i class="fa fa-exclamation-circle text-danger"></i></h6>
+                    <div class="text-muted fs-10px">hace 3 minutos</div>
                 </div>
             </a>
             <a href="javascript:;" class="dropdown-item media">

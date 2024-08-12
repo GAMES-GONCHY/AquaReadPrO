@@ -210,7 +210,37 @@
 
   <!-- Forms validation -->
   <script src="<?php echo base_url(); ?>coloradmin/assets/plugins/parsleyjs/dist/parsley.min.js"></script>
-  <script src="<?php echo base_url(); ?>coloradmin/assets/plugins/parsleyjs/dist/messages.es.js"></script>
+  <script src="<?php echo base_url(); ?>coloradmin/assets/plugins/parsleyjs/dist/parsley.es.min.js"></script>
+  <script>
+        // Configura Parsley para usar el idioma español
+        Parsley.addMessages('es', {
+            defaultMessage: "Este valor parece ser inválido.",
+            type: {
+                email:        "Este valor debe ser una dirección de correo electrónico válida.",
+                url:          "Este valor debe ser una URL válida.",
+                number:       "Este valor debe ser un número válido.",
+                integer:      "Este valor debe ser un número entero válido.",
+                digits:       "Este valor debe ser un número entero.",
+                alphanum:     "Este valor debe ser alfanumérico."
+            },
+            notblank:       "Este valor no debe estar en blanco.",
+            required:       "Este campo es obligatorio.",
+            pattern:        "Este valor es incorrecto.",
+            min:            "Este valor debe ser mayor o igual a %s.",
+            max:            "Este valor debe ser menor o igual a %s.",
+            range:          "Este valor debe estar entre %s y %s.",
+            minlength:      "Este valor es demasiado corto. Debe contener al menos %s caracteres.",
+            maxlength:      "Este valor es demasiado largo. Debe contener %s caracteres o menos.",
+            length:         "Este valor debe tener entre %s y %s caracteres.",
+            mincheck:       "Debes seleccionar al menos %s opción.",
+            maxcheck:       "No puedes seleccionar más de %s opciones.",
+            check:          "Debes seleccionar entre %s y %s opciones.",
+            equalto:        "Este valor debe ser idéntico."
+        });
+
+        Parsley.setLocale('es');
+    </script>
+  <!-- <script src="<?php echo base_url(); ?>coloradmin/assets/plugins/parsleyjs/dist/messages.es.js"></script> -->
 
 
   <!-- Panel socio -->

@@ -93,9 +93,37 @@
                     <td><?php echo $row->primerApellido ?></td>
                     <td><?php echo $row->segundoApellido ?></td>
                     <td><?php echo $row->email ?></td>
-                    <td><?php echo $row->rol ?></td>
+                    <td>
+                        <?php
+                        if ($row->rol == 2) {
+                            echo "Administrador";
+                        }
+                        else 
+                        {
+                          if($row->rol == 0)
+                          {
+                            echo "Socio";
+                          }
+                          else
+                          {
+                            echo "Auxiliar";
+                          }
+                        }
+                        ?>
+                    </td>
                     <td><?php echo $row->fono ?></td>
-                    <td><?php echo $row->sexo ?></td>
+                    <td>
+                    <?php
+                        if ($row->sexo == 'M') 
+                        {
+                            echo "Masculino";
+                        }
+                        else 
+                        {
+                          echo "Femenino";
+                        }
+                        ?>
+                    </td>
                     <td><?php echo $row->fechaRegistro ?></td>
                     <td>
                       <?php

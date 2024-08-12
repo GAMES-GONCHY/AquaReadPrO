@@ -16,7 +16,7 @@
 				<div class="profile-header-info">
 					<h4 class="mt-0 mb-1"><?php echo ($this->session->userdata('nombre')) . " " . $this->session->userdata('primerApellido') . " " . $this->session->userdata('segundoApellido'); ?></h4>
 					<p class="mb-2">Socio</p>
-					<a href="#" class="btn btn-xs btn-yellow">Edit Profile</a>
+					<a href="#" class="btn btn-xs btn-yellow">Editar Perfil</a>
 				</div>
 
 			</div>
@@ -24,10 +24,10 @@
 
 			<ul class="profile-header-tab nav nav-tabs">
 				<li class="nav-item"><a href="#profile-post" class="nav-link active" data-bs-toggle="tab">POSTS</a></li>
-				<li class="nav-item"><a href="#profile-about" class="nav-link" data-bs-toggle="tab">ABOUT</a></li>
-				<li class="nav-item"><a href="#profile-photos" class="nav-link" data-bs-toggle="tab">PHOTOS</a></li>
+				<li class="nav-item"><a href="#profile-about" class="nav-link" data-bs-toggle="tab">ACERCA DE MI</a></li>
+				<li class="nav-item"><a href="#profile-photos" class="nav-link" data-bs-toggle="tab">FOTOS</a></li>
 				<li class="nav-item"><a href="#profile-videos" class="nav-link" data-bs-toggle="tab">VIDEOS</a></li>
-				<li class="nav-item"><a href="#profile-friends" class="nav-link" data-bs-toggle="tab">FRIENDS</a></li>
+				<li class="nav-item"><a href="#profile-friends" class="nav-link" data-bs-toggle="tab">AMIGOS</a></li>
 			</ul>
 
 		</div>
