@@ -2,9 +2,8 @@
 		<div id="content" class="app-content">
 
 			<ol class="breadcrumb float-xl-end">
-				<li class="breadcrumb-item"><a href="javascript:;">Home</a></li>
-				<li class="breadcrumb-item"><a href="javascript:;">Dashboard</a></li>
-				<li class="breadcrumb-item active">Dashboard v3</li>
+				<!-- <li class="breadcrumb-item"><a href="javascript:;">Inicio</a></li> -->
+				<li class="breadcrumb-item active">Reportes</li>
 			</ol>
 
 
@@ -25,7 +24,7 @@
 					<span>1 Jun 2021 - 7 Jun 2021</span>
 					<b class="caret ms-1 opacity-5"></b>
 				</a>
-				<div class="text-muted fw-bold mt-2 mt-sm-0">compared to <span id="daterange-prev-date">24 Mar-30 Apr 2021</span></div>
+				<div class="text-muted fw-bold mt-2 mt-sm-0">Comprarar <span id="daterange-prev-date">24 Mar-30 Apr 2021</span></div>
 			</div>
 
 
@@ -42,7 +41,7 @@
 								<div class="col-xl-7 col-lg-8">
 
 									<div class="mb-3">
-										<b>TOTAL SALES</b>
+										<b>INGRESOS TOTALES</b>
 										<span class="ms-2">
 											<i class="fa fa-info-circle" data-bs-toggle="popover" data-bs-trigger="hover" data-bs-title="Total sales" data-bs-placement="top" data-bs-content="Net sales (gross sales minus discounts and returns) plus taxes and shipping. Includes orders from all sales channels."></i>
 										</span>

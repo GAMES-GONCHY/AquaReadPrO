@@ -1,6 +1,6 @@
 <div class="navbar-header">
     <a href="index.html" class="navbar-brand">
-        <span class="navbar-logo"></span> <b>Aqua</b>ReadPro <img src="<?php echo base_url(); ?>xeria/light/dist/assets/images/logo14.png" alt="" width="50" />
+        <span class="navbar-logo"></span> <b>Aqua</b>ReadPrO <img src="<?php echo base_url(); ?>xeria/light/dist/assets/images/logo14.png" alt="" width="50" />
     </a>
     <button type="button" class="navbar-mobile-toggler" data-toggle="app-sidebar-mobile">
         <span class="icon-bar"></span>
@@ -37,7 +37,7 @@
             </a>
             <a href="javascript:;" class="dropdown-item media">
                 <div class="media-left">
-                    <img src="<?php echo base_url(); ?>coloradmin/assets/img/user/user-1.jpg" class="media-object" alt="" />
+                <img src="<?php echo base_url('uploads/usersphoto/' . $this->session->userdata('foto')); ?>" onerror="this.onerror=null; this.src='<?php echo base_url('uploads/usersphoto/perfil.jpg'); ?>';" width="50" height="50">
                     <i class="fab fa-facebook-messenger text-blue media-object-icon"></i>
                 </div>
                 <div class="media-body">
@@ -48,7 +48,7 @@
             </a>
             <a href="javascript:;" class="dropdown-item media">
                 <div class="media-left">
-                    <img src="<?php echo base_url(); ?>coloradmin/assets/img/user/user-2.jpg" class="media-object" alt="" />
+                <img src="<?php echo base_url('uploads/usersphoto/' . $this->session->userdata('foto')); ?>" onerror="this.onerror=null; this.src='<?php echo base_url('uploads/usersphoto/perfil.jpg'); ?>';" width="50" height="50">
                     <i class="fab fa-facebook-messenger text-blue media-object-icon"></i>
                 </div>
                 <div class="media-body">
@@ -84,17 +84,17 @@
     </div>
     <div class="navbar-item navbar-user dropdown">
         <a href="#" class="navbar-link dropdown-toggle d-flex align-items-center" data-bs-toggle="dropdown">
-            <img src="<?php echo base_url(); ?>coloradmin/assets/img/user/user-13.jpg" alt="" />
+        <img src="<?php echo base_url('uploads/usersphoto/' . $this->session->userdata('foto')); ?>" onerror="this.onerror=null; this.src='<?php echo base_url('uploads/usersphoto/perfil.jpg'); ?>';" width="50" height="50">
             <span>
                 <span class="d-none d-md-inline"><?php echo $this->session->userdata('nickName'); ?></span>
                 <b class="caret"></b>
             </span>
         </a>
         <div class="dropdown-menu dropdown-menu-end me-1">
-            <a href="javascript:;" class="dropdown-item">Edit Profile</a>
-            <a href="javascript:;" class="dropdown-item"><span class="badge bg-danger float-end rounded-pill">3</span> Inbox</a>
-            <a href="javascript:;" class="dropdown-item">Calendar</a>
-            <a href="javascript:;" class="dropdown-item">Setting</a>
+            <a href="javascript:;" class="dropdown-item">Editar Perfil</a>
+            <a href="javascript:;" class="dropdown-item"><span class="badge bg-danger float-end rounded-pill">3</span> Mensajes</a>
+            <a href="javascript:;" class="dropdown-item">Calendario</a>
+            <a href="javascript:;" class="dropdown-item">Configuraciones</a>
             <div class="dropdown-divider"></div>
 
             <a href="javascript:;" id="showAlert" data-bs-toggle="modal" data-bs-target="#modal-dialog" class="dropdown-item">Cerrar sesion</a>
@@ -118,7 +118,7 @@
                 <a href="javascript:;" class="menu-profile-link" data-toggle="app-sidebar-profile" data-target="#appSidebarProfileMenu">
                     <div class="menu-profile-cover with-shadow"></div>
                     <div class="menu-profile-image">
-                        <img src="<?php echo base_url(); ?>coloradmin/assets/img/user/user-13.jpg" alt="" />
+                    <img src="<?php echo base_url('uploads/usersphoto/' . $this->session->userdata('foto')); ?>" onerror="this.onerror=null; this.src='<?php echo base_url('uploads/usersphoto/perfil.jpg'); ?>';">
                     </div>
                    
                         
@@ -147,19 +147,19 @@
                 <div class="menu-item pt-5px">
                     <a href="javascript:;" class="menu-link">
                         <div class="menu-icon"><i class="fa fa-cog"></i></div>
-                        <div class="menu-text">Settings</div>
+                        <div class="menu-text">Configuraciones</div>
                     </a>
                 </div>
                 <div class="menu-item">
                     <a href="javascript:;" class="menu-link">
                         <div class="menu-icon"><i class="fa fa-pencil-alt"></i></div>
-                        <div class="menu-text"> Send Feedback</div>
+                        <div class="menu-text"> Enviar mensajes</div>
                     </a>
                 </div>
                 <div class="menu-item pb-5px">
                     <a href="javascript:;" class="menu-link">
                         <div class="menu-icon"><i class="fa fa-question-circle"></i></div>
-                        <div class="menu-text"> Helps</div>
+                        <div class="menu-text"> Ayuda</div>
                     </a>
                 </div>
                 <div class="menu-divider m-0"></div>

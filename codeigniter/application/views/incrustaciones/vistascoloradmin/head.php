@@ -56,7 +56,14 @@
     <!-- Panel Socio -->
     <link href="<?php echo base_url(); ?>coloradmin/assets/plugins/superbox/superbox.min.css" rel="stylesheet" />
     <link href="<?php echo base_url(); ?>coloradmin/assets/plugins/lity/dist/lity.min.css" rel="stylesheet" />
-
+    
+    <!-- Estilo para cambiar de backgroud -->
+    <style>
+        .app-cover.new-background 
+        {
+            background-image: url('<?php echo base_url(); ?>coloradmin/assets/img/login-bg/login-bg-4-thumb.jpg'); /* Nueva imagen */
+        }
+    </style>
 </head>
 
 <body>
