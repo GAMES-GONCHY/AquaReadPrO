@@ -257,36 +257,24 @@ class Crudusers extends CI_Controller
 
 		if (!$this->upload->do_upload()) //sino realiza la carga 
 		{
-			//$data['error'] = $this->upload->display_errors();
-
 			$data = array(
 				'error' => $this->upload->display_errors()
 			);
+;
+		}
+		else 
+		{
 
-			//echo json_encode($data);
-		} else {
-			//$data['foto'] = $nombrearchivo;
-			$upload_data = $this->upload->data(); // Obtener los datos del archivo subido
+			$upload_data = $this->upload->data();
 			$data = array(
 				'foto' => $nombrearchivo,
 
 				'file_name' => $upload_data['file_name'],
 				'file_size' => $upload_data['file_size']
 			);
-			//$this->crudusers_model->modificar($id, $data['foto']);
 			$this->crudusers_model->modificar($id, array('foto' => $nombrearchivo));
-			//$this->upload->data();
-
-			//echo json_encode($data);
 
 		}
 		redirect('crudusers/habilitados', 'refresh');
 	}
-	// public function cambiarpassword()
-	// {
-	// 	$id = $_POST['id'];
-	// 	$data['password'] = hash("sha256", $_POST['password1']);
-	// 	$this->crudusers_model->modificar($id, $data);
-	// 	redirect('usuario/panel', 'refresh');
-	// }
 }

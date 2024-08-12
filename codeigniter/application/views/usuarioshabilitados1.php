@@ -38,7 +38,7 @@
                 </a>
               </div>
             </div>
-            <table id="datatable" class="table table-striped table-bordered align-middle">
+            <table id="datatable" class="table table-hover table-bordered align-middle">
               <thead>
                 <tr>
                   <th width="1%">No.</th>
@@ -83,7 +83,7 @@
                       echo form_open_multipart("crudusers/subirfoto");
                       ?>
                       <input type="hidden" name="id" value="<?php echo $row->idUsuario ?>">
-                      <button type="submit" class="btn btn-primary">Subir</button>
+                      <button type="submit" class="btn btn-outline-lime me-1 mb-1"><b>Subir</b></button>
                       <?php
                       echo form_close();
                       ?>

@@ -58,15 +58,21 @@
 							<i class="fa fa-fw fa-upload"></i>
 							<span>Subir</span>
 						</button>
-						<button type="reset" class="btn btn-default cancel me-1">
+						
+							<!-- <button type="reset" class="btn btn-default cancel me-1">
+								<i class="fa fa-fw fa-ban"></i>
+								<span>Cancelar</span>
+							</button> -->
+						
+						<button type="button" class="btn btn-default cancel me-1" onclick="window.history.back();">
 							<i class="fa fa-fw fa-ban"></i>
 							<span>Cancelar</span>
 						</button>
+
 						<!-- <button type="button" class="btn btn-default delete me-1">
 							<i class="fa fa-fw fa-trash"></i>
 							<span>Eliminar</span>
 						</button> -->
-
 						<span class="fileupload-process"></span>
 					</div>
 
