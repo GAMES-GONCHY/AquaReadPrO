@@ -139,9 +139,12 @@ class Crudusers extends CI_Controller
 
 		$this->load->view('incrustaciones/vistascoloradmin/head');
 		$this->load->view('incrustaciones/vistascoloradmin/menuadmin');
-		if ($this->session->userdata('form1') !== null) {
+		if ($this->session->userdata('form1') !== null && $id==null) 
+		{
 			$this->load->view('formmodificaruser1', $this->session->userdata('form1'));
-		} else {
+		}
+		else 
+		{
 			$this->load->view('formmodificaruser1', $data);
 		}
 		$this->load->view('incrustaciones/vistascoloradmin/footer');
@@ -156,10 +159,10 @@ class Crudusers extends CI_Controller
 
 		//verificar el email y nickname
 		$consulta = $this->crudusers_model->comprobarmodificacion($newdata, $id);
-
+		$data['info'] = $this->crudusers_model->recuperarusuario($id)->row_array();
 		if (!empty($consulta)) 
 		{
-			$data['info'] = $this->crudusers_model->recuperarusuario($id)->row_array();
+			
 			$this->session->set_userdata('form1', $data);
 			if ((isset($consulta['email']) && isset($consulta['nickName']))) 
 			{
