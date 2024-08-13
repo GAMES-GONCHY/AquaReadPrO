@@ -26,11 +26,17 @@
         <div class="panel-body">
           <!-- <form class="form-horizontal" data-parsley-validate="true" name="demo-form"> -->
           <?php if ($error = $this->session->flashdata('mensaje')) : ?>
-              <div class="alert alert-danger">
-                <?php echo $error; ?>
+            <div class="row">
+              <label class="col-lg-4"></label>
+              <div class="col-lg-8">
+                <div class="alert alert-danger mb-0" role="alert">
+                  <?php echo $error; ?>
+                </div>
               </div>
+            </div>
           <?php endif; ?>
-
+          <br>
+  
           <?php if (!empty($info)): ?>
           <form class="form-horizontal" data-parsley-validate="true" name="demo-form" method="post" action="<?php echo base_url(); ?>index.php/crudusers/modificarbd">
             <div class="form-group">

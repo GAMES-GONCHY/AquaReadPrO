@@ -75,7 +75,7 @@ class Crudusers extends CI_Controller
 			$data['rol'] = $_POST['rol'];
 			$data['fono'] = $_POST['fono'];
 			$data['sexo'] = $_POST['genero'];
-			$data['idAutor']=$this->session->userdata('idUsuario');
+			//$data['idAutor']=$this->session->userdata('idUsuario');
 			$this->crudusers_model->agregar($data);
 
 			// Envía el correo
@@ -90,7 +90,6 @@ class Crudusers extends CI_Controller
 				$this->session->set_flashdata('alert_type', 'warning');
             }
 			redirect('crudusers/agregar');
-			
 		}
 	}
 
@@ -186,7 +185,8 @@ class Crudusers extends CI_Controller
 		} 
 		else 
 		{
-			$data = 
+
+			$data =
 			[
 				'nickName' => $_POST['nickname'],
 				'nombre' => strtoupper($_POST['nombre']),
@@ -195,10 +195,7 @@ class Crudusers extends CI_Controller
 				'email' => $_POST['email'],
 				'rol' => (int)$_POST['rol'],
 				'fono' => $_POST['fono'],
-				'sexo' => $_POST['genero'],
-				'idAutor' => 2,
-				//'idAutor' => $this->session->userdata('idUsuario'),
-				'fechaActualizacion' => date('Y/m/d H:i:s')
+				'sexo' => $_POST['genero']
 			];
 
 			$this->crudusers_model->modificar($id, $data);
@@ -217,6 +214,7 @@ class Crudusers extends CI_Controller
 	{
 		$id = $_POST['id'];
 		$data['estado'] = 0;
+
 		$this->crudusers_model->deshabilitar($id, $data);
 		redirect('crudusers/habilitados', 'refresh');
 	}
@@ -224,6 +222,7 @@ class Crudusers extends CI_Controller
 	{
 		$id = $_POST['id'];
 		$data['estado'] = 1;
+
 		$this->crudusers_model->modificar($id, $data);
 		redirect('crudusers/deshabilitados', 'refresh');
 	}
@@ -275,6 +274,7 @@ class Crudusers extends CI_Controller
 				'file_name' => $upload_data['file_name'],
 				'file_size' => $upload_data['file_size']
 			);
+			
 			$this->crudusers_model->modificar($id, array('foto' => $nombrearchivo));
 
 		}

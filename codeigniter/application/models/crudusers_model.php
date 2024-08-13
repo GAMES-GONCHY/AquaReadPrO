@@ -14,16 +14,19 @@ class Crudusers_model extends CI_Model
 	{
 		$this->db->select('*');
 		$this->db->from('usuario');
-		//$this->db->where('estado', 0);
 		$this->db->where_in('estado', [0, 2]);
 		return $this->db->get();
 	}
 	public function agregar($data)
 	{
+		$data['idAutor']=$this->session->userdata('idUsuario');
 		$this->db->insert('usuario', $data);
 	}
 	public function modificar($id, $data)
 	{
+		$data['idAutor']=$this->session->userdata('idUsuario');
+		$data['fechaActualizacion']=date('Y-m-d H:i:s');
+
 		$this->db->where('idUsuario', $id);
 		$this->db->update('usuario', $data);
 	}
@@ -41,6 +44,9 @@ class Crudusers_model extends CI_Model
 	}
 	public function deshabilitar($id, $data)
 	{
+		$data['idAutor']=$this->session->userdata('idUsuario');
+		$data['fechaActualizacion']=date('Y-m-d H:i:s');
+		
 		$this->db->where('idUsuario', $id);
 		$this->db->update('usuario', $data);
 	}

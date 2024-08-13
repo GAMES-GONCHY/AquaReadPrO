@@ -9,7 +9,10 @@
   </ol>
 
 
-  <h1 class="page-header">Usuarios</h1>
+  <h1 class="page-header">Usuarios <?php
+echo 'Zona horaria actual: ' . date_default_timezone_get() . '<br>';
+echo 'Hora actual: ' . date('Y-m-d H:i:s');
+?></h1>
 
 
   <div class="container mt-4">

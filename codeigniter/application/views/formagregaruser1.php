@@ -31,7 +31,7 @@
           ?>
           <?php if ($alertType === 'error' && $mensaje): ?>
             <div class="row">
-              <label class="col-lg-4">Error :</label>
+              <label class="col-lg-4"></label>
               <div class="col-lg-8">
                 <div class="alert alert-danger mb-0" role="alert">
                   <?php echo $mensaje; ?>
@@ -39,7 +39,7 @@
               </div>
             </div>
           <?php endif; ?>
-
+            <br>
           <form class="form-horizontal" data-parsley-validate="true" id="form-add-user" name="demo-form" method="post" action="<?php echo base_url(); ?>index.php/crudusers/agregarbd">
             <div class="form-group row mb-3">
               <label class="col-lg-4 col-form-label form-label" for="nickname">Nickname * :</label>
