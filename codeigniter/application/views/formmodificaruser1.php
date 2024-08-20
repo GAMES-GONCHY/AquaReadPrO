@@ -42,13 +42,14 @@
             <div class="form-group">
               <input type="hidden" class="form-control" name="id" value="<?php echo $info['idUsuario']; ?>">
             </div>
-            <div class="form-group row mb-3">
-              <label class="col-lg-4 col-form-label form-label" for="nickname">Nickname :</label>
-              <div class="col-lg-8">
-                <input class="form-control" type="text" id="nickname" name="nickname" placeholder="Nickname" value="<?php echo $info['nickName']; ?>" />
+            <?php if (!empty($info)): ?>
+              <div class="form-group row mb-3">
+                <label class="col-lg-4 col-form-label form-label" for="nickname">Nickname :</label>
+                <div class="col-lg-8">
+                  <input class="form-control" type="text" id="nickname" name="nickname" placeholder="Nickname" value="<?php echo $info['nickName']; ?>" />
+                </div>
               </div>
-            </div>
-
+            <?php endif; ?>
             <div class="form-group row mb-3">
               <label class="col-lg-4 col-form-label form-label" for="nombre">Nombre :</label>
               <div class="col-lg-8">

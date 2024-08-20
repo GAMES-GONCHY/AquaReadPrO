@@ -11,7 +11,18 @@
 
 	<link href="<?php echo base_url(); ?>coloradmin/assets/css/vendor.min.css" rel="stylesheet" />
 	<link href="<?php echo base_url(); ?>coloradmin/assets/css/transparent/app.min.css" rel="stylesheet" />
+	<style>
+  .image-hover-combined 
+  {
+    transition: transform 0.8s ease, opacity 0.7s ease;
+  }
 
+  .image-hover-combined:hover 
+  {
+    transform: scale(1.3);
+    opacity: 0.4;
+  }
+</style>
 </head>
 
 <body class='pace-top'>
@@ -45,7 +56,7 @@
 						<h6> Telemetría inteligente para control preciso del agua</h6>
 					</div>
 					<div class="icon">
-						<span><img src="<?php echo base_url(); ?>coloradmin/assets/img/login-bg/logo13.png" alt="" height="108"></span>
+						<span><img src="<?php echo base_url(); ?>coloradmin/assets/img/login-bg/logo13.png" alt="Imagen con efecto hover combinado" class="image-hover-combined" height="108"></span>
 					</div>
 				</div>
 

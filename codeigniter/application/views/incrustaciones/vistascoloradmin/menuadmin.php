@@ -215,7 +215,7 @@
                 </a>
                 <div class="menu-submenu">
                     <div class="menu-item active">
-                        <a href="map_vector.html" class="menu-link">
+                        <a href="<?php echo base_url(); ?>index.php/map/geolocalizar" class="menu-link">
                             <div class="menu-text">Vista general</div>
                         </a>
                     </div>

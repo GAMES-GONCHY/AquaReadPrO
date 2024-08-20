@@ -133,6 +133,7 @@ class Crudusers extends CI_Controller
 	{
 
 		$id = $this->input->post('id');
+
 		$data['info'] = $this->crudusers_model->recuperarusuario($id)->row_array();
 
 

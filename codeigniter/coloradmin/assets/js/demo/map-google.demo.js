@@ -10,10 +10,21 @@ var handleGoogleMapSetting = function() {
 	var mapDefault;
 	
 	var mapOptions = {
-		zoom: 6,
-		center: new google.maps.LatLng(-33.397, 145.644),
+		zoom: 17,
+		center: new google.maps.LatLng(-17.4105450836976, -66.12594068258299),
 		mapTypeId: google.maps.MapTypeId.ROADMAP,
 		disableDefaultUI: true,
+		minZoom: 16,
+		restriction: {
+			latLngBounds: {
+				north: -17.40734698403909,  // Latitud máxima permitida
+				south: -17.41772613612582,  // Latitud mínima permitida
+				east: -66.12145818889127,   // Longitud máxima permitida
+				west: -66.12823287518866    // Longitud mínima permitida
+			},
+			strictBounds: false // Permite algo de margen fuera de los límites, si se establece en true, el mapa no se moverá fuera de los límites especificados
+		},
+		gestureHandling: "greedy" // Permite hacer zoom solo con el scroll del ratón
 	};
 	mapDefault = new google.maps.Map(document.getElementById('google-map-default'), mapOptions);
 	

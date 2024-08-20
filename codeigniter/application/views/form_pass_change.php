@@ -117,16 +117,16 @@
 					<a href="#" class="navbar-link dropdown-toggle d-flex align-items-center" data-bs-toggle="dropdown">
 						<img src="<?php echo base_url(); ?>uploads/usersphoto/perfil.jpg" alt="" />
 						<span>
-							<span class="d-none d-md-inline">Adam Schwartz</span>
+							<span class="d-none d-md-inline"><?php echo $this->session->userdata('nickName'); ?></span>
 							<b class="caret"></b>
 						</span>
 					</a>
 					<div class="dropdown-menu dropdown-menu-end me-1">
-						<a href="javascript:;" class="dropdown-item">Edit Profile</a>
+						<!-- <a href="javascript:;" class="dropdown-item">Edit Profile</a>
 						<a href="javascript:;" class="dropdown-item"><span
 								class="badge bg-danger float-end rounded-pill">2</span> Inbox</a>
 						<a href="javascript:;" class="dropdown-item">Calendar</a>
-						<a href="javascript:;" class="dropdown-item">Setting</a>
+						<a href="javascript:;" class="dropdown-item">Setting</a> -->
 						<div class="dropdown-divider"></div>
 						<a href="javascript:;" id="showAlert" data-bs-toggle="modal" data-bs-target="#modal-dialog" class="dropdown-item">Cerrar sesion</a>
 					</div>
