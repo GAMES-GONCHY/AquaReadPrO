@@ -136,7 +136,6 @@ class Crudusers extends CI_Controller
 
 		$data['info'] = $this->crudusers_model->recuperarusuario($id)->row_array();
 
-
 		$this->load->view('incrustaciones/vistascoloradmin/head');
 		$this->load->view('incrustaciones/vistascoloradmin/menuadmin');
 		if ($this->session->userdata('form1') !== null && $id==null) 
@@ -251,7 +250,8 @@ class Crudusers extends CI_Controller
 
 		$direccion = "./uploads/usersphoto/" . $nombrearchivo;
 
-		if (file_exists($direccion)) {
+		if (file_exists($direccion)) 
+		{
 			unlink($direccion);
 		}
 		$config['allowed_types'] = 'jpg|png|GIF';
@@ -263,7 +263,6 @@ class Crudusers extends CI_Controller
 			$data = array(
 				'error' => $this->upload->display_errors()
 			);
-;
 		}
 		else 
 		{
@@ -280,5 +279,10 @@ class Crudusers extends CI_Controller
 
 		}
 		redirect('crudusers/habilitados', 'refresh');
+	}
+	public function editarperfil()
+	{
+		$id = $this->session->userdata('idUsuario');
+		
 	}
 }

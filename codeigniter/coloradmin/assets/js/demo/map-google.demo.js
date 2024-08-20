@@ -15,9 +15,11 @@ var handleGoogleMapSetting = function() {
 		mapTypeId: google.maps.MapTypeId.ROADMAP,
 		disableDefaultUI: true,
 		minZoom: 16,
+		styles: cobaltStyles,  // Establece el estilo "Cobalt" por defecto
 		restriction: {
-			latLngBounds: {
-				north: -17.40734698403909,  // Latitud máxima permitida
+			latLngBounds: 
+			{
+				north: -17.40602049319584,  // Latitud máxima permitida
 				south: -17.41772613612582,  // Latitud mínima permitida
 				east: -66.12145818889127,   // Longitud máxima permitida
 				west: -66.12823287518866    // Longitud mínima permitida
@@ -27,6 +29,28 @@ var handleGoogleMapSetting = function() {
 		gestureHandling: "greedy" // Permite hacer zoom solo con el scroll del ratón
 	};
 	mapDefault = new google.maps.Map(document.getElementById('google-map-default'), mapOptions);
+
+	// Añadir el polígono para delimitar visualmente el área de trabajo
+	var areaCoords = [
+		{ lat: -17.408245180718332, lng: -66.12707638331297 }, // Punto 1 
+		{ lat: -17.40684055845479, lng: -66.12465000539221 }, // Punto 2 
+		{ lat: -17.409884426845334, lng: -66.12394582690727 }, // Punto 3
+		{ lat: -17.41110434666331, lng: -66.12399193373078 }, // Punto 4
+		{ lat: -17.41537732580422, lng: -66.12540074076435 }, // Punto 5
+		{ lat: -17.415421965664258, lng: -66.12607972919076 }  // Punto 6  
+	];
+
+	var areaPolygon = new google.maps.Polygon({
+		paths: areaCoords,
+		strokeColor: '#FF0000', // Color del borde
+		strokeOpacity: 0.8,     // Opacidad del borde
+		strokeWeight: 2,        // Grosor del borde
+		fillColor: '#B0E0E6',   // Color del relleno
+		fillOpacity: 0.1       // Opacidad del relleno
+	});
+
+	// Agregar el polígono al mapa
+	areaPolygon.setMap(mapDefault);
 	
 	$(window).resize(function() {
 		google.maps.event.trigger(mapDefault, "resize");
