@@ -267,6 +267,22 @@
                         </a>
                     </div> -->
                 </div>
+                <div class="menu-item">
+                    <a href="widget.html" class="menu-link">
+                        <div class="menu-icon">
+                            <i class="fa fa-gift"></i>
+                        </div>
+                        <div class="menu-text">Datalogger</div>
+                    </a>
+				</div>
+                <div class="menu-item">
+                    <a href="widget.html" class="menu-link">
+                        <div class="menu-icon">
+                            <i class="fab fa-simplybuilt"></i>
+                        </div>
+                        <div class="menu-text">Medidores</div>
+                    </a>
+				</div>
             </div>
             <div class="menu-item d-flex">
                 <a href="javascript:;" class="app-sidebar-minify-btn ms-auto" data-toggle="app-sidebar-minify"><i class="fa fa-angle-double-left"></i></a>

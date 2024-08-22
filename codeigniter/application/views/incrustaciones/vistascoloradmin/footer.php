@@ -257,8 +257,12 @@
 <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
 
 <!-- Google maps -->
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBIwC8HtqE2l0TeAZACVjngP1f7Ue3AYxo&v=3.exp&sensor=false&callback=initMap" async defer></script>
 <script src="<?php echo base_url(); ?>coloradmin/assets/js/demo/map-google.demo.js"></script>
+<!-- <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDscHZkKGKv21yacNUg_OYgTDrggBAvCaM&callback=initMap" async defer></script> -->
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDscHZkKGKv21yacNUg_OYgTDrggBAvCaM&callback=initMap&libraries=geometry" async defer></script>
+
+
+
 
   <!-- Google Analytics y otros scripts externos -->
 <script src="https://www.google-analytics.com/analytics.js" async></script>
