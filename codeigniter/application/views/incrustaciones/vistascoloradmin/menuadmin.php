@@ -91,7 +91,7 @@
             </span>
         </a>
         <div class="dropdown-menu dropdown-menu-end me-1">
-            <a href="javascript:;" class="dropdown-item">Editar Perfil</a>
+            <a href="<?php echo base_url(); ?>index.php/crudusers/editarperfil" class="dropdown-item">Editar Perfil</a>
             <a href="javascript:;" class="dropdown-item"><span class="badge bg-danger float-end rounded-pill">3</span> Mensajes</a>
             <a href="javascript:;" class="dropdown-item">Calendario</a>
             <a href="javascript:;" class="dropdown-item">Configuraciones</a>

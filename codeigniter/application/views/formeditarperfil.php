@@ -8,14 +8,14 @@
   </ol>
 
 
-  <h1 class="page-header">Modificar usuario</h1>
+  <h1 class="page-header">Editar perfil</h1>
 
 
   <div class="row">
     <div class="col-xl-10">
       <div class="panel panel-inverse" data-sortable-id="form-validation-1">
         <div class="panel-heading">
-          <h4 class="panel-title">Registro</h4>
+          <h4 class="panel-title">Datos Personales</h4>
           <div class="panel-heading-btn">
             <a href="javascript:;" class="btn btn-xs btn-icon btn-default" data-toggle="panel-expand"><i class="fa fa-expand"></i></a>
             <a href="javascript:;" class="btn btn-xs btn-icon btn-success" data-toggle="panel-reload"><i class="fa fa-redo"></i></a>
@@ -25,7 +25,7 @@
         </div>
         <div class="panel-body">
           <!-- <form class="form-horizontal" data-parsley-validate="true" name="demo-form"> -->
-          <?php if ($error = $this->session->flashdata('mensaje')) : ?>
+          <?php if (($error = $this->session->flashdata('mensaje')) && ($this->session->flashdata('contraseña')==false)) : ?>
             <div class="row">
               <label class="col-lg-4"></label>
               <div class="col-lg-8">
@@ -36,17 +36,18 @@
             </div>
           <?php endif; ?>
           <br>
-
+    <!-- FORMULARIO EDICION DE DATOS PERSONALES -->
           <?php if (!empty($info)): ?>
           <form class="form-horizontal" data-parsley-validate="true" name="demo-form" method="post" action="<?php echo base_url(); ?>index.php/crudusers/modificarbd">
             <div class="form-group">
-              <input type="hidden" class="form-control" name="id" value="<?php echo $info['idUsuario']; ?>">
+            <input type="hidden" class="form-control" name="id" value="<?php echo $info['idUsuario']; ?>">
+            <input type="hidden" class="form-control" name="formeditperfil" value="<?php echo true ?>">
             </div>
             
             <div class="form-group row mb-3">
               <label class="col-lg-4 col-form-label form-label" for="nickname">Nickname :</label>
               <div class="col-lg-8">
-                <input class="form-control" type="text" id="nickname" name="nickname" placeholder="Nickname" value="<?php echo $info['nickName']; ?>" />
+                <input class="form-control" type="text" id="nickname" name="nickname" placeholder="Nickname" value="<?php echo $info['nickName']; ?>" readonly />
               </div>
             </div>
           
@@ -70,16 +71,16 @@
             </div>
 
             <div class="form-group row mb-3">
-              <label class="col-lg-4 col-form-label form-label" for="email">Email * :</label>
+              <label class="col-lg-4 col-form-label form-label" for="email">Email :</label>
               <div class="col-lg-8">
                 <input class="form-control" type="text" id="email" name="email" data-parsley-type="email" placeholder="Email" data-parsley-required="true" value="<?php echo $info['email'] ?>" />
               </div>
             </div>
 
-            <div class="form-group row mb-3">
-              <label class="col-lg-4 col-form-label form-label">Tipo usuario * :</label>
+            <div class="form-group row mb-3 d-none">
+              <label class="col-lg-4 col-form-label form-label">Tipo usuario :</label>
               <div class="col-lg-8">
-                <select class="form-select" id="select-required" name="rol" data-parsley-required="true">
+                <select class="form-select" id="select-required" name="rol" data-parsley-required="true" style="color: black;">
                   <option value="0" <?php echo ($info['rol'] == 0) ? 'selected' : ''; ?>>SOCIO</option>
                   <option value="1" <?php echo ($info['rol'] == 1) ? 'selected' : ''; ?>>AUXILIAR</option>
                   <option value="2" <?php echo ($info['rol'] == 2) ? 'selected' : ''; ?>>ADMINISTRADOR</option>
@@ -88,13 +89,12 @@
             </div>
 
             <div class="form-group row mb-3">
-              <label class="col-lg-4 col-form-label form-label" for="fono">Fono * :</label>
+              <label class="col-lg-4 col-form-label form-label" for="fono">Fono :</label>
               <div class="col-lg-8">
                 <input class="form-control" type="text" id="fono" name="fono" data-parsley-type="number" placeholder="Number" data-parsley-required="true" data-parsley-error-message="Este valor no puede estar vacio" value="<?php echo $info['fono'] ?>" />
               </div>
             </div>
-
-            <div class="form-group row mb-3">
+            <div class="form-group row mb-3 d-none">
               <label class="col-lg-4 col-form-label form-label">Genero * :</label>
               <div class="col-lg-8 pt-2">
                 <div class="form-check">
@@ -111,16 +111,83 @@
                 </div> -->
               </div>
             </div>
-
             <div class="form-group row">
               <label class="col-lg-4 col-form-label form-label">&nbsp;</label>
               <div class="col-lg-8">
-                <button type="submit" class="btn btn-success btn-lg btn-block text-uppercase font-weight-bold w-100">Modificar</button>
+                <button type="submit" class="btn btn-outline-yellow me-1 mb-1 text-uppercase font-weight-bold w-100">Guardar Cambios</button>
               </div>
             </div>
           </form>
           <?php endif; ?>
+        </div>
+      </div>
+    </div>
+  </div>
+<!-- FIN FORMULARIO EDICION DE DATOS PERSONALES -->
 
+
+
+<!-- FORMULARIO CAMBIO DE CONTRASEÑA -->
+  <div class="row">
+    <div class="col-xl-10">
+      <div class="panel panel-inverse" data-sortable-id="form-validation-1">
+        <div class="panel-heading">
+          <h4 class="panel-title">Contraseña</h4>
+          <div class="panel-heading-btn">
+            <a href="javascript:;" class="btn btn-xs btn-icon btn-default" data-toggle="panel-expand"><i class="fa fa-expand"></i></a>
+            <a href="javascript:;" class="btn btn-xs btn-icon btn-success" data-toggle="panel-reload"><i class="fa fa-redo"></i></a>
+            <a href="javascript:;" class="btn btn-xs btn-icon btn-warning" data-toggle="panel-collapse"><i class="fa fa-minus"></i></a>
+            <!-- <a href="javascript:;" class="btn btn-xs btn-icon btn-danger" data-toggle="panel-remove"><i class="fa fa-times"></i></a> -->
+          </div>
+        </div>
+        <div class="panel-body">
+          <!-- <form class="form-horizontal" data-parsley-validate="true" name="demo-form"> -->
+          <?php if (($error = $this->session->flashdata('mensaje')) && ($this->session->flashdata('contraseña')==true)) : ?>
+            <div class="row">
+              <label class="col-lg-4"></label>
+              <div class="col-lg-8">
+                <div class="alert alert-danger mb-0" role="alert">
+                  <?php echo $error; ?>
+                </div>
+              </div>
+            </div>
+          <?php endif; ?>
+          <br>
+
+          <?php if (!empty($info)): ?>
+          <form class="form-horizontal" data-parsley-validate="true" name="demo-form" method="post" action="<?php echo base_url(); ?>index.php/crudusers/lol">
+            <div class="form-group">                                                                
+              <input type="hidden" class="form-control" name="id" value="<?php echo $info['idUsuario']; ?>">
+            </div>
+            <h3 class="text-center">Cambiar contraseña</h3>
+            <hr>
+            <div class="form-group row mb-3">
+              <label class="col-lg-4 col-form-label form-label" for="fono">Contraseña Actual :</label>
+              <div class="col-lg-8">
+                <input class="form-control" type="password" id="curpass" name="curpass" placeholder="Contraseña actual" data-parsley-required="true"/>
+              </div>
+            </div>
+            <div class="form-group row mb-3">
+              <label class="col-lg-4 col-form-label form-label" for="fono">Nueva Contraseña :</label>
+              <div class="col-lg-8">
+                <input class="form-control" type="password" id="newpass" name="newpass" placeholder="Contraseña nueva" data-parsley-required="true" minlength="5" maxlength="20"/>
+              </div>
+            </div>
+            <div class="form-group row mb-3">
+              <label class="col-lg-4 col-form-label form-label" for="fono">Confirmar Contraseña :</label>
+              <div class="col-lg-8">
+                <input class="form-control" type="password" id="confirmpass" name="confirmpass" data-parsley-equalto="#newpass" data-parsley-required="true" minlength="5" maxlength="20" placeholder="Confirmar contraseña"/>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-lg-4 col-form-label form-label">&nbsp;</label>
+              <div class="col-lg-8">
+                <button type="submit" class="btn btn-outline-info me-1 mb-1 text-uppercase font-weight-bold w-100">Cambiar Contraseña</button>
+              </div>
+            </div>
+          </form>
+          <?php endif; ?>
+      <!-- FIN FORMULARIO CAMBIO DE CONTRASEÑA -->
         </div>
       </div>
     </div>

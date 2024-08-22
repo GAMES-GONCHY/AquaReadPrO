@@ -96,7 +96,7 @@ class Crudusers_model extends CI_Model
 		// Excluir el usuario actual
 		$this->db->where('idUsuario !=', $id);
 
-		$query = $this->db->get('usuario'); // Reemplaza 'usuario' con el nombre de tu tabla
+		$query = $this->db->get('usuario');
 
 		$duplicates = [];
 

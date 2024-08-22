@@ -161,13 +161,14 @@ class Crudusers extends CI_Controller
 		$data['info'] = $this->crudusers_model->recuperarusuario($id)->row_array();
 		if (!empty($consulta)) 
 		{
-			
+			$this->session->set_flashdata('contraseña', false);
 			$this->session->set_userdata('form1', $data);
 			if ((isset($consulta['email']) && isset($consulta['nickName']))) 
 			{
 				$this->session->set_flashdata('mensaje', 'El E-mail y Nickname ya están registrados en el sistema.');
 				$this->session->set_flashdata('alert_type', 'error');
-			} else 
+			} 
+			else 
 			{
 				if (isset($consulta['email'])) 
 				{
@@ -180,8 +181,15 @@ class Crudusers extends CI_Controller
 					$this->session->set_flashdata('alert_type', 'error');
 				}
 			}
-
-			redirect('crudusers/modificar', 'refresh');
+			if($_POST['formeditperfil'])
+			{
+				redirect('crudusers/editarperfil', 'refresh');
+			}
+			else
+			{
+				redirect('crudusers/modificar', 'refresh');
+			}
+			
 		} 
 		else 
 		{
@@ -199,7 +207,7 @@ class Crudusers extends CI_Controller
 			];
 
 			$this->crudusers_model->modificar($id, $data);
-			$this->session->set_flashdata('mensaje', 'Registrado modificado exitosamente');
+			$this->session->set_flashdata('mensaje', 'Modificación exitosa');
 			$this->session->set_flashdata('alert_type', 'success');
 			redirect('crudusers/habilitados', 'refresh');
 		}
@@ -283,6 +291,41 @@ class Crudusers extends CI_Controller
 	public function editarperfil()
 	{
 		$id = $this->session->userdata('idUsuario');
+		$data['info']=$this->crudusers_model->recuperarusuario($id)->row_array();
+
+		$this->load->view('incrustaciones/vistascoloradmin/head');
+		$this->load->view('incrustaciones/vistascoloradmin/menuadmin');
+		$this->load->view('formeditarperfil', $data);
+		$this->load->view('incrustaciones/vistascoloradmin/footer');
+	}
+	public function lol()
+	{
+		$id =$this->session->userdata('idUsuario');
+		$curpass=$this->session->userdata('password');
+		$data['password']=hash("sha256",$_POST['confirmpass']);
+
+		if(($curpass==(hash("sha256",$_POST['curpass']))) && ($curpass!=$data['password']))
+		{
+			$this->crudusers_model->modificar($id, $data);
+			$this->session->set_flashdata('mensaje', 'Contraseña modificada exitosamente');
+			$this->session->set_flashdata('alert_type', 'success');
+			redirect('usuario/panel', 'refresh');
+		}
+		else
+		{
+			$this->session->set_flashdata('contraseña', true);
+			if($curpass==$data['password'])
+			{
+				$this->session->set_flashdata('mensaje', 'Ha introducido la misma Contraseña');
+				$this->session->set_flashdata('alert_type', 'error');
+			}
+			else
+			{
+				$this->session->set_flashdata('mensaje', 'Contraseña actual incorrecta');
+				$this->session->set_flashdata('alert_type', 'error');
+			}
+			redirect('crudusers/editarperfil', 'refresh');
+		}
 		
 	}
 }
