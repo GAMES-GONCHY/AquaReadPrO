@@ -1,11 +1,11 @@
-function initMap() {
+function initMap() 
+{
     var mapOptions = {
         zoom: 17,
         center: new google.maps.LatLng(-17.4105450836976, -66.12594068258299),
         mapTypeId: google.maps.MapTypeId.ROADMAP,
         disableDefaultUI: true,
         minZoom: 16,
-        styles: cobaltStyles,  // Establece el estilo "Cobalt" por defecto
         restriction: {
             latLngBounds: {
                 north: -17.40602049319584,  // Latitud máxima permitida
@@ -19,6 +19,7 @@ function initMap() {
     };
 
     var mapDefault = new google.maps.Map(document.getElementById('google-map-default'), mapOptions);
+
 
     // Añadir el polígono para delimitar visualmente el área de trabajo
     var areaCoords = [
@@ -40,42 +41,55 @@ function initMap() {
 		clickable: false
     });
 
+    
+
+
+
     // Agregar el polígono al mapa
     areaPolygon.setMap(mapDefault);
+
 
 	// Función para verificar si una coordenada está dentro del polígono
     function isPointInPolygon(point, polygon) {
         return google.maps.geometry.poly.containsLocation(point, polygon);
     }
-
-    // Array de marcadores con coordenadas y títulos
-    var markers = [
-        { position: { lat: -17.4105450836976, lng: -66.12594068258299 }, title: "Marcador 1" },
-        { position: { lat: -17.408845, lng: -66.123540 }, title: "Marcador 2" },
-        { position: { lat: -17.412345, lng: -66.126740 }, title: "Marcador 3" }
-    ];
-
-    // Iterar sobre el array de marcadores y agregarlos al mapa
-    markers.forEach(function(markerData) {
+    
+    // Recorrer el array de coordenadas y añadir marcadores
+    coordenadas.forEach(function(coord) {
         new google.maps.Marker({
-            position: markerData.position,
+            position: { lat: parseFloat(coord.latitud), lng: parseFloat(coord.longitud) },
             map: mapDefault,
-            title: markerData.title
+            title: `ID: ${coord.idDatalogger}`,
         });
     });
+    // Array de marcadores con coordenadas y títulos
+    // var markers = [
+    //     { position: { lat: -17.4105450836976, lng: -66.12594068258299 }, title: "Marcador 1" },
+    //     { position: { lat: -17.408845, lng: -66.123540 }, title: "Marcador 2" },
+    //     { position: { lat: -17.412345, lng: -66.126740 }, title: "Marcador 3" }
+    // ];
+
+    // Iterar sobre el array de marcadores y agregarlos al mapa
+    // markers.forEach(function(markerData) {
+    //     new google.maps.Marker({
+    //         position: markerData.position,
+    //         map: mapDefault,
+    //         title: markerData.title
+    //     });
+    // });
 
      // Añadir nuevos marcadores al hacer clic en el mapa si están dentro del polígono
 	 google.maps.event.addListener(mapDefault, 'click', function(event) {
-    if (isPointInPolygon(event.latLng, areaPolygon)) {
-        new google.maps.Marker({
-            position: event.latLng,
-            map: mapDefault,
-            title: 'Nuevo Marcador'
-        });
-    } else {
-        alert('El marcador debe estar dentro del área del polígono.');
-    }
-});
+		if (isPointInPolygon(event.latLng, areaPolygon)) {
+			new google.maps.Marker({
+				position: event.latLng,
+				map: mapDefault,
+				title: 'Nuevo Marcador'
+			});
+		} else {
+			alert('El marcador debe estar dentro del área del polígono.');
+		}
+	});
 
     $(window).resize(function() {
         google.maps.event.trigger(mapDefault, "resize");
@@ -135,7 +149,8 @@ function initMap() {
         $('#map-theme-text').text(targetText);
         $(targetLi).addClass('active');
 
-        switch(targetTheme) {
+        switch(targetTheme) 
+        {
             case 'flat':
                 mapDefault.setOptions({styles: flatMapStyles});
             break;
@@ -159,3 +174,5 @@ function initMap() {
         }
     });
 }
+
+
