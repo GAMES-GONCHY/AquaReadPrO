@@ -10,7 +10,17 @@
 
 	<link href="<?php echo base_url(); ?>coloradmin/assets/css/vendor.min.css" rel="stylesheet" />
 	<link href="<?php echo base_url(); ?>coloradmin/assets/css/transparent/app.min.css" rel="stylesheet" />
+<style>
+.modal {
+    z-index: 1050 !important;
+}
 
+.app-content-padding {
+    position: relative;
+    z-index: 1100; /* Mayor que el mapa */
+}
+
+</style>
 </head>
 
 <body>

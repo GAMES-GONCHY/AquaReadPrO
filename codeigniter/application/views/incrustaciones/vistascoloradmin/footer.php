@@ -260,115 +260,166 @@
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDscHZkKGKv21yacNUg_OYgTDrggBAvCaM&callback=initMap&libraries=geometry" async defer></script>
 
 <script>
-        function initMap() 
-        {
-            // Opciones del mapa
-            var mapOptions = {
-                zoom: 17,
-                center: new google.maps.LatLng(-17.4105450836976, -66.12594068258299),
-                mapTypeId: google.maps.MapTypeId.ROADMAP,
-                disableDefaultUI: true,
-                minZoom: 16,
-                restriction: {
-                    latLngBounds: {
-                        north: -17.404592,  // Latitud máxima permitida
-                        south: -17.41772613612582,  // Latitud mínima permitida
-                        east: -66.12145818889127,   // Longitud máxima permitida
-                        west: -66.12823287518866    // Longitud mínima permitida
-                    },
-                    strictBounds: false // Permite algo de margen fuera de los límites
+  function initMap() 
+  {
+      // Declara mapDefault globalmente
+      var mapDefault;
+      // Opciones del mapa
+      var mapOptions = {
+          zoom: 17,
+          center: new google.maps.LatLng(-17.4105450836976, -66.12594068258299),
+          mapTypeId: google.maps.MapTypeId.ROADMAP,
+          disableDefaultUI: true,
+          minZoom: 16,
+          restriction: {
+              latLngBounds: {
+                  north: -17.404592,  // Latitud máxima permitida
+                  south: -17.41772613612582,  // Latitud mínima permitida
+                  east: -66.12145818889127,   // Longitud máxima permitida
+                  west: -66.12823287518866    // Longitud mínima permitida
+              },
+              strictBounds: false // Permite algo de margen fuera de los límites
+          },
+          gestureHandling: "greedy" // Permite hacer zoom solo con el scroll del ratón
+      };
+
+      mapDefault = new google.maps.Map(document.getElementById('google-map-default'), mapOptions);
+
+      // Añadir el polígono para delimitar visualmente el área de trabajo
+      var areaCoords = [
+          { lat: -17.408245180718332, lng: -66.12707638331297 }, // Punto 1 
+          { lat: -17.40684055845479, lng: -66.12465000539221 }, // Punto 2 
+          { lat: -17.409884426845334, lng: -66.12394582690727 }, // Punto 3
+          { lat: -17.41110434666331, lng: -66.12399193373078 }, // Punto 4
+          { lat: -17.41537732580422, lng: -66.12540074076435 }, // Punto 5
+          { lat: -17.415421965664258, lng: -66.12607972919076 }  // Punto 6  
+      ];
+
+      var areaPolygon = new google.maps.Polygon({
+          paths: areaCoords,
+          strokeColor: '#FF0000', // Color del borde
+          strokeOpacity: 0.8,     // Opacidad del borde
+          strokeWeight: 2,        // Grosor del borde
+          fillColor: '#B0E0E6',   // Color del relleno
+          fillOpacity: 0.1,       // Opacidad del relleno
+          clickable: false
+      });
+
+      // Agregar el polígono al mapa
+      areaPolygon.setMap(mapDefault);
+
+      // Obtener los datos de coordenadas desde PHP
+      var coordenadas = <?php echo $info; ?>;
+
+      // Añadir los marcadores al mapa
+      coordenadas.forEach(function(datalogger) 
+      {
+        new google.maps.Marker({
+            position: { lat: parseFloat(datalogger.latitud), lng: parseFloat(datalogger.longitud) },
+            map: mapDefault,
+            title: 'Datalogger: ' + datalogger.idDatalogger
+        });
+      });
+      var infoWindow = new google.maps.InfoWindow();
+
+      // Añadir el evento de click al mapa
+      mapDefault.addListener('click', function(event) {
+          var latLng = event.latLng;
+          var contentString = `
+              <div style="
+                  background-color: #333; /* Fondo gris oscuro */
+                  color: #FFF;            /* Texto blanco */
+                  padding: 10px;          /* Espaciado interno */
+                  border-radius: 8px;    /* Esquinas redondeadas */
+                  font-family: Arial, sans-serif; /* Fuente del texto */
+                  font-size: 14px;       /* Tamaño de fuente */
+                  max-width: 200px;      /* Ancho máximo */
+                  box-shadow: 0 2px 6px rgba(0,0,0,0.3); /* Sombra sutil */
+              ">
+                  Latitud: <span style="font-weight: bold;">${latLng.lat().toFixed(6)}</span><br>
+                  Longitud: <span style="font-weight: bold;">${latLng.lng().toFixed(6)}</span>
+              </div>`;
+
+          infoWindow.setPosition(latLng);
+          infoWindow.setContent(contentString);
+          infoWindow.open(mapDefault);
+
+          // Esperar un momento para que el InfoWindow se renderice completamente
+          setTimeout(function() {
+              var closeButton = document.querySelector('.gm-ui-hover-effect');
+
+              if (closeButton) {
+                  // Estilizar el botón de cierre
+                  closeButton.style.width = '20px';  // Ajustar el ancho
+                  closeButton.style.height = '20px'; // Ajustar la altura
+                  closeButton.style.fontSize = '12px'; // Ajustar el tamaño de fuente
+                  closeButton.style.backgroundColor = 'red'; // Cambiar el color de fondo
+                  closeButton.style.borderRadius = '50%'; // Hacerlo circular
+                  closeButton.style.color = 'white'; // Cambiar el color del texto
+                  closeButton.style.lineHeight = '20px'; // Centrar el texto verticalmente
+                  closeButton.style.textAlign = 'center'; // Centrar el texto horizontalmente
+                  closeButton.style.border = 'none'; // Eliminar el borde predeterminado
+                  closeButton.style.padding = '0'; // Eliminar el relleno
+                  closeButton.innerHTML = 'X'; // Asegurar que el texto es una 'X'
+              }
+          }, 10); // Tiempo de espera para asegurar que el InfoWindow se ha renderizado
+      });
+    
+  }
+          
+</script>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    document.getElementById('addMarkerForm').addEventListener('submit', function(e) {
+      e.preventDefault(); // Evita el envío del formulario
+
+      var lat = parseFloat(document.getElementById('latitude').value);
+      var lng = parseFloat(document.getElementById('longitude').value);
+
+      // Añadir un nuevo marcador al mapa
+      var newMarker = new google.maps.Marker({
+        position: { lat: lat, lng: lng },
+        map: mapDefault, // Asegúrate de que mapDefault está accesible aquí
+        title: 'Nuevo Marcador'
+      });
+
+      $.ajax({
+                url: '<?php echo base_url(); ?>index.php/datalogger/agregar', // Ruta que apunta al controlador
+                method: 'POST',
+                data: {
+                    latitude: lat,
+                    longitude: lng
                 },
-                gestureHandling: "greedy" // Permite hacer zoom solo con el scroll del ratón
-            };
-
-            var mapDefault = new google.maps.Map(document.getElementById('google-map-default'), mapOptions);
-
-            // Añadir el polígono para delimitar visualmente el área de trabajo
-            var areaCoords = [
-                { lat: -17.408245180718332, lng: -66.12707638331297 }, // Punto 1 
-                { lat: -17.40684055845479, lng: -66.12465000539221 }, // Punto 2 
-                { lat: -17.409884426845334, lng: -66.12394582690727 }, // Punto 3
-                { lat: -17.41110434666331, lng: -66.12399193373078 }, // Punto 4
-                { lat: -17.41537732580422, lng: -66.12540074076435 }, // Punto 5
-                { lat: -17.415421965664258, lng: -66.12607972919076 }  // Punto 6  
-            ];
-
-            var areaPolygon = new google.maps.Polygon({
-                paths: areaCoords,
-                strokeColor: '#FF0000', // Color del borde
-                strokeOpacity: 0.8,     // Opacidad del borde
-                strokeWeight: 2,        // Grosor del borde
-                fillColor: '#B0E0E6',   // Color del relleno
-                fillOpacity: 0.1,       // Opacidad del relleno
-                clickable: false
+                success: function(response) 
+                {
+                    // Maneja la respuesta exitosa del servidor
+                    if (response.status === 'success') 
+                    {
+                        alert('Marcador guardado exitosamente');
+                    }
+                    else 
+                    {
+                        alert('Error al guardar el marcador: ' + response.message);
+                    }
+                },
+                error: function(xhr, status, error) 
+                {
+                    // Maneja el error en la llamada AJAX
+                    console.error('Error al enviar los datos:', error);
+                    alert('Ocurrió un error al guardar el marcador. Inténtalo de nuevo.');
+                }
             });
 
-            // Agregar el polígono al mapa
-            areaPolygon.setMap(mapDefault);
 
-            // Obtener los datos de coordenadas desde PHP
-            var coordenadas = <?php echo $coordenadas; ?>;
+      // Cerrar el modal
+      var modalElement = document.getElementById('addMarkerModal');
+      var modal = bootstrap.Modal.getInstance(modalElement);
+      modal.hide();
+    });
+  });
+</script>
 
-            // Añadir los marcadores al mapa
-            coordenadas.forEach(function(datalogger) 
-            {
-              new google.maps.Marker({
-                  position: { lat: parseFloat(datalogger.latitud), lng: parseFloat(datalogger.longitud) },
-                  map: mapDefault,
-                  title: 'Datalogger: ' + datalogger.idDatalogger
-              });
-            });
-            var infoWindow = new google.maps.InfoWindow();
-
-// Añadir el evento de click al mapa
-mapDefault.addListener('click', function(event) {
-    var latLng = event.latLng;
-    var contentString = `
-        <div style="
-            background-color: #333; /* Fondo gris oscuro */
-            color: #FFF;            /* Texto blanco */
-            padding: 10px;          /* Espaciado interno */
-            border-radius: 8px;    /* Esquinas redondeadas */
-            font-family: Arial, sans-serif; /* Fuente del texto */
-            font-size: 14px;       /* Tamaño de fuente */
-            max-width: 200px;      /* Ancho máximo */
-            box-shadow: 0 2px 6px rgba(0,0,0,0.3); /* Sombra sutil */
-        ">
-            Latitud: <span style="font-weight: bold;">${latLng.lat().toFixed(6)}</span><br>
-            Longitud: <span style="font-weight: bold;">${latLng.lng().toFixed(6)}</span>
-        </div>`;
-
-    infoWindow.setPosition(latLng);
-    infoWindow.setContent(contentString);
-    infoWindow.open(mapDefault);
-
-    // Esperar un momento para que el InfoWindow se renderice completamente
-    setTimeout(function() {
-        var closeButton = document.querySelector('.gm-ui-hover-effect');
-
-        if (closeButton) {
-            // Estilizar el botón de cierre
-            closeButton.style.width = '20px';  // Ajustar el ancho
-            closeButton.style.height = '20px'; // Ajustar la altura
-            closeButton.style.fontSize = '12px'; // Ajustar el tamaño de fuente
-            closeButton.style.backgroundColor = 'red'; // Cambiar el color de fondo
-            closeButton.style.borderRadius = '50%'; // Hacerlo circular
-            closeButton.style.color = 'white'; // Cambiar el color del texto
-            closeButton.style.lineHeight = '20px'; // Centrar el texto verticalmente
-            closeButton.style.textAlign = 'center'; // Centrar el texto horizontalmente
-            closeButton.style.border = 'none'; // Eliminar el borde predeterminado
-            closeButton.style.padding = '0'; // Eliminar el relleno
-            closeButton.innerHTML = 'X'; // Asegurar que el texto es una 'X'
-        }
-    }, 10); // Tiempo de espera para asegurar que el InfoWindow se ha renderizado
-});
-
-
-
-          
-        }
-          
-    </script>
 
 <!-- <script src="<?php echo base_url(); ?>coloradmin/assets/js/demo/map-google.demo.js"></script> -->
 <!-- <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDscHZkKGKv21yacNUg_OYgTDrggBAvCaM&callback=initMap" async defer></script> -->
@@ -504,8 +555,6 @@ mapDefault.addListener('click', function(event) {
       <?php endif; ?>
   });
 </script>
-
-
 
 
   </body>

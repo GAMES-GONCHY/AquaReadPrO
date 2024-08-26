@@ -268,7 +268,7 @@
                     </div> -->
                 </div>
                 <div class="menu-item">
-                    <a href="widget.html" class="menu-link">
+                    <a href="<?php echo base_url(); ?>index.php/datalogger/habilitados" class="menu-link">
                         <div class="menu-icon">
                             <i class="fa fa-gift"></i>
                         </div>
