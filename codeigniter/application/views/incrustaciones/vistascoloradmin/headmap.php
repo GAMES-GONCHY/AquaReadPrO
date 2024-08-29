@@ -11,15 +11,11 @@
 	<link href="<?php echo base_url(); ?>coloradmin/assets/css/vendor.min.css" rel="stylesheet" />
 	<link href="<?php echo base_url(); ?>coloradmin/assets/css/transparent/app.min.css" rel="stylesheet" />
 <style>
-.modal {
-    z-index: 1050 !important;
+.modal-backdrop {
+    background-color: rgba(0, 0, 0, 0.1); /* Ajusta el último valor para mayor o menor opacidad */
+    z-index: 1040;
+    pointer-events: none;
 }
-
-.app-content-padding {
-    position: relative;
-    z-index: 1100; /* Mayor que el mapa */
-}
-
 </style>
 </head>
 

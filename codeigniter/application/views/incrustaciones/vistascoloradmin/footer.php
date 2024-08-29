@@ -265,14 +265,16 @@
       // Declara mapDefault globalmente
       var mapDefault;
       // Opciones del mapa
-      var mapOptions = {
+      var mapOptions = 
+      {
           zoom: 17,
           center: new google.maps.LatLng(-17.4105450836976, -66.12594068258299),
           mapTypeId: google.maps.MapTypeId.ROADMAP,
           disableDefaultUI: true,
           minZoom: 16,
           restriction: {
-              latLngBounds: {
+              latLngBounds: 
+              {
                   north: -17.404592,  // Latitud máxima permitida
                   south: -17.41772613612582,  // Latitud mínima permitida
                   east: -66.12145818889127,   // Longitud máxima permitida
@@ -286,7 +288,8 @@
       mapDefault = new google.maps.Map(document.getElementById('google-map-default'), mapOptions);
 
       // Añadir el polígono para delimitar visualmente el área de trabajo
-      var areaCoords = [
+      var areaCoords = 
+      [
           { lat: -17.408245180718332, lng: -66.12707638331297 }, // Punto 1 
           { lat: -17.40684055845479, lng: -66.12465000539221 }, // Punto 2 
           { lat: -17.409884426845334, lng: -66.12394582690727 }, // Punto 3
@@ -555,7 +558,6 @@
       <?php endif; ?>
   });
 </script>
-
 
   </body>
 
