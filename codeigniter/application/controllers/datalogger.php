@@ -13,102 +13,58 @@ class Datalogger extends CI_Controller
 		$this->load->view('geomap', $data);
 		$this->load->view('incrustaciones/vistascoloradmin/footer');
 	}
-	public function habilitados()
-	{
-		$data['dataloggers'] = $this->datalogger_model->dataloggers();
+	// Guardar marcador en la base de datos
+    public function save_marker() 
+    {
+        $latitud = $this->input->post('latitud');
+        $longitud = $this->input->post('longitud');
+        $idUsuario = $this->input->post('idUsuario');
 
-		$this->load->view('incrustaciones/vistascoloradmin/head');
-		$this->load->view('incrustaciones/vistascoloradmin/menuadmin');
-		$this->load->view('dataloggershabilitados', $data);
-		$this->load->view('incrustaciones/vistascoloradmin/footer');
-	}
-	public function deshabilitados()
-	{
-		$data['dataloggers'] = $this->datalogger_model->deshabilitados();
+        // Lógica para guardar el marcador en la base de datos
+        $data = array(
+            'latitud' => $latitud,
+            'longitud' => $longitud,
+            'idUsuario' => $idUsuario
+        );
 
-		$this->load->view('incrustaciones/vistascoloradmin/head');
-		$this->load->view('incrustaciones/vistascoloradmin/menuadmin');
-		$this->load->view('dataloggersdeshabilitados', $data);
-		$this->load->view('incrustaciones/vistascoloradmin/footer');
-	}
-	public function habilitarbd()
-	{
-		$id = $_POST['id'];
-		$data['estado'] = 1;
-
-		$this->datalogger_model->modificar($id, $data);
-		redirect('datalogger/deshabilitados', 'refresh');
-	}
-	public function deshabilitarbd()
-	{
-		$id = $_POST['id'];
-		$data['estado'] = 0;
-
-		$this->datalogger_model->deshabilitar($id, $data);
-		redirect('datalogger/habilitados', 'refresh');
-	}
-	// public function agregar()
-	// {
-	// 	$this->load->view('incrustaciones/vistascoloradmin/head');
-	// 	$this->load->view('incrustaciones/vistascoloradmin/menuadmin');
-	// 	$this->load->view('formagregardatalogger');
-	// 	$this->load->view('incrustaciones/vistascoloradmin/footer');
-	// }
-	public function agregarbd()
-	{
-		$data['latitud'] = $_POST['latitud'];
-		$data['longitud'] = $_POST['longitud'];
-		$data['idAutor']=$this->session->userdata('idUsuario');
-		$data['idUsuario'] = $_POST['codsocio'];
-
-		$this->datalogger_model->agregar($data);
-		redirect('datalogger/agregar');
-	}
-	public function agregar()
-	{
-		// Verifica si la solicitud es AJAX
-        if ($this->input->is_ajax_request()) 
+        if ($this->db->insert('datalogger', $data)) 
 		{
-            // Recibe las coordenadas del marcador desde la solicitud POST
-            $lat = $this->input->post('latitude');
-            $lng = $this->input->post('longitude');
-
-            // Verifica que los datos no sean nulos
-            if ($lat !== null && $lng !== null) 
-			{
-                // Lógica para guardar los datos en la base de datos
-                $data = array(
-                    'latitud' => $lat,
-                    'longitud' => $lng
-                );
-				$consulta=$this->datalogger_model->agregar($data);
-                if ($consulta) 
-				{
-                    // Responder con éxito
-                    echo json_encode(['status' => 'success']);
-
-					$this->session->set_flashdata('mensaje', 'datalogger insertado correctamente');
-					$this->session->set_flashdata('alert_type', 'success');
-                } 
-				else 
-				{
-                    // Responder con error
-                    echo json_encode(['status' => 'error', 'message' => 'Error al insertar en la base de datos.']);
-					
-					$this->session->set_flashdata('mensaje', 'El E-mail ya está registrado en el sistema.');
-					$this->session->set_flashdata('alert_type', 'error');
-                }
-            } 
-			else 
-			{
-                // Responder con error si los datos están incompletos
-                echo json_encode(['status' => 'error', 'message' => 'Datos incompletos.']);
-            }
-        } 
-		else 
-		{
-            // Si no es una solicitud AJAX, se redirige a la página principal o se muestra un error
-            show_error('Acceso no permitido', 403);
+            $idDatalogger = $this->db->insert_id(); // Obtener el idDatalogger recién creado
+            echo json_encode(['status' => 'success', 'idDatalogger' => $idDatalogger]);
         }
-	}
+        else
+        {
+            $error = $this->db->error();  // Obtén el error de la base de datos
+            log_message('error', 'Error en la inserción de datalogger: ' . json_encode($error));
+            echo json_encode(['status' => 'error', 'message' => $error]);
+        }
+    }
+
+    public function delete_marker() 
+    {
+        $idDatalogger = $this->input->post('idDatalogger');
+        $data['estado']=$this->input->post('estado');
+        if (is_null($idDatalogger)) 
+        {
+            echo json_encode(['status' => 'error', 'message' => 'Datos faltantes']);
+            return;
+        }
+    
+        // Eliminar el marcador basado en el idDatalogger
+        $this->db->where('idDatalogger', $idDatalogger);
+        $this->db->update('datalogger',$data);
+    
+        if ($this->db->affected_rows() > 0) 
+        { // Verifica que se haya afectado al menos una fila
+            echo json_encode(['status' => 'success']);
+        }
+        else 
+        {
+            $error = $this->db->error();
+            log_message('error', 'Error al eliminar datalogger: ' . json_encode($error));
+            echo json_encode(['status' => 'error', 'message' => 'No se pudo eliminar el marcador.']);
+        }
+    }
+    
+    
 }

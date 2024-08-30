@@ -36,13 +36,16 @@ class Datalogger_model extends CI_Model
 		
 	// 	$this->db->insert('datalogger', $data);
 	// }
+	// public function agregar($data)
+	// {
+	// 	// Inserta los datos en la base de datos
+	// 	$this->db->insert('datalogger', $data);
+
+	// 	// devuelve true si la insercion fue exitosa, false sino lo fue
+	// 	return $this->db->affected_rows() > 0;
+	// }
 	public function agregar($data)
 	{
-		// Inserta los datos en la base de datos
-		$this->db->insert('datalogger', $data);
-
-		// devuelve true si la insercion fue exitosa, false sino lo fue
-		return $this->db->affected_rows() > 0;
-		
+		$this->db->insert('ejemplo', $data);
 	}
 }

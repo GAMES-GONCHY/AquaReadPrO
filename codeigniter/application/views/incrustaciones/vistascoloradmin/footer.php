@@ -259,22 +259,22 @@
 <!-- Google maps -->
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDscHZkKGKv21yacNUg_OYgTDrggBAvCaM&callback=initMap&libraries=geometry" async defer></script>
 
-<script>
-  function initMap() 
-  {
+<!-- <script>
+  var addingMarker = false;  // Controla si se pueden agregar marcadores
+  var markers = [];  // Array para almacenar los marcadores
+
+  function initMap() {
       // Declara mapDefault globalmente
       var mapDefault;
       // Opciones del mapa
-      var mapOptions = 
-      {
+      var mapOptions = {
           zoom: 17,
           center: new google.maps.LatLng(-17.4105450836976, -66.12594068258299),
           mapTypeId: google.maps.MapTypeId.ROADMAP,
           disableDefaultUI: true,
           minZoom: 16,
           restriction: {
-              latLngBounds: 
-              {
+              latLngBounds: {
                   north: -17.404592,  // Latitud máxima permitida
                   south: -17.41772613612582,  // Latitud mínima permitida
                   east: -66.12145818889127,   // Longitud máxima permitida
@@ -288,8 +288,7 @@
       mapDefault = new google.maps.Map(document.getElementById('google-map-default'), mapOptions);
 
       // Añadir el polígono para delimitar visualmente el área de trabajo
-      var areaCoords = 
-      [
+      var areaCoords = [
           { lat: -17.408245180718332, lng: -66.12707638331297 }, // Punto 1 
           { lat: -17.40684055845479, lng: -66.12465000539221 }, // Punto 2 
           { lat: -17.409884426845334, lng: -66.12394582690727 }, // Punto 3
@@ -315,64 +314,285 @@
       var coordenadas = <?php echo $info; ?>;
 
       // Añadir los marcadores al mapa
-      coordenadas.forEach(function(datalogger) 
-      {
-        new google.maps.Marker({
+      coordenadas.forEach(function(datalogger) {
+        var marker = new google.maps.Marker({
             position: { lat: parseFloat(datalogger.latitud), lng: parseFloat(datalogger.longitud) },
             map: mapDefault,
             title: 'Datalogger: ' + datalogger.idDatalogger
         });
+        markers.push(marker); // Añadir al array de marcadores
       });
-      var infoWindow = new google.maps.InfoWindow();
 
-      // Añadir el evento de click al mapa
-      mapDefault.addListener('click', function(event) {
-          var latLng = event.latLng;
-          var contentString = `
-              <div style="
-                  background-color: #333; /* Fondo gris oscuro */
-                  color: #FFF;            /* Texto blanco */
-                  padding: 10px;          /* Espaciado interno */
-                  border-radius: 8px;    /* Esquinas redondeadas */
-                  font-family: Arial, sans-serif; /* Fuente del texto */
-                  font-size: 14px;       /* Tamaño de fuente */
-                  max-width: 200px;      /* Ancho máximo */
-                  box-shadow: 0 2px 6px rgba(0,0,0,0.3); /* Sombra sutil */
-              ">
-                  Latitud: <span style="font-weight: bold;">${latLng.lat().toFixed(6)}</span><br>
-                  Longitud: <span style="font-weight: bold;">${latLng.lng().toFixed(6)}</span>
-              </div>`;
-
-          infoWindow.setPosition(latLng);
-          infoWindow.setContent(contentString);
-          infoWindow.open(mapDefault);
-
-          // Esperar un momento para que el InfoWindow se renderice completamente
-          setTimeout(function() {
-              var closeButton = document.querySelector('.gm-ui-hover-effect');
-
-              if (closeButton) {
-                  // Estilizar el botón de cierre
-                  closeButton.style.width = '20px';  // Ajustar el ancho
-                  closeButton.style.height = '20px'; // Ajustar la altura
-                  closeButton.style.fontSize = '12px'; // Ajustar el tamaño de fuente
-                  closeButton.style.backgroundColor = 'red'; // Cambiar el color de fondo
-                  closeButton.style.borderRadius = '50%'; // Hacerlo circular
-                  closeButton.style.color = 'white'; // Cambiar el color del texto
-                  closeButton.style.lineHeight = '20px'; // Centrar el texto verticalmente
-                  closeButton.style.textAlign = 'center'; // Centrar el texto horizontalmente
-                  closeButton.style.border = 'none'; // Eliminar el borde predeterminado
-                  closeButton.style.padding = '0'; // Eliminar el relleno
-                  closeButton.innerHTML = 'X'; // Asegurar que el texto es una 'X'
-              }
-          }, 10); // Tiempo de espera para asegurar que el InfoWindow se ha renderizado
+      // Activar la adición de marcadores cuando se presiona el botón
+      document.getElementById('addDataloggerBtn').addEventListener('click', function () {
+          addingMarker = true;
+          alert("Haz clic en el mapa para agregar un datalogger.");
       });
-    
+
+      // Evento para agregar marcadores en el mapa con clic izquierdo
+      mapDefault.addListener('click', function (event) {
+          if (addingMarker) {
+              var lat = event.latLng.lat();
+              var lng = event.latLng.lng();
+
+              // Crear un nuevo marcador en la ubicación clicada
+              var newMarker = new google.maps.Marker({
+                  position: { lat: lat, lng: lng },
+                  map: mapDefault,
+                  draggable: true // Permitir que el marcador sea arrastrado si lo deseas
+              });
+
+              // Almacenar el nuevo marcador en el array de marcadores
+              markers.push(newMarker);
+
+              // Guardar el marcador en la base de datos vía AJAX
+              $.ajax({
+                  url: '<?php echo base_url(); ?>index.php/datalogger/save_marker',
+                  method: 'POST',
+                  data: {
+                      latitud: lat,
+                      longitud: lng,
+                      idUsuario: <?php echo $this->session->userdata('idUsuario'); ?>
+                  },
+                  success: function (response) {
+                      alert("Datalogger agregado correctamente.");
+                  },
+                  error: function () {
+                      alert("Error al agregar el datalogger.");
+                  }
+              });
+
+              google.maps.event.addListener(newMarker, 'rightclick', function () {
+                newMarker.setMap(null);
+
+                $.ajax({
+                    url: '<?php echo base_url(); ?>index.php/datalogger/delete_marker',
+                    method: 'POST',
+                    data: {
+                        latitud: newMarker.getPosition().lat(),
+                        longitud: newMarker.getPosition().lng()
+                    },
+                    success: function (response) {
+                        alert("Datalogger eliminado correctamente.");
+                    },
+                    error: function () {
+                        alert("Error al eliminar el datalogger.");
+                    }
+                });
+
+                markers = markers.filter(m => m !== newMarker);
+            });
+          }
+      });
   }
-          
-</script>
+</script> -->
 
 <script>
+  var addingMarker = false;  // Controla si se pueden agregar marcadores
+  var markers = [];  // Array para almacenar los marcadores
+  var ctrlPressed = false;  // Controla si la tecla "Ctrl" está presionada
+
+  // Detectar cuándo se presiona la tecla "Ctrl"
+  document.addEventListener('keydown', function(event) {
+      if (event.key === 'Control' || event.key === 'Ctrl') {
+          ctrlPressed = true;
+      }
+  });
+
+  // Detectar cuándo se suelta la tecla "Ctrl"
+  document.addEventListener('keyup', function(event) {
+      if (event.key === 'Control' || event.key === 'Ctrl') {
+          ctrlPressed = false;
+      }
+  });
+
+  function initMap() {
+      // Inicializar el mapa
+      var mapDefault;
+      var mapOptions = {
+          zoom: 17,
+          center: new google.maps.LatLng(-17.4105450836976, -66.12594068258299),
+          mapTypeId: google.maps.MapTypeId.ROADMAP,
+          disableDefaultUI: true,
+          minZoom: 16,
+          restriction: {
+              latLngBounds: {
+                  north: -17.404592,
+                  south: -17.41772613612582,
+                  east: -66.12145818889127,
+                  west: -66.12823287518866
+              },
+              strictBounds: false
+          },
+          gestureHandling: "greedy"
+      };
+
+      mapDefault = new google.maps.Map(document.getElementById('google-map-default'), mapOptions);
+
+      // Añadir el polígono para delimitar visualmente el área de trabajo
+      var areaCoords = [
+          { lat: -17.408245180718332, lng: -66.12707638331297 },
+          { lat: -17.40684055845479, lng: -66.12465000539221 },
+          { lat: -17.409884426845334, lng: -66.12394582690727 },
+          { lat: -17.41110434666331, lng: -66.12399193373078 },
+          { lat: -17.41537732580422, lng: -66.12540074076435 },
+          { lat: -17.415421965664258, lng: -66.12607972919076 }
+      ];
+
+      var areaPolygon = new google.maps.Polygon({
+          paths: areaCoords,
+          strokeColor: '#FF0000',
+          strokeOpacity: 0.8,
+          strokeWeight: 2,
+          fillColor: '#B0E0E6',
+          fillOpacity: 0.1,
+          clickable: false
+      });
+
+      areaPolygon.setMap(mapDefault);
+
+      // Obtener los datos de coordenadas desde PHP
+      var coordenadas = <?php echo $info; ?>;
+
+      // Añadir los marcadores al mapa y asignar el evento de clic derecho para eliminar
+      coordenadas.forEach(function(datalogger) {
+          var marker = new google.maps.Marker({
+              position: { lat: parseFloat(datalogger.latitud), lng: parseFloat(datalogger.longitud) },
+              map: mapDefault,
+              title: 'Datalogger: ' + datalogger.idDatalogger,
+              idDatalogger: datalogger.idDatalogger,
+              estado: datalogger.estado  // Asegúrate de que el estado se pase correctamente desde la base de datos
+          });
+          markers.push(marker);
+
+          // Añadir el evento de clic derecho para eliminar
+          google.maps.event.addListener(marker, 'rightclick', function () {
+              deleteMarker(marker);
+          });
+      });
+
+      // Activar la adición de marcadores cuando se presiona el botón
+      document.getElementById('addDataloggerBtn').addEventListener('click', function () {
+          addingMarker = true;
+
+          // Cambiar el cursor del mapa para indicar que se está agregando un marcador
+          mapDefault.setOptions({ draggableCursor: 'crosshair' });
+
+          // Mostrar un mensaje temporalmente para guiar al usuario
+          var infoWindow = new google.maps.InfoWindow({
+              content: "Haz clic en el mapa para agregar un datalogger.",
+              position: mapDefault.getCenter()
+          });
+          infoWindow.open(mapDefault);
+
+          // Cerrar el mensaje después de unos segundos
+          setTimeout(function() {
+              infoWindow.close();
+          }, 3000);  // 3 segundos
+      });
+
+      // Evento para agregar marcadores en el mapa con clic izquierdo
+      mapDefault.addListener('click', function (event) {
+          if (addingMarker) {
+              var lat = event.latLng.lat();
+              var lng = event.latLng.lng();
+
+              // Crear un nuevo marcador en la ubicación clicada
+              var newMarker = new google.maps.Marker({
+                  position: { lat: lat, lng: lng },
+                  map: mapDefault,
+                  draggable: true
+              });
+
+              // Almacenar el nuevo marcador en el array de marcadores
+              markers.push(newMarker);
+
+              // Guardar el marcador en la base de datos vía AJAX
+              $.ajax({
+                  url: '<?php echo base_url(); ?>index.php/datalogger/save_marker',
+                  method: 'POST',
+                  data: {
+                      latitud: lat,
+                      longitud: lng,
+                      idUsuario: <?php echo $this->session->userdata('idUsuario'); ?>
+                  },
+                  success: function (response) {
+                      try {
+                          var jsonResponse = JSON.parse(response);
+                          if (jsonResponse.status === 'success') {
+                              // Asigna el idDatalogger al nuevo marcador
+                              newMarker.idDatalogger = jsonResponse.idDatalogger;
+                          } else {
+                              alert("Error al agregar el datalogger: " + jsonResponse.message);
+                          }
+                      } catch (e) {
+                          console.error("Error procesando la respuesta: ", e);
+                          alert("Error inesperado. Por favor, intenta de nuevo.");
+                      }
+                  },
+                  error: function () {
+                      alert("Error al agregar el datalogger.");
+                  }
+              });
+
+              // Asignar el evento de clic derecho para eliminar el nuevo marcador
+              google.maps.event.addListener(newMarker, 'rightclick', function () {
+                  deleteMarker(newMarker);
+              });
+
+              // Si la tecla "Ctrl" no está presionada, se desactiva la adición de marcadores
+              if (!ctrlPressed) {
+                  mapDefault.setOptions({ draggableCursor: null });
+                  addingMarker = false;
+              }
+          }
+      });
+  }
+
+  function deleteMarker(marker) {
+      var idDatalogger = marker.idDatalogger;
+      var estado = 'eliminado';  // Estado fijo para marcar como eliminado
+
+      // Cambiar el cursor del documento para indicar que se está procesando la eliminación
+      document.body.style.cursor = 'progress';
+
+      $.ajax({
+          url: '<?php echo base_url(); ?>index.php/datalogger/delete_marker',
+          method: 'POST',
+          data: {
+              idDatalogger: idDatalogger,
+              estado: estado  // Pasar el estado de "eliminado" al backend
+          },
+          success: function (response) {
+              try {
+                  var jsonResponse = JSON.parse(response);
+
+                  if (jsonResponse.status === 'success') {
+                      marker.setMap(null);  // Eliminar el marcador del mapa
+                      markers = markers.filter(m => m !== marker);  // Remover el marcador del array local
+
+                      // Restaurar el cursor del documento
+                      document.body.style.cursor = 'default';
+                  } else {
+                      document.body.style.cursor = 'default';
+                      console.error("Error al eliminar el datalogger: " + jsonResponse.message);
+                  }
+              } catch (e) {
+                  console.error("Error procesando la respuesta: ", e);
+                  document.body.style.cursor = 'default';
+              }
+          },
+          error: function () {
+              console.error("Error al eliminar el datalogger.");
+              document.body.style.cursor = 'default';
+          }
+      });
+  }
+</script>
+
+
+
+<!-- <script>
   document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('addMarkerForm').addEventListener('submit', function(e) {
       e.preventDefault(); // Evita el envío del formulario
@@ -421,7 +641,7 @@
       modal.hide();
     });
   });
-</script>
+</script> -->
 
 
 <!-- <script src="<?php echo base_url(); ?>coloradmin/assets/js/demo/map-google.demo.js"></script> -->
