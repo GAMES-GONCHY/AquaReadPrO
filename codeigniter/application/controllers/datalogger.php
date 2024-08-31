@@ -3,7 +3,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 class Datalogger extends CI_Controller
 {
-	public function geolocalizar()
+	public function habilitados()
 	{
 		$data['info'] = $this->datalogger_model->dataloggers()->result_array();
 		// Convertir el array a JSON
@@ -13,8 +13,7 @@ class Datalogger extends CI_Controller
 		$this->load->view('geomap', $data);
 		$this->load->view('incrustaciones/vistascoloradmin/footer');
 	}
-	// Guardar marcador en la base de datos
-    public function save_marker() 
+    public function agregarmarker() 
     {
         $latitud = $this->input->post('latitud');
         $longitud = $this->input->post('longitud');
@@ -26,21 +25,21 @@ class Datalogger extends CI_Controller
             'longitud' => $longitud,
             'idUsuario' => $idUsuario
         );
-
-        if ($this->db->insert('datalogger', $data)) 
+        
+        $idDatalogger=$this->datalogger_model->agregar($data);
+        if ($idDatalogger)
 		{
-            $idDatalogger = $this->db->insert_id(); // Obtener el idDatalogger recién creado
             echo json_encode(['status' => 'success', 'idDatalogger' => $idDatalogger]);
         }
         else
         {
-            $error = $this->db->error();  // Obtén el error de la base de datos
+            $error = $this->db->error();
             log_message('error', 'Error en la inserción de datalogger: ' . json_encode($error));
             echo json_encode(['status' => 'error', 'message' => $error]);
         }
     }
 
-    public function delete_marker() 
+    public function eliminarmarker() 
     {
         $idDatalogger = $this->input->post('idDatalogger');
         $data['estado']=$this->input->post('estado');
@@ -49,13 +48,10 @@ class Datalogger extends CI_Controller
             echo json_encode(['status' => 'error', 'message' => 'Datos faltantes']);
             return;
         }
+        $consulta=$this->datalogger_model->modificar($idDatalogger,$data);
     
-        // Eliminar el marcador basado en el idDatalogger
-        $this->db->where('idDatalogger', $idDatalogger);
-        $this->db->update('datalogger',$data);
-    
-        if ($this->db->affected_rows() > 0) 
-        { // Verifica que se haya afectado al menos una fila
+        if ($consulta) 
+        {
             echo json_encode(['status' => 'success']);
         }
         else 
@@ -65,6 +61,30 @@ class Datalogger extends CI_Controller
             echo json_encode(['status' => 'error', 'message' => 'No se pudo eliminar el marcador.']);
         }
     }
-    
+    public function modificarmarker()
+    {
+        $idDatalogger = $this->input->post('idDatalogger');
+        $data['latitud'] = $this->input->post('latitud');
+        $data['longitud'] = $this->input->post('longitud');
+
+        // Verifica si los datos necesarios están presentes
+        if (is_null($idDatalogger) || is_null($data['latitud']) || is_null($data['longitud'])) 
+        {
+            echo json_encode(['status' => 'error', 'message' => 'Datos faltantes']);
+            return;
+        }
+
+        $result=$this->datalogger_model->modificar($idDatalogger,$data);        
+        if ($result) 
+        {
+            echo json_encode(['status' => 'success']);
+        } 
+        else 
+        {
+            $error = $this->db->error();
+            log_message('error', 'Error al actualizar las coordenadas del datalogger: ' . json_encode($error));
+            echo json_encode(['status' => 'error', 'message' => 'Error al actualizar las coordenadas']);
+        }
+    }
     
 }

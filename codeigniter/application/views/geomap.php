@@ -4,7 +4,7 @@
         <div id="google-map-default" class="w-100 h-100"></div>
     </div>
     <!-- Colocar el botón flotante sobre el mapa -->
-    <button id="addDataloggerBtn" class="btn btn-primary position-absolute" style="top: 20px; left: 20px; z-index: 3;">Agregar Datalogger</button>
+    <button id="addDataloggerBtn" class="btn btn-yellow position-absolute" style="top: 20px; left: 20px; z-index: 3;">Agregar Datalogger</button>
     
     <!-- Contenedor para la interfaz, colocada por encima del mapa -->
     <div class="app-content-padding position-relative" style="z-index: 2;">
