@@ -76,7 +76,29 @@ class Crudusers extends CI_Controller
 			$data['fono'] = $_POST['fono'];
 			$data['sexo'] = $_POST['genero'];
 			//$data['idAutor']=$this->session->userdata('idUsuario');
+
+			$this->db->trans_start();
 			$this->crudusers_model->agregar($data);
+			$idUsuario=$this->db->insert_id();
+			
+			$data2['idUsuario']=$idUsuario;
+			$this->db->insert('membresia',$data2);
+			$idMembresia=$this->db->insert_id();
+
+			$this->db->select_max('idDatalogger');
+			$idDatalogger = $this->db->get('datalogger')->row()->idDatalogger;
+			$data3['idDatalogger']=$idDatalogger;
+			$data3['idMembresia']=$idMembresia;
+			$data3['idAutor']=$this->session->userdata('idUsuario');
+			$this->db->insert('medidor',$data3);
+
+			$this->db->trans_complete();
+
+			if($this->db->trans_status()===FALSE)
+			{
+				$this->session->set_flashdata('mensaje', 'Error al agregar un nuevo usuario, inténtelo nuevamente');
+				$this->session->set_flashdata('alert_type', 'error');
+			}
 
 			// Envía el correo
             if ($this->enviaremail($data)) 

@@ -15,7 +15,7 @@
       <div class="col-xl-12">
         <div class="panel panel-inverse">
           <div class="panel-heading d-flex justify-content-between align-items-center">
-            <h4 class="panel-title">Gestionar Dataloggers</h4>
+            <h4 class="panel-title">Fuera de servicio</h4>
             <div class="panel-heading-btn">
               <a href="javascript:;" class="btn btn-xs btn-icon btn-default" data-toggle="panel-expand"><i class="fa fa-expand"></i></a>
               <a href="javascript:;" class="btn btn-xs btn-icon btn-success" data-toggle="panel-reload"><i class="fa fa-redo"></i></a>
@@ -39,7 +39,6 @@
                   <th>Latitud</th>
                   <th>Longitud</th>
                   <th>Fecha instalación</th>
-                  <th>Código socio</th>
                   <th>Habilitar</th>
                 </tr>
               </thead>
@@ -53,7 +52,6 @@
                     <td><?php echo $row->latitud; ?></td>
                     <td><?php echo $row->longitud; ?></td>
                     <td><?php echo $row->fechaRegistro; ?></td>
-                    <td><?php echo $row->idUsuario; ?></td>
                     <td>
                       <?php
                       echo form_open_multipart("datalogger/habilitarbd"); // <form>
@@ -76,7 +74,6 @@
                   <th>Latitud</th>
                   <th>Longitud</th>
                   <th>Fecha instalación</th>
-                  <th>Código socio</th>
                   <th>Habilitar</th>
                 </tr>
               </tfoot>

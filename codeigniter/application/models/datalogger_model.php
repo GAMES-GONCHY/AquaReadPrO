@@ -3,7 +3,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Datalogger_model extends CI_Model
 {
-	public function dataloggers()
+	public function habilitados()
     {
         $this->db->where('estado', 1);
         $query = $this->db->get('datalogger');

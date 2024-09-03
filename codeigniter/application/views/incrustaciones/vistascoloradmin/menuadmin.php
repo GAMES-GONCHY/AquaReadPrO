@@ -215,7 +215,7 @@
                 </a>
                 <div class="menu-submenu">
                     <div class="menu-item active">
-                        <a href="<?php echo base_url(); ?>index.php/datalogger/habilitados" class="menu-link">
+                        <a href="<?php echo base_url(); ?>index.php/geodatalogger/geolocalizar" class="menu-link">
                             <div class="menu-text">Vista general</div>
                         </a>
                     </div>

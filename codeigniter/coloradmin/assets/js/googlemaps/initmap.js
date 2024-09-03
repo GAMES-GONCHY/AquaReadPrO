@@ -136,33 +136,25 @@ function createMarker(position, map, idDatalogger) {
 
 function saveMarker(lat, lng, marker) {
     $.ajax({
-        url: '/tercerAnio/aquaReadPro/codeigniter/index.php/datalogger/agregarmarker',
+        url: '/tercerAnio/aquaReadPro/codeigniter/index.php/geodatalogger/agregarmarker',
         method: 'POST',
         data: {
             latitud: lat,
             longitud: lng,
-            idUsuario: window.idUsuario  // Debes pasar el idUsuario desde el HTML como una variable global
+            idAutor: window.idUsuario  // Debes pasar el idUsuario desde el HTML como una variable global
         },
         success: function (response) 
         {
-            // try
-            // {
-                console.log(response);  // Verificar la respuesta
-                var jsonResponse = JSON.parse(response);
-                if (jsonResponse.status === 'success') 
-                {
-                    marker.idDatalogger = jsonResponse.idDatalogger;
-                }
-                else 
-                {
-                    alert("Error al agregar el datalogger: " + jsonResponse.message);
-                }
-            //}
-            // catch (e) 
-            // {
-            //     console.error("Error procesando la respuesta: ", e);
-            //     alert("Error inesperado. Por favor, intenta de nuevo.");
-            // }
+            console.log(response);  // Verificar la respuesta
+            var jsonResponse = JSON.parse(response);
+            if (jsonResponse.status === 'success') 
+            {
+                marker.idDatalogger = jsonResponse.idDatalogger;
+            }
+            else 
+            {
+                alert("Error al agregar el datalogger: " + jsonResponse.message);
+            }
         },
         error: function () 
         {
@@ -178,7 +170,7 @@ function deleteMarker(marker) {
     document.body.style.cursor = 'progress';
 
     $.ajax({
-        url: '/tercerAnio/aquaReadPro/codeigniter/index.php/datalogger/eliminarmarker',
+        url: '/tercerAnio/aquaReadPro/codeigniter/index.php/geodatalogger/eliminarmarker',
         method: 'POST',
         data: {
             idDatalogger: idDatalogger,
@@ -216,7 +208,7 @@ function updateMarkerPosition(marker) {
     var idDatalogger = marker.idDatalogger;
 
     $.ajax({
-        url: '/tercerAnio/aquaReadPro/codeigniter/index.php/datalogger/modificarmarker',
+        url: '/tercerAnio/aquaReadPro/codeigniter/index.php/geodatalogger/modificarmarker',
         method: 'POST',
         data: {
             idDatalogger: idDatalogger,

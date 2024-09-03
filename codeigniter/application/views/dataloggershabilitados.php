@@ -15,7 +15,7 @@
       <div class="col-xl-12">
         <div class="panel panel-inverse">
           <div class="panel-heading d-flex justify-content-between align-items-center">
-            <h4 class="panel-title">Gestionar Dataloggers</h4>
+            <h4 class="panel-title">En servicio</h4>
             <div class="panel-heading-btn">
               <a href="javascript:;" class="btn btn-xs btn-icon btn-default" data-toggle="panel-expand"><i class="fa fa-expand"></i></a>
               <a href="javascript:;" class="btn btn-xs btn-icon btn-success" data-toggle="panel-reload"><i class="fa fa-redo"></i></a>
@@ -25,16 +25,16 @@
           </div>
           <div class="panel-body">
             <div class="row mb-3">
-              <div class="col-md-6 mb-2">
+              <div class="col-md-12 mb-2">
                 <a href="<?php echo base_url(); ?>index.php/datalogger/deshabilitados" class="btn btn-info btn-lg btn-block text-uppercase font-weight-bold w-100">
                   VER DESHABILITADOS
                 </a>
               </div>
-              <div class="col-md-6 mb-2">
+              <!-- <div class="col-md-6 mb-2">
                 <a href="<?php echo base_url(); ?>index.php/datalogger/agregar" class="btn btn-success btn-lg btn-block text-uppercase font-weight-bold w-100">
                   Agregar Datalogger
                 </a>
-              </div>
+              </div> -->
             </div>
             <table id="datatable" class="table table-hover table-bordered align-middle">
               <thead>
@@ -43,8 +43,7 @@
                   <th>Latitud</th>
                   <th>Longitud</th>
                   <th>Fecha instalación</th>
-                  <th>Código socio</th>
-                  <th>Modificar</th>
+                  <!-- <th>Modificar</th> -->
                   <th>Deshabilitar</th>
                 </tr>
               </thead>
@@ -58,8 +57,7 @@
                     <td><?php echo $row->latitud; ?></td>
                     <td><?php echo $row->longitud; ?></td>
                     <td><?php echo $row->fechaRegistro; ?></td>
-                    <td><?php echo $row->idUsuario; ?></td>
-                    <td>
+                    <!-- <td>
                       <?php
                       echo form_open_multipart("datalogger/modificar"); // <form>
                       ?>
@@ -68,13 +66,13 @@
                       <?php
                       echo form_close(); // </form>
                       ?>
-                    </td>
+                    </td> -->
                     <td>
                       <?php
                       echo form_open_multipart("datalogger/deshabilitarbd"); // <form>
                       ?>
                       <input type="hidden" name="id" value="<?php echo $row->idDatalogger ?>">
-                      <button type="submit" class="btn btn-danger">Eliminar</button>
+                      <button type="submit" class="btn btn-danger">Dar de baja</button>
                       <?php
                       echo form_close(); // </form>
                       ?>
@@ -91,8 +89,7 @@
                   <th>Latitud</th>
                   <th>Longitud</th>
                   <th>Fecha instalación</th>
-                  <th>Código socio</th>
-                  <th>Modificar</th>
+                  <!-- <th>Modificar</th> -->
                   <th>Deshabilitar</th>
                 </tr>
               </tfoot>

@@ -5,86 +5,55 @@ class Datalogger extends CI_Controller
 {
 	public function habilitados()
 	{
-		$data['info'] = $this->datalogger_model->dataloggers()->result_array();
-		// Convertir el array a JSON
-		$data['info'] = json_encode($data['info']);
-		$this->load->view('incrustaciones/vistascoloradmin/headmap');
+		$data['dataloggers'] = $this->datalogger_model->habilitados();
+
+		$this->load->view('incrustaciones/vistascoloradmin/head');
 		$this->load->view('incrustaciones/vistascoloradmin/menuadmin');
-		$this->load->view('geomap', $data);
+		$this->load->view('dataloggershabilitados', $data);
 		$this->load->view('incrustaciones/vistascoloradmin/footer');
 	}
-    public function agregarmarker() 
-    {
-        $latitud = $this->input->post('latitud');
-        $longitud = $this->input->post('longitud');
-        $idUsuario = $this->input->post('idUsuario');
+    public function deshabilitados()
+	{
+		$data['dataloggers'] = $this->datalogger_model->deshabilitados();
 
-        // Lógica para guardar el marcador en la base de datos
-        $data = array(
-            'latitud' => $latitud,
-            'longitud' => $longitud,
-            'idUsuario' => $idUsuario
-        );
-        
-        $idDatalogger=$this->datalogger_model->agregar($data);
-        if ($idDatalogger)
-		{
-            echo json_encode(['status' => 'success', 'idDatalogger' => $idDatalogger]);
-        }
-        else
-        {
-            $error = $this->db->error();
-            log_message('error', 'Error en la inserción de datalogger: ' . json_encode($error));
-            echo json_encode(['status' => 'error', 'message' => $error]);
-        }
-    }
+		$this->load->view('incrustaciones/vistascoloradmin/head');
+		$this->load->view('incrustaciones/vistascoloradmin/menuadmin');
+		$this->load->view('dataloggersdeshabilitados', $data);
+		$this->load->view('incrustaciones/vistascoloradmin/footer');
+	}
+	public function habilitarbd()
+	{
+		$id = $_POST['id'];
+		$data['estado'] = 1;
 
-    public function eliminarmarker() 
-    {
-        $idDatalogger = $this->input->post('idDatalogger');
-        $data['estado']=$this->input->post('estado');
-        if (is_null($idDatalogger)) 
-        {
-            echo json_encode(['status' => 'error', 'message' => 'Datos faltantes']);
-            return;
-        }
-        $consulta=$this->datalogger_model->modificar($idDatalogger,$data);
-    
-        if ($consulta) 
-        {
-            echo json_encode(['status' => 'success']);
-        }
-        else 
-        {
-            $error = $this->db->error();
-            log_message('error', 'Error al eliminar datalogger: ' . json_encode($error));
-            echo json_encode(['status' => 'error', 'message' => 'No se pudo eliminar el marcador.']);
-        }
-    }
-    public function modificarmarker()
-    {
-        $idDatalogger = $this->input->post('idDatalogger');
-        $data['latitud'] = $this->input->post('latitud');
-        $data['longitud'] = $this->input->post('longitud');
+		$this->datalogger_model->modificar($id, $data);
+		redirect('datalogger/deshabilitados', 'refresh');
+	}
+	public function deshabilitarbd()
+	{
+		$id = $_POST['id'];
+		$data['estado'] = 0;
 
-        // Verifica si los datos necesarios están presentes
-        if (is_null($idDatalogger) || is_null($data['latitud']) || is_null($data['longitud'])) 
-        {
-            echo json_encode(['status' => 'error', 'message' => 'Datos faltantes']);
-            return;
-        }
+		$this->datalogger_model->modificar($id, $data);
+		redirect('datalogger/habilitados', 'refresh');
+	}
+	// public function agregar()
+	// {
+	// 	$this->load->view('incrustaciones/vistascoloradmin/head');
+	// 	$this->load->view('incrustaciones/vistascoloradmin/menuadmin');
+	// 	$this->load->view('formagregardatalogger');
+	// 	$this->load->view('incrustaciones/vistascoloradmin/footer');
+	// }
+	// public function agregarbd()
+	// {
+	// 	$data['latitud'] = $_POST['latitud'];
+	// 	$data['longitud'] = $_POST['longitud'];
+	// 	$data['idAutor']=$this->session->userdata('idUsuario');
+	// 	$data['idUsuario'] = $_POST['codsocio'];
 
-        $result=$this->datalogger_model->modificar($idDatalogger,$data);        
-        if ($result) 
-        {
-            echo json_encode(['status' => 'success']);
-        } 
-        else 
-        {
-            $error = $this->db->error();
-            log_message('error', 'Error al actualizar las coordenadas del datalogger: ' . json_encode($error));
-            echo json_encode(['status' => 'error', 'message' => 'Error al actualizar las coordenadas']);
-        }
-    }
-    
+	// 	$lastId=$this->datalogger_model->agregar($data);
+
+	// 	redirect('datalogger/agregar');
+	// }
+	
 }
