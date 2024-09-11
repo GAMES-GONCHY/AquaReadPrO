@@ -9,7 +9,7 @@
   </ol>
 
 
-  <h1 class="page-header">Usuarios</h1>
+  <h1 class="page-header">Administradores</h1>
 
 
   <div class="container mt-4">
@@ -17,7 +17,7 @@
       <div class="col-xl-12">
         <div class="panel panel-inverse">
           <div class="panel-heading d-flex justify-content-between align-items-center">
-            <h4 class="panel-title">Gestionar Usuarios</h4>
+            <h4 class="panel-title">Gestionar Administradores</h4>
             <div class="panel-heading-btn">
               <a href="javascript:;" class="btn btn-xs btn-icon btn-default" data-toggle="panel-expand"><i class="fa fa-expand"></i></a>
               <a href="javascript:;" class="btn btn-xs btn-icon btn-success" data-toggle="panel-reload"><i class="fa fa-redo"></i></a>
@@ -28,13 +28,13 @@
           <div class="panel-body">
             <div class="row mb-3">
               <div class="col-md-6 mb-2">
-                <a href="<?php echo base_url(); ?>index.php/crudusers/deshabilitados" class="btn btn-info btn-lg btn-block text-uppercase font-weight-bold w-100">
+                <a href="<?php echo base_url(); ?>index.php/crudusers/deshabilitados/2" class="btn btn-info btn-lg btn-block text-uppercase font-weight-bold w-100">
                   VER DESHABILITADOS
                 </a>
               </div>
               <div class="col-md-6 mb-2">
-                <a href="<?php echo base_url(); ?>index.php/crudusers/agregar" class="btn btn-success btn-lg btn-block text-uppercase font-weight-bold w-100">
-                  Agregar Usuarios
+                <a href="<?php echo base_url(); ?>index.php/crudusers/agregar/2" class="btn btn-success btn-lg btn-block text-uppercase font-weight-bold w-100">
+                  Agregar Administrador
                 </a>
               </div>
             </div>
@@ -83,6 +83,7 @@
                       echo form_open_multipart("crudusers/subirfoto");
                       ?>
                       <input type="hidden" name="id" value="<?php echo $row->idUsuario ?>">
+                      <input type="hidden" name="rol" value="<?php echo $row->rol ?>">
                       <button type="submit" class="btn btn-outline-lime me-1 mb-1"><b>Subir</b></button>
                       <?php
                       echo form_close();
@@ -140,7 +141,9 @@
                       echo form_open_multipart("crudusers/deshabilitarbd"); // <form>
                       ?>
                       <input type="hidden" name="id" value="<?php echo $row->idUsuario ?>">
+                      <input type="hidden" name="rol" value="<?php echo $row->rol ?>">
                       <button type="submit" class="btn btn-danger">Eliminar</button>
+
                       <?php
                       echo form_close(); // </form>
                       ?>

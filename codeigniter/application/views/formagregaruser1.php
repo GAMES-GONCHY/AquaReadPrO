@@ -8,7 +8,13 @@
   </ol>
 
 
-  <h1 class="page-header">Agregar usuario</h1>
+  <h1 class="page-header">
+    <?php if ($rol == 2): ?>
+      Agregar Administrador
+    <?php else: ?>
+      Agregar Socio
+    <?php endif; ?>
+  </h1>
 
 
   <div class="row">
@@ -40,6 +46,7 @@
             </div>
           <?php endif; ?>
             <br>
+          
           <form class="form-horizontal" data-parsley-validate="true" id="form-add-user" name="demo-form" method="post" action="<?php echo base_url(); ?>index.php/crudusers/agregarbd">
             <div class="form-group row mb-3">
               <label class="col-lg-4 col-form-label form-label" for="nickname">Nickname * :</label>
@@ -78,9 +85,14 @@
               <label class="col-lg-4 col-form-label form-label">Tipo usuario * :</label>
               <div class="col-lg-8">
                 <select class="form-select" id="select-required" name="rol" data-parsley-required="true">
-                  <option value="0" selected>Socio</option>
-                  <option value="1">Auxiliar</option>
-                  <option value="2">Administrador</option>
+                  <?php if ($rol == 2): ?>
+                    <!-- Si el rol es igual a 2, solo se muestra la opción de Administrador -->
+                    <option value="2" selected>ADMINISTRADOR</option>
+                  <?php else: ?>
+                    <!-- Si el rol no es 2, se muestran las opciones de Socio y Auxiliar -->
+                    <option value="0" <?php echo ($rol == 0) ? 'selected' : ''; ?>>SOCIO</option>
+                    <option value="1" <?php echo ($rol == 1) ? 'selected' : ''; ?>>AUXILIAR</option>
+                  <?php endif; ?>
                 </select>
               </div>
             </div>

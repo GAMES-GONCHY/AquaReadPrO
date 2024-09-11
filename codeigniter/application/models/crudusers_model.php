@@ -3,18 +3,27 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 class Crudusers_model extends CI_Model
 {
-	public function habilitados()
+	public function habilitados($rol)
 	{
 		$this->db->select('*');
 		$this->db->from('usuario');
 		$this->db->where('estado', 1);
+		$this->db->where('rol', $rol);
 		return $this->db->get();
 	}
-	public function deshabilitados()
+	public function deshabilitados($rol)
 	{
 		$this->db->select('*');
 		$this->db->from('usuario');
 		$this->db->where_in('estado', [0, 2]);
+		$this->db->where('rol', $rol);
+		return $this->db->get();
+	}
+	public function membresia($id)
+	{
+		$this->db->select('idMembresia');
+		$this->db->from('membresia');
+		$this->db->where('idUsuario', $id);
 		return $this->db->get();
 	}
 	public function agregar($data)
@@ -26,7 +35,6 @@ class Crudusers_model extends CI_Model
 	{
 		$data['idAutor']=$this->session->userdata('idUsuario');
 		$data['fechaActualizacion']=date('Y-m-d H:i:s');
-
 		$this->db->where('idUsuario', $id);
 		$this->db->update('usuario', $data);
 	}
@@ -46,7 +54,6 @@ class Crudusers_model extends CI_Model
 	{
 		$data['idAutor']=$this->session->userdata('idUsuario');
 		$data['fechaActualizacion']=date('Y-m-d H:i:s');
-		
 		$this->db->where('idUsuario', $id);
 		$this->db->update('usuario', $data);
 	}
@@ -56,27 +63,20 @@ class Crudusers_model extends CI_Model
 		$this->db->from('usuario');
 		$this->db->where('email', $email);
 		$query = $this->db->get();
-
-		// Devuelve TRUE si el email ya está en uso, FALSE en caso contrario
 		return $query->num_rows() > 0;
 	}
 	public function comprobarinsercion($newdata)
 	{
-
 		$duplicate = [];
-
-		// Verificar duplicado por email
 		$this->db->where('email', $newdata['email']);
 		$query = $this->db->get('usuario');
 
-		if ($query->num_rows() > 0) 
+		if ($query->num_rows() > 0)
 		{
 			$duplicate['email'] = true;
 		}
-
-		// Verificar duplicado por nickname
+		
 		$this->db->where('nickName', $newdata['nickname']);
-
 		$query = $this->db->get('usuario');
 
 		if ($query->num_rows() > 0) 
@@ -93,13 +93,9 @@ class Crudusers_model extends CI_Model
 			->or_where('nickName', $newdata['nickname'])
 			->group_end();
 
-		// Excluir el usuario actual
 		$this->db->where('idUsuario !=', $id);
-
 		$query = $this->db->get('usuario');
-
 		$duplicates = [];
-
 		foreach ($query->result() as $row) 
 		{
 			if ($row->email == $newdata['email']) 
@@ -111,7 +107,6 @@ class Crudusers_model extends CI_Model
 				$duplicates['nickName'] = true;
 			}
 		}
-
 		return $duplicates;
 	}
 }

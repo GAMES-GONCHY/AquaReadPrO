@@ -8,29 +8,45 @@ use PHPMailer\PHPMailer\Exception;
 
 class Crudusers extends CI_Controller
 {
-	public function habilitados()
+	public function habilitados($rol)
 	{
-		$lista = $this->crudusers_model->habilitados();
+		
+		$lista = $this->crudusers_model->habilitados($rol);
 		$data['usuarios'] = $lista;
 		$this->load->view('incrustaciones/vistascoloradmin/head');
 		$this->load->view('incrustaciones/vistascoloradmin/menuadmin');
-		$this->load->view('usuarioshabilitados1', $data);
+		if($rol==2)
+		{
+			$this->load->view('usuarioshabilitados1', $data);
+		}
+		else
+		{
+			$this->load->view('socioshabilitados', $data);
+		}	
 		$this->load->view('incrustaciones/vistascoloradmin/footer');
 	}
-	public function deshabilitados()
+	public function deshabilitados($rol)
 	{
-		$lista = $this->crudusers_model->deshabilitados();
+		$lista = $this->crudusers_model->deshabilitados($rol);
 		$data['usuarios'] = $lista;
 		$this->load->view('incrustaciones/vistascoloradmin/head');
 		$this->load->view('incrustaciones/vistascoloradmin/menuadmin');
-		$this->load->view('usuariosdeshabilitados1', $data);
+		if($rol==2)
+		{
+			$this->load->view('usuariosdeshabilitados1', $data);
+		}
+		else
+		{
+			$this->load->view('sociosdeshabilitados', $data);
+		}
 		$this->load->view('incrustaciones/vistascoloradmin/footer');
 	}
-	public function agregar()
+	public function agregar($rol)
 	{
+		$data['rol']=$rol;
 		$this->load->view('incrustaciones/vistascoloradmin/head');
 		$this->load->view('incrustaciones/vistascoloradmin/menuadmin');
-		$this->load->view('formagregaruser1');
+		$this->load->view('formagregaruser1',$data);
 		$this->load->view('incrustaciones/vistascoloradmin/footer');
 	}
 	public function agregarbd()
@@ -61,8 +77,8 @@ class Crudusers extends CI_Controller
 				$this->session->set_flashdata('mensaje', 'ERROR: El E-mail y Nickname ya están registrados en el sistema.');
 				$this->session->set_flashdata('alert_type', 'error');
 			}
-			redirect('crudusers/agregar');
-			
+			//redirect('crudusers/agregar');
+			redirect('crudusers/agregar/'. $_POST['rol']);			
 		} 
 		else 
 		{
@@ -77,41 +93,57 @@ class Crudusers extends CI_Controller
 			$data['sexo'] = $_POST['genero'];
 			//$data['idAutor']=$this->session->userdata('idUsuario');
 
-			$this->db->trans_start();
-			$this->crudusers_model->agregar($data);
-			$idUsuario=$this->db->insert_id();
-			
-			$data2['idUsuario']=$idUsuario;
-			$this->db->insert('membresia',$data2);
-			$idMembresia=$this->db->insert_id();
-
-			$this->db->select_max('idDatalogger');
-			$idDatalogger = $this->db->get('datalogger')->row()->idDatalogger;
-			$data3['idDatalogger']=$idDatalogger;
-			$data3['idMembresia']=$idMembresia;
-			$data3['idAutor']=$this->session->userdata('idUsuario');
-			$this->db->insert('medidor',$data3);
-
-			$this->db->trans_complete();
-
-			if($this->db->trans_status()===FALSE)
+			if($data['rol']==0)
 			{
-				$this->session->set_flashdata('mensaje', 'Error al agregar un nuevo usuario, inténtelo nuevamente');
-				$this->session->set_flashdata('alert_type', 'error');
+				$this->db->trans_start();
+
+				$this->crudusers_model->agregar($data);
+				$idUsuario=$this->db->insert_id();
+				
+				$data2['idUsuario']=$idUsuario;
+				$this->db->insert('membresia',$data2);
+				$idMembresia=$this->db->insert_id();
+
+				// $this->db->select_max('idDatalogger');
+				// $idDatalogger = $this->db->get('datalogger')->row()->idDatalogger;
+				// $data3['idDatalogger']=$idDatalogger;
+				// $data3['idMembresia']=$idMembresia;
+				// $data3['idAutor']=$this->session->userdata('idUsuario');
+				// $this->db->insert('medidor',$data3);
+
+				$this->db->trans_complete();
+
+				if($this->db->trans_status()===FALSE)
+				{
+					$this->session->set_flashdata('mensaje', 'Error al agregar un nuevo usuario, inténtelo nuevamente');
+					$this->session->set_flashdata('alert_type', 'error');
+				}
+				else
+				{
+					$this->session->set_flashdata('mensaje', 'Usuario registrado exitosamente');
+					$this->session->set_flashdata('alert_type', 'success');
+				}
+			}
+			else
+			{
+				$this->crudusers_model->agregar($data);
 			}
 
+			
+			$this->enviaremail($data);
 			// Envía el correo
-            if ($this->enviaremail($data)) 
-			{
-				$this->session->set_flashdata('mensaje', 'Usuario registrado exitosamente');
-				$this->session->set_flashdata('alert_type', 'success');
-            } 
-			else 
-			{
-                $this->session->set_flashdata('mensaje', 'Usuario registrado, sin envío de correo electronico');
-				$this->session->set_flashdata('alert_type', 'warning');
-            }
-			redirect('crudusers/agregar');
+            // if ($this->enviaremail($data)) 
+			// {
+			// 	$this->session->set_flashdata('mensaje', 'Usuario registrado exitosamente');
+			// 	$this->session->set_flashdata('alert_type', 'success');
+            // } 
+			// else 
+			// {
+            //     $this->session->set_flashdata('mensaje', 'Usuario registrado, sin envío de correo electronico');
+			// 	$this->session->set_flashdata('alert_type', 'warning');
+            // }
+			//redirect('crudusers/agregar');
+			redirect('crudusers/agregar/'. $data['rol']);
 		}
 	}
 
@@ -211,7 +243,6 @@ class Crudusers extends CI_Controller
 			{
 				redirect('crudusers/modificar', 'refresh');
 			}
-			
 		} 
 		else 
 		{
@@ -231,7 +262,7 @@ class Crudusers extends CI_Controller
 			$this->crudusers_model->modificar($id, $data);
 			$this->session->set_flashdata('mensaje', 'Modificación exitosa');
 			$this->session->set_flashdata('alert_type', 'success');
-			redirect('crudusers/habilitados', 'refresh');
+			redirect('crudusers/habilitados/'.$data['rol']); //revisar
 		}
 	}
 	public function eliminarbd()
@@ -244,17 +275,19 @@ class Crudusers extends CI_Controller
 	{
 		$id = $_POST['id'];
 		$data['estado'] = 0;
-
+		$rol=$_POST['rol'];
 		$this->crudusers_model->deshabilitar($id, $data);
-		redirect('crudusers/habilitados', 'refresh');
+		redirect('crudusers/habilitados/'.$rol);
 	}
 	public function habilitarbd()
 	{
 		$id = $_POST['id'];
 		$data['estado'] = 1;
 
+		$rol=$_POST['rol'];
+
 		$this->crudusers_model->modificar($id, $data);
-		redirect('crudusers/deshabilitados', 'refresh');
+		redirect('crudusers/deshabilitados/' . $rol);
 	}
 	public function login()
 	{
@@ -263,6 +296,7 @@ class Crudusers extends CI_Controller
 	public function subirfoto()
 	{
 		$data['id'] = $_POST['id'];
+		$data['rol'] = $_POST['rol'];
 		$this->load->view('incrustaciones/vistascoloradmin/head');
 		$this->load->view('incrustaciones/vistascoloradmin/menuadmin');
 		$this->load->view('formsubir', $data);
@@ -271,6 +305,7 @@ class Crudusers extends CI_Controller
 	public function subir()
 	{
 		$id = $_POST['id'];
+		$rol = $_POST['rol'];
 		$nombrearchivo = $id . ".jpg";
 
 		//Ruta donde se guardan los archivos
@@ -308,7 +343,7 @@ class Crudusers extends CI_Controller
 			$this->crudusers_model->modificar($id, array('foto' => $nombrearchivo));
 
 		}
-		redirect('crudusers/habilitados', 'refresh');
+		redirect('crudusers/habilitados/'.$rol);
 	}
 	public function editarperfil()
 	{
@@ -349,5 +384,11 @@ class Crudusers extends CI_Controller
 			redirect('crudusers/editarperfil', 'refresh');
 		}
 		
+	}
+	public function recuperarmembresia()
+	{
+		$id = $_POST['id'];
+		$this->session->set_userdata('idMembresia', $this->crudusers_model->membresia($id));
+		redirect('geodatalogger/geolocalizar', 'refresh');
 	}
 }

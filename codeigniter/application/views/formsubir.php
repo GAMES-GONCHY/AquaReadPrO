@@ -12,7 +12,8 @@
 
 
 	<form id="fileupload" action="<?php echo base_url(); ?>index.php/crudusers/subir" method="POST" enctype="multipart/form-data">
-		<input type="hidden" class="form-control" name="id" value="<?php echo $id; ?>" >
+	<input type="hidden" class="form-control" name="id" value="<?php echo $id; ?>" >
+	<input type="hidden" class="form-control" name="rol" value="<?php echo $rol; ?>" >
 		<div class="panel panel-inverse">
 
 			<div class="panel-heading">

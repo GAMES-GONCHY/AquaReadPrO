@@ -8,6 +8,8 @@ class Geodatalogger extends CI_Controller
 		$data['info'] = $this->datalogger_model->habilitados()->result_array();
 		// Convertir el array a JSON
 		$data['info'] = json_encode($data['info']);
+        
+
 		$this->load->view('incrustaciones/vistascoloradmin/headmap');
 		$this->load->view('incrustaciones/vistascoloradmin/menuadmin');
 		$this->load->view('geomap', $data);

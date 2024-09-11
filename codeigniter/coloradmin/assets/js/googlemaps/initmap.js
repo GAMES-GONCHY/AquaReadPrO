@@ -3,6 +3,8 @@ var addingMarker = false;  // Controla si se pueden agregar marcadores
 var markers = [];  // Array para almacenar los marcadores
 var ctrlPressed = false;  // Controla si la tecla "Ctrl" está presionada
 var altPressed = false;  // Controla si la tecla "Alt" está presionada
+//var infoWindow;  // Declarar infoWindow a nivel global
+
 
 // Detectar cuándo se presiona la tecla "Ctrl" o "Alt"
 document.addEventListener('keydown', function(event) {
@@ -50,6 +52,9 @@ function initMap() {
         },
         gestureHandling: "greedy"
     });
+
+    // Crear un infoWindow
+    infoWindow = new google.maps.InfoWindow();
 
     // Polígono de área
     var areaCoords = [
@@ -119,6 +124,35 @@ function createMarker(position, map, idDatalogger) {
         marker.idDatalogger = idDatalogger;
     }
 
+    
+    var infoWindow = new google.maps.InfoWindow({
+        disableAutoPan: true
+    });
+    google.maps.event.addListener(marker, 'mouseover', function () {
+        var contentString = '<div>' +
+            '<p style="color: black;">DL: ' + marker.idDatalogger + '</p>' +
+            '</div>';
+    
+        infoWindow.setContent(contentString);
+        infoWindow.open(map, marker);
+    
+        // Esperar un breve momento para que el InfoWindow se haya renderizado
+        setTimeout(function() {
+            var iwOuter = document.querySelector('.gm-style-iw');
+            if (iwOuter) {
+                var closeButton = iwOuter.querySelector('.gm-style-iw-c');
+                if (closeButton) {
+                    closeButton.style.display = 'none'; // Oculta el botón de cerrar
+                }
+            }
+        }, 100);
+    });
+
+    // Añadir el evento de mouseout para cerrar el infoWindow
+    google.maps.event.addListener(marker, 'mouseout', function () {
+        infoWindow.close();
+    });
+
     // Añadir el evento de clic derecho para eliminar
     google.maps.event.addListener(marker, 'rightclick', function () {
         deleteMarker(marker);
@@ -143,21 +177,16 @@ function saveMarker(lat, lng, marker) {
             longitud: lng,
             idAutor: window.idUsuario  // Debes pasar el idUsuario desde el HTML como una variable global
         },
-        success: function (response) 
-        {
+        success: function (response) {
             console.log(response);  // Verificar la respuesta
             var jsonResponse = JSON.parse(response);
-            if (jsonResponse.status === 'success') 
-            {
+            if (jsonResponse.status === 'success') {
                 marker.idDatalogger = jsonResponse.idDatalogger;
-            }
-            else 
-            {
+            } else {
                 alert("Error al agregar el datalogger: " + jsonResponse.message);
             }
         },
-        error: function () 
-        {
+        error: function () {
             alert("Error al agregar el datalogger.");
         }
     });
@@ -233,3 +262,4 @@ function updateMarkerPosition(marker) {
         }
     });
 }
+

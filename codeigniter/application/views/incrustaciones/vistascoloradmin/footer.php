@@ -239,7 +239,7 @@
         });
 
         Parsley.setLocale('es');
-    </script>
+  </script>
   <!-- <script src="<?php echo base_url(); ?>coloradmin/assets/plugins/parsleyjs/dist/messages.es.js"></script> -->
 
 
@@ -498,6 +498,7 @@
 
 </script> -->
 
+<!-- initMap -->
 <script>
     var coordenadas = <?php echo $info; ?>;
     var idUsuario = <?php echo $this->session->userdata('idUsuario'); ?>;

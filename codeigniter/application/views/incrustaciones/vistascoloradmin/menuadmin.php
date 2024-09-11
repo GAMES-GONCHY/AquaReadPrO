@@ -110,18 +110,14 @@
 
 <!-- MENU SIDEBAR -->
 <div id="sidebar" class="app-sidebar">
-
     <div class="app-sidebar-content" data-scrollbar="true" data-height="100%">
-
         <div class="menu">
             <div class="menu-profile">
                 <a href="javascript:;" class="menu-profile-link" data-toggle="app-sidebar-profile" data-target="#appSidebarProfileMenu">
                     <div class="menu-profile-cover with-shadow"></div>
                     <div class="menu-profile-image">
-                    <img src="<?php echo base_url('uploads/usersphoto/' . $this->session->userdata('foto')); ?>" onerror="this.onerror=null; this.src='<?php echo base_url('uploads/usersphoto/perfil.jpg'); ?>';">
+                        <img src="<?php echo base_url('uploads/usersphoto/' . $this->session->userdata('foto')); ?>" onerror="this.onerror=null; this.src='<?php echo base_url('uploads/usersphoto/perfil.jpg'); ?>';">
                     </div>
-                   
-                        
                     <div class="menu-profile-info">
                         <div class="d-flex align-items-center">
                             <div class="flex-grow-1">
@@ -130,7 +126,6 @@
                             <div class="menu-caret ms-auto"></div>
                         </div>
                         <small>
-                            
                             <?php if ($this->session->userdata('rol') == 0) : ?>
                                 Socio
                             <?php elseif ($this->session->userdata('rol') == 1) : ?>
@@ -138,7 +133,6 @@
                             <?php else : ?>
                                 Administrador
                             <?php endif; ?>
-
                         </small>
                     </div>
                 </a>
@@ -153,29 +147,29 @@
                 <div class="menu-item">
                     <a href="javascript:;" class="menu-link">
                         <div class="menu-icon"><i class="fa fa-pencil-alt"></i></div>
-                        <div class="menu-text"> Enviar mensajes</div>
+                        <div class="menu-text">Enviar mensajes</div>
                     </a>
                 </div>
                 <div class="menu-item pb-5px">
                     <a href="javascript:;" class="menu-link">
                         <div class="menu-icon"><i class="fa fa-question-circle"></i></div>
-                        <div class="menu-text"> Ayuda</div>
+                        <div class="menu-text">Ayuda</div>
                     </a>
                 </div>
                 <div class="menu-divider m-0"></div>
             </div>
+
             <div class="menu-header">Navigation</div>
 
-            <div class="menu-item has-sub active">
+            <!-- Reportes -->
+            <div class="menu-item has-sub <?php echo ($this->uri->segment(2) == 'panel') ? 'active' : ''; ?>">
                 <a href="javascript:;" class="menu-link">
-                    <div class="menu-icon">
-                        <i class="fa fa-th-large"></i>
-                    </div>
+                    <div class="menu-icon"><i class="fa fa-th-large"></i></div>
                     <div class="menu-text">Reportes</div>
                     <div class="menu-caret"></div>
                 </a>
                 <div class="menu-submenu">
-                    <div class="menu-item">
+                    <div class="menu-item <?php echo ($this->uri->segment(2) == 'panel') ? 'active' : ''; ?>">
                         <a href="<?php echo base_url(); ?>index.php/usuario/panel" class="menu-link">
                             <div class="menu-text">Ver Reportes</div>
                         </a>
@@ -183,116 +177,115 @@
                 </div>
             </div>
 
-            <div class="menu-item has-sub">
+            <!-- Usuarios -->
+            <div class="menu-item has-sub <?php echo ($this->uri->segment(2) == 'habilitados') ? 'active' : ''; ?>">
                 <a href="javascript:;" class="menu-link">
-                    <div class="menu-icon">
-                        <i class="fa fa-table"></i>
-                    </div>
+                    <div class="menu-icon"><i class="fa fa-table"></i></div>
                     <div class="menu-text">Usuarios</div>
                     <div class="menu-caret"></div>
                 </a>
                 <div class="menu-submenu">
-                    <div class="menu-item active">
-                        <a href="<?php echo base_url(); ?>index.php/crudusers/habilitados" class="menu-link">
-                            <div class="menu-text">Gestionar Usuarios</div>
+                    <!-- Gestionar Administradores -->
+                    <div class="menu-item <?php echo ($this->uri->segment(3) === '2') ? 'active' : ''; ?>">
+                        <a href="<?php echo base_url(); ?>index.php/crudusers/habilitados/2" class="menu-link">
+                            <div class="menu-text">Gestionar Administradores</div>
                         </a>
                     </div>
-                    <div class="menu-item">
-                        <a href="javascript:;" class="menu-link">
+                    
+                    <!-- Gestionar Socios -->
+                    <div class="menu-item <?php echo ($this->uri->segment(3) === '0') ? 'active' : ''; ?>">
+                        <a href="<?php echo base_url(); ?>index.php/crudusers/habilitados/0" class="menu-link">
                             <div class="menu-text">Gestionar Socios</div>
-                            <!-- <div class="menu-caret"></div> -->
+                        </a>
+                    </div>
+
+                    <!-- Membresias -->
+                    <div class="menu-item <?php echo ($this->uri->segment(3) === '0') ? 'active' : ''; ?>">
+                        <a href="<?php echo base_url(); ?>index.php/crudusers/habilitados/0" class="menu-link">
+                            <div class="menu-text">Gestionar Membresias</div>
                         </a>
                     </div>
                 </div>
             </div>
-            <div class="menu-item has-sub">
-                <a href="javascript:;" class="menu-link">
-                    <div class="menu-icon">
-                        <i class="fa fa-map"></i>
-                    </div>
+
+            <!-- Geolocalización -->
+            <div class="menu-item has-sub <?php echo ($this->uri->segment(1) == 'geodatalogger') ? 'active' : ''; ?>">
+                <a href="#" class="menu-link">
+                    <div class="menu-icon"><i class="fa fa-map"></i></div>
                     <div class="menu-text">Geolocalización</div>
                     <div class="menu-caret"></div>
                 </a>
                 <div class="menu-submenu">
-                    <div class="menu-item active">
+                    <div class="menu-item <?php echo ($this->uri->segment(2) == 'geolocalizar') ? 'active' : ''; ?>">
                         <a href="<?php echo base_url(); ?>index.php/geodatalogger/geolocalizar" class="menu-link">
                             <div class="menu-text">Vista general</div>
                         </a>
                     </div>
-                    <div class="menu-item">
-                        <a href="map_google.html" class="menu-link">
+                    <div class="menu-item <?php echo ($this->uri->segment(2) == 'map_google') ? 'active' : ''; ?>">
+                        <a href="<?php echo base_url(); ?>index.php/geodatalogger/map_google" class="menu-link">
                             <div class="menu-text">GPS</div>
                         </a>
                     </div>
                 </div>
             </div>
-            <div class="menu-item has-sub">
+
+
+            <!-- Avisos de Cobranza -->
+            <div class="menu-item has-sub <?php echo ($this->uri->segment(2) == 'email_system') ? 'active' : ''; ?>">
                 <a href="javascript:;" class="menu-link">
-                    <div class="menu-icon">
-                        <i class="fa fa-envelope"></i>
-                    </div>
-                    <div class="menu-text">Avizos de cobranza</div>
+                    <div class="menu-icon"><i class="fa fa-envelope"></i></div>
+                    <div class="menu-text">Avisos de cobranza</div>
                     <div class="menu-caret"></div>
                 </a>
                 <div class="menu-submenu">
-                    <div class="menu-item active">
+                    <div class="menu-item <?php echo ($this->uri->segment(2) == 'email_system') ? 'active' : ''; ?>">
                         <a href="email_system.html" class="menu-link">
-                            <div class="menu-text">Gestionar Avizos</div>
+                            <div class="menu-text">Gestionar Avisos</div>
                         </a>
                     </div>
-                    <!-- <div class="menu-item">
-                        <a href="email_newsletter.html" class="menu-link">
-                            <div class="menu-text">Newsletter Template</div>
-                        </a>
-                    </div> -->
                 </div>
             </div>
-            <div class="menu-item has-sub">
+
+            <!-- Lecturas -->
+            <div class="menu-item has-sub <?php echo ($this->uri->segment(2) == 'lecturas') ? 'active' : ''; ?>">
                 <a href="javascript:;" class="menu-link">
-                    <div class="menu-icon">
-                        <i class="fa fa-list-ol"></i>
-                    </div>
+                    <div class="menu-icon"><i class="fa fa-list-ol"></i></div>
                     <div class="menu-text">Lecturas</div>
                     <div class="menu-caret"></div>
                 </a>
                 <div class="menu-submenu">
-                    <div class="menu-item active">
+                    <div class="menu-item <?php echo ($this->uri->segment(2) == 'form_elements') ? 'active' : ''; ?>">
                         <a href="form_elements.html" class="menu-link">
-                            <div class="menu-text">Gestionar lecturas<i class="fa fa-paper-plane text-theme"></i></div>
+                            <div class="menu-text">Gestionar Lecturas</div>
                         </a>
                     </div>
-                    <!-- <div class="menu-item">
-                        <a href="form_plugins.html" class="menu-link">
-                            <div class="menu-text">Form Plugins <i class="fa fa-paper-plane text-theme"></i></div>
-                        </a>
-                    </div> -->
                 </div>
-                <div class="menu-item">
+                <!-- Datalogger -->
+                <div class="menu-item <?php echo ($this->uri->segment(2) == 'habilitados' && $this->uri->segment(1) == 'datalogger') ? 'active' : ''; ?>">
                     <a href="<?php echo base_url(); ?>index.php/datalogger/habilitados" class="menu-link">
-                        <div class="menu-icon">
-                            <i class="fa fa-gift"></i>
-                        </div>
+                        <div class="menu-icon"><i class="fa fa-gift"></i></div>
                         <div class="menu-text">Datalogger</div>
                     </a>
-				</div>
-                <div class="menu-item">
+                </div>
+
+                <!-- Medidores -->
+                <div class="menu-item <?php echo ($this->uri->uri_string() == 'widget.html') ? 'active' : ''; ?>">
                     <a href="widget.html" class="menu-link">
-                        <div class="menu-icon">
-                            <i class="fab fa-simplybuilt"></i>
-                        </div>
+                        <div class="menu-icon"><i class="fab fa-simplybuilt"></i></div>
                         <div class="menu-text">Medidores</div>
                     </a>
-				</div>
+                </div>
+
             </div>
+
             <div class="menu-item d-flex">
                 <a href="javascript:;" class="app-sidebar-minify-btn ms-auto" data-toggle="app-sidebar-minify"><i class="fa fa-angle-double-left"></i></a>
             </div>
 
         </div>
-
     </div>
-
 </div>
+
 <div class="app-sidebar-bg"></div>
 <div class="app-sidebar-mobile-backdrop"><a href="#" data-dismiss="app-sidebar-mobile" class="stretched-link"></a></div>
 <!-- END MENU SIDEBAR -->
