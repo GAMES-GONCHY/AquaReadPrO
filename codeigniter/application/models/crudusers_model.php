@@ -19,13 +19,6 @@ class Crudusers_model extends CI_Model
 		$this->db->where('rol', $rol);
 		return $this->db->get();
 	}
-	public function membresia($id)
-	{
-		$this->db->select('idMembresia');
-		$this->db->from('membresia');
-		$this->db->where('idUsuario', $id);
-		return $this->db->get();
-	}
 	public function agregar($data)
 	{
 		$data['idAutor']=$this->session->userdata('idUsuario');

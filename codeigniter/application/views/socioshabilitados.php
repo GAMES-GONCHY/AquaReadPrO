@@ -98,7 +98,7 @@
                     <td><?php echo $row->email ?></td>
                     <td>
                       <?php
-                      echo form_open_multipart("crudusers/recuperarmembresia"); // <form>
+                      echo form_open_multipart("membresia/recuperarmembresia"); // <form>
                       ?>
                         <input type="hidden" name="id" value="<?php echo $row->idUsuario ?>">
                         <button type="submit" class="btn btn-outline-primary me-1 mb-1">Datalogger</button>

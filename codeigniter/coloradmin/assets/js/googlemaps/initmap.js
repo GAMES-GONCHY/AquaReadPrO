@@ -1,9 +1,14 @@
 var mapDefault;  // Declarar mapDefault a nivel global
-var addingMarker = false;  // Controla si se pueden agregar marcadores
-var markers = [];  // Array para almacenar los marcadores
+var addingDataloggerMarker = false;  // Controla si se pueden agregar marcadores
+var dataloggerMarkers = [];  // Array para almacenar los marcadores de Dataloggers
 var ctrlPressed = false;  // Controla si la tecla "Ctrl" está presionada
 var altPressed = false;  // Controla si la tecla "Alt" está presionada
-//var infoWindow;  // Declarar infoWindow a nivel global
+var infoWindow;  // Declarar infoWindow a nivel global
+
+// var addingMedidorMarker = false;
+// var medidorMarkers = [];
+// var jsonResponse;
+// var globalIdDatalogger;
 
 
 // Detectar cuándo se presiona la tecla "Ctrl" o "Alt"
@@ -16,7 +21,7 @@ document.addEventListener('keydown', function(event) {
     }
     if (event.key === 'Escape' || event.key === 'Esc') {
         // Desactivar la adición múltiple de marcadores
-        addingMarker = false;
+        addingDataloggerMarker = false;
         // Restaurar el cursor del mapa a su forma predeterminada
         if (mapDefault) {
             mapDefault.setOptions({ draggableCursor: 'default' });
@@ -34,7 +39,8 @@ document.addEventListener('keyup', function(event) {
     }
 });
 
-function initMap() {
+function initMap() 
+{
     mapDefault = new google.maps.Map(document.getElementById('google-map-default'), {
         zoom: 17,
         center: new google.maps.LatLng(-17.4105450836976, -66.12594068258299),
@@ -78,63 +84,63 @@ function initMap() {
     });
 
     // Marcadores desde la base de datos
-    var coordenadas = window.coordenadas;  // Debes pasar las coordenadas desde el HTML como una variable global
-    coordenadas.forEach(function(datalogger) {
-        var marker = createMarker({
+    var dataloggerCoordinates = window.coordenadas;  // Debes pasar las coordenadas desde el HTML como una variable global
+    dataloggerCoordinates.forEach(function(datalogger) {
+        var dataloggerMarker = createDataloggerMarker({
             lat: parseFloat(datalogger.latitud),
             lng: parseFloat(datalogger.longitud)
         }, mapDefault, datalogger.idDatalogger);
-        markers.push(marker);
+        dataloggerMarkers.push(dataloggerMarker);
     });
-
-    // Evento para agregar marcadores
+    // Evento para agregar marcadores de datalogger
     document.getElementById('addDataloggerBtn').addEventListener('click', function () {
-        addingMarker = true;
+        addingDataloggerMarker = true;
         mapDefault.setOptions({ draggableCursor: 'crosshair' });
     });
-
-    // Evento de clic para agregar un nuevo marcador
-    mapDefault.addListener('click', function (event) {
-        if (addingMarker) {
+    // Evento de clic para agregar un nuevo marcador de datalogger
+    mapDefault.addListener('click', function (event) 
+    {
+        if (addingDataloggerMarker) {
             var lat = event.latLng.lat();
             var lng = event.latLng.lng();
 
-            var newMarker = createMarker({ lat: lat, lng: lng }, mapDefault);
-            markers.push(newMarker);
+            var newDataloggerMarker = createDataloggerMarker({ lat: lat, lng: lng }, mapDefault);
+            dataloggerMarkers.push(newDataloggerMarker);
 
             // Guardar el marcador en la base de datos
-            saveMarker(lat, lng, newMarker);
+            saveDataloggerMarker(lat, lng, newDataloggerMarker);
 
             if (!ctrlPressed) {
                 mapDefault.setOptions({ draggableCursor: null });
-                addingMarker = false;
+                addingDataloggerMarker = false;
             }
         }
     });
+
 }
 
-function createMarker(position, map, idDatalogger) {
-    var marker = new google.maps.Marker({
+function createDataloggerMarker(position, map, idDatalogger) 
+{
+    var dataloggerMarker = new google.maps.Marker({
         position: position,
         map: map,
         draggable: true
     });
 
     if (idDatalogger) {
-        marker.idDatalogger = idDatalogger;
+        dataloggerMarker.idDatalogger = idDatalogger;
     }
 
-    
-    var infoWindow = new google.maps.InfoWindow({
+    infoWindow = new google.maps.InfoWindow({
         disableAutoPan: true
     });
-    google.maps.event.addListener(marker, 'mouseover', function () {
+    google.maps.event.addListener(dataloggerMarker, 'mouseover', function () {
         var contentString = '<div>' +
-            '<p style="color: black;">DL: ' + marker.idDatalogger + '</p>' +
+            '<p style="color: black;">DL: ' + dataloggerMarker.idDatalogger + '</p>' +
             '</div>';
     
         infoWindow.setContent(contentString);
-        infoWindow.open(map, marker);
+        infoWindow.open(map, dataloggerMarker);
     
         // Esperar un breve momento para que el InfoWindow se haya renderizado
         setTimeout(function() {
@@ -149,28 +155,32 @@ function createMarker(position, map, idDatalogger) {
     });
 
     // Añadir el evento de mouseout para cerrar el infoWindow
-    google.maps.event.addListener(marker, 'mouseout', function () {
+    google.maps.event.addListener(dataloggerMarker, 'mouseout', function () {
         infoWindow.close();
     });
 
     // Añadir el evento de clic derecho para eliminar
-    google.maps.event.addListener(marker, 'rightclick', function () {
-        deleteMarker(marker);
+    google.maps.event.addListener(dataloggerMarker, 'rightclick', function () {
+        deleteDataloggerMarker(dataloggerMarker);
     });
 
     // Actualizar la posición al terminar el arrastre
-    google.maps.event.addListener(marker, 'dragend', function () {
+    google.maps.event.addListener(dataloggerMarker, 'dragend', function () {
         if (altPressed) {
-            updateMarkerPosition(marker);
+            updateDataloggerMarkerPosition(dataloggerMarker);
         }
     });
 
-    return marker;
+    return dataloggerMarker;
 }
 
-function saveMarker(lat, lng, marker) {
+function saveDataloggerMarker(lat, lng, dataloggerMarker) 
+{
+    console.log("Latitud:", lat);
+    console.log("Longitud:", lng);
+    console.log("ID Autor:", window.idUsuario);
     $.ajax({
-        url: '/tercerAnio/aquaReadPro/codeigniter/index.php/geodatalogger/agregarmarker',
+        url: '/tercerAnio/aquaReadPro/codeigniter/index.php/geodatalogger/agregardatalogger',
         method: 'POST',
         data: {
             latitud: lat,
@@ -179,9 +189,10 @@ function saveMarker(lat, lng, marker) {
         },
         success: function (response) {
             console.log(response);  // Verificar la respuesta
-            var jsonResponse = JSON.parse(response);
+            jsonResponse = JSON.parse(response);
             if (jsonResponse.status === 'success') {
-                marker.idDatalogger = jsonResponse.idDatalogger;
+                dataloggerMarker.idDatalogger = jsonResponse.idDatalogger;
+                globalIdDatalogger = jsonResponse.idDatalogger;
             } else {
                 alert("Error al agregar el datalogger: " + jsonResponse.message);
             }
@@ -190,16 +201,18 @@ function saveMarker(lat, lng, marker) {
             alert("Error al agregar el datalogger.");
         }
     });
+    console.log("idDatalogger:", jsonResponse.idDatalogger);
 }
 
-function deleteMarker(marker) {
-    var idDatalogger = marker.idDatalogger;
+function deleteDataloggerMarker(dataloggerMarker) 
+{
+    var idDatalogger = dataloggerMarker.idDatalogger;
     var estado = 0;
 
     document.body.style.cursor = 'progress';
 
     $.ajax({
-        url: '/tercerAnio/aquaReadPro/codeigniter/index.php/geodatalogger/eliminarmarker',
+        url: '/tercerAnio/aquaReadPro/codeigniter/index.php/geodatalogger/eliminardatalogger',
         method: 'POST',
         data: {
             idDatalogger: idDatalogger,
@@ -211,8 +224,8 @@ function deleteMarker(marker) {
                 var jsonResponse = JSON.parse(response);
 
                 if (jsonResponse.status === 'success') {
-                    marker.setMap(null);
-                    markers = markers.filter(m => m !== marker);
+                    dataloggerMarker.setMap(null);
+                    dataloggerMarkers = dataloggerMarkers.filter(m => m !== dataloggerMarker);
 
                     document.body.style.cursor = 'default';
                 } else {
@@ -231,13 +244,14 @@ function deleteMarker(marker) {
     });
 }
 
-function updateMarkerPosition(marker) {
-    var newLat = marker.getPosition().lat();
-    var newLng = marker.getPosition().lng();
-    var idDatalogger = marker.idDatalogger;
+function updateDataloggerMarkerPosition(dataloggerMarker) 
+{
+    var newLat = dataloggerMarker.getPosition().lat();
+    var newLng = dataloggerMarker.getPosition().lng();
+    var idDatalogger = dataloggerMarker.idDatalogger;
 
     $.ajax({
-        url: '/tercerAnio/aquaReadPro/codeigniter/index.php/geodatalogger/modificarmarker',
+        url: '/tercerAnio/aquaReadPro/codeigniter/index.php/geodatalogger/modificardatalogger',
         method: 'POST',
         data: {
             idDatalogger: idDatalogger,

@@ -3,14 +3,6 @@
     <div class="position-absolute w-100 h-100 top-0 start-0 bottom-0 end-0" style="z-index: 1;">
         <div id="google-map-default" class="w-100 h-100"></div>
     </div>
-    <!-- Colocar los botones flotantes sobre el mapa -->
-        <button id="addDataloggerBtn" class="btn btn-primary position-absolute" style="top: 20px; left: 20px; z-index: 3;">
-            Agregar Datalogger
-        </button>
-        
-        <button id="addMedidorBtn" class="btn btn-yellow position-absolute" style="top: 60px; left: 20px; z-index: 3;">
-            Agregar Medidor
-        </button>
 
     <!-- Contenedor para la interfaz, colocada por encima del mapa -->
     <div class="app-content-padding position-relative" style="z-index: 2;">

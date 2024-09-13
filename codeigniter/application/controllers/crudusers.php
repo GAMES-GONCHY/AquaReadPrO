@@ -385,10 +385,5 @@ class Crudusers extends CI_Controller
 		}
 		
 	}
-	public function recuperarmembresia()
-	{
-		$id = $_POST['id'];
-		$this->session->set_userdata('idMembresia', $this->crudusers_model->membresia($id));
-		redirect('geodatalogger/geolocalizar', 'refresh');
-	}
+	
 }

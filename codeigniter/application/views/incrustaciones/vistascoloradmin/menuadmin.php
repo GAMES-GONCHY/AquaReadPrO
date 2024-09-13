@@ -217,7 +217,7 @@
                 </a>
                 <div class="menu-submenu">
                     <div class="menu-item <?php echo ($this->uri->segment(2) == 'geolocalizar') ? 'active' : ''; ?>">
-                        <a href="<?php echo base_url(); ?>index.php/geodatalogger/geolocalizar" class="menu-link">
+                        <a href="<?php echo base_url(); ?>index.php/geodatalogger/visualizar" class="menu-link">
                             <div class="menu-text">Vista general</div>
                         </a>
                     </div>
