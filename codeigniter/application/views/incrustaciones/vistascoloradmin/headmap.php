@@ -16,7 +16,14 @@
     z-index: 1040;
     pointer-events: none;
 }
+#google-map-default {
+    width: 100%;
+    height: 100vh; /* Establece la altura para llenar la ventana */
+    min-height: 400px; /* Tamaño mínimo para evitar problemas de renderización */
+}
 </style>
+
+
 </head>
 
 <body>

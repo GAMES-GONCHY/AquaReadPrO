@@ -55,7 +55,9 @@ class Geodatalogger extends CI_Controller
         );
         
         $idDatalogger=$this->datalogger_model->agregar($data);
+        
         $this->session->set_userdata('mensaje', $idDatalogger);
+        
         if ($idDatalogger)
 		{
             echo json_encode(['status' => 'success', 'idDatalogger' => $idDatalogger]);
@@ -124,12 +126,16 @@ class Geodatalogger extends CI_Controller
         $latitud = $this->input->post('latitud');
         $longitud = $this->input->post('longitud');
         $idAutor = $this->input->post('idAutor');
+        $idDatalogger = $this->input->post('idDatalogger');
+        $idMembresia = $this->input->post('idMembresia');
 
         // Lógica para guardar el marcador en la base de datos
         $data = array(
             'latitud' => $latitud,
             'longitud' => $longitud,
-            'idAutor' => $idAutor
+            'idAutor' => $idAutor,
+            'idDatalogger' => $idDatalogger,
+            'idMembresia' => $idMembresia
         );
         
         $idMedidor=$this->medidor_model->agregar($data);

@@ -256,24 +256,23 @@
 <!-- Formulario cambio de password -->
 <!-- <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script> -->
 
-<!-- Google maps -->
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDscHZkKGKv21yacNUg_OYgTDrggBAvCaM&callback=initMap&libraries=geometry" async defer></script>
-
-
 
 <!-- coordenadas datalogger y medidores -->
 <script>
     var coordenadas = <?php echo $dataloggers; ?>;
     var medidorCoordenadas = <?php echo $medidores; ?>;  // Coordenadas de los medidores
     var idUsuario = <?php echo $this->session->userdata('idUsuario'); ?>;
-    // var idDatalogger = <?php echo $this->session->userdata('idDatalogger'); ?>; 
-    // var idMembresia = <?php echo $this->session->userdata('idMembresia'); ?>;
+    var idDatalogger = <?php echo $this->session->userdata('idDatalogger'); ?>;
+    var idMembresia = <?php echo $this->session->userdata('idMembresia'); ?>;
     console.log("Valor de idMembresia:", idMembresia);
+    console.log("Valor de idDatalogger:", idDatalogger);
 </script>
 
 <!-- initMap -->
 <script src="<?php echo base_url(); ?>coloradmin/assets/js/googlemaps/initmap.js"></script>
 
+<!-- Google maps -->
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDscHZkKGKv21yacNUg_OYgTDrggBAvCaM&callback=initMap&libraries=geometry" async defer></script>
 
 
 

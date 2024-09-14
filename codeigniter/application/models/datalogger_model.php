@@ -27,4 +27,11 @@ class Datalogger_model extends CI_Model
 
         return $this->db->affected_rows() > 0;
 	}
+    public function recuperaridmax()
+	{
+		$this->db->select_max('idDatalogger');
+        $this->db->where('estado', 1); 
+        $query = $this->db->get('datalogger');
+        return $query->row()->idDatalogger;
+	}
 }

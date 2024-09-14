@@ -11,6 +11,9 @@ class Membresia extends CI_Controller
 
 		$this->session->set_userdata('idMembresia', $idMembresia);
 
+		$idDataloggerMax=$this->datalogger_model->recuperaridmax();
+        $this->session->set_userdata('idDatalogger', $idDataloggerMax);
+
 		redirect('geodatalogger/geolocalizar');
 	}
 }

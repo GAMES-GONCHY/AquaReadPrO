@@ -5,11 +5,9 @@ var ctrlPressed = false;  // Controla si la tecla "Ctrl" está presionada
 var altPressed = false;  // Controla si la tecla "Alt" está presionada
 var infoWindow;  // Declarar infoWindow a nivel global
 
-// var addingMedidorMarker = false;
-// var medidorMarkers = [];
-// var jsonResponse;
-// var globalIdDatalogger;
-
+//MEDIDORES
+var medidorMarkers = []; 
+var addingMedidorMarker = false; 
 
 // Detectar cuándo se presiona la tecla "Ctrl" o "Alt"
 document.addEventListener('keydown', function(event) {
@@ -117,7 +115,45 @@ function initMap()
         }
     });
 
+    // Mostrar marcadores de medidores
+    var medidorCoordinates = window.medidorCoordenadas;  // Coordenadas de los medidores desde la variable global
+    medidorCoordinates.forEach(function(medidor) {
+        var medidorMarker = createMedidorMarker({
+            lat: parseFloat(medidor.latitud),
+            lng: parseFloat(medidor.longitud)
+        }, mapDefault, medidor.idMedidor);
+        medidorMarkers.push(medidorMarker);
+    });
+
+    document.getElementById('addMedidorBtn').addEventListener('click', function () {
+        addingMedidorMarker = true;
+        mapDefault.setOptions({ draggableCursor: 'crosshair' });
+    });
+    // Evento de clic para agregar un nuevo marcador de medidor
+    mapDefault.addListener('click', function (event) 
+    {
+        if (addingMedidorMarker) {
+            var lat = event.latLng.lat();
+            var lng = event.latLng.lng();
+
+            // Crear el marcador del medidor
+            var newMedidorMarker = createMedidorMarker({ lat: lat, lng: lng }, mapDefault);
+            medidorMarkers.push(newMedidorMarker);
+
+            // Guardar el marcador en la base de datos
+            saveMedidorMarker(lat, lng, newMedidorMarker);
+
+            // Desactivar el modo de agregar medidores
+            mapDefault.setOptions({ draggableCursor: null });
+            addingMedidorMarker = false;
+        }
+    });
 }
+window.addEventListener('resize', function() {
+    if (mapDefault) {
+        google.maps.event.trigger(mapDefault, 'resize');
+    }
+});
 
 function createDataloggerMarker(position, map, idDatalogger) 
 {
@@ -276,4 +312,80 @@ function updateDataloggerMarkerPosition(dataloggerMarker)
         }
     });
 }
+
+
+
+
+
+
+//MEDIDORES
+
+// Función para crear un marcador de medidor
+function createMedidorMarker(position, map, idMedidor) 
+{
+    var medidorMarker = new google.maps.Marker({
+        position: position,
+        map: map,
+        draggable: false,  // Desactivar arrastre si solo deseas mostrar los marcadores
+        icon: 'http://maps.google.com/mapfiles/ms/icons/yellow-dot.png'  // Diferenciar los medidores con un ícono amarillo
+    });
+
+    if (idMedidor) {
+        medidorMarker.idMedidor = idMedidor;
+    }
+
+    var infoWindow = new google.maps.InfoWindow({
+        disableAutoPan: true
+    });
+    
+    google.maps.event.addListener(medidorMarker, 'mouseover', function () {
+        var contentString = '<div>' +
+            '<p style="color: black;">Medidor ID: ' + medidorMarker.idMedidor + '</p>' +
+            '</div>';
+        infoWindow.setContent(contentString);
+        infoWindow.open(map, medidorMarker);
+    });
+
+    google.maps.event.addListener(medidorMarker, 'mouseout', function () {
+        infoWindow.close();
+    });
+
+    return medidorMarker;
+}
+function saveMedidorMarker(lat, lng, medidorMarker) 
+{
+    console.log("Latitud:", lat);
+    console.log("Longitud:", lng);
+    console.log("ID Autor:", window.idUsuario);
+    
+    $.ajax({
+        url: '/tercerAnio/aquaReadPro/codeigniter/index.php/geodatalogger/agregarmedidor',
+        method: 'POST',
+        data: {
+            latitud: lat,
+            longitud: lng,
+            idDatalogger: window.idDatalogger,
+            idMembresia: window.idMembresia,
+            idAutor: window.idUsuario
+        },
+        success: function (response) 
+        {
+            console.log(response);
+            var jsonResponse = JSON.parse(response);
+            if (jsonResponse.status === 'success') 
+            {
+                medidorMarker.idMedidor = jsonResponse.idMedidor;
+            } 
+            else 
+            {
+                alert("Error al agregar el medidor: " + jsonResponse.message);
+            }
+        },
+        error: function () 
+        {
+            alert("Error al agregar el medidor.");
+        }
+    });
+}
+
 
