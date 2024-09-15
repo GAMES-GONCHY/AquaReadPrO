@@ -65,6 +65,11 @@ function initMap() {
         medidorMarkers.push(medidorMarker);
     });
 }
+window.addEventListener('resize', function() {
+    if (mapDefault) {
+        google.maps.event.trigger(mapDefault, 'resize');
+    }
+});
 
 // Función para crear un marcador de datalogger
 function createDataloggerMarker(position, map, idDatalogger) {

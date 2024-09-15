@@ -20,6 +20,7 @@ var handleDataTableCombinationSetting = function() {
 			],
 			responsive: true,
 			colReorder: true,
+			autoWidth: false, // <--- Añadir esta línea
 			keys: true,
 			rowReorder: true,
 			select: true

@@ -43,7 +43,8 @@
                 <tr>
                   <th width="1%">No.</th>
                   <th width="1%" data-orderable="false">Perfil</th>
-                  <th>Cargar</th>
+                  <!-- <th>Cargar</th> -->
+                  <th>Codigo Socio</th>
                   <th>Nick name</th>
                   <th>Nombre</th>
                   <th>Primer Apellido</th>
@@ -80,7 +81,7 @@
                       }
                       ?>
                     </td>
-                    <td>
+                    <!-- <td>
                       <?php
                       echo form_open_multipart("crudusers/subirfoto");
                       ?>
@@ -90,7 +91,8 @@
                       <?php
                       echo form_close();
                       ?>
-                    </td>
+                    </td> -->
+                    <td><?php echo $row->idMembresia ?></td>
                     <td><?php echo $row->nickName ?></td>
                     <td><?php echo $row->nombre ?></td>
                     <td><?php echo $row->primerApellido ?></td>
@@ -168,7 +170,8 @@
                 <tr>
                   <th width="1%">No.</th>
                   <th width="1%" data-orderable="false">Perfil</th>
-                  <th>Cargar</th>
+                  <!-- <th>Cargar</th> -->
+                  <th>Codigo Socio</th>
                   <th>Nick name</th>
                   <th>Nombre</th>
                   <th>Primer Apellido</th>

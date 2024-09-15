@@ -200,11 +200,11 @@
                     </div>
 
                     <!-- Membresias -->
-                    <div class="menu-item <?php echo ($this->uri->segment(3) === '0') ? 'active' : ''; ?>">
+                    <!-- <div class="menu-item <?php echo ($this->uri->segment(3) === '0') ? 'active' : ''; ?>">
                         <a href="<?php echo base_url(); ?>index.php/crudusers/habilitados/0" class="menu-link">
                             <div class="menu-text">Gestionar Membresias</div>
                         </a>
-                    </div>
+                    </div> -->
                 </div>
             </div>
 
@@ -216,7 +216,7 @@
                     <div class="menu-caret"></div>
                 </a>
                 <div class="menu-submenu">
-                    <div class="menu-item <?php echo ($this->uri->segment(2) == 'geolocalizar') ? 'active' : ''; ?>">
+                    <div class="menu-item <?php echo ($this->uri->segment(2) == 'visualizar') ? 'active' : ''; ?>">
                         <a href="<?php echo base_url(); ?>index.php/geodatalogger/visualizar" class="menu-link">
                             <div class="menu-text">Vista general</div>
                         </a>

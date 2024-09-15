@@ -37,8 +37,8 @@ class Geodatalogger extends CI_Controller
 
 		$this->load->view('incrustaciones/vistascoloradmin/headmap');
 		$this->load->view('incrustaciones/vistascoloradmin/menuadmin');
-        $this->load->view('geomap1', $data);
-        $this->load->view('incrustaciones/vistascoloradmin/footer1');
+        $this->load->view('geomapreadonly', $data);
+        $this->load->view('incrustaciones/vistascoloradmin/footergeoreadonly');
         
 	}
     public function agregardatalogger()
@@ -117,10 +117,6 @@ class Geodatalogger extends CI_Controller
             echo json_encode(['status' => 'error', 'message' => 'Error al actualizar las coordenadas']);
         }
     }
-
-    
-
-
     public function agregarmedidor()
     {
         $latitud = $this->input->post('latitud');

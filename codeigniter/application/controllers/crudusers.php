@@ -355,7 +355,7 @@ class Crudusers extends CI_Controller
 		$this->load->view('formeditarperfil', $data);
 		$this->load->view('incrustaciones/vistascoloradmin/footer');
 	}
-	public function lol()
+	public function cambiarpassword()
 	{
 		$id =$this->session->userdata('idUsuario');
 		$curpass=$this->session->userdata('password');
@@ -385,5 +385,4 @@ class Crudusers extends CI_Controller
 		}
 		
 	}
-	
 }

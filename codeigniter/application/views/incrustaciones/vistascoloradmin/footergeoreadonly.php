@@ -35,11 +35,10 @@
     var coordenadas = <?php echo $dataloggers; ?>;
     var medidorCoordenadas = <?php echo $medidores; ?>;  // Coordenadas de los medidores
     var idUsuario = <?php echo $this->session->userdata('idUsuario'); ?>;
-
 </script>
 
 <!-- initMap -->
-<script src="<?php echo base_url(); ?>coloradmin/assets/js/googlemaps/medidor.js"></script>
+<script src="<?php echo base_url(); ?>coloradmin/assets/js/googlemaps/geomapreadonly.js"></script>
 
 
   <!-- Sweet alart cierre de sesión -->
