@@ -208,9 +208,8 @@
   <script src="<?php echo base_url(); ?>coloradmin/assets/js/demo/dashboard-v3.js"></script>
 
 
-  <!-- Forms validation -->
+  <!-- forms validations -->
   <script src="<?php echo base_url(); ?>coloradmin/assets/plugins/parsleyjs/dist/parsley.min.js"></script>
-  <script src="<?php echo base_url(); ?>coloradmin/assets/plugins/parsleyjs/dist/parsley.es.min.js"></script>
   <script>
         // Configura Parsley para usar el idioma español
         Parsley.addMessages('es', {
@@ -240,7 +239,7 @@
 
         Parsley.setLocale('es');
   </script>
-  <!-- <script src="<?php echo base_url(); ?>coloradmin/assets/plugins/parsleyjs/dist/messages.es.js"></script> -->
+
 
 
   <!-- Panel socio -->
@@ -259,13 +258,12 @@
 
 <!-- coordenadas datalogger y medidores -->
 <script>
-    var coordenadas = <?php echo $dataloggers; ?>;
-    var medidorCoordenadas = <?php echo $medidores; ?>;  // Coordenadas de los medidores
-    var idUsuario = <?php echo $this->session->userdata('idUsuario'); ?>;
-    var idDatalogger = <?php echo $this->session->userdata('idDatalogger'); ?>;
-    var idMembresia = <?php echo $this->session->userdata('idMembresia'); ?>;
-    console.log("Valor de idMembresia:", idMembresia);
-    console.log("Valor de idDatalogger:", idDatalogger);
+    var coordenadas = <?php echo isset($dataloggers) ? $dataloggers : '[]'; ?>;
+    var medidorCoordenadas = <?php echo isset($medidores) ? $medidores : '[]'; ?>;
+    var idUsuario = <?php echo json_encode($this->session->userdata('idUsuario') ?? ''); ?>;
+    var idDatalogger = <?php echo json_encode($this->session->userdata('idDatalogger') ?? ''); ?>;
+    var idMembresia = <?php echo json_encode($this->session->userdata('idMembresia') ?? ''); ?>;
+
 </script>
 
 <!-- initMap -->

@@ -64,9 +64,6 @@
             background-image: url('<?php echo base_url(); ?>coloradmin/assets/img/login-bg/login-bg-15.jpg'); /* Nueva imagen */
         }
     </style>
-    <script>  
-        var markersData = <?php echo $datalogger; ?>;
-    </script>
 </head>
 
 <body>

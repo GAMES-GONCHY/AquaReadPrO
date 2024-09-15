@@ -11,15 +11,15 @@ class Geodatalogger extends CI_Controller
         $idMembresia = $this->session->userdata('idMembresia');
         $data['idMembresia']=$idMembresia;
 
-        // Convertir el array a JSON
-		$data['dataloggers'] = json_encode($data['dataloggers']);
+		 // Convertir datos a JSON
+        $data['dataloggers'] = json_encode($data['dataloggers']);
         $data['medidores'] = json_encode($data['medidores']);
         $data['idMembresia'] = json_encode($data['idMembresia']);
 
 		$this->load->view('incrustaciones/vistascoloradmin/headmap');
 		$this->load->view('incrustaciones/vistascoloradmin/menuadmin');
-        $this->load->view('geomap', $data);
-        $this->load->view('incrustaciones/vistascoloradmin/footer');
+        $this->load->view('geomap');
+        $this->load->view('incrustaciones/vistascoloradmin/footer',$data);
         //$this->session->unset_userdata('idMembresia');
 	}
     public function visualizar()
@@ -140,7 +140,7 @@ class Geodatalogger extends CI_Controller
         $idMedidor=$this->medidor_model->agregar($data);
         if ($idMedidor)
 		{
-            echo json_encode(['status' => 'success', 'idDatalogger' => $idMedidor]);
+            echo json_encode(['status' => 'success', 'idMedidor' => $idMedidor]);
         }
         else
         {
@@ -167,7 +167,7 @@ class Geodatalogger extends CI_Controller
         else 
         {
             $error = $this->db->error();
-            log_message('error', 'Error al eliminar datalogger: ' . json_encode($error));
+            log_message('error', 'Error al eliminar medidor: ' . json_encode($error));
             echo json_encode(['status' => 'error', 'message' => 'No se pudo eliminar el marcador.']);
         }
     }

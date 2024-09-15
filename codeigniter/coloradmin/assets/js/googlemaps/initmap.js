@@ -116,12 +116,20 @@ function initMap()
     });
 
     // Mostrar marcadores de medidores
+    // var medidorCoordinates = window.medidorCoordenadas;
+    // medidorCoordinates.forEach(function(medidor) {
+    //     var medidorMarker = createMedidorMarker({
+    //         lat: parseFloat(medidor.latitud),
+    //         lng: parseFloat(medidor.longitud)
+    //     }, mapDefault, medidor.idMedidor);
+    //     medidorMarkers.push(medidorMarker);
+    // });
     var medidorCoordinates = window.medidorCoordenadas;
     medidorCoordinates.forEach(function(medidor) {
         var medidorMarker = createMedidorMarker({
             lat: parseFloat(medidor.latitud),
             lng: parseFloat(medidor.longitud)
-        }, mapDefault, medidor.idMedidor);
+        }, mapDefault, medidor.idMedidor, medidor.idMembresia); // Pasar idMembresia
         medidorMarkers.push(medidorMarker);
     });
 
@@ -318,26 +326,99 @@ function updateDataloggerMarkerPosition(dataloggerMarker)
 
 //MEDIDORES
 
-function createMedidorMarker(position, map, idMedidor) 
-{
+// function createMedidorMarker(position, map, idMedidor) 
+// {
+//     var medidorMarker = new google.maps.Marker({
+//         position: position,
+//         map: map,
+//         draggable: true,
+//         icon: 'http://maps.google.com/mapfiles/ms/icons/yellow-dot.png' 
+//     });
+
+//     if (idMedidor) {
+//         medidorMarker.idMedidor = idMedidor;
+//     }
+
+//     infoWindow = new google.maps.InfoWindow({
+//         disableAutoPan: true
+//     });
+    
+//     google.maps.event.addListener(medidorMarker, 'mouseover', function () {
+//         var contentString = '<div>' +
+//             '<p style="color: black;">Cod. Socio: ' + (medidorMarker.idMedidor || 'cargando..') + '</p>' +
+//             '</div>';
+//         infoWindow.setContent(contentString);
+//         infoWindow.open(map, medidorMarker);
+//     });
+
+//     google.maps.event.addListener(medidorMarker, 'mouseout', function () {
+//         infoWindow.close();
+//     });
+
+//     google.maps.event.addListener(medidorMarker, 'rightclick', function () {
+//         deleteMedidorMarker(medidorMarker);
+//     });
+//     return medidorMarker;
+// }
+
+// function saveMedidorMarker(lat, lng, medidorMarker) 
+// {
+//     console.log("Latitud:", lat);
+//     console.log("Longitud:", lng);
+//     console.log("ID Autor:", window.idUsuario);
+    
+//     $.ajax({
+//         url: '/tercerAnio/aquaReadPro/codeigniter/index.php/geodatalogger/agregarmedidor',
+//         method: 'POST',
+//         data: {
+//             latitud: lat,
+//             longitud: lng,
+//             idDatalogger: window.idDatalogger,
+//             idMembresia: window.idMembresia,
+//             idAutor: window.idUsuario
+//         },
+//         success: function (response) 
+//         {
+//             console.log(response);
+//             var jsonResponse = JSON.parse(response);
+//             if (jsonResponse.status === 'success') 
+//             {
+//                 medidorMarker.idMedidor = jsonResponse.idMedidor;
+//             } 
+//             else 
+//             {
+//                 alert("Error al agregar el medidor: " + jsonResponse.message);
+//             }
+//         },
+//         error: function () 
+//         {
+//             alert("Error al agregar el medidor.");
+//         }
+//     });
+// }
+function createMedidorMarker(position, map, idMedidor, idMembresia) {
     var medidorMarker = new google.maps.Marker({
         position: position,
         map: map,
         draggable: true,
-        icon: 'http://maps.google.com/mapfiles/ms/icons/yellow-dot.png' 
+        icon: 'http://maps.google.com/mapfiles/ms/icons/yellow-dot.png'
     });
 
     if (idMedidor) {
         medidorMarker.idMedidor = idMedidor;
     }
 
+    if (idMembresia) {
+        medidorMarker.idMembresia = idMembresia;
+    }
+
     infoWindow = new google.maps.InfoWindow({
         disableAutoPan: true
     });
-    
+
     google.maps.event.addListener(medidorMarker, 'mouseover', function () {
         var contentString = '<div>' +
-            '<p style="color: black;">Cod. Socio: ' + (medidorMarker.idMedidor || 'cargando..') + '</p>' +
+            '<p style="color: black;">Cod. Socio: ' + (medidorMarker.idMembresia || 'cargando...') + '</p>' +
             '</div>';
         infoWindow.setContent(contentString);
         infoWindow.open(map, medidorMarker);
@@ -350,15 +431,14 @@ function createMedidorMarker(position, map, idMedidor)
     google.maps.event.addListener(medidorMarker, 'rightclick', function () {
         deleteMedidorMarker(medidorMarker);
     });
+
     return medidorMarker;
 }
-
-function saveMedidorMarker(lat, lng, medidorMarker) 
-{
+function saveMedidorMarker(lat, lng, medidorMarker) {
     console.log("Latitud:", lat);
     console.log("Longitud:", lng);
     console.log("ID Autor:", window.idUsuario);
-    
+
     $.ajax({
         url: '/tercerAnio/aquaReadPro/codeigniter/index.php/geodatalogger/agregarmedidor',
         method: 'POST',
@@ -366,28 +446,25 @@ function saveMedidorMarker(lat, lng, medidorMarker)
             latitud: lat,
             longitud: lng,
             idDatalogger: window.idDatalogger,
-            idMembresia: window.idMembresia,
+            idMembresia: window.idMembresia, // Enviar idMembresia al servidor
             idAutor: window.idUsuario
         },
-        success: function (response) 
-        {
+        success: function (response) {
             console.log(response);
             var jsonResponse = JSON.parse(response);
-            if (jsonResponse.status === 'success') 
-            {
+            if (jsonResponse.status === 'success') {
                 medidorMarker.idMedidor = jsonResponse.idMedidor;
-            } 
-            else 
-            {
+                medidorMarker.idMembresia = window.idMembresia; // Almacenar el idMembresia en el marcador
+            } else {
                 alert("Error al agregar el medidor: " + jsonResponse.message);
             }
         },
-        error: function () 
-        {
+        error: function () {
             alert("Error al agregar el medidor.");
         }
     });
 }
+
 function deleteMedidorMarker(medidorMarker) 
 {
     var idMedidor = medidorMarker.idMedidor;
