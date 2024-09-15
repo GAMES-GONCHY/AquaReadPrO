@@ -129,7 +129,6 @@ class Geodatalogger extends CI_Controller
         $idDatalogger = $this->input->post('idDatalogger');
         $idMembresia = $this->input->post('idMembresia');
 
-        // Lógica para guardar el marcador en la base de datos
         $data = array(
             'latitud' => $latitud,
             'longitud' => $longitud,
@@ -150,5 +149,26 @@ class Geodatalogger extends CI_Controller
             echo json_encode(['status' => 'error', 'message' => $error]);
         }
     }
+    public function eliminarmedidor()
+    {
+        $idMedidor = $this->input->post('idMedidor');
+        $data['estado']=$this->input->post('estado');
+        if (is_null($idMedidor)) 
+        {
+            echo json_encode(['status' => 'error', 'message' => 'Datos faltantes']);
+            return;
+        }
+        $consulta=$this->medidor_model->modificar($idMedidor,$data);
     
+        if ($consulta) 
+        {
+            echo json_encode(['status' => 'success']);
+        }
+        else 
+        {
+            $error = $this->db->error();
+            log_message('error', 'Error al eliminar datalogger: ' . json_encode($error));
+            echo json_encode(['status' => 'error', 'message' => 'No se pudo eliminar el marcador.']);
+        }
+    }
 }

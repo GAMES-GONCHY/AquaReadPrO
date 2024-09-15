@@ -116,7 +116,7 @@ function initMap()
     });
 
     // Mostrar marcadores de medidores
-    var medidorCoordinates = window.medidorCoordenadas;  // Coordenadas de los medidores desde la variable global
+    var medidorCoordinates = window.medidorCoordenadas;
     medidorCoordinates.forEach(function(medidor) {
         var medidorMarker = createMedidorMarker({
             lat: parseFloat(medidor.latitud),
@@ -240,6 +240,8 @@ function saveDataloggerMarker(lat, lng, dataloggerMarker)
     console.log("idDatalogger:", jsonResponse.idDatalogger);
 }
 
+
+
 function deleteDataloggerMarker(dataloggerMarker) 
 {
     var idDatalogger = dataloggerMarker.idDatalogger;
@@ -314,33 +316,28 @@ function updateDataloggerMarkerPosition(dataloggerMarker)
 }
 
 
-
-
-
-
 //MEDIDORES
 
-// Función para crear un marcador de medidor
 function createMedidorMarker(position, map, idMedidor) 
 {
     var medidorMarker = new google.maps.Marker({
         position: position,
         map: map,
-        draggable: false,  // Desactivar arrastre si solo deseas mostrar los marcadores
-        icon: 'http://maps.google.com/mapfiles/ms/icons/yellow-dot.png'  // Diferenciar los medidores con un ícono amarillo
+        draggable: true,
+        icon: 'http://maps.google.com/mapfiles/ms/icons/yellow-dot.png' 
     });
 
     if (idMedidor) {
         medidorMarker.idMedidor = idMedidor;
     }
 
-    var infoWindow = new google.maps.InfoWindow({
+    infoWindow = new google.maps.InfoWindow({
         disableAutoPan: true
     });
     
     google.maps.event.addListener(medidorMarker, 'mouseover', function () {
         var contentString = '<div>' +
-            '<p style="color: black;">Medidor ID: ' + medidorMarker.idMedidor + '</p>' +
+            '<p style="color: black;">Cod. Socio: ' + (medidorMarker.idMedidor || 'cargando..') + '</p>' +
             '</div>';
         infoWindow.setContent(contentString);
         infoWindow.open(map, medidorMarker);
@@ -350,8 +347,12 @@ function createMedidorMarker(position, map, idMedidor)
         infoWindow.close();
     });
 
+    google.maps.event.addListener(medidorMarker, 'rightclick', function () {
+        deleteMedidorMarker(medidorMarker);
+    });
     return medidorMarker;
 }
+
 function saveMedidorMarker(lat, lng, medidorMarker) 
 {
     console.log("Latitud:", lat);
@@ -387,5 +388,43 @@ function saveMedidorMarker(lat, lng, medidorMarker)
         }
     });
 }
+function deleteMedidorMarker(medidorMarker) 
+{
+    var idMedidor = medidorMarker.idMedidor;
+    var estado = 0; // Utilizamos 0 para marcar como eliminado
 
+    document.body.style.cursor = 'progress';
 
+    $.ajax({
+        url: '/tercerAnio/aquaReadPro/codeigniter/index.php/geodatalogger/eliminarmedidor', // Asegúrate de cambiar a la ruta correcta
+        method: 'POST',
+        data: {
+            idMedidor: idMedidor,
+            estado: estado
+        },
+        success: function (response) {
+            try {
+                console.log(response); // Verificar la respuesta
+                var jsonResponse = JSON.parse(response);
+
+                if (jsonResponse.status === 'success') {
+                    // Ocultar el marcador del mapa
+                    medidorMarker.setMap(null);
+                    medidorMarkers = medidorMarkers.filter(m => m !== medidorMarker);
+
+                    document.body.style.cursor = 'default';
+                } else {
+                    document.body.style.cursor = 'default';
+                    console.error("Error al eliminar el medidor: " + jsonResponse.message);
+                }
+            } catch (e) {
+                console.error("Error procesando la respuesta: ", e);
+                document.body.style.cursor = 'default';
+            }
+        },
+        error: function () {
+            console.error("Error al eliminar el medidor.");
+            document.body.style.cursor = 'default';
+        }
+    });
+}
