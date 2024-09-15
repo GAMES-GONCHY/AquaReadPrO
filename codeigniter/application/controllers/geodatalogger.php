@@ -171,4 +171,30 @@ class Geodatalogger extends CI_Controller
             echo json_encode(['status' => 'error', 'message' => 'No se pudo eliminar el marcador.']);
         }
     }
+    public function modificarmedidor()
+    {
+        $idMedidor = $this->input->post('idMedidor');
+        $data['latitud'] = $this->input->post('latitud');
+        $data['longitud'] = $this->input->post('longitud');
+
+        // Verifica si los datos necesarios están presentes
+        if (is_null($idMedidor) || is_null($data['latitud']) || is_null($data['longitud'])) 
+        {
+            echo json_encode(['status' => 'error', 'message' => 'Datos faltantes']);
+            return;
+        }
+
+        $result = $this->medidor_model->modificar($idMedidor, $data);        
+        if ($result) 
+        {
+            echo json_encode(['status' => 'success']);
+        } 
+        else 
+        {
+            $error = $this->db->error();
+            log_message('error', 'Error al actualizar las coordenadas del medidor: ' . json_encode($error));
+            echo json_encode(['status' => 'error', 'message' => 'Error al actualizar las coordenadas']);
+        }
+    }
+
 }

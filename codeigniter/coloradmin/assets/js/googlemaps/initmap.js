@@ -20,6 +20,7 @@ document.addEventListener('keydown', function(event) {
     if (event.key === 'Escape' || event.key === 'Esc') {
         // Desactivar la adición múltiple de marcadores
         addingDataloggerMarker = false;
+        addingMedidorMarker = false;
         // Restaurar el cursor del mapa a su forma predeterminada
         if (mapDefault) {
             mapDefault.setOptions({ draggableCursor: 'default' });
@@ -115,15 +116,6 @@ function initMap()
         }
     });
 
-    // Mostrar marcadores de medidores
-    // var medidorCoordinates = window.medidorCoordenadas;
-    // medidorCoordinates.forEach(function(medidor) {
-    //     var medidorMarker = createMedidorMarker({
-    //         lat: parseFloat(medidor.latitud),
-    //         lng: parseFloat(medidor.longitud)
-    //     }, mapDefault, medidor.idMedidor);
-    //     medidorMarkers.push(medidorMarker);
-    // });
     var medidorCoordinates = window.medidorCoordenadas;
     medidorCoordinates.forEach(function(medidor) {
         var medidorMarker = createMedidorMarker({
@@ -151,9 +143,10 @@ function initMap()
             // Guardar el marcador en la base de datos
             saveMedidorMarker(lat, lng, newMedidorMarker);
 
-            // Desactivar el modo de agregar medidores
-            mapDefault.setOptions({ draggableCursor: null });
-            addingMedidorMarker = false;
+            if (!ctrlPressed) {
+                mapDefault.setOptions({ draggableCursor: null });
+                addingDataloggerMarker = false;
+            }
         }
     });
 }
@@ -325,78 +318,8 @@ function updateDataloggerMarkerPosition(dataloggerMarker)
 
 
 //MEDIDORES
-
-// function createMedidorMarker(position, map, idMedidor) 
-// {
-//     var medidorMarker = new google.maps.Marker({
-//         position: position,
-//         map: map,
-//         draggable: true,
-//         icon: 'http://maps.google.com/mapfiles/ms/icons/yellow-dot.png' 
-//     });
-
-//     if (idMedidor) {
-//         medidorMarker.idMedidor = idMedidor;
-//     }
-
-//     infoWindow = new google.maps.InfoWindow({
-//         disableAutoPan: true
-//     });
-    
-//     google.maps.event.addListener(medidorMarker, 'mouseover', function () {
-//         var contentString = '<div>' +
-//             '<p style="color: black;">Cod. Socio: ' + (medidorMarker.idMedidor || 'cargando..') + '</p>' +
-//             '</div>';
-//         infoWindow.setContent(contentString);
-//         infoWindow.open(map, medidorMarker);
-//     });
-
-//     google.maps.event.addListener(medidorMarker, 'mouseout', function () {
-//         infoWindow.close();
-//     });
-
-//     google.maps.event.addListener(medidorMarker, 'rightclick', function () {
-//         deleteMedidorMarker(medidorMarker);
-//     });
-//     return medidorMarker;
-// }
-
-// function saveMedidorMarker(lat, lng, medidorMarker) 
-// {
-//     console.log("Latitud:", lat);
-//     console.log("Longitud:", lng);
-//     console.log("ID Autor:", window.idUsuario);
-    
-//     $.ajax({
-//         url: '/tercerAnio/aquaReadPro/codeigniter/index.php/geodatalogger/agregarmedidor',
-//         method: 'POST',
-//         data: {
-//             latitud: lat,
-//             longitud: lng,
-//             idDatalogger: window.idDatalogger,
-//             idMembresia: window.idMembresia,
-//             idAutor: window.idUsuario
-//         },
-//         success: function (response) 
-//         {
-//             console.log(response);
-//             var jsonResponse = JSON.parse(response);
-//             if (jsonResponse.status === 'success') 
-//             {
-//                 medidorMarker.idMedidor = jsonResponse.idMedidor;
-//             } 
-//             else 
-//             {
-//                 alert("Error al agregar el medidor: " + jsonResponse.message);
-//             }
-//         },
-//         error: function () 
-//         {
-//             alert("Error al agregar el medidor.");
-//         }
-//     });
-// }
-function createMedidorMarker(position, map, idMedidor, idMembresia) {
+function createMedidorMarker(position, map, idMedidor, idMembresia) 
+{
     var medidorMarker = new google.maps.Marker({
         position: position,
         map: map,
@@ -432,6 +355,13 @@ function createMedidorMarker(position, map, idMedidor, idMembresia) {
         deleteMedidorMarker(medidorMarker);
     });
 
+    // Actualizar la posición al terminar el arrastre
+    google.maps.event.addListener(medidorMarker, 'dragend', function () {
+        if (altPressed) {
+            updateMedidorMarkerPosition(medidorMarker);
+        }
+    });
+    
     return medidorMarker;
 }
 function saveMedidorMarker(lat, lng, medidorMarker) {
@@ -505,3 +435,36 @@ function deleteMedidorMarker(medidorMarker)
         }
     });
 }
+function updateMedidorMarkerPosition(medidorMarker) 
+{
+    var newLat = medidorMarker.getPosition().lat();
+    var newLng = medidorMarker.getPosition().lng();
+    var idMedidor = medidorMarker.idMedidor;
+
+    $.ajax({
+        url: '/tercerAnio/aquaReadPro/codeigniter/index.php/geodatalogger/modificarmedidor',  // Ajusta la ruta según tu controlador y método
+        method: 'POST',
+        data: {
+            idMedidor: idMedidor,
+            latitud: newLat,
+            longitud: newLng
+        },
+        success: function (response) {
+            try {
+                console.log(response);  // Verificar la respuesta
+                var jsonResponse = JSON.parse(response);
+                if (jsonResponse.status === 'success') {
+                    console.log("Coordenadas del medidor actualizadas correctamente.");
+                } else {
+                    console.error("Error al actualizar las coordenadas del medidor: " + jsonResponse.message);
+                }
+            } catch (e) {
+                console.error("Error procesando la respuesta: ", e);
+            }
+        },
+        error: function () {
+            console.error("Error al actualizar las coordenadas del medidor.");
+        }
+    });
+}
+
