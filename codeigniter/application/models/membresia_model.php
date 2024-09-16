@@ -12,4 +12,13 @@ class Membresia_model extends CI_Model
 
         return $query->row()->idMembresia;
     }
+    public function contarmembresias()
+    {
+        $this->db->select('idMembresia');
+		$this->db->from('membresia');
+		$this->db->where('idUsuario', $idsocio);
+		$query =$this->db->get();
+
+        return $query->row()->idMembresia;
+    }
 }

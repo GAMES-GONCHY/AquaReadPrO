@@ -221,11 +221,11 @@
                             <div class="menu-text">Vista general</div>
                         </a>
                     </div>
-                    <div class="menu-item <?php echo ($this->uri->segment(2) == 'map_google') ? 'active' : ''; ?>">
+                    <!-- <div class="menu-item <?php echo ($this->uri->segment(2) == 'map_google') ? 'active' : ''; ?>">
                         <a href="<?php echo base_url(); ?>index.php/geodatalogger/map_google" class="menu-link">
                             <div class="menu-text">GPS</div>
                         </a>
-                    </div>
+                    </div> -->
                 </div>
             </div>
 

@@ -32,6 +32,12 @@ class Datalogger_model extends CI_Model
 		$this->db->select_max('idDatalogger');
         $this->db->where('estado', 1); 
         $query = $this->db->get('datalogger');
-        return $query->row()->idDatalogger;
+        //return $query->row()->idDatalogger;
+        return $query;
+	}
+    public function contardl()
+	{
+		$query = $this->db->count_all('datalogger');
+        return $query;
 	}
 }

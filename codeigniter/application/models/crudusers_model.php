@@ -5,18 +5,21 @@ class Crudusers_model extends CI_Model
 {
 	public function habilitados($rol)
 	{
-		// $this->db->select('*');
-		// $this->db->from('usuario');
-		// $this->db->where('estado', 1);
-		// $this->db->where('rol', $rol);
-		// return $this->db->get();
-
-		$this->db->select('usuario.*, membresia.idMembresia');
-		$this->db->from('usuario');
-		$this->db->join('membresia', 'membresia.idUsuario = usuario.idUsuario', 'inner');
-		$this->db->where('usuario.estado', 1);
-		$this->db->where('usuario.rol', $rol);
-
+		if($rol==2)
+		{
+			$this->db->select('*');
+			$this->db->from('usuario');
+			$this->db->where('estado', 1);
+			$this->db->where('rol', $rol);
+		}
+		else
+		{
+			$this->db->select('usuario.*, membresia.idMembresia');
+			$this->db->from('usuario');
+			$this->db->join('membresia', 'membresia.idUsuario = usuario.idUsuario', 'inner');
+			$this->db->where('usuario.estado', 1);
+			$this->db->where('usuario.rol', $rol);
+		}
 		return $this->db->get();
 
 	}
