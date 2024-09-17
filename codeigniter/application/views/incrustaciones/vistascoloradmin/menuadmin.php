@@ -162,23 +162,23 @@
             <div class="menu-header">Navigation</div>
 
             <!-- Reportes -->
-            <div class="menu-item has-sub <?php echo ($this->uri->segment(2) == 'panel') ? 'active' : ''; ?>">
+            <div class="menu-item has-sub <?php echo ($this->uri->segment(2) === 'panel') ? 'active' : ''; ?>">
                 <a href="javascript:;" class="menu-link">
                     <div class="menu-icon"><i class="fa fa-th-large"></i></div>
                     <div class="menu-text">Reportes</div>
                     <div class="menu-caret"></div>
                 </a>
                 <div class="menu-submenu">
-                    <div class="menu-item <?php echo ($this->uri->segment(2) == 'panel') ? 'active' : ''; ?>">
-                        <a href="<?php echo base_url(); ?>index.php/usuario/panel" class="menu-link">
+                    <div class="menu-item <?php echo ($this->uri->segment(2) === 'panel') ? 'active' : ''; ?>">
+                        <a href="<?php echo base_url('index.php/usuario/panel'); ?>" class="menu-link">
                             <div class="menu-text">Ver Reportes</div>
                         </a>
                     </div>
                 </div>
             </div>
 
-            <!-- Usuarios -->
-            <div class="menu-item has-sub <?php echo ($this->uri->segment(2) == 'habilitados') ? 'active' : ''; ?>">
+           <!-- Usuarios -->
+            <div class="menu-item has-sub <?php echo ($this->uri->segment(1) === 'crudusers' && $this->uri->segment(2) === 'habilitados') ? 'active' : ''; ?>">
                 <a href="javascript:;" class="menu-link">
                     <div class="menu-icon"><i class="fa fa-table"></i></div>
                     <div class="menu-text">Usuarios</div>
@@ -187,59 +187,47 @@
                 <div class="menu-submenu">
                     <!-- Gestionar Administradores -->
                     <div class="menu-item <?php echo ($this->uri->segment(3) === '2') ? 'active' : ''; ?>">
-                        <a href="<?php echo base_url(); ?>index.php/crudusers/habilitados/2" class="menu-link">
+                        <a href="<?php echo base_url('index.php/crudusers/habilitados/2'); ?>" class="menu-link">
                             <div class="menu-text">Gestionar Administradores</div>
                         </a>
                     </div>
-                    
+
                     <!-- Gestionar Socios -->
                     <div class="menu-item <?php echo ($this->uri->segment(3) === '0') ? 'active' : ''; ?>">
-                        <a href="<?php echo base_url(); ?>index.php/crudusers/habilitados/0" class="menu-link">
+                        <a href="<?php echo base_url('index.php/crudusers/habilitados/0'); ?>" class="menu-link">
                             <div class="menu-text">Gestionar Socios</div>
                         </a>
                     </div>
-
-                    <!-- Membresias -->
-                    <!-- <div class="menu-item <?php echo ($this->uri->segment(3) === '0') ? 'active' : ''; ?>">
-                        <a href="<?php echo base_url(); ?>index.php/crudusers/habilitados/0" class="menu-link">
-                            <div class="menu-text">Gestionar Membresias</div>
-                        </a>
-                    </div> -->
                 </div>
             </div>
 
+
             <!-- Geolocalización -->
-            <div class="menu-item has-sub <?php echo ($this->uri->segment(1) == 'geodatalogger') ? 'active' : ''; ?>">
-                <a href="#" class="menu-link">
+            <div class="menu-item has-sub <?php echo ($this->uri->segment(1) === 'geodatalogger') ? 'active' : ''; ?>">
+                <a href="javascript:;" class="menu-link">
                     <div class="menu-icon"><i class="fa fa-map"></i></div>
                     <div class="menu-text">Geolocalización</div>
                     <div class="menu-caret"></div>
                 </a>
                 <div class="menu-submenu">
-                    <div class="menu-item <?php echo ($this->uri->segment(2) == 'visualizar') ? 'active' : ''; ?>">
-                        <a href="<?php echo base_url(); ?>index.php/geodatalogger/visualizar" class="menu-link">
+                    <div class="menu-item <?php echo ($this->uri->segment(2) === 'visualizar') ? 'active' : ''; ?>">
+                        <a href="<?php echo base_url('index.php/geodatalogger/visualizar'); ?>" class="menu-link">
                             <div class="menu-text">Vista general</div>
                         </a>
                     </div>
-                    <!-- <div class="menu-item <?php echo ($this->uri->segment(2) == 'map_google') ? 'active' : ''; ?>">
-                        <a href="<?php echo base_url(); ?>index.php/geodatalogger/map_google" class="menu-link">
-                            <div class="menu-text">GPS</div>
-                        </a>
-                    </div> -->
                 </div>
             </div>
 
-
             <!-- Avisos de Cobranza -->
-            <div class="menu-item has-sub <?php echo ($this->uri->segment(2) == 'email_system') ? 'active' : ''; ?>">
+            <div class="menu-item has-sub <?php echo ($this->uri->segment(2) === 'email_system') ? 'active' : ''; ?>">
                 <a href="javascript:;" class="menu-link">
                     <div class="menu-icon"><i class="fa fa-envelope"></i></div>
                     <div class="menu-text">Avisos de cobranza</div>
                     <div class="menu-caret"></div>
                 </a>
                 <div class="menu-submenu">
-                    <div class="menu-item <?php echo ($this->uri->segment(2) == 'email_system') ? 'active' : ''; ?>">
-                        <a href="email_system.html" class="menu-link">
+                    <div class="menu-item <?php echo ($this->uri->segment(3) === 'email_system') ? 'active' : ''; ?>">
+                        <a href="<?php echo base_url('index.php/email_system'); ?>" class="menu-link">
                             <div class="menu-text">Gestionar Avisos</div>
                         </a>
                     </div>
@@ -247,35 +235,36 @@
             </div>
 
             <!-- Lecturas -->
-            <div class="menu-item has-sub <?php echo ($this->uri->segment(2) == 'lecturas') ? 'active' : ''; ?>">
+            <div class="menu-item has-sub <?php echo ($this->uri->segment(2) === 'lecturas') ? 'active' : ''; ?>">
                 <a href="javascript:;" class="menu-link">
                     <div class="menu-icon"><i class="fa fa-list-ol"></i></div>
                     <div class="menu-text">Lecturas</div>
                     <div class="menu-caret"></div>
                 </a>
                 <div class="menu-submenu">
-                    <div class="menu-item <?php echo ($this->uri->segment(2) == 'form_elements') ? 'active' : ''; ?>">
-                        <a href="form_elements.html" class="menu-link">
+                    <div class="menu-item <?php echo ($this->uri->segment(3) === 'form_elements') ? 'active' : ''; ?>">
+                        <a href="<?php echo base_url('index.php/form_elements'); ?>" class="menu-link">
                             <div class="menu-text">Gestionar Lecturas</div>
                         </a>
                     </div>
                 </div>
-                <!-- Datalogger -->
-                <div class="menu-item <?php echo ($this->uri->segment(2) == 'habilitados' && $this->uri->segment(1) == 'datalogger') ? 'active' : ''; ?>">
-                    <a href="<?php echo base_url(); ?>index.php/datalogger/habilitados" class="menu-link">
-                        <div class="menu-icon"><i class="fa fa-gift"></i></div>
-                        <div class="menu-text">Datalogger</div>
-                    </a>
-                </div>
+            </div>
 
-                <!-- Medidores -->
-                <div class="menu-item <?php echo ($this->uri->uri_string() == 'widget.html') ? 'active' : ''; ?>">
-                    <a href="widget.html" class="menu-link">
-                        <div class="menu-icon"><i class="fab fa-simplybuilt"></i></div>
-                        <div class="menu-text">Medidores</div>
-                    </a>
-                </div>
+            
 
+            <!-- Dispositivos -->
+            <div class="menu-item <?php echo ($this->uri->segment(1) === 'datalogger' && $this->uri->segment(2) === 'habilitados') ? 'active' : ''; ?>">
+                <a href="<?php echo base_url('index.php/datalogger/habilitados'); ?>" class="menu-link">
+                    <div class="menu-icon"><i class="fa fa-gift"></i></div>
+                    <div class="menu-text">Datalogger</div>
+                </a>
+            </div>
+
+            <div class="menu-item <?php echo ($this->uri->segment(1) === 'medidor' && $this->uri->segment(2) === 'habilitados') ? 'active' : ''; ?>">
+                <a href="<?php echo base_url('index.php/medidor/habilitados'); ?>" class="menu-link">
+                    <div class="menu-icon"><i class="fab fa-simplybuilt"></i></div>
+                    <div class="menu-text">Medidores</div>
+                </a>
             </div>
 
             <div class="menu-item d-flex">

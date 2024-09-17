@@ -8,7 +8,7 @@
     <li class="breadcrumb-item active">Extension Combination</li>
   </ol>
 
-  <h1 class="page-header">Dataloggers</h1>
+  <h1 class="page-header">Medidores</h1>
 
   <div class="container mt-4">
     <div class="row">
@@ -26,15 +26,10 @@
           <div class="panel-body">
             <div class="row mb-3">
               <div class="col-md-12 mb-2">
-                <a href="<?php echo base_url(); ?>index.php/datalogger/deshabilitados" class="btn btn-info btn-lg btn-block text-uppercase font-weight-bold w-100">
+                <a href="<?php echo base_url(); ?>index.php/medidor/deshabilitados" class="btn btn-info btn-lg btn-block text-uppercase font-weight-bold w-100">
                   VER DESHABILITADOS
                 </a>
               </div>
-              <!-- <div class="col-md-6 mb-2">
-                <a href="<?php echo base_url(); ?>index.php/datalogger/agregar" class="btn btn-success btn-lg btn-block text-uppercase font-weight-bold w-100">
-                  Agregar Datalogger
-                </a>
-              </div> -->
             </div>
             <table id="datatable" class="table table-hover table-bordered align-middle">
               <thead>
@@ -43,35 +38,28 @@
                   <th>Latitud</th>
                   <th>Longitud</th>
                   <th>Fecha instalación</th>
-                  <!-- <th>Modificar</th> -->
+                  <th>Cod. DL asociado</th>
+                  <th>Cod. Socio</th>
                   <th>Deshabilitar</th>
                 </tr>
               </thead>
               <tbody>
                 <?php
                 $cont = 1;
-                foreach ($datalogger->result() as $row) {
+                foreach ($medidor->result() as $row) {
                 ?>
                   <tr>
                     <td><?php echo $cont; ?></td>
                     <td><?php echo $row->latitud; ?></td>
                     <td><?php echo $row->longitud; ?></td>
                     <td><?php echo $row->fechaRegistro; ?></td>
-                    <!-- <td>
-                      <?php
-                      echo form_open_multipart("datalogger/modificar"); // <form>
-                      ?>
-                      <input type="hidden" name="id" value="<?php echo $row->idDatalogger ?>">
-                      <button type="submit" class="btn btn-indigo me-1 mb-1">Modificar</button>
-                      <?php
-                      echo form_close(); // </form>
-                      ?>
-                    </td> -->
+                    <td><?php echo $row->idDatalogger; ?></td>
+                    <td><?php echo $row->idMembresia; ?></td>
                     <td>
                       <?php
-                      echo form_open_multipart("datalogger/deshabilitarbd"); // <form>
+                      echo form_open_multipart("medidor/deshabilitarbd"); // <form>
                       ?>
-                      <input type="hidden" name="id" value="<?php echo $row->idDatalogger ?>">
+                      <input type="hidden" name="id" value="<?php echo $row->idMedidor ?>">
                       <button type="submit" class="btn btn-danger">Dar de baja</button>
                       <?php
                       echo form_close(); // </form>
@@ -89,7 +77,8 @@
                   <th>Latitud</th>
                   <th>Longitud</th>
                   <th>Fecha instalación</th>
-                  <!-- <th>Modificar</th> -->
+                  <th>Cod. DL asociado</th>
+                  <th>Cod. Socio</th>
                   <th>Deshabilitar</th>
                 </tr>
               </tfoot>

@@ -1,24 +1,24 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
-class Datalogger extends CI_Controller
+class Medidor extends CI_Controller
 {
 	public function habilitados()
 	{
-		$data['datalogger'] = $this->datalogger_model->habilitados();
+		$data['medidor'] = $this->medidor_model->habilitados();
 
 		$this->load->view('incrustaciones/vistascoloradmin/head');
 		$this->load->view('incrustaciones/vistascoloradmin/menuadmin');
-		$this->load->view('dataloggershabilitados', $data);
+		$this->load->view('medidoreshabilitados', $data);
 		$this->load->view('incrustaciones/vistascoloradmin/footer');
 	}
     public function deshabilitados()
 	{
-		$data['datalogger'] = $this->datalogger_model->deshabilitados();
+		$data['medidor'] = $this->medidor_model->deshabilitados();
 
 		$this->load->view('incrustaciones/vistascoloradmin/head');
 		$this->load->view('incrustaciones/vistascoloradmin/menuadmin');
-		$this->load->view('dataloggersdeshabilitados', $data);
+		$this->load->view('medidoresdeshabilitados', $data);
 		$this->load->view('incrustaciones/vistascoloradmin/footer');
 	}
 	public function habilitarbd()
@@ -26,16 +26,16 @@ class Datalogger extends CI_Controller
 		$id = $_POST['id'];
 		$data['estado'] = 1;
 
-		$this->datalogger_model->modificar($id, $data);
-		redirect('datalogger/deshabilitados', 'refresh');
+		$this->medidor_model->modificar($id, $data);
+		redirect('medidor/deshabilitados', 'refresh');
 	}
 	public function deshabilitarbd()
 	{
 		$id = $_POST['id'];
 		$data['estado'] = 0;
 
-		$this->datalogger_model->modificar($id, $data);
-		redirect('datalogger/habilitados', 'refresh');
+		$this->medidor_model->modificar($id, $data);
+		redirect('medidor/habilitados', 'refresh');
 	}
 	// public function agregar()
 	// {

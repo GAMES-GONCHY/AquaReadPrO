@@ -45,7 +45,7 @@
               <tbody>
                 <?php
                 $cont = 1;
-                foreach ($dataloggers->result() as $row) {
+                foreach ($datalogger->result() as $row) {
                 ?>
                   <tr>
                     <td><?php echo $cont; ?></td>

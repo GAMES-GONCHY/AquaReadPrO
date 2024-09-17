@@ -6,7 +6,8 @@ use ModbusTcpClient\Packet\ModbusFunction\ReadHoldingRegistersRequest;
 
 class Lecturadl extends CI_Controller 
 {
-    public function leer_pulsos() {
+    public function leer_pulsos() 
+    {
         $ip_datalogger = '192.168.0.10'; // Dirección IP corregida
         
         // Crear una conexión TCP
