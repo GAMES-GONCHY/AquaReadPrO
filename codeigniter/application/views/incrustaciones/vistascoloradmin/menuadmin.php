@@ -243,14 +243,12 @@
                 </a>
                 <div class="menu-submenu">
                     <div class="menu-item <?php echo ($this->uri->segment(3) === 'form_elements') ? 'active' : ''; ?>">
-                        <a href="<?php echo base_url('index.php/form_elements'); ?>" class="menu-link">
+                        <a href="<?php echo base_url('index.php/lecturadl/mostrarlectura'); ?>" class="menu-link">
                             <div class="menu-text">Gestionar Lecturas</div>
                         </a>
                     </div>
                 </div>
             </div>
-
-            
 
             <!-- Dispositivos -->
             <div class="menu-item <?php echo ($this->uri->segment(1) === 'datalogger' && $this->uri->segment(2) === 'habilitados') ? 'active' : ''; ?>">

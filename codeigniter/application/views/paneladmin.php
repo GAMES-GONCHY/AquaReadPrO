@@ -17,7 +17,6 @@
 				<?php endif; ?>
 			</h1>
 
-
 			<div class="d-sm-flex align-items-center mb-3">
 				<a href="#" class="btn btn-default me-2 text-truncate" id="daterange-filter">
 					<i class="fa fa-calendar fa-fw text-white-transparent-5 ms-n1"></i>

@@ -402,6 +402,28 @@
   });
 </script>
 
+<!-- lectura -->
+<script>
+  function actualizar() 
+  {
+    $.ajax({
+      url: '<?php echo base_url(); ?>index.php/lecturadl/actualizarlectura',
+      type: 'GET',
+      dataType: 'json',
+      success: function(data) {
+        // Actualizar el valor en la vista
+        $('#pulsos_value').text(data.pulsos);
+      },
+      error: function() {
+        console.log('Error al obtener la lectura de pulsos.');
+      }
+    });
+  }
+  // Llamar a la función cada 5 segundos
+  setInterval(actualizar, 5000);
+</script>
+
+
   </body>
 
   </html>
