@@ -38,4 +38,10 @@ class Medidor_model extends CI_Model
         $query = $this->db->get();
         return $query->row();
 	}
+    public function contarmedidores($idMembresia)
+	{
+        $this->db->where('idMembresia', $idMembresia);
+        $countMedidores = $this->db->count_all_results('medidor');
+        return $countMedidores;
+    }
 }

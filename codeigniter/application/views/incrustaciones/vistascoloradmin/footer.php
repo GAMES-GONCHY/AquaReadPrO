@@ -420,7 +420,7 @@
     });
   }
   // Llamar a la función cada 5 segundos
-  setInterval(actualizar, 5000);
+  setInterval(actualizar, 50000);
 </script> -->
 
 

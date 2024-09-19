@@ -121,7 +121,7 @@ function initMap()
         var medidorMarker = createMedidorMarker({
             lat: parseFloat(medidor.latitud),
             lng: parseFloat(medidor.longitud)
-        }, mapDefault, medidor.idMedidor, medidor.idMembresia); // Pasar idMembresia
+        }, mapDefault, medidor.idMedidor, medidor.idMembresia,medidor.codigoMedidor); // Pasar idMembresia
         medidorMarkers.push(medidorMarker);
     });
 
@@ -145,7 +145,7 @@ function initMap()
 
             if (!ctrlPressed) {
                 mapDefault.setOptions({ draggableCursor: null });
-                addingDataloggerMarker = false;
+                addingMedidorMarker = false;
             }
         }
     });
@@ -318,7 +318,7 @@ function updateDataloggerMarkerPosition(dataloggerMarker)
 
 
 //MEDIDORES
-function createMedidorMarker(position, map, idMedidor, idMembresia) 
+function createMedidorMarker(position, map, idMedidor, idMembresia,codigoMedidor) 
 {
     var medidorMarker = new google.maps.Marker({
         position: position,
@@ -334,6 +334,9 @@ function createMedidorMarker(position, map, idMedidor, idMembresia)
     if (idMembresia) {
         medidorMarker.idMembresia = idMembresia;
     }
+    if (codigoMedidor) {
+        medidorMarker.codigoMedidor = codigoMedidor;
+    }
 
     infoWindow = new google.maps.InfoWindow({
         disableAutoPan: true
@@ -341,7 +344,7 @@ function createMedidorMarker(position, map, idMedidor, idMembresia)
 
     google.maps.event.addListener(medidorMarker, 'mouseover', function () {
         var contentString = '<div>' +
-            '<p style="color: black;">Cod. Socio: ' + (medidorMarker.idMembresia || 'cargando...') + '</p>' +
+            '<p style="color: black;">Cod. Socio: ' + (medidorMarker.codigoMedidor || 'cargando...') + '</p>' +
             '</div>';
         infoWindow.setContent(contentString);
         infoWindow.open(map, medidorMarker);
