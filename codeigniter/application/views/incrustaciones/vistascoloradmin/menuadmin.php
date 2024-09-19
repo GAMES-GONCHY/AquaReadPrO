@@ -1,6 +1,6 @@
 <div class="navbar-header">
     <a href="index.html" class="navbar-brand">
-        <span class="navbar-logo"></span> <b>Aqua</b>ReadPrO <img src="<?php echo base_url(); ?>xeria/light/dist/assets/images/logo14.png" alt="" width="50" />
+        <span class="navbar-logo"></span> <b>Aqua</b>ReadPro <img src="<?php echo base_url(); ?>coloradmin/assets/img/logo/logomenu.png" alt="" width="50" />
     </a>
     <button type="button" class="navbar-mobile-toggler" data-toggle="app-sidebar-mobile">
         <span class="icon-bar"></span>

@@ -27,4 +27,15 @@ class Medidor_model extends CI_Model
 
         return $this->db->affected_rows() > 0;
 	}
+    public function recuperarinfousuario($idMedidor)
+	{
+		$this->db->select('usuario.nombre, usuario.primerApellido');
+        $this->db->from('medidor');
+        $this->db->join('membresia', 'membresia.idMembresia = medidor.idMembresia', 'inner');
+        $this->db->join('usuario', 'usuario.idUsuario = membresia.idUsuario', 'inner');
+        $this->db->where('usuario.estado', 1);
+        $this->db->where('medidor.idMedidor', $idMedidor);
+        $query = $this->db->get();
+        return $query->row();
+	}
 }

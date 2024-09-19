@@ -403,7 +403,7 @@
 </script>
 
 <!-- lectura -->
-<script>
+<!-- <script>
   function actualizar() 
   {
     $.ajax({
@@ -421,7 +421,7 @@
   }
   // Llamar a la función cada 5 segundos
   setInterval(actualizar, 5000);
-</script>
+</script> -->
 
 
   </body>

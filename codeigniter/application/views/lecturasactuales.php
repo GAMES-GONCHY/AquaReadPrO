@@ -51,7 +51,7 @@
               <thead>
                 <tr>
                   <th width="1%">No.</th>
-                  <th width="1%" data-orderable="false">Perfil</th>
+                  <th width="1%" data-orderable="false">h</th>
                   <!-- <th>Cargar</th> -->
                   <th>Codigo Socio</th>
                   <th>Nick name</th>

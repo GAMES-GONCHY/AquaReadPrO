@@ -119,24 +119,31 @@ class Geodatalogger extends CI_Controller
     }
     public function agregarmedidor()
     {
-        $latitud = $this->input->post('latitud');
-        $longitud = $this->input->post('longitud');
-        $idAutor = $this->input->post('idAutor');
-        $idDatalogger = $this->input->post('idDatalogger');
-        $idMembresia = $this->input->post('idMembresia');
-
         $data = array(
-            'latitud' => $latitud,
-            'longitud' => $longitud,
-            'idAutor' => $idAutor,
-            'idDatalogger' => $idDatalogger,
-            'idMembresia' => $idMembresia
+            'latitud' => $this->input->post('latitud'),
+            'longitud' => $this->input->post('longitud'),
+            'idAutor' => $this->input->post('idAutor'),
+            'idDatalogger' => $this->input->post('idDatalogger'),
+            'idMembresia' => $this->input->post('idMembresia')
         );
+        
         
         $idMedidor=$this->medidor_model->agregar($data);
         if ($idMedidor)
 		{
             echo json_encode(['status' => 'success', 'idMedidor' => $idMedidor]);
+            
+            $data2['infousuario'] = $this->medidor_model->recuperarinfousuario($idMedidor);
+            
+            $data3['codigoMedidor'] = 'M-'.strtoupper(substr($data2['infousuario']->primerApellido,0,2).substr($data2['infousuario']->nombre, -1));
+            if($data3['codigoMedidor']!=null)
+            {
+                $this->medidor_model->modificar($idMedidor,$data3);
+            }
+            else
+            {
+                log_message('error', 'Error en asignacion de codigo medidor: ');
+            }
         }
         else
         {

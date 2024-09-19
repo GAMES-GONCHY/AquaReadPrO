@@ -9,15 +9,15 @@ class Lecturadl extends CI_Controller
 {
     public function mostrarlectura() 
     {
-        $data['lectura'] = $this->recuperarlectura();
+        $data['lectura'] = $this->lecturarmedidor();
         $this->load->view('incrustaciones/vistascoloradmin/headmap');
 		$this->load->view('incrustaciones/vistascoloradmin/menuadmin');
         $this->load->view('lecturasactuales', $data);
         $this->load->view('incrustaciones/vistascoloradmin/footer');
     }
-    public function recuperarlectura() 
+    public function lecturarmedidor() 
     {
-        $ip_datalogger = '192.168.0.10'; // Dirección IP corregida
+        $ip_datalogger = '192.168.0.10'; // Dirección IP
         
         // Crear una conexión TCP
         $connection = BinaryStreamConnection::getBuilder()
@@ -34,7 +34,7 @@ class Lecturadl extends CI_Controller
             // Enviar la solicitud y recibir la respuesta
             $response = $connection->connect()->sendAndReceive($request);
 
-            // Depurar: Mostrar la respuesta en formato hexadecimal
+            //respuesta en formato hexadecimal
             //echo "Respuesta binaria: " . bin2hex($response) . "<br>";
 
             // Procesar la respuesta (decodificar el valor)
@@ -50,7 +50,8 @@ class Lecturadl extends CI_Controller
     // Nuevo método para retornar la lectura en formato JSON
     public function actualizarlectura() 
     {
-        $pulsos = $this->recuperarlectura();
+        $pulsos = $this->lecturarmedidor();
         echo json_encode(['pulsos' => $pulsos]);
     }
+
 }
