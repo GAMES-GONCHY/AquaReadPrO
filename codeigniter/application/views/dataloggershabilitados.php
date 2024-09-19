@@ -43,7 +43,7 @@
                   <th>Latitud</th>
                   <th>Longitud</th>
                   <th>Fecha instalación</th>
-                  <!-- <th>Modificar</th> -->
+                  <!-- <th>Asignar IPv4</th> -->
                   <th>Deshabilitar</th>
                 </tr>
               </thead>
@@ -59,12 +59,12 @@
                     <td><?php echo $row->fechaRegistro; ?></td>
                     <!-- <td>
                       <?php
-                      echo form_open_multipart("datalogger/modificar"); // <form>
+                      echo form_open_multipart("datalogger/modificar");
                       ?>
                       <input type="hidden" name="id" value="<?php echo $row->idDatalogger ?>">
-                      <button type="submit" class="btn btn-indigo me-1 mb-1">Modificar</button>
+                      <button type="submit" class="btn btn-indigo me-1 mb-1">Asignar IPv4</button>
                       <?php
-                      echo form_close(); // </form>
+                      echo form_close();
                       ?>
                     </td> -->
                     <td>
@@ -89,7 +89,7 @@
                   <th>Latitud</th>
                   <th>Longitud</th>
                   <th>Fecha instalación</th>
-                  <!-- <th>Modificar</th> -->
+                  <!-- <th>Asignar/Modificar IPv4</th> -->
                   <th>Deshabilitar</th>
                 </tr>
               </tfoot>

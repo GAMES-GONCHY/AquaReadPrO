@@ -133,12 +133,11 @@ class Geodatalogger extends CI_Controller
 		{
             echo json_encode(['status' => 'success', 'idMedidor' => $idMedidor]);
             
-            
             $data2['infousuario'] = $this->medidor_model->recuperarinfousuario($idMedidor);
             
             $usercode= strtoupper(substr($data2['infousuario']->primerApellido,0,2).substr($data2['infousuario']->nombre, -1));
             $cantmedidor = $this->medidor_model->contarmedidores($this->input->post('idMembresia'));
-            $data3['codigoMedidor'] = 'M-' . $usercode .'-'. $cantmedidor;
+            $data3['codigoMedidor'] = $usercode .'-'. $cantmedidor;
 
 
             if($data3['codigoMedidor']!=null)

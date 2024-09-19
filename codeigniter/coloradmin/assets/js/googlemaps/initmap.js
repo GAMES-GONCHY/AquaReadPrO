@@ -344,7 +344,7 @@ function createMedidorMarker(position, map, idMedidor, idMembresia,codigoMedidor
 
     google.maps.event.addListener(medidorMarker, 'mouseover', function () {
         var contentString = '<div>' +
-            '<p style="color: black;">Cod. Socio: ' + (medidorMarker.codigoMedidor || 'cargando...') + '</p>' +
+            '<p style="color: black;">Cod. Medidor: ' + (medidorMarker.codigoMedidor || 'cargando...') + '</p>' +
             '</div>';
         infoWindow.setContent(contentString);
         infoWindow.open(map, medidorMarker);
