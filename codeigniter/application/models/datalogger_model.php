@@ -5,7 +5,7 @@ class Datalogger_model extends CI_Model
 {
 	public function habilitados()
     {
-        $this->db->where('estado', 1);
+        $this->db->where_in('estado', [1,2]);
         $query = $this->db->get('datalogger');
         return $query;
     }
@@ -40,4 +40,39 @@ class Datalogger_model extends CI_Model
 		$query = $this->db->count_all('datalogger');
         return $query;
 	}
+    public function obtenerip()
+	{
+        // $this->db->select('datalogger.IP, medidor.puerto, medidor.codigoMedidor');
+        // $this->db->from('datalogger');
+        // $this->db->join('medidor', 'datalogger.idDatalogger=medidor.idDatalogger', 'inner');
+        // $this->db->where('datalogger.estado', 1);
+        // $this->db->where('datalogger.IP IS NOT NULL');
+        // $this->db->where('medidor.puerto IS NOT NULL');
+        
+        // Realizar primero una consulta más simple que sabemos que funciona
+    $this->db->select('datalogger.IP');
+    $this->db->from('datalogger');
+    $this->db->where('datalogger.estado', 1);
+    
+    // Agregar el JOIN de la tabla medidor gradualmente
+    $this->db->join('medidor', 'datalogger.idDatalogger = medidor.idDatalogger', 'inner');
+    
+    // Añadir la selección de puerto y codigoMedidor
+    $this->db->select('medidor.puerto, medidor.codigoMedidor');
+    
+    // Agregar las condiciones adicionales
+    $this->db->where('datalogger.IP IS NOT NULL');
+    $this->db->where('medidor.puerto IS NOT NULL');
+    
+    // Ejecutar la consulta
+    $query = $this->db->get();
+    
+    // Verificar si se encontraron resultados
+    if ($query->num_rows() > 0) {
+        return $query->result_array();
+    } else {
+        return []; // Retorna un arreglo vacío si no hay resultados
+    }
+    }
+
 }

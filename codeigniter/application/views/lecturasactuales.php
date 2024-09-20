@@ -38,86 +38,41 @@
                 </a>
               </div>
             </div>
-            <!-- <div>
-                <h1>Lectura de Pulsos</h1>
-                <p>Número de pulsos: <?php echo $lectura; ?></p>
-            </div> -->
-            <div>
-                <h1>Lectura de Pulsos</h1>
-                <p>Número de pulsos: <span id="pulsos_value"><?php echo $lectura; ?></span></p>
-            </div>
 
             <table id="datatable" class="table table-hover table-bordered align-middle">
               <thead>
                 <tr>
-                  <th width="1%">No.</th>
-                  <th width="1%" data-orderable="false">h</th>
-                  <!-- <th>Cargar</th> -->
-                  <th>Codigo Socio</th>
-                  <th>Nick name</th>
-                  <th>Nombre</th>
-                  <th>Primer Apellido</th>
-                  <th>Segundo Apellido</th>
-                  <th>E-mail</th>
-                  <th>Asignar Datalogger</th>
-                  <th>Asignar Medidor</th>
-                  <th>Rol</th>
-                  <th>Fono</th>
-                  <!-- <th>Género</th> -->
-                  <th>Creado</th>
-                  <th>Modificar</th>
-                  <th>Eliminar</th>
+                  <th>No.</th>
+                  <th>Cod. Datalogger</th>
+                  <th>Codigo Medidor</th>
+                  <th>Lectura Anterior</th>
+                  <th>Lectura Actual</th>
                 </tr>
               </thead>
               <tbody>
+                <?php
+                  $cont = 1;
+                  foreach ($lectura as $row) {
+                ?>
                   <tr>
-                    <td></td>
-                    <td>j</td>
-                    <td>a</td>
-                    <td>s</td>
-                    <td>d</td>
-                    <td>f</td>
-                    <td>g</td>
-                    <td>h</td>
-                    <td>
-                      
-                    </td>
-                    <td>
-                      
-                    </td>
-                    <td>
-                      l
-                    </td>
-                    <td>ñ</td>
-                    <td>z</td>
-                    
-                    <td>
-                      
-                    </td>
-                    <td>
-                      
-                    </td>
+                    <td><?php echo $cont; ?></td>
+                    <td><?php echo $row['ip']; ?></td>
+                    <td><?php echo $row['codigoMedidor']; ?></td>
+                    <td>0</td>
+                    <td><?php echo ($row['pulsos']+97); ?></td>
                   </tr>
+                <?php
+                  $cont++;
+                  }
+                ?>
               </tbody>
               <tfoot>
-                <tr>
-                  <th width="1%">No.</th>
-                  <th width="1%" data-orderable="false">Perfil</th>
-                  <!-- <th>Cargar</th> -->
-                  <th>Codigo Socio</th>
-                  <th>Nick name</th>
-                  <th>Nombre</th>
-                  <th>Primer Apellido</th>
-                  <th>Segundo Apellido</th>
-                  <th>E-mail</th>
-                  <th>Asignar Datalogger</th>
-                  <th>Asignar Medidor</th>
-                  <th>Rol</th>
-                  <th>Fono</th>
-                  <!-- <th>Género</th> -->
-                  <th>Creado</th>
-                  <th>Modificar</th>
-                  <th>Eliminar</th>
+              <tr>
+                  <th>No.</th>
+                  <th>Cod. Datalogger</th>
+                  <th>Codigo Medidor</th>
+                  <th>Lectura Anterior</th>
+                  <th>Lectura Actual</th>
                 </tr>
               </tfoot>
             </table>
