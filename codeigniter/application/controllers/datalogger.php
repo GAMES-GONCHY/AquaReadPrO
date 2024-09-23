@@ -16,6 +16,8 @@ class Datalogger extends CI_Controller
 	{
 		$data['datalogger'] = $this->datalogger_model->deshabilitados();
 
+		$this->medidor_model->deshabilitados();
+
 		$this->load->view('incrustaciones/vistascoloradmin/head');
 		$this->load->view('incrustaciones/vistascoloradmin/menuadmin');
 		$this->load->view('dataloggersdeshabilitados', $data);

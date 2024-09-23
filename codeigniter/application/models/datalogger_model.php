@@ -50,29 +50,32 @@ class Datalogger_model extends CI_Model
         // $this->db->where('medidor.puerto IS NOT NULL');
         
         // Realizar primero una consulta más simple que sabemos que funciona
-    $this->db->select('datalogger.IP');
-    $this->db->from('datalogger');
-    $this->db->where('datalogger.estado', 1);
-    
-    // Agregar el JOIN de la tabla medidor gradualmente
-    $this->db->join('medidor', 'datalogger.idDatalogger = medidor.idDatalogger', 'inner');
-    
-    // Añadir la selección de puerto y codigoMedidor
-    $this->db->select('medidor.puerto, medidor.codigoMedidor');
-    
-    // Agregar las condiciones adicionales
-    $this->db->where('datalogger.IP IS NOT NULL');
-    $this->db->where('medidor.puerto IS NOT NULL');
-    
-    // Ejecutar la consulta
-    $query = $this->db->get();
-    
-    // Verificar si se encontraron resultados
-    if ($query->num_rows() > 0) {
-        return $query->result_array();
-    } else {
-        return []; // Retorna un arreglo vacío si no hay resultados
-    }
+        $this->db->select('datalogger.IP, datalogger.idDatalogger');
+        $this->db->from('datalogger');
+        $this->db->where('datalogger.estado', 1);
+        
+        // Agregar el JOIN de la tabla medidor gradualmente
+        $this->db->join('medidor', 'datalogger.idDatalogger = medidor.idDatalogger', 'inner');
+        
+        // Añadir la selección de puerto y codigoMedidor
+        $this->db->select('medidor.puerto, medidor.codigoMedidor, medidor.idMedidor');
+        
+        // Agregar las condiciones adicionales
+        $this->db->where('datalogger.IP IS NOT NULL');
+        $this->db->where('medidor.puerto IS NOT NULL');
+        
+        // Ejecutar la consulta
+        $query = $this->db->get();
+        
+        // Verificar si se encontraron resultados
+        if ($query->num_rows() > 0) 
+        {
+            return $query->result_array();
+        }
+        else 
+        {
+            return []; // Retorna un arreglo vacío si no hay resultados
+        }
     }
 
 }

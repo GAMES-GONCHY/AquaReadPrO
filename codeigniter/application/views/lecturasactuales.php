@@ -33,49 +33,52 @@
                 </a>
               </div>
               <div class="col-md-6 mb-2">
-                <a href="<?php echo base_url(); ?>index.php/crudusers/agregar/0" class="btn btn-success btn-lg btn-block text-uppercase font-weight-bold w-100">
-                  Agregar Socios
+                <a href="<?php echo base_url(); ?>index.php/lecturadl/realizarlectura" class="btn btn-success btn-lg btn-block text-uppercase font-weight-bold w-100">
+                  REGISTRAR LECTURAS
                 </a>
               </div>
             </div>
 
             <table id="datatable" class="table table-hover table-bordered align-middle">
-              <thead>
-                <tr>
-                  <th>No.</th>
-                  <th>Cod. Datalogger</th>
-                  <th>Codigo Medidor</th>
-                  <th>Lectura Anterior</th>
-                  <th>Lectura Actual</th>
-                </tr>
-              </thead>
-              <tbody>
-                <?php
-                  $cont = 1;
-                  foreach ($lectura as $row) {
-                ?>
-                  <tr>
-                    <td><?php echo $cont; ?></td>
-                    <td><?php echo $row['ip']; ?></td>
-                    <td><?php echo $row['codigoMedidor']; ?></td>
-                    <td>0</td>
-                    <td><?php echo ($row['pulsos']+97); ?></td>
-                  </tr>
-                <?php
-                  $cont++;
-                  }
-                ?>
-              </tbody>
-              <tfoot>
-              <tr>
-                  <th>No.</th>
-                  <th>Cod. Datalogger</th>
-                  <th>Codigo Medidor</th>
-                  <th>Lectura Anterior</th>
-                  <th>Lectura Actual</th>
-                </tr>
-              </tfoot>
+                <thead>
+                    <tr>
+                        <th>No.</th>
+                        <th>Lectura Anterior</th>
+                        <th>Lectura Actual</th>
+                        <th>Fecha Lectura</th>
+                        <th>ID Medidor</th>
+                    </tr>
+                </thead>
+                <tbody id="lecturas-body">
+                    <?php
+                    $cont = 1;
+                    foreach ($lecturas as $lectura) { // Procesar las lecturas obtenidas de la base de datos
+                    ?>
+                        <tr>
+                            <td><?php echo $cont; ?></td>
+                            <!-- <td><?php echo $lectura['lecturaAnterior']; ?></td> -->
+                            <td><?php echo $lectura['lecturaAnterior'] !== null ? $lectura['lecturaAnterior'] : 0; ?></td>
+                            <td><?php echo $lectura['lecturaActual']; ?></td>
+                            <td><?php echo $lectura['fechaLectura']; ?></td>
+                            <td><?php echo $lectura['idMedidor']; ?></td>
+                        </tr>
+                    <?php
+                        $cont++;
+                    }
+                    ?>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <th>No.</th>
+                        <th>Lectura Anterior</th>
+                        <th>Lectura Actual</th>
+                        <th>Fecha Lectura</th>
+                        <th>ID Medidor</th>
+                    </tr>
+                </tfoot>
             </table>
+
+
           </div>
           
           <!-- START FOOTER-->
