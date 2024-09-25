@@ -9,7 +9,7 @@
   </ol>
 
 
-  <h1 class="page-header">Lecturas</h1>
+  <h1 class="page-header">Socios</h1>
 
 
   <div class="container mt-4">
@@ -17,7 +17,7 @@
       <div class="col-xl-12">
         <div class="panel panel-inverse">
           <div class="panel-heading d-flex justify-content-between align-items-center">
-            <h4 class="panel-title">Gestionar Lecturas</h4>
+            <h4 class="panel-title">Gestionar Socios</h4>
             <div class="panel-heading-btn">
               <a href="javascript:;" class="btn btn-xs btn-icon btn-default" data-toggle="panel-expand"><i class="fa fa-expand"></i></a>
               <a href="javascript:;" class="btn btn-xs btn-icon btn-success" data-toggle="panel-reload"><i class="fa fa-redo"></i></a>
@@ -27,29 +27,17 @@
           </div>
           <div class="panel-body">
             <div class="row mb-3">
-              <div class="col-md-6 mb-2">
-                <!-- <a href="javascript:;" id="showAlert" data-bs-toggle="modal" data-bs-target="#modal-dialog" class="dropdown-item">Cerrar sesion</a> -->
-                <a href="<?php echo base_url(); ?>index.php/lecturadl/mostrarlecturasfallidas" class="btn btn-warning btn-lg btn-block text-uppercase font-weight-bold w-100">
-                  MEDIDORES NO LEIDOS
-                </a>
-              </div>
-
-              <div class="col-md-6 mb-2">
-                <a href="<?php echo base_url(); ?>index.php/lecturadl/deshabilitados" class="btn btn-info btn-lg btn-block text-uppercase font-weight-bold w-100">
-                  LECTURAS ELIMINADAS
-                </a>
-              </div>
-            </div>
-            <div class="row mb-3">
               <div class="col-md-12 mb-2">
-                <!-- <a href="javascript:;" id="showAlert" data-bs-toggle="modal" data-bs-target="#modal-dialog" class="dropdown-item">Cerrar sesion</a> -->
-                <a href="<?php echo base_url(); ?>index.php/lecturadl/realizarlectura" class="btn btn-success btn-lg btn-block text-uppercase font-weight-bold w-100">
-                  ACTUALIZAR Y REGISTRAR
+                <a href="<?php echo base_url(); ?>index.php/lecturadl/mostrarlectura" class="btn btn-info btn-lg btn-block text-uppercase font-weight-bold w-100">
+                  VER LECTURAS HABILITADAS
                 </a>
               </div>
+              <!-- <div class="col-md-6 mb-2">
+                <a href="<?php echo base_url(); ?>index.php/lecturadl/realizarlectura" class="btn btn-success btn-lg btn-block text-uppercase font-weight-bold w-100">
+                  REGISTRAR LECTURAS
+                </a>
+              </div> -->
             </div>
-
-            
 
             <table id="datatable" class="table table-hover table-bordered align-middle">
                 <thead>
@@ -65,7 +53,7 @@
                 <tbody id="lecturas-body">
                     <?php
                     $cont = 1;
-                    foreach ($lecturas as $lectura) { // Procesar las lecturas obtenidas de la base de datos
+                    foreach ($lecdeshabilitados as $lectura) { // Procesar las lecturas obtenidas de la base de datos
                     ?>
                         <tr>
                             <td><?php echo $cont; ?></td>

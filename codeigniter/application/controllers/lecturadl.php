@@ -14,16 +14,19 @@ class Lecturadl extends CI_Controller
         
         if(empty($lecturasExistentes))
         {
+            //log_message('debug', 'No hay lecturas existentes, intentando recuperar IP de los dataloggers.');
             $data['lecturas'] = $this->recuperarIp();
         }
         else
         {
+            //log_message('debug', 'Lecturas existentes encontradas: ' . json_encode($lecturasExistentes));
             $data['lecturas'] = $lecturasExistentes;
         }
-        // Verifica si hay lecturas
+        //Verifica si hay lecturas
         // if (!empty($data['lecturas'])) {  
         //     echo json_encode(['status' => 'success', 1]); 
         // } else {
+        //     log_message('error', 'No se encontraron lecturas en la recuperación.');
         //     echo json_encode(['status' => 'error', 'message' => 0]);
         // }
 
@@ -34,33 +37,54 @@ class Lecturadl extends CI_Controller
         $this->load->view('lecturasactuales', $data); // Mostrar las lecturas
         $this->load->view('incrustaciones/vistascoloradmin/footerlecturas');
     }
+    
+
     public function recuperarIp()
     {
         // Obtener los dataloggers activos y conectados
         $ipDataloggers = $this->datalogger_model->obtenerip();
-        
+        // if (!empty($ipDataloggers))
+        // {
+        //     log_message('debug', ' ips de Dataloggers encontrados: ' . json_encode($ipDataloggers));
+        // }
+        // else
+        // {
+        //     log_message('debug', ' no se encontraron ips de dataloggers: ');
+        // }
+
+
         if (!empty($ipDataloggers))
         {
-            $lecturas = $this->lecturarmedidor($ipDataloggers);
+            //log_message('debug', 'Dataloggers encontrados: ' . json_encode($ipDataloggers));
+            $lecturas = $this->actualizaryregistrar($ipDataloggers);
+
+            // if (!empty($lecturas)) {
+            //     log_message('debug', 'Lecturas recuperadas exitosamente: ' . json_encode($lecturas));
+            // } else {
+            //     log_message('error', 'No se encontraron lecturas después de recuperar IP de los dataloggers.');
+            // }
             return $lecturas;
         } 
         else 
         {
+            log_message('error', 'No se encontraron dataloggers activos.');
             // Si no hay dataloggers disponibles, retornar una tabla vacía
             return [];
         }
     }
 
-    public function lecturarmedidor($ipDataloggers) 
+    public function actualizaryregistrar($ipDataloggers) 
     {
         $lecturas = [];
-
+        $lecturasfallidas = [];
         foreach ($ipDataloggers as $datalogger) 
         {
             $ip = $datalogger['IP'];
             $puerto = $datalogger['puerto'];
             $codigoMedidor = $datalogger['codigoMedidor'];
             $idMedidor = $datalogger['idMedidor'];
+            $idDatalogger = $datalogger['idDatalogger'];
+            $lecturaAnterior = $this->obtenerLecturaAnterior($idMedidor);
 
             // Crear conexión TCP con el datalogger
             $connection = BinaryStreamConnection::getBuilder()
@@ -81,23 +105,25 @@ class Lecturadl extends CI_Controller
                 // Decodificar la respuesta
                 $pulsos = unpack('n', substr($response, 9, 2))[1];
 
-                // Almacenar la lectura actual
-                $lecturas[] = [
-                    'ip' => $ip,
-                    'puerto' => $puerto,
-                    'codigoMedidor' => $codigoMedidor,
-                    'pulsos' => $pulsos
-                ];
-
                 // Insertar la lectura en la tabla 'lectura'
                 $dataLectura = [
-                    'lecturaAnterior' => $this->obtenerLecturaAnterior($idMedidor),
+                    'lecturaAnterior' => $lecturaAnterior,
                     'lecturaActual' => ($pulsos+97),
                     'idMedidor' => $idMedidor
                 ];
 
                 $this->lectura_model->insertarLectura($dataLectura); // Insertar la lectura en la base de datos
-                
+
+                // Insertar en la tabla temporal
+                //$this->lectura_model->insertarLecturaTemporal($dataLectura);
+
+                // Almacenar la lectura actual
+                $lecturas[] = [
+                    'lecturaAnterior' => $lecturaAnterior,
+                    'lecturaActual' => ($pulsos+97),
+                    'fechaLectura' => date('Y-m-d H:i:s'),
+                    'idMedidor' => $idMedidor
+                ];
 
                 // Cerrar conexión
                 $connection->close();
@@ -105,14 +131,34 @@ class Lecturadl extends CI_Controller
             catch (Exception $e) 
             {
                 log_message('error', 'Error al leer los datos del datalogger ' . $ip . ': ' . $e->getMessage());
+                $lecturasfallidas[] = [
+                    'IP' => $ip,
+                    'puerto' => $puerto,
+                    'idMedidor' => $idMedidor,
+                    'codigoMedidor' => $codigoMedidor,
+                    'idDatalogger' => $idDatalogger
+                ];
             }
         }
 
+        if (!empty($lecturasfallidas)) 
+        {
+            $this->session->set_userdata('lecturasfallidas', $lecturasfallidas);
+        }
         return $lecturas;
     }
+    public function deshabilitados() 
+    {   
+        $data['lecdeshabilitados'] = $this->lectura_model->deshabilitados();
 
+        // Cargar las vistas
+        $this->load->view('incrustaciones/vistascoloradmin/headmap');
+        $this->load->view('incrustaciones/vistascoloradmin/menuadmin');
+        $this->load->view('lecturasdeshabilitadas', $data); // Mostrar las lecturas
+        $this->load->view('incrustaciones/vistascoloradmin/footerlecturas');
+    }
     // Función auxiliar para obtener la última lectura registrada de un medidor
-    private function obtenerLecturaAnterior($idMedidor)
+    public function obtenerLecturaAnterior($idMedidor)
     {
         return $this->lectura_model->obtenerUltimaLectura($idMedidor);
     }
@@ -127,5 +173,14 @@ class Lecturadl extends CI_Controller
         //     echo json_encode(['status' => 'error', 'message' => 'No se encontraron lecturas.']);
         // }
         redirect('lecturadl/mostrarlectura');
+    }
+    public function mostrarlecturasfallidas()
+    {
+        $data['fallidas'] = $this->session->userdata('lecturasfallidas')?? [];
+        // Cargar las vistas
+        $this->load->view('incrustaciones/vistascoloradmin/headmap');
+        $this->load->view('incrustaciones/vistascoloradmin/menuadmin');
+        $this->load->view('lecturasfallidas', $data); // Mostrar las lecturas
+        $this->load->view('incrustaciones/vistascoloradmin/footerlecturas');
     }
 }

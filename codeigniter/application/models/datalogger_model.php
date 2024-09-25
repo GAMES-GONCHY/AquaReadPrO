@@ -4,7 +4,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class Datalogger_model extends CI_Model
 {
 	public function habilitados()
-    {
+    { 
         $this->db->where_in('estado', [1,2]);
         $query = $this->db->get('datalogger');
         return $query;
@@ -70,10 +70,12 @@ class Datalogger_model extends CI_Model
         // Verificar si se encontraron resultados
         if ($query->num_rows() > 0) 
         {
+            log_message('debug', 'Dataloggers encontrados: ' . json_encode($query->result_array()));
             return $query->result_array();
         }
         else 
         {
+            log_message('debug', 'No se encontraron dataloggers activos.');
             return []; // Retorna un arreglo vacío si no hay resultados
         }
     }
