@@ -17,7 +17,7 @@ class Membresia extends CI_Controller
 		}
 		else
 		{
-			if($this->datalogger_model->recuperaridmax()->row()>0)
+			if($this->datalogger_model->recuperaridmax()->num_rows()>0)
 			{
 				$idDatalogger=$this->datalogger_model->recuperaridmax()->row()->idDatalogger;
 			}

@@ -59,10 +59,11 @@ class Geodatalogger extends CI_Controller
         
         $idDatalogger=$this->datalogger_model->agregar($data);
         
-        $this->session->set_userdata('mensaje', $idDatalogger);
+        $this->session->set_userdata('idDatalogger1', $idDatalogger);
         
         if ($idDatalogger)
 		{
+            $this->asignarcodigodatalogger($idDatalogger);
             echo json_encode(['status' => 'success', 'idDatalogger' => $idDatalogger]);
         }
         else
@@ -71,6 +72,20 @@ class Geodatalogger extends CI_Controller
             log_message('error', 'Error en la inserción de datalogger: ' . json_encode($error));
             echo json_encode(['status' => 'error', 'message' => $error]);
         }
+    }
+    public function asignarcodigodatalogger($idDatalogger)
+    {
+        // Valor para el campo codigoDatalogger
+        $codigoDatalogger = 'DL-' . str_pad($idDatalogger, 5, '0', STR_PAD_LEFT); // Ejemplo de formato
+
+        // Actualizar el campo codigoDatalogger
+        $update_data = array(
+            'codigoDatalogger' => $codigoDatalogger
+        );
+
+        $this->datalogger_model->modificar($idDatalogger, $update_data);
+
+        echo json_encode(['status' => 'success', 'codigoDatalogger' => $codigoDatalogger]);
     }
 
     public function eliminardatalogger()
