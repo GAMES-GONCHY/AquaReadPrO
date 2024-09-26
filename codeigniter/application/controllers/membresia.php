@@ -26,4 +26,28 @@ class Membresia extends CI_Controller
 		$this->session->set_userdata('idDatalogger', $idDatalogger);
 		redirect('geodatalogger/geolocalizar');
 	}
+	public function verificarAsociacionesMembresia($idMembresia) 
+	{
+		// Verificar si la membresía tiene un datalogger asociado a través de la tabla 'medidor'
+		$this->db->select('idDatalogger');
+		$this->db->from('medidor');
+		$this->db->where('idMembresia', $idMembresia);
+		$this->db->where('estado', 1); // Verificar dataloggers activos
+		$queryDatalogger = $this->db->get();
+		$tieneDatalogger = ($queryDatalogger->num_rows() > 0);
+	
+		// Verificar si la membresía tiene un medidor asociado
+		$this->db->select('idMedidor');
+		$this->db->from('medidor');
+		$this->db->where('idMembresia', $idMembresia);
+		$this->db->where('estado', 1); // Verificar medidores activos
+		$queryMedidor = $this->db->get();
+		$tieneMedidor = ($queryMedidor->num_rows() > 0);
+	
+		// Retornar el resultado como JSON
+		echo json_encode([
+			'tieneDatalogger' => $tieneDatalogger,
+			'tieneMedidor' => $tieneMedidor
+		]);
+	}
 }

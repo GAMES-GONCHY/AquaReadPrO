@@ -255,7 +255,11 @@
 <!-- Formulario cambio de password -->
 <!-- <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script> -->
 
-
+<script>
+    // Definir variables globales para el JavaScript externo
+    var currentUser = <?php echo json_encode($this->session->userdata('idUsuario') ?? ''); ?>;
+    var idMembresia = <?php echo json_encode($this->session->userdata('idMembresia') ?? ''); ?>;
+</script>
 <!-- coordenadas datalogger y medidores -->
 <script>
     var coordenadas = <?php echo isset($dataloggers) ? $dataloggers : '[]'; ?>;
@@ -263,7 +267,6 @@
     var idUsuario = <?php echo json_encode($this->session->userdata('idUsuario') ?? ''); ?>;
     var idDatalogger = <?php echo json_encode($this->session->userdata('idDatalogger') ?? ''); ?>;
     var idMembresia = <?php echo json_encode($this->session->userdata('idMembresia') ?? ''); ?>;
-
 </script>
 
 <!-- initMap -->

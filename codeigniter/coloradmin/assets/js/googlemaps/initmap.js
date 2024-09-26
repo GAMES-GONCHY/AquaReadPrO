@@ -1,45 +1,222 @@
-var mapDefault;  // Declarar mapDefault a nivel global
-var addingDataloggerMarker = false;  // Controla si se pueden agregar marcadores
-var dataloggerMarkers = [];  // Array para almacenar los marcadores de Dataloggers
-var ctrlPressed = false;  // Controla si la tecla "Ctrl" está presionada
-var altPressed = false;  // Controla si la tecla "Alt" está presionada
-var infoWindow;  // Declarar infoWindow a nivel global
+// var mapDefault;  // Declarar mapDefault a nivel global
+// var addingDataloggerMarker = false;  // Controla si se pueden agregar marcadores
+// var dataloggerMarkers = [];  // Array para almacenar los marcadores de Dataloggers
+// var ctrlPressed = false;  // Controla si la tecla "Ctrl" está presionada
+// var altPressed = false;  // Controla si la tecla "Alt" está presionada
+// var infoWindow;  // Declarar infoWindow a nivel global
 
-//MEDIDORES
-var medidorMarkers = []; 
-var addingMedidorMarker = false; 
+// //MEDIDORES
+// var medidorMarkers = []; 
+// var addingMedidorMarker = false; 
 
-// Detectar cuándo se presiona la tecla "Ctrl" o "Alt"
-document.addEventListener('keydown', function(event) {
-    if (event.key === 'Control' || event.key === 'Ctrl') {
-        ctrlPressed = true;
+// // Detectar cuándo se presiona la tecla "Ctrl" o "Alt"
+// document.addEventListener('keydown', function(event) {
+//     // if (event.key === 'Control' || event.key === 'Ctrl') {
+//     //     ctrlPressed = true;
+//     // }
+//     if (event.key === 'Alt' || event.key === 'AltGraph') {
+//         altPressed = true;
+//     }
+//     if (event.key === 'Escape' || event.key === 'Esc') 
+//     {
+//         // Desactivar la adición múltiple de marcadores
+//         addingDataloggerMarker = false;
+//         addingMedidorMarker = false;
+//         // Restaurar el cursor del mapa a su forma predeterminada
+//         if (mapDefault) {
+//             mapDefault.setOptions({ draggableCursor: 'default' });
+//         }
+//     }
+// });
+
+// // Detectar cuándo se suelta la tecla "Ctrl" o "Alt"
+// document.addEventListener('keyup', function(event) {
+//     if (event.key === 'Control' || event.key === 'Ctrl') {
+//         ctrlPressed = false;
+//     }
+//     if (event.key === 'Alt' || event.key === 'AltGraph') {
+//         altPressed = false;
+//     }
+// });
+
+// function initMap() 
+// {
+//     mapDefault = new google.maps.Map(document.getElementById('google-map-default'), {
+//         zoom: 17,
+//         center: new google.maps.LatLng(-17.4105450836976, -66.12594068258299),
+//         mapTypeId: google.maps.MapTypeId.ROADMAP,
+//         disableDefaultUI: true,
+//         minZoom: 16,
+//         restriction: {
+//             latLngBounds: {
+//                 north: -17.404592,
+//                 south: -17.41772613612582,
+//                 east: -66.12145818889127,
+//                 west: -66.12823287518866
+//             },
+//             strictBounds: false
+//         },
+//         gestureHandling: "greedy"
+//     });
+
+//     // Crear un infoWindow
+//     infoWindow = new google.maps.InfoWindow();
+
+//     // Polígono de área
+//     var areaCoords = [
+//         { lat: -17.408245180718332, lng: -66.12707638331297 },
+//         { lat: -17.40684055845479, lng: -66.12465000539221 },
+//         { lat: -17.409884426845334, lng: -66.12394582690727 },
+//         { lat: -17.41110434666331, lng: -66.12399193373078 },
+//         { lat: -17.41537732580422, lng: -66.12540074076435 },
+//         { lat: -17.415421965664258, lng: -66.12607972919076 }
+//     ];
+
+//     new google.maps.Polygon({
+//         paths: areaCoords,
+//         strokeColor: '#FF0000',
+//         strokeOpacity: 0.8,
+//         strokeWeight: 2,
+//         fillColor: '#B0E0E6',
+//         fillOpacity: 0.1,
+//         clickable: false,
+//         map: mapDefault
+//     });
+
+//     // Marcadores desde la base de datos
+//     var dataloggerCoordinates = window.coordenadas;  // Debes pasar las coordenadas desde el HTML como una variable global
+//     dataloggerCoordinates.forEach(function(datalogger) {
+//         var dataloggerMarker = createDataloggerMarker({
+//             lat: parseFloat(datalogger.latitud),
+//             lng: parseFloat(datalogger.longitud)
+//         }, mapDefault, datalogger.idDatalogger);
+//         dataloggerMarkers.push(dataloggerMarker);
+//     });
+//     // Evento para agregar marcadores de datalogger
+//     document.getElementById('addDataloggerBtn').addEventListener('click', function () {
+//         addingDataloggerMarker = true;
+//         mapDefault.setOptions({ draggableCursor: 'crosshair' });
+//     });
+//     // Evento de clic para agregar un nuevo marcador de datalogger
+//     mapDefault.addListener('click', function (event) 
+//     {
+//         if (addingDataloggerMarker) {
+//             var lat = event.latLng.lat();
+//             var lng = event.latLng.lng();
+
+//             var newDataloggerMarker = createDataloggerMarker({ lat: lat, lng: lng }, mapDefault);
+//             dataloggerMarkers.push(newDataloggerMarker);
+
+//             // Guardar el marcador en la base de datos
+//             saveDataloggerMarker(lat, lng, newDataloggerMarker);
+
+//             if (!ctrlPressed) {
+//                 mapDefault.setOptions({ draggableCursor: null });
+//                 addingDataloggerMarker = false;
+//             }
+//         }
+//     });
+
+//     var medidorCoordinates = window.medidorCoordenadas;
+//     medidorCoordinates.forEach(function(medidor) {
+//         var medidorMarker = createMedidorMarker({
+//             lat: parseFloat(medidor.latitud),
+//             lng: parseFloat(medidor.longitud)
+//         }, mapDefault, medidor.idMedidor, medidor.idMembresia,medidor.codigoMedidor); // Pasar idMembresia
+//         medidorMarkers.push(medidorMarker);
+//     });
+
+//     document.getElementById('addMedidorBtn').addEventListener('click', function () {
+//         addingMedidorMarker = true;
+//         mapDefault.setOptions({ draggableCursor: 'crosshair' });
+//     });
+//     // Evento de clic para agregar un nuevo marcador de medidor
+//     mapDefault.addListener('click', function (event) 
+//     {
+//         if (addingMedidorMarker) {
+//             var lat = event.latLng.lat();
+//             var lng = event.latLng.lng();
+
+//             // Crear el marcador del medidor
+//             var newMedidorMarker = createMedidorMarker({ lat: lat, lng: lng }, mapDefault);
+//             medidorMarkers.push(newMedidorMarker);
+
+//             // Guardar el marcador en la base de datos
+//             saveMedidorMarker(lat, lng, newMedidorMarker);
+
+//             if (!ctrlPressed) {
+//                 mapDefault.setOptions({ draggableCursor: null });
+//                 addingMedidorMarker = false;
+//             }
+//         }
+//     });
+// }
+
+if (typeof currentUser !== 'undefined' && typeof idMembresia !== 'undefined') {
+    function verificarAsociaciones() {
+        if (!idMembresia) {
+            console.error('idMembresia no está definido o es inválido.');
+            return;
+        }
+
+        $.ajax({
+            url: '/tercerAnio/aquaReadPro/codeigniter/index.php/membresia/verificarAsociacionesMembresia/' + idMembresia,
+            method: 'GET',
+            success: function(response) {
+                try {
+                    var data = JSON.parse(response);
+
+                    // Habilitar o deshabilitar botones según las asociaciones
+                    if (data.tieneDatalogger) {
+                        document.getElementById('addDataloggerBtn').disabled = true;
+                    } else {
+                        document.getElementById('addDataloggerBtn').disabled = false;
+                    }
+
+                    if (data.tieneMedidor) {
+                        document.getElementById('addMedidorBtn').disabled = true;
+                    } else {
+                        document.getElementById('addMedidorBtn').disabled = false;
+                    }
+                } catch (e) {
+                    console.error('Error al procesar la respuesta:', e);
+                }
+            },
+            error: function() {
+                console.error('Error al verificar las asociaciones de la membresía.');
+            }
+        });
     }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        verificarAsociaciones();
+    });
+} else {
+    console.error('Las variables globales currentUser o idMembresia no están definidas.');
+}
+var mapDefault;  // Declarar mapDefault a nivel global
+var addingDataloggerMarker = false;  // Controla si se puede agregar un marcador
+var addingMedidorMarker = false;  // Controla si se puede agregar un marcador de medidor
+var dataloggerMarkers = [];  // Array para almacenar los marcadores de Dataloggers
+var medidorMarkers = [];  // Array para almacenar los marcadores de Medidores
+var infoWindow;  // Declarar infoWindow a nivel global
+var altPressed = false;  // Controla si la tecla "Alt" está presionada
+
+// Detectar cuándo se presiona la tecla "Alt"
+document.addEventListener('keydown', function(event) {
     if (event.key === 'Alt' || event.key === 'AltGraph') {
         altPressed = true;
     }
-    if (event.key === 'Escape' || event.key === 'Esc') {
-        // Desactivar la adición múltiple de marcadores
-        addingDataloggerMarker = false;
-        addingMedidorMarker = false;
-        // Restaurar el cursor del mapa a su forma predeterminada
-        if (mapDefault) {
-            mapDefault.setOptions({ draggableCursor: 'default' });
-        }
-    }
 });
 
-// Detectar cuándo se suelta la tecla "Ctrl" o "Alt"
+// Detectar cuándo se suelta la tecla "Alt"
 document.addEventListener('keyup', function(event) {
-    if (event.key === 'Control' || event.key === 'Ctrl') {
-        ctrlPressed = false;
-    }
     if (event.key === 'Alt' || event.key === 'AltGraph') {
         altPressed = false;
     }
 });
 
-function initMap() 
-{
+function initMap() {
     mapDefault = new google.maps.Map(document.getElementById('google-map-default'), {
         zoom: 17,
         center: new google.maps.LatLng(-17.4105450836976, -66.12594068258299),
@@ -82,8 +259,8 @@ function initMap()
         map: mapDefault
     });
 
-    // Marcadores desde la base de datos
-    var dataloggerCoordinates = window.coordenadas;  // Debes pasar las coordenadas desde el HTML como una variable global
+    // Marcadores desde la base de datos (Dataloggers)
+    var dataloggerCoordinates = window.coordenadas;
     dataloggerCoordinates.forEach(function(datalogger) {
         var dataloggerMarker = createDataloggerMarker({
             lat: parseFloat(datalogger.latitud),
@@ -91,65 +268,64 @@ function initMap()
         }, mapDefault, datalogger.idDatalogger);
         dataloggerMarkers.push(dataloggerMarker);
     });
-    // Evento para agregar marcadores de datalogger
-    document.getElementById('addDataloggerBtn').addEventListener('click', function () {
-        addingDataloggerMarker = true;
-        mapDefault.setOptions({ draggableCursor: 'crosshair' });
-    });
-    // Evento de clic para agregar un nuevo marcador de datalogger
-    mapDefault.addListener('click', function (event) 
-    {
-        if (addingDataloggerMarker) {
-            var lat = event.latLng.lat();
-            var lng = event.latLng.lng();
 
-            var newDataloggerMarker = createDataloggerMarker({ lat: lat, lng: lng }, mapDefault);
-            dataloggerMarkers.push(newDataloggerMarker);
-
-            // Guardar el marcador en la base de datos
-            saveDataloggerMarker(lat, lng, newDataloggerMarker);
-
-            if (!ctrlPressed) {
-                mapDefault.setOptions({ draggableCursor: null });
-                addingDataloggerMarker = false;
-            }
-        }
-    });
-
+    // Marcadores desde la base de datos (Medidores)
     var medidorCoordinates = window.medidorCoordenadas;
     medidorCoordinates.forEach(function(medidor) {
         var medidorMarker = createMedidorMarker({
             lat: parseFloat(medidor.latitud),
             lng: parseFloat(medidor.longitud)
-        }, mapDefault, medidor.idMedidor, medidor.idMembresia,medidor.codigoMedidor); // Pasar idMembresia
+        }, mapDefault, medidor.idMedidor, medidor.idMembresia, medidor.codigoMedidor);
         medidorMarkers.push(medidorMarker);
     });
 
+    // Evento para agregar un marcador de datalogger
+    document.getElementById('addDataloggerBtn').addEventListener('click', function () {
+        addingDataloggerMarker = true;
+        mapDefault.setOptions({ draggableCursor: 'crosshair' });
+    });
+
+    // Evento para agregar un marcador de medidor
     document.getElementById('addMedidorBtn').addEventListener('click', function () {
         addingMedidorMarker = true;
         mapDefault.setOptions({ draggableCursor: 'crosshair' });
     });
-    // Evento de clic para agregar un nuevo marcador de medidor
-    mapDefault.addListener('click', function (event) 
-    {
-        if (addingMedidorMarker) {
-            var lat = event.latLng.lat();
-            var lng = event.latLng.lng();
 
-            // Crear el marcador del medidor
+    // Evento de clic para agregar un nuevo marcador de datalogger o medidor
+    mapDefault.addListener('click', function (event) {
+        var lat = event.latLng.lat();
+        var lng = event.latLng.lng();
+
+        if (addingDataloggerMarker) {
+            var newDataloggerMarker = createDataloggerMarker({ lat: lat, lng: lng }, mapDefault);
+            dataloggerMarkers.push(newDataloggerMarker);
+
+            // Deshabilitar el botón inmediatamente después de agregar un datalogger
+            document.getElementById('addDataloggerBtn').disabled = true;
+            
+            // Restaurar el cursor y deshabilitar la adición de nuevos dataloggers
+            mapDefault.setOptions({ draggableCursor: null });
+            addingDataloggerMarker = false;
+
+            // Guardar el marcador en la base de datos
+            saveDataloggerMarker(lat, lng, newDataloggerMarker);
+        } else if (addingMedidorMarker) {
             var newMedidorMarker = createMedidorMarker({ lat: lat, lng: lng }, mapDefault);
             medidorMarkers.push(newMedidorMarker);
 
+            // Deshabilitar el botón inmediatamente después de agregar un medidor
+            document.getElementById('addMedidorBtn').disabled = true;
+
+            // Restaurar el cursor y deshabilitar la adición de nuevos medidores
+            mapDefault.setOptions({ draggableCursor: null });
+            addingMedidorMarker = false;
+
             // Guardar el marcador en la base de datos
             saveMedidorMarker(lat, lng, newMedidorMarker);
-
-            if (!ctrlPressed) {
-                mapDefault.setOptions({ draggableCursor: null });
-                addingMedidorMarker = false;
-            }
         }
     });
 }
+
 window.addEventListener('resize', function() {
     if (mapDefault) {
         google.maps.event.trigger(mapDefault, 'resize');

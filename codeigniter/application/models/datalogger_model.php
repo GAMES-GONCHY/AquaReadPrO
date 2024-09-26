@@ -40,6 +40,7 @@ class Datalogger_model extends CI_Model
 		$query = $this->db->count_all('datalogger');
         return $query;
 	}
+    
     public function obtenerip()
 	{
         // $this->db->select('datalogger.IP, medidor.puerto, medidor.codigoMedidor');
