@@ -85,6 +85,9 @@ class Lecturadl extends CI_Controller
             $idMedidor = $datalogger['idMedidor'];
             $idDatalogger = $datalogger['idDatalogger'];
             $lecturaAnterior = $this->obtenerLecturaAnterior($idMedidor);
+            // $codigoDatalogger = $datalogger['codigoDatalogger'];
+            // $socio = $datalogger['nombreCompleto'];
+            // $codigoSocio['idMembresia'];
 
             // Crear conexión TCP con el datalogger
             $connection = BinaryStreamConnection::getBuilder()
@@ -123,6 +126,10 @@ class Lecturadl extends CI_Controller
                     'lecturaActual' => ($pulsos+97),
                     'fechaLectura' => date('Y-m-d H:i:s'),
                     'idMedidor' => $idMedidor
+                    // 'codigoMedidor' => $codigoMedidor,
+                    // 'codigoDatalogger' => $codigoDatalogger,
+                    // 'idMembresia' => $codigoSocio,
+                    // 'nombreCompleto' => $socio
                 ];
 
                 // Cerrar conexión

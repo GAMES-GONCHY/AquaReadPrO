@@ -57,9 +57,11 @@
                         <th>No.</th>
                         <th>Lectura Anterior</th>
                         <th>Lectura Actual</th>
-                        <th>Fecha Lectura</th>
                         <th>Codigo Medidor</th>
-                        <th>Puerto</th>
+                        <th>Codigo Datalogger</th>
+                        <th>Codigo Socio</th>
+                        <th>Socio</th>
+                        <th>Fecha Lectura</th>
                     </tr>
                 </thead>
                 <tbody id="lecturas-body">
@@ -71,9 +73,11 @@
                             <td><?php echo $cont; ?></td>
                             <td><?php echo $lectura['lecturaAnterior'] !== null ? $lectura['lecturaAnterior'] : 0; ?></td>
                             <td><?php echo $lectura['lecturaActual']; ?></td>
-                            <td><?php echo $lectura['fechaLectura']; ?></td>
                             <td><?php echo $lectura['codigoMedidor']; ?></td>
-                            <td><?php echo $lectura['puerto']; ?></td>
+                            <td><?php echo $lectura['codigoDatalogger']; ?></td>
+                            <td><?php echo $lectura['idMembresia']; ?></td>
+                            <td><?php echo $lectura['nombreCompleto']; ?></td>
+                            <td><?php echo $lectura['fechaLectura']; ?></td>
                         </tr>
                     <?php
                         $cont++;
@@ -85,9 +89,11 @@
                         <th>No.</th>
                         <th>Lectura Anterior</th>
                         <th>Lectura Actual</th>
-                        <th>Fecha Lectura</th>
                         <th>Codigo Medidor</th>
-                        <th>Puerto</th>
+                        <th>Codigo Datalogger</th>
+                        <th>Codigo Socio</th>
+                        <th>Socio</th>
+                        <th>Fecha Lectura</th>
                     </tr>
                 </tfoot>
             </table>
