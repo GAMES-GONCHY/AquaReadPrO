@@ -14,7 +14,7 @@ class Lectura_model extends CI_Model
         // $query = $this->db->get();
         // return $query->result_array();
 
-        $this->db->select('l.*, m.codigoMedidor, m.puerto, d.codigoDatalogger, CONCAT(u.nombre, " ", u.primerApellido) AS nombreCompleto, mb.idMembresia');
+        $this->db->select('l.*, m.codigoMedidor, m.puerto, d.codigoDatalogger, CONCAT(u.nombre, " ", u.primerApellido) AS nombreSocio, mb.codigoSocio');
         $this->db->from('lectura l');
         $this->db->join('medidor m', 'm.idMedidor = l.idMedidor', 'inner');
         $this->db->join('datalogger d', 'd.idDatalogger = m.idDatalogger', 'inner');
@@ -61,5 +61,15 @@ class Lectura_model extends CI_Model
         $this->db->order_by('l.fechaLectura', 'DESC'); 
         $query = $this->db->get();
         return $query->result_array();
+    }
+    public function lecturastiemporeal()
+    {
+        $query = $this->db->get('lectura_temp'); 
+    
+        return $query->result_array();
+    }
+    public function truncarLecturasTemporales() 
+    {
+        $this->db->truncate('lectura_temp');
     }
 }

@@ -44,9 +44,11 @@ class Datalogger_model extends CI_Model
     public function obtenerip()
 	{
         $this->db->distinct();
-        $this->db->select('M.idMembresia, D.idDatalogger, D.IP, M.puerto, M.codigoMedidor, M.idMedidor');
+        $this->db->select('M.idMembresia, ME.codigoSocio, D.codigoDatalogger, D.IP, M.puerto, M.codigoMedidor, M.idMedidor, CONCAT(U.nombre, " ", U.primerApellido, " ", IFNULL(U.segundoApellido,""))  AS nombreSocio');
         $this->db->from('datalogger D');
         $this->db->join('medidor M', 'D.idDatalogger = M.idDatalogger', 'inner');
+        $this->db->join('membresia ME', 'M.idMembresia = ME.idMembresia', 'inner');
+        $this->db->join('usuario U', 'U.idUsuario = ME.idUsuario', 'inner');
         $this->db->where('D.estado', 1);
         $this->db->where('M.estado', 1);
         $this->db->where('D.IP IS NOT NULL');

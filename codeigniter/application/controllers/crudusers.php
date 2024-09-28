@@ -99,8 +99,11 @@ class Crudusers extends CI_Controller
 
 				$this->crudusers_model->agregar($data);
 				$idUsuario=$this->db->insert_id();
-				
-				$data2['idUsuario']=$idUsuario;
+
+				$codigoSocio= $this->usuario_model->getusercode($idUsuario)->row_array();
+
+				$data2['idUsuario'] = $idUsuario;
+				$data2['codigoSocio'] = 'S-'.substr($codigoSocio['primerApellido'], 0, 2) . substr($codigoSocio['nombre'], -1);
 				$this->db->insert('membresia',$data2);
 				$idMembresia=$this->db->insert_id();
 

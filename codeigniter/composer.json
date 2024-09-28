@@ -12,7 +12,8 @@
 	},
 	"require": {
 		"php": ">=5.3.7",
-		"aldas/modbus-tcp-client": "*"
+		"aldas/modbus-tcp-client": "*",
+		"endroid/qr-code": "^5.1"
 	},
 	"suggest": {
 		"paragonie/random_compat": "Provides better randomness in PHP 5.x"

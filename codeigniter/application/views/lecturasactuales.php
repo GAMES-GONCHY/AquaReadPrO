@@ -43,7 +43,7 @@
             <div class="row mb-3">
               <div class="col-md-12 mb-2">
                 <!-- <a href="javascript:;" id="showAlert" data-bs-toggle="modal" data-bs-target="#modal-dialog" class="dropdown-item">Cerrar sesion</a> -->
-                <a href="<?php echo base_url(); ?>index.php/lecturadl/realizarlectura" class="btn btn-success btn-lg btn-block text-uppercase font-weight-bold w-100">
+                <a href="<?php echo base_url(); ?>index.php/lecturadl/realizarlectura/1" class="btn btn-success btn-lg btn-block text-uppercase font-weight-bold w-100">
                   ACTUALIZAR Y REGISTRAR
                 </a>
               </div>
@@ -75,8 +75,8 @@
                             <td><?php echo $lectura['lecturaActual']; ?></td>
                             <td><?php echo $lectura['codigoMedidor']; ?></td>
                             <td><?php echo $lectura['codigoDatalogger']; ?></td>
-                            <td><?php echo $lectura['idMembresia']; ?></td>
-                            <td><?php echo $lectura['nombreCompleto']; ?></td>
+                            <td><?php echo $lectura['codigoSocio']; ?></td>
+                            <td><?php echo $lectura['nombreSocio']; ?></td>
                             <td><?php echo $lectura['fechaLectura']; ?></td>
                         </tr>
                     <?php

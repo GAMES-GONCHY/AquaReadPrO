@@ -235,16 +235,23 @@
             </div>
 
             <!-- Lecturas -->
-            <div class="menu-item has-sub <?php echo ($this->uri->segment(2) === 'lecturas') ? 'active' : ''; ?>">
+            <div class="menu-item has-sub <?php echo ($this->uri->segment(1) === 'lecturadl') ? 'active' : ''; ?>">
                 <a href="javascript:;" class="menu-link">
                     <div class="menu-icon"><i class="fa fa-list-ol"></i></div>
                     <div class="menu-text">Lecturas</div>
                     <div class="menu-caret"></div>
                 </a>
                 <div class="menu-submenu">
-                    <div class="menu-item <?php echo ($this->uri->segment(3) === 'form_elements') ? 'active' : ''; ?>">
+                    <!-- Opción Ver Último Registro -->
+                    <div class="menu-item <?php echo ($this->uri->segment(2) === 'mostrarlectura') ? 'active' : ''; ?>">
                         <a href="<?php echo base_url('index.php/lecturadl/mostrarlectura'); ?>" class="menu-link">
-                            <div class="menu-text">Gestionar Lecturas</div>
+                            <div class="menu-text">Ver último registro</div>
+                        </a>
+                    </div>
+                    <!-- Opción Ver en Tiempo Real -->
+                    <div class="menu-item <?php echo ($this->uri->segment(2) === 'actualizarlecturas') ? 'active' : ''; ?>">
+                        <a href="<?php echo base_url('index.php/lecturadl/actualizarlecturas/0'); ?>" class="menu-link">
+                            <div class="menu-text">Monitoreo en tiempo real</div>
                         </a>
                     </div>
                 </div>

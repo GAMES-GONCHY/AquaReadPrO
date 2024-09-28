@@ -59,7 +59,7 @@
                             <td><?php echo $fallida['IP'] !== null ? $fallida['IP'] : 'sin IP'; ?></td>
                             <td><?php echo $fallida['puerto'] !== null ? $fallida['puerto'] : 'sin puerto'; ?></td>
                             <td><?php echo $fallida['codigoMedidor'] !== null ? $fallida['codigoMedidor'] : 'sin codigo';?></td>
-                            <td><?php echo $fallida['idDatalogger']!== null ? $fallida['idDatalogger'] : 'sin codigo'; ?></td>
+                            <td><?php echo $fallida['codigoDatalogger']!== null ? $fallida['codigoDatalogger'] : 'sin codigo'; ?></td>
                         </tr>
                     <?php
                         $cont++;
