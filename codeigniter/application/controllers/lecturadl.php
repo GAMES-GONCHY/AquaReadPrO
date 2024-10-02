@@ -16,7 +16,9 @@ class Lecturadl extends CI_Controller
         {
             $clave = 0;
             //log_message('debug', 'No hay lecturas existentes, intentando recuperar IP de los dataloggers.');
-            $data['lecturas'] = $this->recuperarIp($clave);
+            //$data['lecturas'] = $this->recuperarIp($clave);
+            $this->recuperarIp($clave);
+            $data['lecturas'] = $this->lectura_model->lecturastiemporeal();
         }
         else
         {
@@ -33,7 +35,7 @@ class Lecturadl extends CI_Controller
 
 
         // Cargar las vistas
-        $this->load->view('incrustaciones/vistascoloradmin/headmap');
+        $this->load->view('incrustaciones/vistascoloradmin/head');
         $this->load->view('incrustaciones/vistascoloradmin/menuadmin');
         $this->load->view('lecturasactuales', $data);
         $this->load->view('incrustaciones/vistascoloradmin/footerlecturas');
@@ -57,14 +59,14 @@ class Lecturadl extends CI_Controller
         if (!empty($ipDataloggers))
         {
             //log_message('debug', 'Dataloggers encontrados: ' . json_encode($ipDataloggers));
-            $lecturas = $this->actualizaryregistrar($ipDataloggers,$clave);
+            $this->actualizaryregistrar($ipDataloggers,$clave);
 
             // if (!empty($lecturas)) {
             //     log_message('debug', 'Lecturas recuperadas exitosamente: ' . json_encode($lecturas));
             // } else {
             //     log_message('error', 'No se encontraron lecturas después de recuperar IP de los dataloggers.');
             // }
-            return $lecturas;
+            //return $lecturas;
         } 
         else 
         {
@@ -110,7 +112,7 @@ class Lecturadl extends CI_Controller
                 // Decodificar la respuesta
                 $pulsos = unpack('n', substr($response, 9, 2))[1];
                 
-                if($clave===1)
+                if($clave==1)
                 {
                     // Insertar la lectura en la tabla 'lectura'
                     $dataLectura = [
@@ -121,25 +123,21 @@ class Lecturadl extends CI_Controller
 
                     $this->lectura_model->insertarLectura($dataLectura); // Insertar la lectura en la base de datos
                 }
-
-                // Insertar en la tabla temporal
-                //$this->lectura_model->insertarLecturaTemporal($dataLectura);
-
-                // Almacenar la lectura actual
-                $lecturaTemporal = [
-                    'lecturaAnterior' => $lecturaAnterior,
-                    'lecturaActual' => ($pulsos+97),
-                    'fechaLectura' => date('Y-m-d H:i:s'),
-                    'codigoMedidor' => $codigoMedidor,
-                    'codigoDatalogger' => $codigoDatalogger,
-                    'codigoSocio' => $codigoSocio,
-                    'nombreSocio' => $socio
-                ];
-                $this->lectura_model->insertarLecturaTemporal($lecturaTemporal);
-
-                $lecturas[] = $lecturaTemporal;
-                // Cerrar conexión
-                //connection->close();
+                else
+                {
+                    // Almacenar la lectura actual
+                    $lecturaTemporal = [
+                        'lecturaAnterior' => $lecturaAnterior,
+                        'lecturaActual' => ($pulsos+97),
+                        'fechaLectura' => date('Y-m-d H:i:s'),
+                        'codigoMedidor' => $codigoMedidor,
+                        'codigoDatalogger' => $codigoDatalogger,
+                        'codigoSocio' => $codigoSocio,
+                        'nombreSocio' => $socio
+                    ];
+                    $this->lectura_model->insertarLecturaTemporal($lecturaTemporal);
+                }
+                //$lecturas[] = $lecturaTemporal;
             }
             catch (Exception $e) 
             {
@@ -166,14 +164,14 @@ class Lecturadl extends CI_Controller
         {
             $this->session->set_userdata('lecturasfallidas', $lecturasfallidas);
         }
-        return $lecturas;
+        //return $lecturas;
     }
     public function deshabilitados() 
     {   
         $data['lecdeshabilitados'] = $this->lectura_model->deshabilitados();
 
         // Cargar las vistas
-        $this->load->view('incrustaciones/vistascoloradmin/headmap');
+        $this->load->view('incrustaciones/vistascoloradmin/head');
         $this->load->view('incrustaciones/vistascoloradmin/menuadmin');
         $this->load->view('lecturasdeshabilitadas', $data); // Mostrar las lecturas
         $this->load->view('incrustaciones/vistascoloradmin/footerlecturas');
@@ -185,7 +183,8 @@ class Lecturadl extends CI_Controller
     }
     public function realizarlectura($clave) 
     {
-        $data['lecturas'] = $this->recuperarIp($clave); // Realiza la lectura de los dataloggers
+        //$data['lecturas'] = $this->recuperarIp($clave); // Realiza la lectura de los dataloggers
+        $this->recuperarIp($clave);
 
         // Verifica si hay lecturas
         // if (!empty($data['lecturas'])) {  
@@ -199,20 +198,31 @@ class Lecturadl extends CI_Controller
     {
         $data['fallidas'] = $this->session->userdata('lecturasfallidas')?? [];
         // Cargar las vistas
-        $this->load->view('incrustaciones/vistascoloradmin/headmap');
+        $this->load->view('incrustaciones/vistascoloradmin/head');
         $this->load->view('incrustaciones/vistascoloradmin/menuadmin');
-        $this->load->view('lecturasfallidas', $data); // Mostrar las lecturas
+        $this->load->view('lecturasfallidas', $data); // Mostrar las lecturas fallidas
         $this->load->view('incrustaciones/vistascoloradmin/footerlecturas');
     }
     public function actualizarlecturas($clave)//clave = 0 ->actualizar lecturas en tiempo real
     {
         //$data['lecturas'] = $this->recuperarIp($clave);
+        $this->lectura_model->truncarLecturasTemporales();
         $this->recuperarIp($clave);
         $data['lecturas']=$this->lectura_model->lecturastiemporeal();
-        $this->lectura_model->truncarLecturasTemporales();
-        $this->load->view('incrustaciones/vistascoloradmin/headmap');
+        //$this->lectura_model->truncarLecturasTemporales();
+
+        $this->load->view('incrustaciones/vistascoloradmin/head');
         $this->load->view('incrustaciones/vistascoloradmin/menuadmin');
-        $this->load->view('lecturasactuales', $data);
+        $this->load->view('lecturastiemporeal', $data);
         $this->load->view('incrustaciones/vistascoloradmin/footerlecturas');
+    }
+    
+    public function deshabilitarbd()
+    {
+        $id = $_POST['id'];
+		$data['estado'] = 0;
+
+		$this->lectura_model->deshabilitar($id, $data);
+		redirect('lecturadl/mostrarlectura');
     }
 }

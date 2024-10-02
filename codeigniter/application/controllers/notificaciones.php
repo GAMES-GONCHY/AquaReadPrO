@@ -27,7 +27,6 @@ class Notificaciones extends CI_Controller
 
         echo "Notificaciones enviadas con éxito.";
     }
-
     // Método para generar el código QR (ajústalo según la librería que utilices)
     // public function generar_codigo_qr($idAviso) {
     //     $this->load->library('ciqrcode'); // Ejemplo de una librería de QR en CodeIgniter

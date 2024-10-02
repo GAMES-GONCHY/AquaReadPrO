@@ -1,87 +1,85 @@
 <!-- START CONTENT PAGE -->
 <div id="content" class="app-content">
-
-  <ol class="breadcrumb float-xl-end">
-    <li class="breadcrumb-item"><a href="javascript:;">Home</a></li>
-    <li class="breadcrumb-item"><a href="javascript:;">Tables</a></li>
-    <li class="breadcrumb-item"><a href="javascript:;">Managed Tables</a></li>
-    <li class="breadcrumb-item active">Extension Combination</li>
-  </ol>
-
-
-  <h1 class="page-header">Lecturas Fallidas</h1>
-
-
   <div class="container mt-4">
+    <!-- Botón "Atrás" con el mismo estilo de los otros botones -->
+    <div class="d-flex justify-content-left mb-4 w-100">
+      <div class="d-inline-flex" style="gap: 0;">
+        <div class="card text-center shadow-sm" style="width: 8rem; margin: 0;"> <!-- Reduce el ancho aquí -->
+          <div class="card-body" style="padding: 5px;"> <!-- Reduce el padding aquí -->
+            <a href="javascript:history.back();" class="text-info text-decoration-none hover-atras" style="display: block; padding: 5px; border-radius: 8px; transition: 0.3s;">
+              <i class="fas fa-arrow-left fa-1x mb-1"></i><br> <!-- Reduce el tamaño del icono -->
+              <span class="h6" style="font-size: 0.8rem;">Atrás</span> <!-- Ajusta el tamaño del texto -->
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- Contenido de la página -->
     <div class="row">
       <div class="col-xl-12">
         <div class="panel panel-inverse">
           <div class="panel-heading d-flex justify-content-between align-items-center">
-            <h4 class="panel-title">Gestionar Fallos</h4>
+            <h4 class="panel-title">Medidores no leídos</h4>
             <div class="panel-heading-btn">
               <a href="javascript:;" class="btn btn-xs btn-icon btn-default" data-toggle="panel-expand"><i class="fa fa-expand"></i></a>
               <a href="javascript:;" class="btn btn-xs btn-icon btn-success" data-toggle="panel-reload"><i class="fa fa-redo"></i></a>
               <a href="javascript:;" class="btn btn-xs btn-icon btn-warning" data-toggle="panel-collapse"><i class="fa fa-minus"></i></a>
-              <!-- <a href="javascript:;" class="btn btn-xs btn-icon btn-danger" data-toggle="panel-remove"><i class="fa fa-times"></i></a> -->
             </div>
           </div>
           <div class="panel-body">
-            <div class="row mb-3">
-              <div class="col-md-12 mb-2">
-                <a href="<?php echo base_url(); ?>index.php/lecturadl/mostrarlectura" class="btn btn-info btn-lg btn-block text-uppercase font-weight-bold w-100">
-                  VER LECTURAS HABILITADAS
-                </a>
-              </div>
-              <!-- <div class="col-md-6 mb-2">
-                <a href="<?php echo base_url(); ?>index.php/lecturadl/realizarlectura" class="btn btn-success btn-lg btn-block text-uppercase font-weight-bold w-100">
-                  REGISTRAR LECTURAS
-                </a>
-              </div> -->
-            </div>
-
             <table id="datatable" class="table table-hover table-bordered align-middle">
-                <thead>
-                    <tr>
-                        <th>No.</th>
-                        <th>IP</th>
-                        <th>Codigo Medidor</th>
-                        <th>Puerto</th>
-                        <th>Codigo Datalogger</th>
-                    </tr>
-                </thead>
-                <tbody id="lecturas-body">
-                    <?php
-                    $cont = 1;
-                    foreach ($fallidas as $fallida) { // Procesar las lecturas obtenidas de la base de datos
-                    ?>
-                        <tr>
-                            <td><?php echo $cont; ?></td>
-                            <td><?php echo $fallida['IP'] !== null ? $fallida['IP'] : 'sin IP'; ?></td>
-                            <td><?php echo $fallida['puerto'] !== null ? $fallida['puerto'] : 'sin puerto'; ?></td>
-                            <td><?php echo $fallida['codigoMedidor'] !== null ? $fallida['codigoMedidor'] : 'sin codigo';?></td>
-                            <td><?php echo $fallida['codigoDatalogger']!== null ? $fallida['codigoDatalogger'] : 'sin codigo'; ?></td>
-                        </tr>
-                    <?php
-                        $cont++;
-                    }
-                    ?>
-                </tbody>
-                <tfoot>
-                    <tr>
-                        <th>No.</th>
-                        <th>IP</th>
-                        <th>Codigo Medidor</th>
-                        <th>Puerto</th>
-                        <th>Codigo Datalogger</th>
-                    </tr>
-                </tfoot>
+              <thead>
+                <tr>
+                  <th>No.</th>
+                  <th>IP</th>
+                  <th>Código Medidor</th>
+                  <th>Puerto</th>
+                  <th>Código Datalogger</th>
+                </tr>
+              </thead>
+              <tbody id="lecturas-body">
+                <?php
+                $cont = 1;
+                foreach ($fallidas as $fallida) {
+                ?>
+                  <tr>
+                    <td><?php echo $cont; ?></td>
+                    <td><?php echo $fallida['IP'] !== null ? $fallida['IP'] : 'sin IP'; ?></td>
+                    <td><?php echo $fallida['puerto'] !== null ? $fallida['puerto'] : 'sin puerto'; ?></td>
+                    <td><?php echo $fallida['codigoMedidor'] !== null ? $fallida['codigoMedidor'] : 'sin código'; ?></td>
+                    <td><?php echo $fallida['codigoDatalogger'] !== null ? $fallida['codigoDatalogger'] : 'sin código'; ?></td>
+                  </tr>
+                <?php
+                  $cont++;
+                }
+                ?>
+              </tbody>
+              <tfoot>
+                <tr>
+                  <th>No.</th>
+                  <th>IP</th>
+                  <th>Código Medidor</th>
+                  <th>Puerto</th>
+                  <th>Código Datalogger</th>
+                </tr>
+              </tfoot>
             </table>
-
-
           </div>
-          
-          <!-- START FOOTER-->
         </div>
       </div>
     </div>
   </div>
+</div>
+
+<!-- Agrega los estilos CSS -->
+<style>
+  .hover-atras:hover {
+    color: #ffffff !important;
+    background-color: #17a2b8 !important; /* Azul claro para el botón "Atrás" */
+    border-radius: 8px;
+    transition: 0.3s;
+    padding: 10px;
+  }
+</style>

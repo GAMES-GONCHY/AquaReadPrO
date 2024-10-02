@@ -2,6 +2,7 @@
     <a href="index.html" class="navbar-brand">
         <span class="navbar-logo"></span> <b>Aqua</b>ReadPro <img src="<?php echo base_url(); ?>coloradmin/assets/img/logo/logomenu.png" alt="" width="50" />
     </a>
+    
     <button type="button" class="navbar-mobile-toggler" data-toggle="app-sidebar-mobile">
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
@@ -218,22 +219,6 @@
                 </div>
             </div>
 
-            <!-- Avisos de Cobranza -->
-            <div class="menu-item has-sub <?php echo ($this->uri->segment(2) === 'email_system') ? 'active' : ''; ?>">
-                <a href="javascript:;" class="menu-link">
-                    <div class="menu-icon"><i class="fa fa-envelope"></i></div>
-                    <div class="menu-text">Avisos de cobranza</div>
-                    <div class="menu-caret"></div>
-                </a>
-                <div class="menu-submenu">
-                    <div class="menu-item <?php echo ($this->uri->segment(3) === 'email_system') ? 'active' : ''; ?>">
-                        <a href="<?php echo base_url('index.php/email_system'); ?>" class="menu-link">
-                            <div class="menu-text">Gestionar Avisos</div>
-                        </a>
-                    </div>
-                </div>
-            </div>
-
             <!-- Lecturas -->
             <div class="menu-item has-sub <?php echo ($this->uri->segment(1) === 'lecturadl') ? 'active' : ''; ?>">
                 <a href="javascript:;" class="menu-link">
@@ -242,16 +227,17 @@
                     <div class="menu-caret"></div>
                 </a>
                 <div class="menu-submenu">
-                    <!-- Opción Ver Último Registro -->
-                    <div class="menu-item <?php echo ($this->uri->segment(2) === 'mostrarlectura') ? 'active' : ''; ?>">
-                        <a href="<?php echo base_url('index.php/lecturadl/mostrarlectura'); ?>" class="menu-link">
-                            <div class="menu-text">Ver último registro</div>
-                        </a>
-                    </div>
                     <!-- Opción Ver en Tiempo Real -->
                     <div class="menu-item <?php echo ($this->uri->segment(2) === 'actualizarlecturas') ? 'active' : ''; ?>">
                         <a href="<?php echo base_url('index.php/lecturadl/actualizarlecturas/0'); ?>" class="menu-link">
                             <div class="menu-text">Monitoreo en tiempo real</div>
+                        </a>
+                    </div>
+
+                    <!-- Opción Ver Último Registro -->
+                    <div class="menu-item <?php echo ($this->uri->segment(2) === 'mostrarlectura') ? 'active' : ''; ?>">
+                        <a href="<?php echo base_url('index.php/lecturadl/mostrarlectura'); ?>" class="menu-link">
+                            <div class="menu-text">Historial</div>
                         </a>
                     </div>
                 </div>
@@ -270,6 +256,38 @@
                     <div class="menu-icon"><i class="fab fa-simplybuilt"></i></div>
                     <div class="menu-text">Medidores</div>
                 </a>
+            </div>
+            
+            <!-- Tarifa -->
+            <div class="menu-item has-sub <?php echo ($this->uri->segment(1) === 'tarifa') ? 'active' : ''; ?>">
+                <a href="javascript:;" class="menu-link">
+                    <div class="menu-icon"><i class="fa fa-envelope"></i></div>
+                    <div class="menu-text">Tarifas</div>
+                    <div class="menu-caret"></div>
+                </a>
+                <div class="menu-submenu">
+                    <div class="menu-item <?php echo ($this->uri->segment(2) === 'habilitados') ? 'active' : ''; ?>">
+                        <a href="<?php echo base_url('index.php/tarifa/habilitados'); ?>" class="menu-link">
+                            <div class="menu-text">Historial de tarifas</div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Avisos de Cobranza -->
+            <div class="menu-item has-sub <?php echo ($this->uri->segment(2) === 'email_system') ? 'active' : ''; ?>">
+                <a href="javascript:;" class="menu-link">
+                    <div class="menu-icon"><i class="fa fa-envelope"></i></div>
+                    <div class="menu-text">Avisos de cobranza</div>
+                    <div class="menu-caret"></div>
+                </a>
+                <div class="menu-submenu">
+                    <div class="menu-item <?php echo ($this->uri->segment(3) === 'email_system') ? 'active' : ''; ?>">
+                        <a href="<?php echo base_url('index.php/email_system'); ?>" class="menu-link">
+                            <div class="menu-text">Gestionar Avisos</div>
+                        </a>
+                    </div>
+                </div>
             </div>
 
             <div class="menu-item d-flex">

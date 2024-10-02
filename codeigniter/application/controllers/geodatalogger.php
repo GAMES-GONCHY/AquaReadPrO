@@ -18,7 +18,7 @@ class Geodatalogger extends CI_Controller
 
 
         
-        //$data['cantmed'] = 
+        
 		$this->load->view('incrustaciones/vistascoloradmin/headmap');
 		$this->load->view('incrustaciones/vistascoloradmin/menuadmin');
         $this->load->view('geomap');

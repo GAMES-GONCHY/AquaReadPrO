@@ -199,7 +199,7 @@ function createDataloggerMarker(position, map, idDatalogger, codigoDatalogger) {
 
     google.maps.event.addListener(dataloggerMarker, 'mouseover', function () {
         var contentString = '<div>' +
-            '<p style="color: black;">DL: ' + (dataloggerMarker.codigoDatalogger || 'cargando...') + '</p>' +
+            '<p style="color: black;">'(dataloggerMarker.codigoDatalogger || 'cargando...') + '</p>' +
             '</div>';
         infoWindow.setContent(contentString);
         infoWindow.open(map, dataloggerMarker);
