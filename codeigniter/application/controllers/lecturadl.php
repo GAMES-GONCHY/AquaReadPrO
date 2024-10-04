@@ -92,6 +92,8 @@ class Lecturadl extends CI_Controller
             $lecturaAnterior = $this->obtenerLecturaAnterior($idMedidor);
             $socio = $datalogger['nombreSocio'];
             $codigoSocio = $datalogger['codigoSocio'];
+            $idTarifa = $datalogger['idTarifa'];
+            $tarifaVigente = $datalogger['tarifaVigente'];
 
             // Crear conexión TCP con el datalogger
             $connection = BinaryStreamConnection::getBuilder()
@@ -118,9 +120,9 @@ class Lecturadl extends CI_Controller
                     $dataLectura = [
                         'lecturaAnterior' => $lecturaAnterior,
                         'lecturaActual' => ($pulsos+97),
-                        'idMedidor' => $idMedidor
+                        'idMedidor' => $idMedidor,
+                        'idTarifa' => $idTarifa
                     ];
-
                     $this->lectura_model->insertarLectura($dataLectura); // Insertar la lectura en la base de datos
                 }
                 else
@@ -133,7 +135,8 @@ class Lecturadl extends CI_Controller
                         'codigoMedidor' => $codigoMedidor,
                         'codigoDatalogger' => $codigoDatalogger,
                         'codigoSocio' => $codigoSocio,
-                        'nombreSocio' => $socio
+                        'nombreSocio' => $socio,
+                        'tarifaVigente' => $tarifaVigente
                     ];
                     $this->lectura_model->insertarLecturaTemporal($lecturaTemporal);
                 }
