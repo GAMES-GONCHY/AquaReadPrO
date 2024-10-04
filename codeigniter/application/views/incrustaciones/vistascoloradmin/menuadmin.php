@@ -275,20 +275,21 @@
             </div>
 
             <!-- Avisos de Cobranza -->
-            <div class="menu-item has-sub <?php echo ($this->uri->segment(2) === 'email_system') ? 'active' : ''; ?>">
+            <div class="menu-item has-sub <?php echo ($this->uri->segment(1) === 'avisocobranza') ? 'active' : ''; ?>">
                 <a href="javascript:;" class="menu-link">
                     <div class="menu-icon"><i class="fa fa-envelope"></i></div>
                     <div class="menu-text">Avisos de cobranza</div>
                     <div class="menu-caret"></div>
                 </a>
                 <div class="menu-submenu">
-                    <div class="menu-item <?php echo ($this->uri->segment(3) === 'email_system') ? 'active' : ''; ?>">
-                        <a href="<?php echo base_url('index.php/email_system'); ?>" class="menu-link">
+                    <div class="menu-item <?php echo ($this->uri->segment(2) === 'gestion') ? 'active' : ''; ?>">
+                        <a href="<?php echo base_url('index.php/avisocobranza/gestion'); ?>" class="menu-link">
                             <div class="menu-text">Gestionar Avisos</div>
                         </a>
                     </div>
                 </div>
             </div>
+
 
             <div class="menu-item d-flex">
                 <a href="javascript:;" class="app-sidebar-minify-btn ms-auto" data-toggle="app-sidebar-minify"><i class="fa fa-angle-double-left"></i></a>
