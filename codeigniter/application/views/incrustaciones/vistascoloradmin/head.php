@@ -62,6 +62,7 @@
     
     <!-- switches -->
     <link href="<?php echo base_url(); ?>coloradmin/assets/plugins/switchery/dist/switchery.min.css" rel="stylesheet" />
+    
 
     
   <!-- Estilo para cambiar de backgroud -->
@@ -132,6 +133,11 @@ body.modal-open {
     background-color: transparent !important; /* Elimina el color de fondo oscuro */
 }
 </style>
+
+
+<!-- tabla -->
+<link rel="stylesheet" href="https://unpkg.com/ag-grid-community/styles/ag-grid.css">
+<link rel="stylesheet" href="https://unpkg.com/ag-grid-community/styles/ag-theme-alpine.css">
 
 </head>
 

@@ -27,6 +27,13 @@
   <!-- Solo Modal JS de Bootstrap -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0-alpha1/js/modal.min.js"></script>
 
+  <!-- Otros scripts de DataTables -->
+ 
+
+  
+  <script src="<?php echo base_url(); ?>coloradmin/assets/plugins/@highlightjs/cdn-assets/highlight.min.js"></script>
+
+
   <!-- Plugins de DataTables -->
   <script src="<?php echo base_url(); ?>coloradmin/assets/plugins/datatables.net/js/jquery.dataTables.min.js"></script>
   <script src="<?php echo base_url(); ?>coloradmin/assets/plugins/datatables.net-bs4/js/dataTables.bootstrap4.min.js"></script>
@@ -48,19 +55,21 @@
   <script src="<?php echo base_url(); ?>coloradmin/assets/plugins/datatables.net-buttons/js/buttons.print.min.js"></script>
 
 
-
-  <!-- Otros scripts de DataTables -->
   <script src="<?php echo base_url(); ?>coloradmin/assets/plugins/pdfmake/build/pdfmake.min.js"></script>
   <script src="<?php echo base_url(); ?>coloradmin/assets/plugins/pdfmake/build/vfs_fonts.js"></script>
   <script src="<?php echo base_url(); ?>coloradmin/assets/plugins/jszip/dist/jszip.min.js"></script>
-  <script src="<?php echo base_url(); ?>coloradmin/assets/js/demo/table-manage-combine.demo.js"></script>
-  <script src="<?php echo base_url(); ?>coloradmin/assets/plugins/@highlightjs/cdn-assets/highlight.min.js"></script>
+  <script src="<?php echo base_url(); ?>coloradmin/assets/js/demo/table-manage-combine.demo2.js"></script>
+
+
+
 
 
   <!-- Sweets alerts/Modals scripts -->
   <script src="<?php echo base_url(); ?>coloradmin/assets/plugins/sweetalert/dist/sweetalert.min.js"></script>
   <script src="<?php echo base_url(); ?>coloradmin/assets/js/demo/ui-modal-notification.demo.js"></script>
 
+  <!-- switch cherry -->
+  <script src="<?php echo base_url(); ?>coloradmin/assets/plugins/switchery/dist/switchery.min.js"></script>
 
 
   <!-- forms validations -->
@@ -108,46 +117,128 @@
 </script>
 
 
+<script>
+   $(document).ready(function () {
+       function initializeSwitchery() {
+           $('.toggle-switch').each(function () {
+               if (!$(this).data('switchery')) {
+                   new Switchery(this, { color: '#7c8bc7', secondaryColor: '#dfdfdf' });
+               }
+           });
+       }
+       initializeSwitchery();
+   });
+</script>
 
+<script>
+$(document).on('change', '.toggle-switch, .estado-selector-pagados', function () {
+    var idAviso = $(this).closest('td').find('.idAviso').val(); // Obtener el ID del aviso
+    var fila = $(this).closest('tr'); // Obtener la fila actual
+    var switchElement = $(this); // Guardamos el switch o selector actual
+    var nuevoEstado;
 
-
-  <!-- Botones de exportacion dataTable -->
-  <script>
-    var options = {
-      dom: '<"dataTables_wrapper dt-bootstrap"<"row"<"col-xl-7 d-block d-sm-flex d-xl-block justify-content-center"<"d-block d-lg-inline-flex me-0 me-md-3"l><"d-block d-lg-inline-flex"B>><"col-xl-5 d-flex d-xl-block justify-content-center"fr>>t<"row"<"col-md-5"i><"col-md-7"p>>>',
-      buttons: [{
-          extend: 'copy',
-          className: 'btn-sm'
-        },
-        {
-          extend: 'csv',
-          className: 'btn-sm'
-        },
-        {
-          extend: 'excel',
-          className: 'btn-sm'
-        },
-        {
-          extend: 'pdf',
-          className: 'btn-sm'
-        }
-      ],
-      responsive: true,
-      colReorder: true,
-      keys: true,
-      rowReorder: true,
-      select: true
-    };
-
-    if ($(window).width() <= 1200) {
-      options.rowReorder = false;
-      options.colReorder = false;
+    // Verificar en qué pestaña se encuentra el usuario para determinar el nuevo estado
+    if ($('#nav-pills-tab-1').hasClass('active')) {
+        // Si estamos en la pestaña "Pendientes", cambiar el estado a "pagado"
+        nuevoEstado = switchElement.is(':checked') ? 'pagado' : 'pendiente';
+    } else if ($('#nav-pills-tab-2').hasClass('active')) {
+        // Si estamos en la pestaña "Pagados", manejar la lógica del selector
+        nuevoEstado = $(this).val();
+    } else if ($('#nav-pills-tab-3').hasClass('active')) {
+        // Si estamos en la pestaña "Vencidos", cambiar el estado a "pagado"
+        nuevoEstado = switchElement.is(':checked') ? 'pagado' : 'vencido';
     }
 
-    $('#data-table-combine').DataTable(options);
-  </script>
+    $.ajax({
+        url: '<?php echo site_url('avisocobranza/actualizar_estado'); ?>',
+        type: 'POST',
+        data: { idAviso: idAviso, estado: nuevoEstado },
+        dataType: 'json',
+        success: function (response) {
+            if (response && response.success) {
+                console.log('Estado actualizado correctamente a:', nuevoEstado);
 
-  <!-- Sweet alart cierre de sesión -->
+                // Reemplazar el contenido de la columna "Aprobar" dependiendo de la nueva pestaña
+                var columnaAprobar = fila.find('td').last(); // Última columna es "Aprobar"
+
+                if (nuevoEstado === 'pagado') {
+                    window.tablaPendientes.row(fila).remove().draw();
+                    columnaAprobar.html('<select class="estado-selector-pagados"><option value="" selected>Seleccionar</option><option value="pendiente">Pendiente</option><option value="vencido">Vencido</option></select>');
+                    window.tablaPagados.row.add(fila).draw();
+                } else if (nuevoEstado === 'pendiente') {
+                    window.tablaPagados.row(fila).remove().draw();
+                    columnaAprobar.html('<input type="checkbox" class="toggle-switch" data-render="switchery" data-theme="purple" />');
+                    window.tablaPendientes.row.add(fila).draw();
+                } else if (nuevoEstado === 'vencido') {
+                    window.tablaPagados.row(fila).remove().draw();
+                    columnaAprobar.html('<input type="checkbox" class="toggle-switch" data-render="switchery" data-theme="purple" />');
+                    window.tablaVencidos.row.add(fila).draw();
+                }
+
+                // Re-inicializar Switchery para asegurar que el estado visual sea correcto
+                if (switchElement.hasClass('toggle-switch')) {
+                    new Switchery(columnaAprobar.find('.toggle-switch')[0], { color: '#7c8bc7', secondaryColor: '#dfdfdf' });
+                }
+            } else {
+                alert('Error al actualizar el estado del aviso de cobranza.');
+            }
+        },
+        error: function (xhr, status, error) {
+            console.error('Error AJAX:', error);
+            alert('Hubo un error al actualizar el estado. Por favor, intenta de nuevo.');
+        }
+    });
+});
+
+
+
+</script>
+
+<!-- pagados -->
+ <!-- <script>
+$(document).on('change', '.estado-selector-pagados', function () {
+    var idAviso = $(this).closest('td').find('.idAviso').val(); // Obtener el ID del aviso
+    var fila = $(this).closest('tr'); // Obtener la fila actual
+    var nuevoEstado = $(this).val(); // Obtener el valor seleccionado
+
+    // Verificar si se ha seleccionado una opción válida (Pendiente o Vencido)
+    if (nuevoEstado === 'pendiente' || nuevoEstado === 'vencido') {
+        $.ajax({
+            url: '<?php echo site_url('avisocobranza/actualizar_estado'); ?>',
+            type: 'POST',
+            data: { idAviso: idAviso, estado: nuevoEstado },
+            dataType: 'json',
+            success: function (response) {
+                if (response && response.success) {
+                    console.log('Estado actualizado correctamente a:', nuevoEstado);
+
+                    // Mover la fila a la tabla correspondiente
+                    if (nuevoEstado === 'pendiente') {
+                        window.tablaPagados.row(fila).remove().draw(); // Eliminar de la tabla "Pagados"
+                        window.tablaPendientes.row.add(fila).draw(); // Añadir a la tabla "Pendientes"
+                    } else if (nuevoEstado === 'vencido') {
+                        window.tablaPagados.row(fila).remove().draw(); // Eliminar de la tabla "Pagados"
+                        window.tablaVencidos.row.add(fila).draw(); // Añadir a la tabla "Vencidos"
+                    }
+                } else {
+                    alert('Error al actualizar el estado del aviso de cobranza.');
+                }
+            },
+            error: function (xhr, status, error) {
+                console.error('Error AJAX:', error);
+                alert('Hubo un error al actualizar el estado. Por favor, intenta de nuevo.');
+            }
+        });
+    }
+});
+</script> -->
+
+
+<!-- vencidos -->
+
+
+
+ <!-- Sweet alart cierre de sesión -->
   <script>
     $(document).ready(function() {
       $('#showAlert').on('click', function() {
@@ -185,73 +276,7 @@
       });
     });
   </script>
-<script>
-    $(document).ready(function() {
-        $('#datatable1').DataTable({
-            paging: true,
-            searching: true,
-            ordering: true,
-            info: true,
-            lengthChange: true, // Asegura que el dropdown de filas esté activado
-            language: {
-                url: "//cdn.datatables.net/plug-ins/1.10.20/i18n/Spanish.json"
-            },
-            dom: 'lBfrtip',  // Asegura que el dropdown de "lengtMenu" aparezca antes de los botones
-            buttons: [
-                'copy', 'csv', 'excel', 'pdf', 'print'
-            ],
-            lengthMenu: [ [10, 25, 50, -1], [10, 25, 50, "All"] ]
-        });
 
-        $('#datatable2').DataTable({
-            paging: true,
-            searching: true,
-            ordering: true,
-            info: true,
-            lengthChange: true, // Asegura que el dropdown de filas esté activado
-            language: {
-                url: "//cdn.datatables.net/plug-ins/1.10.20/i18n/Spanish.json"
-            },
-            dom: 'lBfrtip',  // Asegura que el dropdown de "lengthMenu" aparezca antes de los botones
-            buttons: [
-                'copy', 'csv', 'excel', 'pdf', 'print'
-            ],
-            lengthMenu: [ [10, 25, 50, -1], [10, 25, 50, "All"] ]
-        });
-    });
-</script>
-
-  <!-- switches -->
-  <script src="<?php echo base_url(); ?>coloradmin/assets/plugins/switchery/dist/switchery.min.js"></script>
-
-<script>
-function destroySwitchery(switchElement) {
-    if (switchElement && switchElement.switchery) {
-        switchElement.switchery.destroy(); // Destruir la instancia previa de Switchery
-        delete switchElement.switchery; // Limpiar la referencia para evitar conflictos
-    }
-}
-
-// Función para inicializar Switchery en todos los elementos con data-render="switchery"
-function initializeSwitchery() {
-    var elems = document.querySelectorAll('input[data-render="switchery"]');
-    
-    elems.forEach(function(html) {
-        destroySwitchery(html); // Asegurarse de destruir cualquier instancia anterior
-        
-        // Inicializar Switchery solo si no ha sido inicializado previamente
-        if (!html.switchery) {
-            var switchery = new Switchery(html, { color: '#28a745' }); // Color púrpura
-            html.switchery = switchery; // Guardar la instancia para futuras referencias
-        }
-    });
-}
-
-// Llamar a la función para inicializar todos los switches
-document.addEventListener('DOMContentLoaded', function() {
-    initializeSwitchery();
-});
-</script>
 
 
   </body>

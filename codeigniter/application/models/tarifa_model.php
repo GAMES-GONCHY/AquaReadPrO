@@ -72,5 +72,14 @@ class Tarifa_model extends CI_Model
         $this->db->where('idTarifa', $id);
         $this->db->update('tarifa', $data);
     }
+    public function getidTarifaMax()
+    {
+        $this->db->select_max('idTarifa');
+        $this->db->from('tarifa');
+        $this->db->where('estado', 'vigente');
+
+        $query = $this->db->get();
+    }
+
 
 }

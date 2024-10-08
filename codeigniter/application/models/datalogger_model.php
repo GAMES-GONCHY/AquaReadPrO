@@ -46,20 +46,16 @@ class Datalogger_model extends CI_Model
         $this->db->distinct();
         $this->db->select('M.idMembresia, ME.codigoSocio, D.codigoDatalogger, 
                         D.IP, M.puerto, M.codigoMedidor, M.idMedidor,
-                        CONCAT(U.nombre, " ", U.primerApellido, " ", IFNULL(U.segundoApellido,""))  AS nombreSocio,
-                        T.idTarifa, T.tarifaVigente');
-
+                        CONCAT(U.nombre, " ", U.primerApellido, " ", IFNULL(U.segundoApellido,""))  AS nombreSocio');
         $this->db->from('datalogger D');
         $this->db->join('medidor M', 'D.idDatalogger = M.idDatalogger', 'inner');
         $this->db->join('membresia ME', 'M.idMembresia = ME.idMembresia', 'inner');
         $this->db->join('usuario U', 'U.idUsuario = ME.idUsuario', 'inner');
         $this->db->join('lectura L', 'M.idMedidor = L.idMedidor', 'inner');
-        $this->db->join('tarifa T', 'L.idTarifa = T.idTarifa', 'inner');
         $this->db->where('D.estado', 1);
         $this->db->where('M.estado', 1);
         $this->db->where('D.IP IS NOT NULL');
         $this->db->where('M.puerto IS NOT NULL');
-        $this->db->where('T.idTarifa = (SELECT MAX(idTarifa) FROM tarifa WHERE estado = "vigente")');
         $query = $this->db->get();
 
         // // Realizar primero una consulta más simple que sabemos que funciona

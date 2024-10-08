@@ -27,6 +27,7 @@ class Lectura_model extends CI_Model
     }
     public function insertarLectura($dataLectura)
     {
+        $data['idAutor'] = $this->session->userdata('idUsuario');
         $this->db->insert('lectura', $dataLectura);
     }
     public function insertarLecturaTemporal($dataLectura)
@@ -80,4 +81,16 @@ class Lectura_model extends CI_Model
 		$this->db->where('idLectura', $id);
 		$this->db->update('lectura', $data);
     }
+    public function verificarFechaLectura($idMedidor) 
+    {
+        $this->db->select('COUNT(*) as total');
+        $this->db->from('lectura');
+        $this->db->where('idMedidor', $idMedidor);
+        $this->db->where('MONTH(fechaLectura) = MONTH(CURDATE())', null, false);  // Comparar el mes
+        $this->db->where('YEAR(fechaLectura) = YEAR(CURDATE())', null, false);
+        $query = $this->db->get();
+
+        return ($query->row()->total==0);
+    }
+    
 }

@@ -92,8 +92,6 @@ class Lecturadl extends CI_Controller
             $lecturaAnterior = $this->obtenerLecturaAnterior($idMedidor);
             $socio = $datalogger['nombreSocio'];
             $codigoSocio = $datalogger['codigoSocio'];
-            $idTarifa = $datalogger['idTarifa'];
-            $tarifaVigente = $datalogger['tarifaVigente'];
 
             // Crear conexión TCP con el datalogger
             $connection = BinaryStreamConnection::getBuilder()
@@ -116,14 +114,16 @@ class Lecturadl extends CI_Controller
                 
                 if($clave==1)
                 {
-                    // Insertar la lectura en la tabla 'lectura'
-                    $dataLectura = [
-                        'lecturaAnterior' => $lecturaAnterior,
-                        'lecturaActual' => ($pulsos+97),
-                        'idMedidor' => $idMedidor,
-                        'idTarifa' => $idTarifa
-                    ];
-                    $this->lectura_model->insertarLectura($dataLectura); // Insertar la lectura en la base de datos
+                    if($this->lectura_model->verificarFechaLectura($idMedidor))
+                    {
+                        // Insertar la lectura en la tabla 'lectura'
+                        $dataLectura = [
+                            'lecturaAnterior' => $lecturaAnterior,
+                            'lecturaActual' => ($pulsos+97),
+                            'idMedidor' => $idMedidor
+                        ];
+                        $this->lectura_model->insertarLectura($dataLectura); // Insertar la lectura en la base de datos
+                    }
                 }
                 else
                 {
@@ -135,8 +135,7 @@ class Lecturadl extends CI_Controller
                         'codigoMedidor' => $codigoMedidor,
                         'codigoDatalogger' => $codigoDatalogger,
                         'codigoSocio' => $codigoSocio,
-                        'nombreSocio' => $socio,
-                        'tarifaVigente' => $tarifaVigente
+                        'nombreSocio' => $socio
                     ];
                     $this->lectura_model->insertarLecturaTemporal($lecturaTemporal);
                 }
