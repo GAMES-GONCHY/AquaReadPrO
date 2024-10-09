@@ -62,9 +62,11 @@
                       <td><?php echo number_format($total, 2); ?></td>
                       <td><?php echo $pendiente['fechaVencimiento']; ?></td>
                       <td>
-                        <input type="hidden" class="idAviso" value="<?php echo $pendiente['idAviso']; ?>">
-                        <input type="checkbox" class="toggle-switch" data-render="switchery" data-theme="purple" <?php echo ($pendiente['estado'] == 'ON') ? 'checked' : ''; ?> />
+                          <input type="hidden" class="idAviso" value="<?php echo $pendiente['idAviso']; ?>">
+                          <input type="checkbox" class="toggle-checkbox" data-render="switchery" data-theme="purple" <?php echo ($pendiente['estado'] == 'pendiente') ? '' : ''; ?> />
                       </td>
+
+
                     </tr>
                     <?php $cont++; } ?>
                   </tbody>
@@ -135,13 +137,11 @@
                       <td><?php echo number_format($total, 2); ?></td>
                       <td><?php echo $pagado['fechaVencimiento']; ?></td>
                       <td>
-                        <input type="hidden" class="idAviso" value="<?php echo $pagado['idAviso']; ?>">
-                        <select class="estado-selector-pagados">
-                            <option  value="" selected>Seleccionar</option>
-                            <option value="pendiente">Pendiente</option>
-                            <option value="vencido">Vencido</option>
-                        </select>
+                          <input type="hidden" class="idAviso" value="<?php echo $pagado['idAviso']; ?>">
+                          <input type="checkbox" class="toggle-checkbox" data-render="switchery" data-theme="purple" <?php echo ($pagado['estado'] == 'pagado') ? '' : ''; ?> />
                       </td>
+
+
                     </tr>
                     <?php $cont++; } ?>
                   </tbody>

@@ -134,10 +134,25 @@ body.modal-open {
 }
 </style>
 
+<style>
+  .toggle-checkbox {
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+    appearance: none;
+    background-color: #ddd;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    outline: none;
+    transition: background-color 0.3s ease;
+}
 
-<!-- tabla -->
-<link rel="stylesheet" href="https://unpkg.com/ag-grid-community/styles/ag-grid.css">
-<link rel="stylesheet" href="https://unpkg.com/ag-grid-community/styles/ag-theme-alpine.css">
+.toggle-checkbox:checked {
+    background-color: #4CAF50;
+    border-color: #4CAF50;
+}
+</style>
+
 
 </head>
 

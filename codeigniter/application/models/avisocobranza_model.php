@@ -6,16 +6,6 @@ class Avisocobranza_model extends CI_Model
     // Obtener los avisos por estado
     public function avisos_por_estado($estado)
     {
-        // $this->db->select('A.*, T.tarifaMinima, T.tarifaVigente, L.lecturaAnterior, L.lecturaActual,
-        //                   L.fechaLectura, ME.codigoSocio, CONCAT(U.nombre, " ", U.primerApellido, " ", IFNULL(U.segundoApellido,"")) AS nombreSocio');
-        // $this->db->from('avisoCobranza A');
-        // $this->db->join('tarifa T', 'A.idTarifa = T.idTarifa', 'inner');
-        // $this->db->join('lectura L', 'A.idLectura = L.idLectura', 'inner');
-        // $this->db->join('medidor M', 'L.idMedidor = M.idMedidor', 'inner');
-        // $this->db->join('membresia ME', 'M.idMembresia = ME.idMembresia', 'inner');
-        // $this->db->join('usuario U', 'U.idUsuario = ME.idUsuario', 'inner');
-        // $this->db->where('A.estado', $estado);
-
         $this->db->select('A.*, T.tarifaMinima, T.tarifaVigente, L.lecturaAnterior, L.lecturaActual,
         L.fechaLectura, L2.fechaLectura AS fechaLecturaAnterior, 
         ME.codigoSocio, CONCAT(U.nombre, " ", U.primerApellido, " ", IFNULL(U.segundoApellido,"")) AS nombreSocio');
@@ -36,10 +26,10 @@ class Avisocobranza_model extends CI_Model
         $query = $this->db->get();
         return $query->result_array();
     }
-    public function actualizarEstado($idAviso, $estado)
+    // Método para actualizar el estado del aviso
+    public function updateEstado($id, $estado)
     {
-        
-        $this->db->where('idAviso', $idAviso); // Filtrar por el ID del aviso
+        $this->db->where('idAviso', $id); // Filtrar por el ID del aviso
         $data = array('estado' => $estado);
         return $this->db->update('avisocobranza', $data);
     }

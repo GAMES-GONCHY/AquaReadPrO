@@ -38,7 +38,7 @@ var handleDataTableCombinationSetting = function() {
         }
         return null;
     };  
-    initDataTable('#datatable');
+    //initDataTable('#datatable');
     window.tablaPendientes = initDataTable('#pendientes');  
     window.tablaPagados = initDataTable('#pagados');    
     window.tablaVencidos = initDataTable('#vencidos');   

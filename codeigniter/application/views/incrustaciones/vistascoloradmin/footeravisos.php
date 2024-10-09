@@ -27,11 +27,11 @@
   <!-- Solo Modal JS de Bootstrap -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0-alpha1/js/modal.min.js"></script>
 
-  <!-- Otros scripts de DataTables -->
+
  
 
   
-  <script src="<?php echo base_url(); ?>coloradmin/assets/plugins/@highlightjs/cdn-assets/highlight.min.js"></script>
+
 
 
   <!-- Plugins de DataTables -->
@@ -54,12 +54,12 @@
   <script src="<?php echo base_url(); ?>coloradmin/assets/plugins/datatables.net-buttons/js/buttons.html5.min.js"></script>
   <script src="<?php echo base_url(); ?>coloradmin/assets/plugins/datatables.net-buttons/js/buttons.print.min.js"></script>
 
-
+  <!-- Otros scripts de DataTables -->
   <script src="<?php echo base_url(); ?>coloradmin/assets/plugins/pdfmake/build/pdfmake.min.js"></script>
   <script src="<?php echo base_url(); ?>coloradmin/assets/plugins/pdfmake/build/vfs_fonts.js"></script>
   <script src="<?php echo base_url(); ?>coloradmin/assets/plugins/jszip/dist/jszip.min.js"></script>
   <script src="<?php echo base_url(); ?>coloradmin/assets/js/demo/table-manage-combine.demo2.js"></script>
-
+  <script src="<?php echo base_url(); ?>coloradmin/assets/plugins/@highlightjs/cdn-assets/highlight.min.js"></script>
 
 
 
@@ -68,8 +68,7 @@
   <script src="<?php echo base_url(); ?>coloradmin/assets/plugins/sweetalert/dist/sweetalert.min.js"></script>
   <script src="<?php echo base_url(); ?>coloradmin/assets/js/demo/ui-modal-notification.demo.js"></script>
 
-  <!-- switch cherry -->
-  <script src="<?php echo base_url(); ?>coloradmin/assets/plugins/switchery/dist/switchery.min.js"></script>
+
 
 
   <!-- forms validations -->
@@ -116,126 +115,97 @@
     });
 </script>
 
+<!-- traslado de filas para avisosde cobranza -->
+
 
 <script>
-   $(document).ready(function () {
-       function initializeSwitchery() {
-           $('.toggle-switch').each(function () {
-               if (!$(this).data('switchery')) {
-                   new Switchery(this, { color: '#7c8bc7', secondaryColor: '#dfdfdf' });
-               }
-           });
-       }
-       initializeSwitchery();
-   });
-</script>
+$(document).ready(function() {
+    // Evento para cambiar el estado del aviso cuando se hace clic en el checkbox
+    $(document).on('change', '.toggle-checkbox', function () {
+        var idAviso = $(this).closest('td').find('.idAviso').val();
+        var fila = $(this).closest('tr'); // Obtener la fila actual
+        var checkboxElement = $(this); // Guardamos el checkbox actual
+        var nuevoEstado = '';
 
-<script>
-$(document).on('change', '.toggle-switch, .estado-selector-pagados', function () {
-    var idAviso = $(this).closest('td').find('.idAviso').val(); // Obtener el ID del aviso
-    var fila = $(this).closest('tr'); // Obtener la fila actual
-    var switchElement = $(this); // Guardamos el switch o selector actual
-    var nuevoEstado;
-
-    // Verificar en qué pestaña se encuentra el usuario para determinar el nuevo estado
-    if ($('#nav-pills-tab-1').hasClass('active')) {
-        // Si estamos en la pestaña "Pendientes", cambiar el estado a "pagado"
-        nuevoEstado = switchElement.is(':checked') ? 'pagado' : 'pendiente';
-    } else if ($('#nav-pills-tab-2').hasClass('active')) {
-        // Si estamos en la pestaña "Pagados", manejar la lógica del selector
-        nuevoEstado = $(this).val();
-    } else if ($('#nav-pills-tab-3').hasClass('active')) {
-        // Si estamos en la pestaña "Vencidos", cambiar el estado a "pagado"
-        nuevoEstado = switchElement.is(':checked') ? 'pagado' : 'vencido';
-    }
-
-    $.ajax({
-        url: '<?php echo site_url('avisocobranza/actualizar_estado'); ?>',
-        type: 'POST',
-        data: { idAviso: idAviso, estado: nuevoEstado },
-        dataType: 'json',
-        success: function (response) {
-            if (response && response.success) {
-                console.log('Estado actualizado correctamente a:', nuevoEstado);
-
-                // Reemplazar el contenido de la columna "Aprobar" dependiendo de la nueva pestaña
-                var columnaAprobar = fila.find('td').last(); // Última columna es "Aprobar"
-
-                if (nuevoEstado === 'pagado') {
-                    window.tablaPendientes.row(fila).remove().draw();
-                    columnaAprobar.html('<select class="estado-selector-pagados"><option value="" selected>Seleccionar</option><option value="pendiente">Pendiente</option><option value="vencido">Vencido</option></select>');
-                    window.tablaPagados.row.add(fila).draw();
-                } else if (nuevoEstado === 'pendiente') {
-                    window.tablaPagados.row(fila).remove().draw();
-                    columnaAprobar.html('<input type="checkbox" class="toggle-switch" data-render="switchery" data-theme="purple" />');
-                    window.tablaPendientes.row.add(fila).draw();
-                } else if (nuevoEstado === 'vencido') {
-                    window.tablaPagados.row(fila).remove().draw();
-                    columnaAprobar.html('<input type="checkbox" class="toggle-switch" data-render="switchery" data-theme="purple" />');
-                    window.tablaVencidos.row.add(fila).draw();
-                }
-
-                // Re-inicializar Switchery para asegurar que el estado visual sea correcto
-                if (switchElement.hasClass('toggle-switch')) {
-                    new Switchery(columnaAprobar.find('.toggle-switch')[0], { color: '#7c8bc7', secondaryColor: '#dfdfdf' });
-                }
-            } else {
-                alert('Error al actualizar el estado del aviso de cobranza.');
-            }
-        },
-        error: function (xhr, status, error) {
-            console.error('Error AJAX:', error);
-            alert('Hubo un error al actualizar el estado. Por favor, intenta de nuevo.');
+        // Verificar en qué tabla se encuentra el checkbox para determinar el nuevo estado
+        if (checkboxElement.closest('#pendientes').length) {
+            nuevoEstado = checkboxElement.is(':checked') ? 'pagado' : 'pendiente';
+        } else if (checkboxElement.closest('#pagados').length) {
+            nuevoEstado = checkboxElement.is(':checked') ? 'pendiente' : 'pagado';
+        } else if (checkboxElement.closest('#vencidos').length) {
+            nuevoEstado = checkboxElement.is(':checked') ? 'pagado' : 'vencido';
         }
+
+        actualizarEstadoAviso(idAviso, nuevoEstado, fila, checkboxElement);
     });
-});
 
-
-
-</script>
-
-<!-- pagados -->
- <!-- <script>
-$(document).on('change', '.estado-selector-pagados', function () {
-    var idAviso = $(this).closest('td').find('.idAviso').val(); // Obtener el ID del aviso
-    var fila = $(this).closest('tr'); // Obtener la fila actual
-    var nuevoEstado = $(this).val(); // Obtener el valor seleccionado
-
-    // Verificar si se ha seleccionado una opción válida (Pendiente o Vencido)
-    if (nuevoEstado === 'pendiente' || nuevoEstado === 'vencido') {
+    // Función para actualizar el estado del aviso en la base de datos
+    function actualizarEstadoAviso(idAviso, nuevoEstado, fila, checkboxElement) {
         $.ajax({
-            url: '<?php echo site_url('avisocobranza/actualizar_estado'); ?>',
+            url: '<?php echo base_url(); ?>index.php/avisocobranza/updateAvisoEstado',
             type: 'POST',
-            data: { idAviso: idAviso, estado: nuevoEstado },
+            data: { id: idAviso, estado: nuevoEstado },
             dataType: 'json',
             success: function (response) {
                 if (response && response.success) {
-                    console.log('Estado actualizado correctamente a:', nuevoEstado);
-
-                    // Mover la fila a la tabla correspondiente
-                    if (nuevoEstado === 'pendiente') {
-                        window.tablaPagados.row(fila).remove().draw(); // Eliminar de la tabla "Pagados"
-                        window.tablaPendientes.row.add(fila).draw(); // Añadir a la tabla "Pendientes"
-                    } else if (nuevoEstado === 'vencido') {
-                        window.tablaPagados.row(fila).remove().draw(); // Eliminar de la tabla "Pagados"
-                        window.tablaVencidos.row.add(fila).draw(); // Añadir a la tabla "Vencidos"
-                    }
+                    // Remover la fila de la tabla actual
+                    fila.fadeOut(400, function () {
+                        $(this).remove(); // Eliminar la fila una vez que el efecto se complete
+                        // Recargar la tabla de destino con los datos actualizados desde la base de datos
+                        recargarTablaSegunEstado(nuevoEstado);
+                    });
                 } else {
-                    alert('Error al actualizar el estado del aviso de cobranza.');
+                    console.error('Error en la respuesta del servidor:', response);
+                    alert('Error al actualizar el estado del aviso de cobranza: ' + (response.message || 'Respuesta inesperada del servidor.'));
+                    // Restaurar el estado original del checkbox si falla
+                    checkboxElement.prop('checked', !checkboxElement.is(':checked'));
                 }
             },
             error: function (xhr, status, error) {
                 console.error('Error AJAX:', error);
                 alert('Hubo un error al actualizar el estado. Por favor, intenta de nuevo.');
+                // Restaurar el estado original del checkbox si falla
+                checkboxElement.prop('checked', !checkboxElement.is(':checked'));
             }
         });
     }
+
+    // Función para recargar la tabla correspondiente según el estado del aviso
+    function recargarTablaSegunEstado(estado) {
+        var tablaId = '';
+
+        // Determinar qué tabla recargar según el estado
+        if (estado === 'pendiente') {
+            tablaId = '#pendientes';
+        } else if (estado === 'pagado') {
+            tablaId = '#pagados';
+        } else if (estado === 'vencido') {
+            tablaId = '#vencidos';
+        }
+
+        $.ajax({
+          url: '<?php echo base_url(); ?>index.php/avisocobranza/getAvisosPorEstado',
+            type: 'GET',
+            data: { estado: estado },
+            dataType: 'html',
+            success: function (data) {
+                $(tablaId + ' tbody').html(data);
+                if (window['tabla' + capitalizeFirstLetter(tablaId.replace('#', ''))]) {
+                    window['tabla' + capitalizeFirstLetter(tablaId.replace('#', ''))].draw(); // Actualizar la DataTable
+                }
+            },
+            error: function (xhr, status, error) {
+                console.error('Error al recargar la tabla:', error);
+            }
+        });
+    }
+
+    // Función para capitalizar la primera letra de una cadena (ayuda a la lógica de las tablas)
+    function capitalizeFirstLetter(string) {
+        return string.charAt(0).toUpperCase() + string.slice(1);
+    }
 });
-</script> -->
-
-
-<!-- vencidos -->
-
+</script>
 
 
  <!-- Sweet alart cierre de sesión -->
@@ -276,8 +246,6 @@ $(document).on('change', '.estado-selector-pagados', function () {
       });
     });
   </script>
-
-
 
   </body>
 
