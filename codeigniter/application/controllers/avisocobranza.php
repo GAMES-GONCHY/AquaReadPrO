@@ -8,7 +8,7 @@ class Avisocobranza extends CI_Controller
         //GENERACION DE AVISOS MEDIANTE EL PROCEDIMIENTO (DESACTIVADO)
         //$this->avisocobranza_model->generar_avisos();
         // Obtener los avisos por estado
-        $data['pendientes'] = $this->avisocobranza_model->avisos_por_estado('pendiente');
+        $data['enviados'] = $this->avisocobranza_model->avisos_por_estado('enviado');
 
         // Cargar las vistas con las pestañas
         $this->load->view('incrustaciones/vistascoloradmin/head');
@@ -74,4 +74,12 @@ class Avisocobranza extends CI_Controller
 		$this->crudusers_model->modificar($id, $data);
 		redirect('crudusers/deshabilitados/' . $rol);
 	}
+    public function pagaraviso()
+	{
+        $this->load->view('incrustaciones/vistascoloradmin/head');
+        $this->load->view('incrustaciones/vistascoloradmin/menuadmin');
+        $this->load->view('gestion_avisos', $data); // Carga la vista con las pestañas y datos
+        $this->load->view('incrustaciones/vistascoloradmin/footeravisos');
+	}
+
 }

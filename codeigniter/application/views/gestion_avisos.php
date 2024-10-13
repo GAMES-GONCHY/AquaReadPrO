@@ -10,7 +10,7 @@
   <!-- Nav Pills para las pestañas de navegación -->
   <ul class="nav nav-pills mb-3">
       <li class="nav-item">
-        <a href="<?php echo base_url(); ?>index.php/avisocobranza/gestion" class="nav-link <?php echo (current_url() == base_url() . 'index.php/avisocobranza/gestion') ? 'active' : ''; ?>">Pendientes</a>
+        <a href="<?php echo base_url(); ?>index.php/avisocobranza/gestion" class="nav-link <?php echo (current_url() == base_url() . 'index.php/avisocobranza/gestion') ? 'active' : ''; ?>">Enviados</a>
       </li>
       <li class="nav-item">
         <a href="<?php echo base_url(); ?>index.php/avisocobranza/pagados" class="nav-link <?php echo (current_url() == base_url() . 'index.php/avisocobranza/pagados') ? 'active' : ''; ?>">Pagados</a>
@@ -28,7 +28,7 @@
                 <div class="col-xl-12">
                     <div class="panel panel-inverse">
                         <div class="panel-heading d-flex justify-content-between align-items-center">
-                            <h4 class="panel-title">Avisos Pendientes</h4>
+                            <h4 class="panel-title">Avisos Enviados</h4>
                         </div>
                         <div class="panel-body">
                             <table id="pendientes" class="table table-striped table-bordered align-middle">
@@ -50,25 +50,25 @@
                                 <tbody>
                                     <?php
                                     $cont = 1;
-                                    foreach ($pendientes as $pendiente) {
-                                        $consumo = $pendiente['lecturaActual'] - $pendiente['lecturaAnterior'];
-                                        $total = $pendiente['tarifaVigente'] * $consumo;
+                                    foreach ($enviados as $enviado) {
+                                        $consumo = $enviado['lecturaActual'] - $enviado['lecturaAnterior'];
+                                        $total = $enviado['tarifaVigente'] * $consumo;
                                     ?>
                                     <tr class="text-center">
                                         <td><?php echo $cont; ?></td>
-                                        <td><?php echo $pendiente['codigoSocio']; ?></td>
-                                        <td><?php echo $pendiente['nombreSocio']; ?></td>
+                                        <td><?php echo $enviado['codigoSocio']; ?></td>
+                                        <td><?php echo $enviado['nombreSocio']; ?></td>
                                         <td><?php echo $consumo ?> m³</td>
-                                        <td><?php echo $pendiente['lecturaAnterior']; ?></td>
-                                        <td><?php echo date('Y-m-d', strtotime($pendiente['fechaLecturaAnterior'])); ?></td>
-                                        <td><?php echo date('Y-m-d', strtotime($pendiente['fechaLectura'])); ?></td>
-                                        <td><?php echo $pendiente['tarifaVigente']; ?></td>
+                                        <td><?php echo $enviado['lecturaAnterior']; ?></td>
+                                        <td><?php echo date('Y-m-d', strtotime($enviado['fechaLecturaAnterior'])); ?></td>
+                                        <td><?php echo date('Y-m-d', strtotime($enviado['fechaLectura'])); ?></td>
+                                        <td><?php echo $enviado['tarifaVigente']; ?></td>
                                         <td><?php echo number_format($total, 2); ?></td>
-                                        <td><?php echo $pendiente['fechaVencimiento']; ?></td>
+                                        <td><?php echo $enviado['fechaVencimiento']; ?></td>
                                         <td>
                                           <?php echo form_open_multipart("avisocobranza/aprobarbd", ['class' => 'auto-submit-form']); ?>
                                             <input type="hidden" name="tab" value="gestion">
-                                            <input type="hidden" name="id" value="<?php echo $pendiente['idAviso']; ?>">
+                                            <input type="hidden" name="id" value="<?php echo $enviado['idAviso']; ?>">
                                             <input type="checkbox" class="toggle-checkbox" name="estado" value="pagado" onchange="this.form.submit()"/>
                                           <?php echo form_close(); ?>
                                         </td>

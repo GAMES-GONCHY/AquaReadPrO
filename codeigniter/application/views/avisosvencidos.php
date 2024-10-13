@@ -4,7 +4,7 @@
   <!-- Nav Pills para las pestañas de navegación -->
     <ul class="nav nav-pills mb-3">
         <li class="nav-item">
-        <a href="<?php echo base_url(); ?>index.php/avisocobranza/gestion" class="nav-link <?php echo (current_url() == base_url() . 'index.php/avisocobranza/gestion') ? 'active' : ''; ?>">Pendientes</a>
+        <a href="<?php echo base_url(); ?>index.php/avisocobranza/gestion" class="nav-link <?php echo (current_url() == base_url() . 'index.php/avisocobranza/gestion') ? 'active' : ''; ?>">Enviados</a>
         </li>
         <li class="nav-item">
         <a href="<?php echo base_url(); ?>index.php/avisocobranza/pagados" class="nav-link <?php echo (current_url() == base_url() . 'index.php/avisocobranza/pagados') ? 'active' : ''; ?>">Pagados</a>
@@ -22,7 +22,7 @@
                 <div class="col-xl-12">
                     <div class="panel panel-inverse">
                         <div class="panel-heading d-flex justify-content-between align-items-center">
-                            <h4 class="panel-title">Avisos Pendientes</h4>
+                            <h4 class="panel-title">Avisos Vencidos</h4>
                         </div>
                         <div class="panel-body">
                             <table id="pendientes" class="table table-striped table-bordered align-middle">

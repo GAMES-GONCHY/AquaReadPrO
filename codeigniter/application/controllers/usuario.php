@@ -61,20 +61,22 @@ class Usuario extends CI_Controller
 		{
 			if(($this->session->userdata('estado'))==1)
 			{
-				$this->load->view('incrustaciones/vistascoloradmin/head');
+				
 				
 				if(($this->session->userdata('rol'))==2)
 				{
+					$this->load->view('incrustaciones/vistascoloradmin/head');
 					$this->load->view('incrustaciones/vistascoloradmin/menuadmin');
 					$this->load->view('paneladmin.php');
 				}
 				else
 				{
+					$this->load->view('incrustaciones/vistascoloradmin/headsocio');
 					$this->load->view('incrustaciones/vistascoloradmin/menusocio');
 					$this->load->view('panelsocio1.php');
 
 				}
-				$this->load->view('incrustaciones/vistascoloradmin/footer');
+				$this->load->view('incrustaciones/vistascoloradmin/footersocios');
 			}
 			else
 			{

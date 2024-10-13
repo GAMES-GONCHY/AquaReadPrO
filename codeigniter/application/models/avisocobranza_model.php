@@ -36,7 +36,7 @@ class Avisocobranza_model extends CI_Model
     public function modificar($id, $data)
 	{
 		$data['idAutor']=$this->session->userdata('idUsuario');
-		$data['fechaActualizacion']=date('Y-m-d H:i:s');
+		$data['fechaRevision']=date('Y-m-d H:i:s');
 		$this->db->where('idAviso', $id);
 		$this->db->update('avisocobranza', $data);
 	}

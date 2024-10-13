@@ -1,6 +1,6 @@
 <div class="navbar-header">
-    <a href="index.html" class="navbar-brand">
-        <span class="navbar-logo"></span> <b>Aqua</b>ReadPro <img src="<?php echo base_url(); ?>xeria/light/dist/assets/images/logo14.png" alt="" width="50" />
+    <a href="#" class="navbar-brand">
+        <span class="navbar-logo"></span> <b>Aqua</b>ReadPro <img src="<?php echo base_url(); ?>coloradmin/assets/img/logo/logomenu.png" alt="" width="50" />
     </a>
     <button type="button" class="navbar-mobile-toggler" data-toggle="app-sidebar-mobile">
         <span class="icon-bar"></span>
@@ -175,29 +175,6 @@
                     </div>
                 </div>
             </div>
-
-            <!-- <div class="menu-item has-sub">
-                <a href="javascript:;" class="menu-link">
-                    <div class="menu-icon">
-                        <i class="fa fa-table"></i>
-                    </div>
-                    <div class="menu-text">Usuarios</div>
-                    <div class="menu-caret"></div>
-                </a>
-                <div class="menu-submenu">
-                    <div class="menu-item active">
-                        <a href="<?php echo base_url(); ?>index.php/crudusers/habilitados" class="menu-link">
-                            <div class="menu-text">Gestionar Usuarios</div>
-                        </a>
-                    </div>
-                    <div class="menu-item">
-                        <a href="javascript:;" class="menu-link">
-                            <div class="menu-text">Gestionar Socios</div>
-                            
-                        </a>
-                    </div>
-                </div>
-            </div> -->
             <div class="menu-item has-sub">
                 <a href="javascript:;" class="menu-link">
                     <div class="menu-icon">
@@ -219,27 +196,24 @@
                     </div>
                 </div>
             </div>
-            <div class="menu-item has-sub">
+
+            <!-- Avisos de Cobranza -->
+            <div class="menu-item has-sub <?php echo ($this->uri->segment(1) === 'socio') ? 'active' : ''; ?>">
                 <a href="javascript:;" class="menu-link">
-                    <div class="menu-icon">
-                        <i class="fa fa-envelope"></i>
-                    </div>
-                    <div class="menu-text">Avizos de cobranza</div>
+                    <div class="menu-icon"><i class="fa fa-envelope"></i></div>
+                    <div class="menu-text">Avisos de cobranza</div>
                     <div class="menu-caret"></div>
                 </a>
                 <div class="menu-submenu">
-                    <div class="menu-item active">
-                        <a href="email_system.html" class="menu-link">
-                            <div class="menu-text">Ver Avizos</div>
+                    <div class="menu-item <?php echo ($this->uri->segment(2) === 'pagaraviso') ? 'active' : ''; ?>">
+                        <a href="<?php echo base_url('index.php/socio/pagaraviso'); ?>" class="menu-link">
+                            <div class="menu-text">Ver Avisos Pendientes</div>
                         </a>
                     </div>
-                    <!-- <div class="menu-item">
-                        <a href="email_newsletter.html" class="menu-link">
-                            <div class="menu-text">Newsletter Template</div>
-                        </a>
-                    </div> -->
                 </div>
             </div>
+
+
             <div class="menu-item d-flex">
                 <a href="javascript:;" class="app-sidebar-minify-btn ms-auto" data-toggle="app-sidebar-minify"><i class="fa fa-angle-double-left"></i></a>
             </div>
