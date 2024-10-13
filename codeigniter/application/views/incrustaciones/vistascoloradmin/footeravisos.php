@@ -1,13 +1,14 @@
-  <div id="footer" class="app-footer mx-0 px-0">
-    <h5 class="mb-0">&copy; 2024 <b>Aqua</b>ReadPro - by G@mes Rights Reserved</h5>
-  </div>
+    <div id="footer" class="app-footer mx-0 px-0">
+      <h5 class="mb-0">&copy; 2024 <b>Aqua</b>ReadPro - by G@mes Rights Reserved</h5>
+    </div>
   </div>
   <!-- END CONTENT PAGE -->
 
 
   <!-- BOTON VERDE SUSPENCION -->
   <a href="javascript:;" class="btn btn-icon btn-circle btn-success btn-scroll-to-top" data-toggle="scroll-to-top"><i class="fa fa-angle-up"></i></a>
-  </div>
+
+</div>
   <!-- END APP HEADER -->
 
 
@@ -25,13 +26,8 @@
   
 
   <!-- Solo Modal JS de Bootstrap -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0-alpha1/js/modal.min.js"></script>
-
-
- 
-
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
   
-
 
 
   <!-- Plugins de DataTables -->
@@ -67,6 +63,7 @@
   <!-- Sweets alerts/Modals scripts -->
   <script src="<?php echo base_url(); ?>coloradmin/assets/plugins/sweetalert/dist/sweetalert.min.js"></script>
   <script src="<?php echo base_url(); ?>coloradmin/assets/js/demo/ui-modal-notification.demo.js"></script>
+  
 
 
 
@@ -115,97 +112,19 @@
     });
 </script>
 
-<!-- traslado de filas para avisosde cobranza -->
 
-
+<!-- modal avisos -->
 <script>
-$(document).ready(function() {
-    // Evento para cambiar el estado del aviso cuando se hace clic en el checkbox
-    $(document).on('change', '.toggle-checkbox', function () {
-        var idAviso = $(this).closest('td').find('.idAviso').val();
-        var fila = $(this).closest('tr'); // Obtener la fila actual
-        var checkboxElement = $(this); // Guardamos el checkbox actual
-        var nuevoEstado = '';
+  $('#configModal').on('shown.bs.modal', function () {
+    console.log('El modal se ha abierto.');
+  });
 
-        // Verificar en qué tabla se encuentra el checkbox para determinar el nuevo estado
-        if (checkboxElement.closest('#pendientes').length) {
-            nuevoEstado = checkboxElement.is(':checked') ? 'pagado' : 'pendiente';
-        } else if (checkboxElement.closest('#pagados').length) {
-            nuevoEstado = checkboxElement.is(':checked') ? 'pendiente' : 'pagado';
-        } else if (checkboxElement.closest('#vencidos').length) {
-            nuevoEstado = checkboxElement.is(':checked') ? 'pagado' : 'vencido';
-        }
-
-        actualizarEstadoAviso(idAviso, nuevoEstado, fila, checkboxElement);
-    });
-
-    // Función para actualizar el estado del aviso en la base de datos
-    function actualizarEstadoAviso(idAviso, nuevoEstado, fila, checkboxElement) {
-        $.ajax({
-            url: '<?php echo base_url(); ?>index.php/avisocobranza/updateAvisoEstado',
-            type: 'POST',
-            data: { id: idAviso, estado: nuevoEstado },
-            dataType: 'json',
-            success: function (response) {
-                if (response && response.success) {
-                    // Remover la fila de la tabla actual
-                    fila.fadeOut(400, function () {
-                        $(this).remove(); // Eliminar la fila una vez que el efecto se complete
-                        // Recargar la tabla de destino con los datos actualizados desde la base de datos
-                        recargarTablaSegunEstado(nuevoEstado);
-                    });
-                } else {
-                    console.error('Error en la respuesta del servidor:', response);
-                    alert('Error al actualizar el estado del aviso de cobranza: ' + (response.message || 'Respuesta inesperada del servidor.'));
-                    // Restaurar el estado original del checkbox si falla
-                    checkboxElement.prop('checked', !checkboxElement.is(':checked'));
-                }
-            },
-            error: function (xhr, status, error) {
-                console.error('Error AJAX:', error);
-                alert('Hubo un error al actualizar el estado. Por favor, intenta de nuevo.');
-                // Restaurar el estado original del checkbox si falla
-                checkboxElement.prop('checked', !checkboxElement.is(':checked'));
-            }
-        });
-    }
-
-    // Función para recargar la tabla correspondiente según el estado del aviso
-    function recargarTablaSegunEstado(estado) {
-        var tablaId = '';
-
-        // Determinar qué tabla recargar según el estado
-        if (estado === 'pendiente') {
-            tablaId = '#pendientes';
-        } else if (estado === 'pagado') {
-            tablaId = '#pagados';
-        } else if (estado === 'vencido') {
-            tablaId = '#vencidos';
-        }
-
-        $.ajax({
-          url: '<?php echo base_url(); ?>index.php/avisocobranza/getAvisosPorEstado',
-            type: 'GET',
-            data: { estado: estado },
-            dataType: 'html',
-            success: function (data) {
-                $(tablaId + ' tbody').html(data);
-                if (window['tabla' + capitalizeFirstLetter(tablaId.replace('#', ''))]) {
-                    window['tabla' + capitalizeFirstLetter(tablaId.replace('#', ''))].draw(); // Actualizar la DataTable
-                }
-            },
-            error: function (xhr, status, error) {
-                console.error('Error al recargar la tabla:', error);
-            }
-        });
-    }
-
-    // Función para capitalizar la primera letra de una cadena (ayuda a la lógica de las tablas)
-    function capitalizeFirstLetter(string) {
-        return string.charAt(0).toUpperCase() + string.slice(1);
-    }
-});
+  $('#configModal').on('hidden.bs.modal', function () {
+    console.log('El modal se ha cerrado.');
+  });
 </script>
+
+
 
 
  <!-- Sweet alart cierre de sesión -->
@@ -246,6 +165,21 @@ $(document).ready(function() {
       });
     });
   </script>
+
+  <!-- modal qr -->
+  <script>
+    function previewImage(event) {
+      var reader = new FileReader();
+      reader.onload = function() {
+        var previewOutput = document.getElementById('qrPreview');
+        var expandedOutput = document.getElementById('qrExpanded');
+        previewOutput.src = reader.result; // Cambia la imagen del contenedor principal
+        expandedOutput.src = reader.result; // Cambia la imagen del modal de expansión
+      };
+      reader.readAsDataURL(event.target.files[0]);
+    }
+  </script>
+
 
   </body>
 

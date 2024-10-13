@@ -33,7 +33,6 @@ class Tarifa extends CI_Controller
 
 		$this->tarifa_model->agregar($data);
 		redirect('tarifa/habilitados');
-
 	}
 
 	public function deshabilitar()
@@ -48,15 +47,6 @@ class Tarifa extends CI_Controller
 		$this->tarifa_model->habilitar($id);
 		redirect('tarifa/deshabilitados');
 	}
-	// public function modificar()
-	// {
-	// 	$id = $_POST['id'];
-	// 	$data['tarifaMinima'] = $_POST['tarifaMinima'];
-	// 	$data['tarifaVigente'] = $_POST['tarifaVigente'];
-	// 	$data['fechaInicioVigencia'] = $_POST['fechaInicioVigencia'];
-	// 	$this->tarifa_model->modificar($id,$data);
-	// 	redirect('tarifa/habilitados');
-	// }
 	public function modificar()
 	{
 		// Recibir los datos del formulario
@@ -64,8 +54,6 @@ class Tarifa extends CI_Controller
 		$data['tarifaMinima'] = $_POST['tarifaMinima'];
 		$data['tarifaVigente'] = $_POST['tarifaVigente'];
 		$data['fechaInicioVigencia'] = $_POST['fechaInicioVigencia'];
-
-
 		// Llamar al modelo para modificar los datos
 
 		if($this->tarifa_model->modificar($id, $data))

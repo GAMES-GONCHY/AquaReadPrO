@@ -1,12 +1,7 @@
 <!-- START CONTENT PAGE -->
 <div id="content" class="app-content">
 
-  <ol class="breadcrumb float-xl-end">
-    <li class="breadcrumb-item"><a href="javascript:;">Home</a></li>
-    <li class="breadcrumb-item"><a href="javascript:;">Tables</a></li>
-    <li class="breadcrumb-item"><a href="javascript:;">Managed Tables</a></li>
-    <li class="breadcrumb-item active">Extension Combination</li>
-  </ol>
+  
 
 
   <h1 class="page-header">Socios</h1>

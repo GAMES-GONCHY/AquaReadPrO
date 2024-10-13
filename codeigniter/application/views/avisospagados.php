@@ -1,84 +1,100 @@
-<!-- START CONTENT PAGE -->
 <div id="content" class="app-content">
+  <h1 class="page-header">Avisos de Cobranza</h1>
 
-<h1 class="page-header text-center" style="font-size: 2.2rem; font-weight: 500; color: #333; background: linear-gradient(90deg, #00c6ff, #0072ff); padding: 15px; border-radius: 10px; text-transform: uppercase; letter-spacing: 1.5px; text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.1); position: relative; margin-bottom: 25px;">
-    <i class="fa fa-file-alt" style="color: #fff; font-size: 2.5rem; margin-right: 8px;"></i> Gestión de <span style="color: #fff;">Avisos de Cobranza</span>
-    <div style="height: 4px; background: #fff; width: 80px; margin: 8px auto 0;"></div>
-</h1>
+  <!-- Nav Pills para las pestañas de navegación -->
+  <ul class="nav nav-pills mb-3">
+    <li class="nav-item">
+      <a href="<?php echo base_url(); ?>index.php/avisocobranza/gestion" class="nav-link <?php echo (current_url() == base_url() . 'index.php/avisocobranza/gestion') ? 'active' : ''; ?>">Pendientes</a>
+    </li>
+    <li class="nav-item">
+      <a href="<?php echo base_url(); ?>index.php/avisocobranza/pagados" class="nav-link <?php echo (current_url() == base_url() . 'index.php/avisocobranza/pagados') ? 'active' : ''; ?>">Pagados</a>
+    </li>
+    <li class="nav-item">
+      <a href="<?php echo base_url(); ?>index.php/avisocobranza/vencidos" class="nav-link <?php echo (current_url() == base_url() . 'index.php/avisocobranza/vencidos') ? 'active' : ''; ?>">Vencidos</a>
+    </li>
+</ul>
 
 
-  <div class="container mt-4">
-    <div class="row">
-      <div class="col-xl-12">
-        <div class="panel panel-inverse">
-          <div class="panel-heading d-flex justify-content-between align-items-center">
-            <h4 class="panel-title">Lista de Avisos de Cobranza</h4>
-            <div class="panel-heading-btn">
-              <a href="javascript:;" class="btn btn-xs btn-icon btn-default" data-toggle="panel-expand"><i class="fa fa-expand"></i></a>
-              <a href="javascript:;" class="btn btn-xs btn-icon btn-success" data-toggle="panel-reload"><i class="fa fa-redo"></i></a>
-              <a href="javascript:;" class="btn btn-xs btn-icon btn-warning" data-toggle="panel-collapse"><i class="fa fa-minus"></i></a>
+  <!-- <div class="tab-content"> -->
+    <!-- Tabla de Pendientes -->
+    <!-- <div class="tab-pane fade active show" id="nav-pills-tab-1"> -->
+        <div class="container mt-4">
+            <div class="row">
+                <div class="col-xl-12">
+                    <div class="panel panel-inverse">
+                        <div class="panel-heading d-flex justify-content-between align-items-center">
+                            <h4 class="panel-title">Avisos Pendientes</h4>
+                        </div>
+                        <div class="panel-body">
+                            <table id="pendientes" class="table table-striped table-bordered align-middle">
+                                <thead>
+                                    <tr>
+                                        <th>No.</th>
+                                        <th>Codigo Socio</th>
+                                        <th>Socio</th>
+                                        <th>Consumo (m³)</th>
+                                        <th>Lectura Anterior</th>
+                                        <th>Fecha Lectura Anterior</th>
+                                        <th>Fecha Lectura Actual</th>
+                                        <th>Tarifa Aplicada [Bs/m3]</th>
+                                        <th>Total [Bs.]</th>
+                                        <th>Fecha Vencimiento</th>
+                                        <th>Mover a:</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php
+                                    $cont = 1;
+                                    foreach ($pagados as $pagado) {
+                                        $consumo = $pagado['lecturaActual'] - $pagado['lecturaAnterior'];
+                                        $total = $pagado['tarifaVigente'] * $consumo;
+                                    ?>
+                                    <tr class="text-center">
+                                        <td><?php echo $cont; ?></td>
+                                        <td><?php echo $pagado['codigoSocio']; ?></td>
+                                        <td><?php echo $pagado['nombreSocio']; ?></td>
+                                        <td><?php echo $consumo ?> m³</td>
+                                        <td><?php echo $pagado['lecturaAnterior']; ?></td>
+                                        <td><?php echo date('Y-m-d', strtotime($pagado['fechaLecturaAnterior'])); ?></td>
+                                        <td><?php echo date('Y-m-d', strtotime($pagado['fechaLectura'])); ?></td>
+                                        <td><?php echo $pagado['tarifaVigente']; ?></td>
+                                        <td><?php echo number_format($total, 2); ?></td>
+                                        <td><?php echo $pagado['fechaVencimiento']; ?></td>
+                                        <td>
+                                          <?php echo form_open_multipart("avisocobranza/reprobarbd", ['class' => 'auto-submit-form']); ?>
+                                            <input type="hidden" name="id" value="<?php echo $pagado['idAviso']; ?>">
+                                            <select name="estado" onchange="this.form.submit()">
+                                              <option value="pagado" <?php echo ($pagado['estado'] == 'pagado') ? 'selected' : ''; ?>>Pagado</option>
+                                              <option value="pendiente" <?php echo ($pagado['estado'] == 'pendiente') ? 'selected' : ''; ?>>Pendiente</option>
+                                              <option value="vencido" <?php echo ($pagado['estado'] == 'vencido') ? 'selected' : ''; ?>>Vencido</option>
+                                            </select>
+                                          <?php echo form_close(); ?>
+                                        </td>
+                                    </tr>
+                                    <?php $cont++; } ?>
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <th>No.</th>
+                                        <th>Codigo Socio</th>
+                                        <th>Socio</th>
+                                        <th>Consumo (m³)</th>
+                                        <th>Lectura Anterior</th>
+                                        <th>Fecha Lectura Anterior</th>
+                                        <th>Fecha Lectura Actual</th>
+                                        <th>Tarifa Aplicada [Bs/m3]</th>
+                                        <th>Total [Bs.]</th>
+                                        <th>Fecha Vencimiento</th>
+                                        <th>Mover a:</th>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                    </div>
+                </div>
             </div>
-          </div>
-          <div class="panel-body">
-            <div class="row mb-3">
-              <div class="col-md-12 mb-2 text-center">
-              <a href="<?php echo base_url(); ?>index.php/avisocobranza/crear" class="btn btn-lg w-50 font-weight-bold" style="border-radius: 30px; background-color: #28a745; color: #fff; box-shadow: 0px 4px 10px rgba(0, 123, 255, 0.2);">
-                  <i class="fa fa-plus-circle"></i> CREAR NUEVO AVISO
-              </a>
-              </div>
-            </div>
-            <table id="datatable" class="table table-hover table-striped table-bordered align-middle">
-              <thead>
-                <tr class="table-dark text-center">
-                  <th>No.</th>
-                  <th>Consumo (m³)</th>
-                  <th>Tarifa Aplicada</th>
-                  <th>Fecha de Lectura Anterior</th>
-                  <th>Fecha de Lectura Actual</th>
-                  <th>Fecha de Vencimiento</th>
-                  <th>Total</th> <!-- Campo Total añadido -->
-                </tr>
-              </thead>
-              <tbody>
-                <?php
-                $cont = 1;
-                foreach ($avisos as $aviso) {
-                  // Calcular el total
-                  $total = $aviso['tarifaAplicada'] * $aviso['consumo'];
-                ?>
-                  <tr class="text-center">
-                    <td><?php echo $cont; ?></td>
-                    <td><?php echo $aviso['consumo']; ?> m³</td>
-                    <td><?php echo $aviso['tarifaAplicada']; ?></td>
-                    <td><?php echo $aviso['fechaLecturaAnterior']; ?></td>
-                    <td><?php echo $aviso['fechaLecturaActual']; ?></td>
-                    <td><?php echo $aviso['fechaVencimiento']; ?></td>
-                    <td><?php echo number_format($total, 2); ?> <!-- Mostrar el total con 2 decimales --></td>
-                  </tr>
-                <?php
-                  $cont++;
-                }
-                ?>
-              </tbody>
-              <tfoot>
-                <tr class="table-dark text-center">
-                  <th>No.</th>
-                  <th>Consumo (m³)</th>
-                  <th>Tarifa Aplicada</th>
-                  <th>Fecha de Lectura Anterior</th>
-                  <th>Fecha de Lectura Actual</th>
-                  <th>Fecha de Vencimiento</th>
-                  <th>Total</th>
-                </tr>
-              </tfoot>
-            </table>
+        <!-- </div>
+    </div> -->
 
 
 
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-</div>

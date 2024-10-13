@@ -12,14 +12,14 @@
 
 
 <div class="navbar-nav">
-    <div class="navbar-item navbar-form">
+    <!-- <div class="navbar-item navbar-form">
         <form action="" method="POST" name="search">
             <div class="form-group">
                 <input type="text" class="form-control" placeholder="Buscar" />
                 <button type="submit" class="btn btn-search"><i class="fa fa-search"></i></button>
             </div>
         </form>
-    </div>
+    </div> -->
     <div class="navbar-item dropdown">
         <a href="#" data-bs-toggle="dropdown" class="navbar-link dropdown-toggle icon">
             <i class="fa fa-bell"></i>

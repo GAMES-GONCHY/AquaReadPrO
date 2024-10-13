@@ -51,7 +51,6 @@ class Datalogger_model extends CI_Model
         $this->db->join('medidor M', 'D.idDatalogger = M.idDatalogger', 'inner');
         $this->db->join('membresia ME', 'M.idMembresia = ME.idMembresia', 'inner');
         $this->db->join('usuario U', 'U.idUsuario = ME.idUsuario', 'inner');
-        $this->db->join('lectura L', 'M.idMedidor = L.idMedidor', 'inner');
         $this->db->where('D.estado', 1);
         $this->db->where('M.estado', 1);
         $this->db->where('D.IP IS NOT NULL');

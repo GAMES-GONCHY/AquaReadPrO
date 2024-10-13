@@ -3,18 +3,18 @@
   <div class="container mt-4">
     <!-- Contenedor para centrar las tarjetas -->
     <div class="d-flex justify-content-left mb-4 w-100">
-  <div class="d-inline-flex" style="gap: 0;">
-    <!-- Botón "Lecturas Eliminadas" -->
-    <div class="card text-center shadow-sm" style="width: 7rem; margin: 0;"> <!-- Reduce el ancho aquí -->
-      <div class="card-body" style="padding: 5px;"> <!-- Reduce el padding aquí -->
-        <a href="<?php echo base_url(); ?>index.php/lecturadl/deshabilitados" class="text-danger text-decoration-none hover-eliminados" style="display: block; padding: 5px; border-radius: 8px; transition: 0.3s;">
-          <i class="fas fa-trash-restore fa-lg mb-1"></i><br> <!-- Cambia el tamaño del icono a fa-lg -->
-          
-        </a>
+      <div class="d-inline-flex" style="gap: 0;">
+        <!-- Botón "Lecturas Eliminadas" -->
+        <div class="card text-center shadow-sm" style="width: 7rem; margin: 0;"> <!-- Reduce el ancho aquí -->
+          <div class="card-body" style="padding: 5px;"> <!-- Reduce el padding aquí -->
+            <a href="<?php echo base_url(); ?>index.php/lecturadl/deshabilitados" class="text-danger text-decoration-none hover-eliminados" style="display: block; padding: 5px; border-radius: 8px; transition: 0.3s;">
+              <i class="fas fa-trash-restore fa-lg mb-1"></i><br> <!-- Cambia el tamaño del icono a fa-lg -->
+              
+            </a>
+          </div>
+        </div>
       </div>
     </div>
-  </div>
-</div>
 
 
     <!-- Tabla de lecturas -->

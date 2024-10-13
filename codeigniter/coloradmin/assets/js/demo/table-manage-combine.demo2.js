@@ -58,28 +58,6 @@ $(document).ready(function () {
     // Inicializa las tablas cuando el documento esté listo
     TableManageCombine.init();
 
-    // Maneja el evento cuando se cambia de pestaña
-    $('a[data-bs-toggle="tab"]').on('shown.bs.tab', function (e) {
-        var target = $(e.target).attr("href"); // Obtiene el ID de la pestaña activa
-
-        switch (target) {
-            case '#nav-pills-tab-1': // Pestaña de Pendientes
-                if (window.tablaPendientes) {
-                    window.tablaPendientes.columns.adjust().draw(); // Ajusta el ancho de las columnas y redibuja la tabla
-                }
-                break;
-            case '#nav-pills-tab-2': // Pestaña de Pagados
-                if (window.tablaPagados) {
-                    window.tablaPagados.columns.adjust().draw(); // Ajusta el ancho de las columnas y redibuja la tabla
-                }
-                break;
-            case '#nav-pills-tab-3': // Pestaña de Vencidos
-                if (window.tablaVencidos) {
-                    window.tablaVencidos.columns.adjust().draw(); // Ajusta el ancho de las columnas y redibuja la tabla
-                }
-                break;
-        }
-    });
 });
 
 
