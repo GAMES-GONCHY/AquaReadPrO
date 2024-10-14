@@ -188,20 +188,7 @@
           </div>
       </div>
   </div>
-  <!-- modal para mostrar qr en tamaño real -->
-  <!-- <div class="modal fade" id="qrModal" tabindex="-1" aria-labelledby="qrModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="qrModalLabel">Código QR</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body text-center">
-          <img id="modalQrImage" src="" alt="Código QR" class="img-fluid" />
-        </div>
-      </div>
-    </div>
-  </div> -->
+
   <!-- Modal para mostrar la imagen QR y subir comprobante de pago -->
   <div class="modal fade" id="qrModal" tabindex="-1" aria-labelledby="qrModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
@@ -216,6 +203,9 @@
 
           <!-- Formulario para subir comprobante de pago -->
           <form action="<?php echo base_url('index.php/socio/subir'); ?>" method="post" enctype="multipart/form-data">
+            <input type="hidden" id="mes" name="mes" value="">
+            <input type="hidden" id="anio" name="anio" value="">
+            <input type="hidden" id="codigoSocio" name="codigoSocio" value="">
             <input type="hidden" id="idAviso" name="idAviso" value="">
             <div class="mb-3">
               <label for="comprobantePago" class="form-label">Subir Comprobante de Pago</label>
@@ -332,16 +322,7 @@
 </script>
 
 
-<!-- modal avisos -->
-<script>
-  $('#configModal').on('shown.bs.modal', function () {
-    console.log('El modal se ha abierto.');
-  });
 
-  $('#configModal').on('hidden.bs.modal', function () {
-    console.log('El modal se ha cerrado.');
-  });
-</script>
 
 
 
@@ -387,10 +368,19 @@
 
   <!--scripr para expandir img modal qr -->
   <script>
-    function cargarImagenModal(imagenUrl, idAviso)
+    function cargarImagenModal(imagenUrl, codigoSocio, fechaLectura, idAviso) 
     {
-    document.getElementById('modalQrImage').src = imagenUrl;  // Actualizar imagen QR en el modal
-    document.getElementById('idAviso').value = idAviso;  // Asignar el idAviso al campo oculto
+      document.getElementById('modalQrImage').src = imagenUrl;  // Actualizar imagen QR en el modal
+       // Extraer mes y año de la fechaLectura
+      let date = new Date(fechaLectura);
+      let mes = ('0' + (date.getMonth() + 1)).slice(-2);  // Obtener el mes en formato 2 dígitos
+      let anio = date.getFullYear();  // Obtener el año
+
+      // Guardar mes y año en campos ocultos para pasarlos al backend
+      document.getElementById('mes').value = mes;
+      document.getElementById('anio').value = anio;
+      document.getElementById('codigoSocio').value = codigoSocio;
+      document.getElementById('idAviso').value = idAviso;
     }
   </script>
 
@@ -400,10 +390,10 @@ $(document).ready(function() {
     // Detectar el click en los elementos del dropdown
     $('.dropdown-item').on('click', function() {
         var estado = $(this).data('status'); // Obtener el valor del estado (pendiente, pagado, vencido)
-        
+        var selectedText = $(this).text();
         // Mostrar el estado seleccionado en la consola (para pruebas)
         console.log('Estado seleccionado: ' + estado);
-
+        $('#filterButton').text(selectedText);
         // Realizar la solicitud AJAX para obtener los avisos filtrados por estado
         $.ajax({
             url: '<?php echo base_url(); ?>index.php/socio/get_avisos', // Ruta hacia el controlador que manejará la solicitud
@@ -471,6 +461,41 @@ function cargarDatos(periodo, consumo, tarifaVigente, fechaVencimiento, total, l
 }
 </script>
 
+<!-- actualiza la vista parcial de avisos -->
+<script>
+$(document).ready(function() {
+    // Este script escucha los mensajes JSON después de la subida del comprobante
+    // Asegúrate de que el controlador envía el mensaje JSON correctamente
+    
+    // Usamos una técnica global para capturar las respuestas de AJAX, sin interferir con el script de subida
+    $(document).ajaxSuccess(function(event, xhr, settings) {
+        try {
+            // Intentamos parsear la respuesta JSON del controlador
+            var response = JSON.parse(xhr.responseText);
+
+            // Verificamos si es una respuesta exitosa de la subida de comprobante
+            if (response.status === 'success') {
+                alert(response.message);  // Mostrar el mensaje de éxito (esto es opcional)
+
+                // Hacemos una nueva solicitud AJAX para recargar la vista parcial de los avisos
+                $.ajax({
+                    url: '<?php echo base_url('index.php/socio/get_avisos'); ?>',  // Controlador que devuelve la vista parcial
+                    type: 'POST',
+                    data: { estado: 'enviado' },  // Filtrar por estado (ajusta según tu necesidad)
+                    success: function(response) {
+                        $('#avisos-container').html(response);  // Actualizar la vista parcial dentro del contenedor
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('Error al recargar los avisos:', error);
+                    }
+                });
+            }
+        } catch (e) {
+            console.log("No es una respuesta JSON válida, se omite.");
+        }
+    });
+});
+</script>
 
   </body>
 

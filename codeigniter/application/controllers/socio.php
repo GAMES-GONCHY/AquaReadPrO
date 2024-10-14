@@ -5,7 +5,8 @@ class Socio extends CI_Controller
 {
     public function pagaraviso()
     {
-        $data['avisos'] = $this->avisocobranza_model->avisos_por_estado('enviado');
+        $idUsuario = $this->session->userdata('idUsuario');
+        $data['avisos'] = $this->avisocobranza_model->avisos_por_estado_id('enviado',$idUsuario);
         $this->load->view('incrustaciones/vistascoloradmin/headsocio');
         $this->load->view('incrustaciones/vistascoloradmin/menusocio');
         $this->load->view('veravisos',$data); // Carga la vista con las pestañas y datos
@@ -15,66 +16,84 @@ class Socio extends CI_Controller
     {
         // Obtener el estado desde la solicitud AJAX
         $estado = $this->input->post('estado');
-    
+        $idUsuario = $this->session->userdata('idUsuario');
         // Llamar al modelo para obtener los avisos filtrados por estado
-        $avisos = $this->avisocobranza_model->avisos_por_estado($estado);
+        $avisos = $this->avisocobranza_model->avisos_por_estado_id($estado,$idUsuario);
     
         // Solo cargar el contenido de avisos (dentro de #avisos-container)
         $this->load->view('veravisos_parcial', ['avisos' => $avisos]);
     }
-    public function subir()
+    public function subir() 
     {
+        // Obtener el mes, año, codigoSocio y idAviso desde el formulario
+        $mes = $this->input->post('mes');
+        $anio = $this->input->post('anio');
+        $codigoSocio = $this->input->post('codigoSocio');
         $idAviso = $this->input->post('idAviso');
-        // Obtener el idUsuario desde la sesión
-        $idUsuario = $this->session->userdata('idUsuario');
+
+        // Configuración de la ruta base para el socio
+        $rutaSocio = './uploads/comprobantes/' . $codigoSocio;
+
+        // Verificar si la carpeta del socio existe, si no, crearla
+        if (!is_dir($rutaSocio))
+        {
+            mkdir($rutaSocio, 0755, true);  // Crear la carpeta con permisos 0755
+        }
 
         // Configuración para la subida del archivo
-        $config['upload_path'] = './uploads/comprobantes/';
+        $config['upload_path'] = $rutaSocio;
         $config['allowed_types'] = 'jpg|jpeg|png|pdf';
         $config['max_size'] = 2048;  // Tamaño máximo del archivo: 2MB
 
-        // Cargar la librería de subida de archivos
+        // Cargar la librería de subida de archivos con la configuración
         $this->load->library('upload', $config);
 
         // Intentar subir el archivo
-        if (!$this->upload->do_upload('comprobantePago')) {
+        if (!$this->upload->do_upload('comprobantePago')) 
+        {
             // Si ocurre un error al subir el archivo
             $error = $this->upload->display_errors();
             echo $error;  // Puedes mostrar un mensaje de error personalizado
-        } else {
+        }
+        else 
+        {
             // Si la subida es exitosa, obtener los datos del archivo
             $data = $this->upload->data();
 
             // Obtener la extensión del archivo subido
             $extension = $data['file_ext'];
 
-            // Renombrar el archivo con el idUsuario
-            $nombreArchivo = $idUsuario . $extension;
+            // Renombrar el archivo usando el mes y año
+            $nombreArchivo = $mes . '_' . $anio . $extension;
 
-            // Ruta completa para renombrar el archivo
-            $rutaCompleta = $config['upload_path'] . $nombreArchivo;
+            // Ruta completa para el archivo renombrado
+            $rutaCompleta = $rutaSocio . '/' . $nombreArchivo;
 
             // Renombrar el archivo subido
             rename($data['full_path'], $rutaCompleta);
 
-            // Obtener la fecha y hora actual del servidor (timestamp)
-            $fechaPago = date('Y-m-d H:i:s');
+            // Obtener la fecha y hora actual del servidor
+            
 
-            // Preparar los datos para actualizar en la base de datos
+            // Preparar los datos para la actualización de la base de datos
             $datosActualizacion = array(
-                'comprobante' => $nombreArchivo,  // El nombre del archivo subido
-                'fechaPago' => $fechaPago,  // Fecha y hora actual
-                'estado' => 'revision'  // Cambiar estado a 'revision'
+                'comprobante' => $nombreArchivo  // Guardar el nombre del archivo subido
             );
 
-            // Actualizar la tabla avisocobranza (debes cambiar el criterio de búsqueda por el correcto)
-            // Ejemplo: Actualizar para un aviso específico de este usuario (suponiendo que tienes un idAviso o similar)
-            // Actualizar la tabla avisocobranza con el idAviso
-            $this->db->where('idAviso', $idAviso);  // Usar idAviso como condición
-            $this->db->update('avisocobranza', $datosActualizacion);
+             // Actualizar en la base de datos
+            $actualizacion = $this->avisocobranza_model->sociopagaraviso($idAviso, $datosActualizacion);
 
-            // Mensaje de éxito
-            echo "Comprobante subido y aviso de cobranza actualizado correctamente.";
+            // Verificar si la actualización fue exitosa
+            if ($actualizacion) 
+            {
+                // Redirigir a la ruta socio/pagaraviso si fue exitoso
+                redirect('socio/pagaraviso');
+            }
+            else
+            {
+                // Manejo de errores si la actualización falla
+                echo "Error al actualizar la base de datos.";
+            }
         }
     }
 }

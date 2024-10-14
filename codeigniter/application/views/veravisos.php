@@ -16,18 +16,21 @@
 
                 <div class="d-flex">
                     <div class="dropdown me-2">
-                        <a href="#" class="btn btn-default dropdown-toggle" data-bs-toggle="dropdown">
+                        <!-- <a href="#" class="btn btn-default dropdown-toggle" data-bs-toggle="dropdown">
                             Filtrar por <b class="caret"></b>
-                        </a>
+                        </a> -->
+						<a href="#" id="filterButton" class="btn btn-default dropdown-toggle" data-bs-toggle="dropdown">
+							Filtrar por <b class="caret"></b>
+						</a>
                         <div class="dropdown-menu dropdown-menu-start" role="menu">
-                            <a href="javascript:;" class="dropdown-item" data-status="enviado">Pendientes</a>
+							<a href="javascript:;" class="dropdown-item" data-status="enviado">Pendientes</a>
+							<a href="javascript:;" class="dropdown-item" data-status="revision">En revisión</a>
                             <a href="javascript:;" class="dropdown-item" data-status="pagado">Pagados</a>
                             <a href="javascript:;" class="dropdown-item" data-status="vencido">Vencidos</a>
                         </div>
                     </div>
                 </div>
             </div>
-
             <!-- Contenedor de los avisos -->
             <div id="avisos-container">
 				<div class="result-list">
@@ -67,17 +70,30 @@
 							
 							<!-- Agregar correctamente el atributo data-periodo con el mes correspondiente -->
 							<div class="result-item" data-periodo="<?php echo $mes; ?>">
-								<!-- <a href="#" class="result-image" style="background-image: url('<?php echo base_url('uploads/qr/' . $aviso['img']); ?>')" 
-									data-bs-toggle="modal" 
-									data-bs-target="#qrModal" 
-									onclick="cargarImagenModal('<?php echo base_url('uploads/qr/' . $aviso['img']); ?>')">
-								</a> -->
-								<a href="#" class="result-image" style="background-image: url('<?php echo base_url('uploads/qr/' . $aviso['img']); ?>')" 
+								<?php if ($aviso['estado'] == 'enviado' || $aviso['estado'] == 'vencido'): ?>
+									<!-- Enlace que abre el modal solo si el estado es 'enviado' o 'vencido' -->
+									<a href="#" class="result-image" style="background-image: url('<?php echo base_url('uploads/qr/' . $aviso['img']); ?>')" 
 									data-bs-toggle="modal" 
 									data-bs-target="#qrModal" 
 									onclick="cargarImagenModal('<?php echo base_url('uploads/qr/' . $aviso['img']); ?>', 
+																'<?php echo $aviso['codigoSocio']; ?>',
+																'<?php echo $aviso['fechaLectura']; ?>',
 																<?php echo $aviso['idAviso']; ?>)">
-								</a>
+									</a>
+								<?php else: ?>
+									<!-- Enlace inactivo si el estado no es 'enviado' o 'vencido' -->
+									<a href="#" class="result-image" style="background-image: url('<?php echo base_url('uploads/qr/' . $aviso['img']); ?>')" 
+									style="pointer-events: none; opacity: 0.5;">
+									</a>
+								<?php endif; ?>
+								<!-- <a href="#" class="result-image" style="background-image: url('<?php echo base_url('uploads/qr/' . $aviso['img']); ?>')" 
+									data-bs-toggle="modal" 
+									data-bs-target="#qrModal" 
+									onclick="cargarImagenModal('<?php echo base_url('uploads/qr/' . $aviso['img']); ?>', 
+																'<?php echo $aviso['codigoSocio']; ?>',
+																'<?php echo $aviso['fechaLectura']; ?>',
+																<?php echo $aviso['idAviso']; ?>)">
+								</a> -->
 								<div class="result-info">
 									<h3 class="desc">Periodo: <?php echo $mes; ?></h3>
 									<h4 class="desc">Consumo: <?php echo $consumo; ?> m³</h4>
