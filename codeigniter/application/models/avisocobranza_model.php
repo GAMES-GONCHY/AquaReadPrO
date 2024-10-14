@@ -6,7 +6,7 @@ class Avisocobranza_model extends CI_Model
     // Obtener los avisos por estado
     public function avisos_por_estado($estado)
     {
-        $this->db->select('A.fechaVencimiento, A.idAviso, A.estado, T.tarifaMinima, T.tarifaVigente, 
+        $this->db->select('A.fechaVencimiento, A.idAviso, A.estado, T.tarifaMinima, T.tarifaVigente, Q.img,
                 L.lecturaAnterior, L.lecturaActual, L.fechaLectura, 
                 IFNULL((SELECT L2.fechaLectura 
                         FROM lectura L2 
@@ -18,6 +18,7 @@ class Avisocobranza_model extends CI_Model
                 ME.codigoSocio, 
                 CONCAT(U.nombre, " ", U.primerApellido, " ", IFNULL(U.segundoApellido, "")) AS nombreSocio');
         $this->db->from('avisoCobranza A');
+        $this->db->join('qr Q', 'A.idQr = Q.idQr', 'inner');
         $this->db->join('tarifa T', 'A.idTarifa = T.idTarifa', 'inner');
         $this->db->join('lectura L', 'A.idLectura = L.idLectura', 'inner');
         $this->db->join('medidor M', 'L.idMedidor = M.idMedidor', 'inner');
@@ -44,6 +45,12 @@ class Avisocobranza_model extends CI_Model
     {
         // Ejecutar el procedimiento almacenado
         $this->db->query("CALL uspGenerarAvisos()");
+    }
+
+    public function total_avisos_por_estado($estado)
+    {
+        $this->db->where('estado', $estado);
+        return $this->db->count_all_results('avisoCobranza'); // Contar el número total de avisos
     }
 }
 

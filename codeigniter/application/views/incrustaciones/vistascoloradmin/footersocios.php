@@ -10,6 +10,225 @@
 
 </div>
   <!-- END APP HEADER -->
+  <!-- modal para mostrar avisos de cobranza -->
+  <!-- <div class="modal modal-pos-booking fade" id="modalPosBooking">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content border-0">
+        <div class="modal-body">
+          <div class="d-flex align-items-center mb-3">
+            <h4 class="modal-title d-flex align-items-center"><img
+                src="<?php echo base_url(); ?>coloradmin/assets/img/logo/logomenu.png" height="30" class="me-2" /> Table 01 <small
+                class="fs-13px fw-bold ms-2">max 4 pax</small></h4>
+            <a href="#" data-bs-dismiss="modal" class="ms-auto btn-close"></a>
+          </div>
+          <div class="row">
+            <div class="col-lg-6">
+              <div class="form-group mb-2">
+                <div class="input-group">
+                  <div class="input-group-text fw-bold">08:00am</div>
+                  <input type="text" class="form-control" placeholder="" />
+                </div>
+              </div>
+              <div class="form-group mb-2">
+                <div class="input-group">
+                  <div class="input-group-text fw-bold">09:00am</div>
+                  <input type="text" class="form-control" placeholder="" value="Reserved by Sean" />
+                </div>
+              </div>
+              <div class="form-group mb-2">
+                <div class="input-group">
+                  <div class="input-group-text fw-bold">10:00am</div>
+                  <input type="text" class="form-control" placeholder="" />
+                </div>
+              </div>
+              <div class="form-group mb-2">
+                <div class="input-group">
+                  <div class="input-group-text fw-bold">11:00am</div>
+                  <input type="text" class="form-control" placeholder="" />
+                </div>
+              </div>
+              <div class="form-group mb-2">
+                <div class="input-group">
+                  <div class="input-group-text fw-bold">12:00pm</div>
+                  <input type="text" class="form-control" placeholder="" />
+                </div>
+              </div>
+              <div class="form-group mb-2">
+                <div class="input-group">
+                  <div class="input-group-text fw-bold">01:00pm</div>
+                  <input type="text" class="form-control" placeholder="" />
+                </div>
+              </div>
+              <div class="form-group mb-2">
+                <div class="input-group">
+                  <div class="input-group-text fw-bold">02:00pm</div>
+                  <input type="text" class="form-control" placeholder="" />
+                </div>
+              </div>
+              <div class="form-group mb-2">
+                <div class="input-group">
+                  <div class="input-group-text fw-bold">03:00pm</div>
+                  <input type="text" class="form-control" placeholder="" />
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-6">
+              <div class="form-group mb-2">
+                <div class="input-group">
+                  <div class="input-group-text fw-bold">04:00pm</div>
+                  <input type="text" class="form-control" placeholder="" />
+                </div>
+              </div>
+              <div class="form-group mb-2">
+                <div class="input-group">
+                  <div class="input-group-text fw-bold">05:00pm</div>
+                  <input type="text" class="form-control" placeholder=""
+                    value="Reserved by Irene Wong (4pax)" />
+                </div>
+              </div>
+              <div class="form-group mb-2">
+                <div class="input-group">
+                  <div class="input-group-text fw-bold">06:00pm</div>
+                  <input type="text" class="form-control" placeholder=""
+                    value="Reserved by Irene Wong (4pax)" />
+                </div>
+              </div>
+              <div class="form-group mb-2">
+                <div class="input-group">
+                  <div class="input-group-text fw-bold">07:00pm</div>
+                  <input type="text" class="form-control" placeholder="" />
+                </div>
+              </div>
+              <div class="form-group mb-2">
+                <div class="input-group">
+                  <div class="input-group-text fw-bold">08:00pm</div>
+                  <input type="text" class="form-control" placeholder="" />
+                </div>
+              </div>
+              <div class="form-group mb-2">
+                <div class="input-group">
+                  <div class="input-group-text fw-bold">09:00pm</div>
+                  <input type="text" class="form-control" placeholder="" />
+                </div>
+              </div>
+              <div class="form-group mb-2">
+                <div class="input-group">
+                  <div class="input-group-text fw-bold">10:00pm</div>
+                  <input type="text" class="form-control" placeholder="" />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <a href="#" class="btn btn-default w-100px" data-bs-dismiss="modal">Cancel</a>
+          <button type="submit" class="btn btn-success w-100px">Book</button>
+        </div>
+      </div>
+    </div>
+  </div> -->
+  <div class="modal modal-pos-booking fade" id="modalPosBooking">
+      <div class="modal-dialog modal-lg">
+          <div class="modal-content border-0">
+              <div class="modal-body">
+                  <div class="d-flex align-items-center mb-3">
+                      <h4 class="modal-title d-flex align-items-center">
+                          <img src="<?php echo base_url(); ?>coloradmin/assets/img/logo/logomenu.png" height="30" class="me-2" />
+                          Detalle del Aviso
+                      </h4>
+                      <a href="#" data-bs-dismiss="modal" class="ms-auto btn-close"></a>
+                  </div>
+                  <div class="row p-3 rounded" style="background-color: #f8f9fa;">
+                      <div class="col-lg-12">
+                          <table class="table table-borderless mb-0">
+                              <tbody>
+                                  <tr>
+                                      <td><strong>Código del Socio:</strong> <span class="text-secondary" id="modal-codigo-socio"></span></td>
+                                      <td><strong>Nombre del Socio:</strong> <span class="text-secondary" id="modal-nombre-socio"></span></td>
+                                      
+                                      
+                                      
+                                  </tr>
+                                  <tr>
+                                      <td><strong>Periodo:</strong> <span class="text-secondary" id="modal-periodo"></span></td>
+                                      <td><strong>Consumo:</strong> <span class="text-secondary" id="modal-consumo"></span></td>
+                                  </tr>
+                                  <tr>
+                                      <td><strong>Lectura Actual:</strong> <span class="text-secondary" id="modal-lectura-actual"></span></td>
+                                      <td><strong>Lectura Anterior:</strong> <span class="text-secondary" id="modal-lectura-anterior"></span></td>
+
+                                      
+                                      
+                                  </tr>
+                                  <tr>
+                                      <td><strong>Fecha de Lectura:</strong> <span class="text-secondary" id="modal-fecha-lectura"></span></td>
+                                      <td><strong>Fecha de Lectura Anterior:</strong> <span class="text-secondary" id="modal-fecha-lectura-anterior"></span></td>
+                                  </tr>
+                                  <tr>
+                                      <td><strong>Tarifa Vigente:</strong> <span class="text-secondary" id="modal-tarifa-vigente"></span></td>
+                                      <td><strong>Tarifa Mínima:</strong> <span class="text-secondary" id="modal-tarifa-minima"></span></td>
+                                  </tr>
+                                  <tr>
+                                      <td><strong>Total:</strong> <span class="fw-bold text-dark" id="modal-total"></span></td>
+                                      <td><strong>Fecha de Vencimiento:</strong> <span class="text-danger" id="modal-fecha-vencimiento"></span></td>
+                                  </tr>
+                                  <tr>
+                                    
+                                    <td><strong>Estado:</strong> <span class="badge bg-success text-uppercase" id="modal-estado"></span></td>
+                                  </tr>
+                              </tbody>
+                          </table>
+                      </div>
+                  </div>
+              </div>
+              <div class="modal-footer">
+                  <a href="#" class="btn btn-secondary w-100px" data-bs-dismiss="modal">Cancelar</a>
+                  <button type="submit" class="btn btn-success w-100px">Guardar</button>
+              </div>
+          </div>
+      </div>
+  </div>
+  <!-- modal para mostrar qr en tamaño real -->
+  <!-- <div class="modal fade" id="qrModal" tabindex="-1" aria-labelledby="qrModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="qrModalLabel">Código QR</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body text-center">
+          <img id="modalQrImage" src="" alt="Código QR" class="img-fluid" />
+        </div>
+      </div>
+    </div>
+  </div> -->
+  <!-- Modal para mostrar la imagen QR y subir comprobante de pago -->
+  <div class="modal fade" id="qrModal" tabindex="-1" aria-labelledby="qrModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="qrModalLabel">Código QR</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body text-center">
+          <!-- Mostrar imagen QR -->
+          <img id="modalQrImage" src="" alt="Código QR" class="img-fluid mb-3" />
+
+          <!-- Formulario para subir comprobante de pago -->
+          <form action="<?php echo base_url('index.php/socio/subir'); ?>" method="post" enctype="multipart/form-data">
+            <input type="hidden" id="idAviso" name="idAviso" value="">
+            <div class="mb-3">
+              <label for="comprobantePago" class="form-label">Subir Comprobante de Pago</label>
+              <input class="form-control" type="file" id="comprobantePago" name="comprobantePago" required>
+            </div>
+            <button type="submit" class="btn btn-success">Subir Comprobante</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
 
 
 
@@ -166,17 +385,12 @@
     });
   </script>
 
-  <!-- modal qr -->
+  <!--scripr para expandir img modal qr -->
   <script>
-    function previewImage(event) {
-      var reader = new FileReader();
-      reader.onload = function() {
-        var previewOutput = document.getElementById('qrPreview');
-        var expandedOutput = document.getElementById('qrExpanded');
-        previewOutput.src = reader.result; // Cambia la imagen del contenedor principal
-        expandedOutput.src = reader.result; // Cambia la imagen del modal de expansión
-      };
-      reader.readAsDataURL(event.target.files[0]);
+    function cargarImagenModal(imagenUrl, idAviso)
+    {
+    document.getElementById('modalQrImage').src = imagenUrl;  // Actualizar imagen QR en el modal
+    document.getElementById('idAviso').value = idAviso;  // Asignar el idAviso al campo oculto
     }
   </script>
 
@@ -196,7 +410,7 @@ $(document).ready(function() {
             type: 'POST', // Tipo de solicitud
             data: { estado: estado }, // Enviar el estado como parámetro
             success: function(response) {
-                // Actualizar el contenedor con la respuesta (avisos) recibida del servidor
+                console.log(response); // Mostrar la respuesta en la consola para verificar
                 $('#avisos-container').html(response);
             },
             error: function(xhr, status, error) {
@@ -208,6 +422,55 @@ $(document).ready(function() {
     });
 });
 </script>
+
+<!-- para buscador de avisos por mes -->
+<script>
+  document.getElementById('searchButton').addEventListener('click', function() {
+      var input = document.getElementById('searchInput').value.toLowerCase();
+      var avisos = document.querySelectorAll('.result-item');
+
+      console.log('Valor ingresado en el campo de búsqueda:', input);
+
+      avisos.forEach(function(aviso) {
+          var periodo = aviso.getAttribute('data-periodo');
+          console.log('Periodo del aviso:', periodo); // Verifica el valor de periodo
+          
+          if (periodo) {
+              periodo = periodo.toLowerCase();
+              
+              if (periodo.includes(input)) {
+                  aviso.style.display = 'block';
+              } else {
+                  aviso.style.display = 'none';
+              }
+          } else {
+              aviso.style.display = 'none';
+          }
+      });
+  });
+</script>
+
+<!-- pagos -->
+<script>
+function cargarDatos(periodo, consumo, tarifaVigente, fechaVencimiento, total, lecturaActual, lecturaAnterior, fechaLectura, fechaLecturaAnterior, estado, tarifaMinima, tarifa, codigoSocio, nombreSocio) {
+    // Buscar el modal y actualizar sus elementos
+    document.getElementById('modal-periodo').innerText = periodo;
+    document.getElementById('modal-consumo').innerText = consumo + ' m³';
+    document.getElementById('modal-tarifa-vigente').innerText = 'Bs. ' + tarifaVigente;
+    document.getElementById('modal-fecha-vencimiento').innerText = fechaVencimiento;
+    document.getElementById('modal-total').innerText = 'Bs. ' + total;
+    document.getElementById('modal-lectura-actual').innerText = lecturaActual + ' m³';
+    document.getElementById('modal-lectura-anterior').innerText = lecturaAnterior + ' m³';
+    document.getElementById('modal-fecha-lectura').innerText = fechaLectura;
+    document.getElementById('modal-fecha-lectura-anterior').innerText = fechaLecturaAnterior;
+    document.getElementById('modal-estado').innerText = estado;
+    document.getElementById('modal-tarifa-minima').innerText = 'Bs. ' + tarifaMinima;
+    document.getElementById('modal-tarifa').innerText = 'Bs. ' + tarifa;
+    document.getElementById('modal-codigo-socio').innerText = codigoSocio;
+    document.getElementById('modal-nombre-socio').innerText = nombreSocio;
+}
+</script>
+
 
   </body>
 
