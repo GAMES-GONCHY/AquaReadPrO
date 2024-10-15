@@ -15,20 +15,17 @@
             <div class="d-block d-md-flex align-items-center mb-3">
 
                 <div class="d-flex">
-                    <div class="dropdown me-2">
-                        <!-- <a href="#" class="btn btn-default dropdown-toggle" data-bs-toggle="dropdown">
-                            Filtrar por <b class="caret"></b>
-                        </a> -->
+					<div class="dropdown me-2" id="dropdown-avisos">
 						<a href="#" id="filterButton" class="btn btn-default dropdown-toggle" data-bs-toggle="dropdown">
 							Filtrar por <b class="caret"></b>
 						</a>
-                        <div class="dropdown-menu dropdown-menu-start" role="menu">
+						<div class="dropdown-menu dropdown-menu-start" role="menu">
 							<a href="javascript:;" class="dropdown-item" data-status="enviado">Pendientes</a>
 							<a href="javascript:;" class="dropdown-item" data-status="revision">En revisión</a>
-                            <a href="javascript:;" class="dropdown-item" data-status="pagado">Pagados</a>
-                            <a href="javascript:;" class="dropdown-item" data-status="vencido">Vencidos</a>
-                        </div>
-                    </div>
+							<a href="javascript:;" class="dropdown-item" data-status="pagado">Pagados</a>
+							<a href="javascript:;" class="dropdown-item" data-status="vencido">Vencidos</a>
+						</div>
+					</div>
                 </div>
             </div>
             <!-- Contenedor de los avisos -->

@@ -8,7 +8,6 @@
 	<meta content="" name="description" />
 	<meta content="" name="author" />
 
-	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 
   <!-- Vendor CSS -->
   <link href="<?php echo base_url(); ?>coloradmin/assets/css/vendor.min.css" rel="stylesheet" />

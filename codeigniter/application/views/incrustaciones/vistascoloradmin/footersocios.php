@@ -387,30 +387,30 @@
 <!-- script para funcionalidad drop down del selector de avisos de cobranza socios -->
 <script>
 $(document).ready(function() {
-    // Detectar el click en los elementos del dropdown
-    $('.dropdown-item').on('click', function() {
+    // Detectar el click en los elementos del dropdown de la sección de avisos
+    $('#dropdown-avisos .dropdown-item').on('click', function() {
         var estado = $(this).data('status'); // Obtener el valor del estado (pendiente, pagado, vencido)
-        var selectedText = $(this).text();
-        // Mostrar el estado seleccionado en la consola (para pruebas)
-        console.log('Estado seleccionado: ' + estado);
-        $('#filterButton').text(selectedText);
+        var selectedText = $(this).text();  // Obtener el texto de la opción seleccionada
+
+        // Actualizar el texto del botón "Filtrar por" con la opción seleccionada
+        //$('#filterButton').text(selectedText);
+        $('#filterButton').html(selectedText + ' <b class="caret"></b>');
+
         // Realizar la solicitud AJAX para obtener los avisos filtrados por estado
         $.ajax({
             url: '<?php echo base_url(); ?>index.php/socio/get_avisos', // Ruta hacia el controlador que manejará la solicitud
             type: 'POST', // Tipo de solicitud
             data: { estado: estado }, // Enviar el estado como parámetro
             success: function(response) {
-                console.log(response); // Mostrar la respuesta en la consola para verificar
-                $('#avisos-container').html(response);
+                $('#avisos-container').html(response);  // Actualizar la vista parcial dentro del contenedor
             },
             error: function(xhr, status, error) {
-                // Manejo de errores si la solicitud falla
-                console.error('Error al cargar los avisos:', error);
                 $('#avisos-container').html('<p>Ocurrió un error al cargar los avisos. Inténtalo nuevamente.</p>');
             }
         });
     });
 });
+
 </script>
 
 <!-- para buscador de avisos por mes -->

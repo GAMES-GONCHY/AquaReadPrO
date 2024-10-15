@@ -68,15 +68,17 @@ class Usuario extends CI_Controller
 					$this->load->view('incrustaciones/vistascoloradmin/head');
 					$this->load->view('incrustaciones/vistascoloradmin/menuadmin');
 					$this->load->view('paneladmin.php');
+					$this->load->view('incrustaciones/vistascoloradmin/footer');
 				}
 				else
 				{
 					$this->load->view('incrustaciones/vistascoloradmin/headsocio');
 					$this->load->view('incrustaciones/vistascoloradmin/menusocio');
 					$this->load->view('panelsocio1.php');
+					$this->load->view('incrustaciones/vistascoloradmin/footersocios');
 
 				}
-				$this->load->view('incrustaciones/vistascoloradmin/footersocios');
+				
 			}
 			else
 			{
