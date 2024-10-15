@@ -199,7 +199,7 @@ function createDataloggerMarker(position, map, idDatalogger, codigoDatalogger) {
 
     google.maps.event.addListener(dataloggerMarker, 'mouseover', function () {
         var contentString = '<div>' +
-            '<p style="color: black;">'(dataloggerMarker.codigoDatalogger || 'cargando...') + '</p>' +
+            '<p style="color: black;">Cod: '+(dataloggerMarker.codigoDatalogger || 'cargando...') + '</p>' +
             '</div>';
         infoWindow.setContent(contentString);
         infoWindow.open(map, dataloggerMarker);
@@ -361,7 +361,7 @@ function createMedidorMarker(position, map, idMedidor, idMembresia,codigoMedidor
 
     google.maps.event.addListener(medidorMarker, 'mouseover', function () {
         var contentString = '<div>' +
-            '<p style="color: black;">Cod. Medidor: ' + (medidorMarker.codigoMedidor || 'cargando...') + '</p>' +
+            '<p style="color: black;">Cod: ' + (medidorMarker.codigoMedidor || 'cargando...') + '</p>' +
             '</div>';
         infoWindow.setContent(contentString);
         infoWindow.open(map, medidorMarker);

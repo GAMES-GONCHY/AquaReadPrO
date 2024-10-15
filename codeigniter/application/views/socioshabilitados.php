@@ -1,13 +1,6 @@
 <!-- START CONTENT PAGE -->
 <div id="content" class="app-content">
 
-  <ol class="breadcrumb float-xl-end">
-    <li class="breadcrumb-item"><a href="javascript:;">Home</a></li>
-    <li class="breadcrumb-item"><a href="javascript:;">Tables</a></li>
-    <li class="breadcrumb-item"><a href="javascript:;">Managed Tables</a></li>
-    <li class="breadcrumb-item active">Extension Combination</li>
-  </ol>
-
 
   <h1 class="page-header">Socios</h1>
 
@@ -51,10 +44,8 @@
                   <th>Segundo Apellido</th>
                   <th>E-mail</th>
                   <th>Asignar Datalogger</th>
-                  <th>Asignar Medidor</th>
                   <th>Rol</th>
                   <th>Fono</th>
-                  <!-- <th>Género</th> -->
                   <th>Creado</th>
                   <th>Modificar</th>
                   <th>Eliminar</th>
@@ -65,7 +56,7 @@
                 $cont = 1;
                 foreach ($usuarios->result() as $row) {
                 ?>
-                  <tr>
+                  <tr class="text-center">
                     <td><?php echo $cont ?></td>
                     <td>
                       <?php
@@ -104,16 +95,6 @@
                       ?>
                         <input type="hidden" name="id" value="<?php echo $row->idUsuario ?>">
                         <button type="submit" class="btn btn-outline-primary me-1 mb-1">Datalogger</button>
-                      <?php
-                      echo form_close(); // </form>
-                      ?>
-                    </td>
-                    <td>
-                      <?php
-                      echo form_open_multipart("crudusers/modificar"); // <form>
-                      ?>
-                        <input type="hidden" name="id" value="<?php echo $row->idUsuario ?>">
-                        <button type="submit" class="btn btn-outline-yellow me-1 mb-1">Medidor</button>
                       <?php
                       echo form_close(); // </form>
                       ?>
@@ -178,10 +159,8 @@
                   <th>Segundo Apellido</th>
                   <th>E-mail</th>
                   <th>Asignar Datalogger</th>
-                  <th>Asignar Medidor</th>
                   <th>Rol</th>
                   <th>Fono</th>
-                  <!-- <th>Género</th> -->
                   <th>Creado</th>
                   <th>Modificar</th>
                   <th>Eliminar</th>
