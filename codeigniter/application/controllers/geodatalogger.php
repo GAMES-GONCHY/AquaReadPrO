@@ -63,8 +63,17 @@ class Geodatalogger extends CI_Controller
         
         if ($idDatalogger)
 		{
-            $this->asignarcodigodatalogger($idDatalogger);
-            echo json_encode(['status' => 'success', 'idDatalogger' => $idDatalogger]);
+            $codigoDatalogger = $this->asignarcodigodatalogger($idDatalogger);
+            
+            if($codigoDatalogger)
+            {
+                //echo json_encode(['status' => 'success', 'idDatalogger' => $idDatalogger]);
+                echo json_encode([
+                    'status' => 'success',
+                    'idDatalogger' => $idDatalogger,
+                    'codigoDatalogger' => $codigoDatalogger
+                ]);
+            }
         }
         else
         {
@@ -85,7 +94,9 @@ class Geodatalogger extends CI_Controller
 
         $this->datalogger_model->modificar($idDatalogger, $update_data);
 
-        echo json_encode(['status' => 'success', 'codigoDatalogger' => $codigoDatalogger]);
+        return $codigoDatalogger;
+
+        //echo json_encode(['status' => 'success', 'codigoDatalogger' => $codigoDatalogger]);
     }
 
     public function eliminardatalogger()

@@ -265,7 +265,7 @@
     var coordenadas = <?php echo isset($dataloggers) ? $dataloggers : '[]'; ?>;
     var medidorCoordenadas = <?php echo isset($medidores) ? $medidores : '[]'; ?>;
     var idUsuario = <?php echo json_encode($this->session->userdata('idUsuario') ?? ''); ?>;
-    var idDatalogger = <?php echo json_encode($this->session->userdata('idDatalogger1') ?? ''); ?>;
+    var idDatalogger = <?php echo json_encode($this->session->userdata('idDatalogger1')); ?>;
     var idMembresia = <?php echo json_encode($this->session->userdata('idMembresia') ?? ''); ?>;
     // Comprobar si las variables están definidas correctamente
     console.log("currentUser:", currentUser);

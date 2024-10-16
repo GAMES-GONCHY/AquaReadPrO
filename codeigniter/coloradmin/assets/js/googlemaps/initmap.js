@@ -1,4 +1,3 @@
-
 if (typeof currentUser !== 'undefined' && typeof idMembresia !== 'undefined') {
     function verificarAsociaciones() {
         if (!idMembresia) {
@@ -6,24 +5,31 @@ if (typeof currentUser !== 'undefined' && typeof idMembresia !== 'undefined') {
             return;
         }
 
+        console.log('Verificando asociaciones para idMembresia:', idMembresia); // Log para verificar idMembresia
+
         $.ajax({
             url: '/tercerAnio/aquaReadPro/codeigniter/index.php/membresia/verificarAsociacionesMembresia/' + idMembresia,
             method: 'GET',
             success: function(response) {
                 try {
                     var data = JSON.parse(response);
+                    console.log('Respuesta de verificar asociaciones:', data); // Log para verificar la respuesta
 
                     // Habilitar o deshabilitar botones según las asociaciones
                     if (data.tieneDatalogger) {
+                        console.log('Datalogger ya existe, deshabilitando botón de agregar datalogger');
                         document.getElementById('addDataloggerBtn').disabled = true;
                     } else {
+                        console.log('No hay datalogger, habilitando botón de agregar datalogger');
                         document.getElementById('addDataloggerBtn').disabled = false;
                     }
 
                     if (data.tieneMedidor) {
+                        console.log('Medidor ya existe, deshabilitando botón de agregar medidor');
                         document.getElementById('addMedidorBtn').disabled = true;
                     } else {
-                        document.getElementById('addMedidorBtn').disabled = false;
+                        //console.log('No hay medidor, habilitando botón de agregar medidor');
+                        //document.getElementById('addMedidorBtn').disabled = false;
                     }
                 } catch (e) {
                     console.error('Error al procesar la respuesta:', e);
@@ -36,11 +42,17 @@ if (typeof currentUser !== 'undefined' && typeof idMembresia !== 'undefined') {
     }
 
     document.addEventListener('DOMContentLoaded', function() {
-        verificarAsociaciones();
+        console.log('Inicializando página, deshabilitando botón de agregar medidor'); // Log para depurar la inicialización
+        // Inicialmente, el botón de medidor debe estar deshabilitado
+        document.getElementById('addDataloggerBtn').disabled = false;
+        document.getElementById('addMedidorBtn').disabled = true; // Deshabilitar medidor inicialmente
+
+        verificarAsociaciones(); // Llama a la función para verificar las asociaciones
     });
 } else {
     console.error('Las variables globales currentUser o idMembresia no están definidas.');
 }
+
 var mapDefault;  // Declarar mapDefault a nivel global
 var addingDataloggerMarker = false;  // Controla si se puede agregar un marcador
 var addingMedidorMarker = false;  // Controla si se puede agregar un marcador de medidor
@@ -233,10 +245,7 @@ function createDataloggerMarker(position, map, idDatalogger, codigoDatalogger) {
 }
 
 function saveDataloggerMarker(lat, lng, dataloggerMarker) {
-    console.log("Latitud:", lat);
-    console.log("Longitud:", lng);
-    console.log("ID Autor:", window.idUsuario);
-    
+    console.log("Guardando datalogger..."); // Log para verificar que la función está siendo llamada
     $.ajax({
         url: '/tercerAnio/aquaReadPro/codeigniter/index.php/geodatalogger/agregardatalogger',
         method: 'POST',
@@ -246,12 +255,15 @@ function saveDataloggerMarker(lat, lng, dataloggerMarker) {
             idAutor: window.idUsuario
         },
         success: function (response) {
-            console.log(response);
             var jsonResponse = JSON.parse(response);
             if (jsonResponse.status === 'success') {
-                dataloggerMarker.idDatalogger = jsonResponse.idDatalogger;
-                globalIdDatalogger = jsonResponse.idDatalogger;
-                console.log("idDatalogger:", jsonResponse.idDatalogger);
+                window.idDatalogger = jsonResponse.idDatalogger; // Actualiza la variable global
+                console.log("Datalogger agregado con éxito:", jsonResponse.idDatalogger);
+
+                // Aquí habilitas el botón de agregar medidor
+                console.log("Habilitando botón de agregar medidor...");
+                document.getElementById('addMedidorBtn').disabled = false;
+
             } else {
                 alert("Error al agregar el datalogger: " + jsonResponse.message);
             }
@@ -261,6 +273,7 @@ function saveDataloggerMarker(lat, lng, dataloggerMarker) {
         }
     });
 }
+
 function deleteDataloggerMarker(dataloggerMarker) 
 {
     var idDatalogger = dataloggerMarker.idDatalogger;
