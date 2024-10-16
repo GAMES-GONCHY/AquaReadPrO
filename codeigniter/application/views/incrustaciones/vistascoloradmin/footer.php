@@ -258,7 +258,6 @@
 <script>
     // Definir variables globales para el JavaScript externo
     var currentUser = <?php echo json_encode($this->session->userdata('idUsuario') ?? ''); ?>;
-    var idMembresia = <?php echo json_encode($this->session->userdata('idMembresia') ?? ''); ?>;
 </script>
 <!-- coordenadas datalogger y medidores -->
 <script>
@@ -266,10 +265,11 @@
     var medidorCoordenadas = <?php echo isset($medidores) ? $medidores : '[]'; ?>;
     var idUsuario = <?php echo json_encode($this->session->userdata('idUsuario') ?? ''); ?>;
     var idDatalogger = <?php echo json_encode($this->session->userdata('idDatalogger1')); ?>;
-    var idMembresia = <?php echo json_encode($this->session->userdata('idMembresia') ?? ''); ?>;
+    //var idMembresia = <?php echo isset($idMembresia); ?>;
+    var idMembresia = <?php echo isset($idMembresia) ? $idMembresia : ''; ?>;
     // Comprobar si las variables están definidas correctamente
     console.log("currentUser:", currentUser);
-    console.log("idMembresia:", idMembresia);
+    console.log("idMembresiaaaaaaa:", idMembresia);
     console.log("idUsuario:", idUsuario);
     console.log("idDatalogger:", idDatalogger);
 </script>

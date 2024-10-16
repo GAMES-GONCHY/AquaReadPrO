@@ -8,7 +8,11 @@ class Geodatalogger extends CI_Controller
 		$data['dataloggers'] = $this->datalogger_model->habilitados()->result_array();
         $data['medidores'] = $this->medidor_model->habilitados()->result_array();
 
-        $idMembresia = $this->session->userdata('idMembresia');
+        $idSocio = $this->input->post('idSocio');
+        
+        $idMembresia = $this->membresia_model->membresia($idSocio);
+        
+
         $data['idMembresia']=$idMembresia;
 
 		 // Convertir datos a JSON
@@ -49,6 +53,7 @@ class Geodatalogger extends CI_Controller
         $latitud = $this->input->post('latitud');
         $longitud = $this->input->post('longitud');
         $idAutor = $this->input->post('idAutor');
+        $idMembresia = $this->input->post('idMembresia');
 
         // Lógica para guardar el marcador en la base de datos
         $data = array(
@@ -56,6 +61,9 @@ class Geodatalogger extends CI_Controller
             'longitud' => $longitud,
             'idAutor' => $idAutor
         );
+
+        
+        $this->db->query("SET @idMembresia = '{$idMembresia}'");
         
         $idDatalogger=$this->datalogger_model->agregar($data);
         
@@ -65,22 +73,22 @@ class Geodatalogger extends CI_Controller
 		{
             $codigoDatalogger = $this->asignarcodigodatalogger($idDatalogger);
             
-            if($codigoDatalogger)
-            {
-                //echo json_encode(['status' => 'success', 'idDatalogger' => $idDatalogger]);
-                echo json_encode([
-                    'status' => 'success',
-                    'idDatalogger' => $idDatalogger,
-                    'codigoDatalogger' => $codigoDatalogger
-                ]);
-            }
+            // if($codigoDatalogger)
+            // {
+            //     echo json_encode([
+            //         'status' => 'success',
+            //         'idDatalogger' => $idDatalogger,
+            //         'codigoDatalogger' => $codigoDatalogger
+            //     ]);
+            // }
         }
         else
         {
             $error = $this->db->error();
             log_message('error', 'Error en la inserción de datalogger: ' . json_encode($error));
-            echo json_encode(['status' => 'error', 'message' => $error]);
+            // echo json_encode(['status' => 'error', 'message' => $error]);
         }
+        redirect('geodatalogger/geolocalizar');
     }
     public function asignarcodigodatalogger($idDatalogger)
     {
@@ -146,45 +154,45 @@ class Geodatalogger extends CI_Controller
             echo json_encode(['status' => 'error', 'message' => 'Error al actualizar las coordenadas']);
         }
     }
-    public function agregarmedidor()
-    {
-        $data = array(
-            'latitud' => $this->input->post('latitud'),
-            'longitud' => $this->input->post('longitud'),
-            'idAutor' => $this->input->post('idAutor'),
-            'idDatalogger' => $this->input->post('idDatalogger'),
-            'idMembresia' => $this->input->post('idMembresia')
-        );
+    // public function agregarmedidor()
+    // {
+    //     $data = array(
+    //         'latitud' => $this->input->post('latitud'),
+    //         'longitud' => $this->input->post('longitud'),
+    //         'idAutor' => $this->input->post('idAutor'),
+    //         'idDatalogger' => $this->input->post('idDatalogger'),
+    //         'idMembresia' => $this->input->post('idMembresia')
+    //     );
         
         
-        $idMedidor=$this->medidor_model->agregar($data);
-        if ($idMedidor)
-		{
-            echo json_encode(['status' => 'success', 'idMedidor' => $idMedidor]);
+    //     $idMedidor=$this->medidor_model->agregar($data);
+    //     if ($idMedidor)
+	// 	{
+    //         echo json_encode(['status' => 'success', 'idMedidor' => $idMedidor]);
             
-            $data2['infousuario'] = $this->medidor_model->recuperarinfousuario($idMedidor);
+    //         $data2['infousuario'] = $this->medidor_model->recuperarinfousuario($idMedidor);
             
-            $usercode= strtoupper(substr($data2['infousuario']->primerApellido,0,2).substr($data2['infousuario']->nombre, -1));
-            $cantmedidor = $this->medidor_model->contarmedidores($this->input->post('idMembresia'));
-            $data3['codigoMedidor'] = $usercode .'-'. $cantmedidor;
+    //         $usercode= strtoupper(substr($data2['infousuario']->primerApellido,0,2).substr($data2['infousuario']->nombre, -1));
+    //         $cantmedidor = $this->medidor_model->contarmedidores($this->input->post('idMembresia'));
+    //         $data3['codigoMedidor'] = $usercode .'-'. $cantmedidor;
 
 
-            if($data3['codigoMedidor']!=null)
-            {
-                $this->medidor_model->modificar($idMedidor,$data3);
-            }
-            else
-            {
-                log_message('error', 'Error en asignacion de codigo medidor: ');
-            }
-        }
-        else
-        {
-            $error = $this->db->error();
-            log_message('error', 'Error en la inserción del medidor: ' . json_encode($error));
-            echo json_encode(['status' => 'error', 'message' => $error]);
-        }
-    }
+    //         if($data3['codigoMedidor']!=null)
+    //         {
+    //             $this->medidor_model->modificar($idMedidor,$data3);
+    //         }
+    //         else
+    //         {
+    //             log_message('error', 'Error en asignacion de codigo medidor: ');
+    //         }
+    //     }
+    //     else
+    //     {
+    //         $error = $this->db->error();
+    //         log_message('error', 'Error en la inserción del medidor: ' . json_encode($error));
+    //         echo json_encode(['status' => 'error', 'message' => $error]);
+    //     }
+    // }
     public function eliminarmedidor()
     {
         $idMedidor = $this->input->post('idMedidor');

@@ -10,7 +10,13 @@ class Membresia_model extends CI_Model
 		$this->db->where('idUsuario', $idsocio);
 		$query =$this->db->get();
 
-        return $query->row()->idMembresia;
+        if ($query->num_rows() > 0) {
+            // Retorna la fila como un objeto y acceder a 'idMembresia'
+            return $query->row()->idMembresia;
+        } else {
+            // Si no se encuentra la membresía, retornar null o manejar el error
+            return null;
+        }
     }
     public function contarmembresias()
     {

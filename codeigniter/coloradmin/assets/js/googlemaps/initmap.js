@@ -145,10 +145,10 @@ function initMap() {
     });
 
     // Evento para agregar un marcador de medidor
-    document.getElementById('addMedidorBtn').addEventListener('click', function () {
-        addingMedidorMarker = true;
-        mapDefault.setOptions({ draggableCursor: 'crosshair' });
-    });
+    // document.getElementById('addMedidorBtn').addEventListener('click', function () {
+    //     addingMedidorMarker = true;
+    //     mapDefault.setOptions({ draggableCursor: 'crosshair' });
+    // });
 
     // Evento de clic para agregar un nuevo marcador de datalogger o medidor
     mapDefault.addListener('click', function (event) {
@@ -173,14 +173,14 @@ function initMap() {
             medidorMarkers.push(newMedidorMarker);
 
             // Deshabilitar el botón inmediatamente después de agregar un medidor
-            document.getElementById('addMedidorBtn').disabled = true;
+            // document.getElementById('addMedidorBtn').disabled = true;
 
             // Restaurar el cursor y deshabilitar la adición de nuevos medidores
             mapDefault.setOptions({ draggableCursor: null });
             addingMedidorMarker = false;
 
             // Guardar el marcador en la base de datos
-            saveMedidorMarker(lat, lng, newMedidorMarker);
+            // saveMedidorMarker(lat, lng, newMedidorMarker);
         }
     });
 }
@@ -252,7 +252,8 @@ function saveDataloggerMarker(lat, lng, dataloggerMarker) {
         data: {
             latitud: lat,
             longitud: lng,
-            idAutor: window.idUsuario
+            idAutor: window.idUsuario,
+            idMembresia: window.idMembresia
         },
         success: function (response) {
             var jsonResponse = JSON.parse(response);
@@ -397,51 +398,51 @@ function createMedidorMarker(position, map, idMedidor, idMembresia,codigoMedidor
     
     return medidorMarker;
 }
-function saveMedidorMarker(lat, lng, medidorMarker) {
-    // Verificar si las variables necesarias están definidas y no son nulas
-    if (!lat || !lng || !window.idUsuario || !window.idMembresia || !window.idDatalogger) {
-        console.error('Uno o más valores son nulos o no están definidos:');
-        console.error('Latitud:', lat);
-        console.error('Longitud:', lng);
-        console.error('ID Usuario:', window.idUsuario);
-        console.error('ID Datalogger:', window.idDatalogger);
-        console.error('ID Membresia:', window.idMembresia);
-        return; // Detener la ejecución si hay valores nulos
-    }
+// function saveMedidorMarker(lat, lng, medidorMarker) {
+//     // Verificar si las variables necesarias están definidas y no son nulas
+//     if (!lat || !lng || !window.idUsuario || !window.idMembresia || !window.idDatalogger) {
+//         console.error('Uno o más valores son nulos o no están definidos:');
+//         console.error('Latitud:', lat);
+//         console.error('Longitud:', lng);
+//         console.error('ID Usuario:', window.idUsuario);
+//         console.error('ID Datalogger:', window.idDatalogger);
+//         console.error('ID Membresia:', window.idMembresia);
+//         return; // Detener la ejecución si hay valores nulos
+//     }
 
-    console.log("Latitud:", lat);
-    console.log("Longitud:", lng);
-    console.log("ID Autor:", window.idUsuario);
+//     console.log("Latitud:", lat);
+//     console.log("Longitud:", lng);
+//     console.log("ID Autor:", window.idUsuario);
 
-    $.ajax({
-        url: '/tercerAnio/aquaReadPro/codeigniter/index.php/geodatalogger/agregarmedidor',
-        method: 'POST',
-        data: {
-            latitud: lat,
-            longitud: lng,
-            idDatalogger: window.idDatalogger,
-            idMembresia: window.idMembresia,
-            idAutor: window.idUsuario
-        },
-        success: function (response) {
-            try {
-                console.log(response);
-                var jsonResponse = JSON.parse(response);
-                if (jsonResponse.status === 'success') {
-                    medidorMarker.idMedidor = jsonResponse.idMedidor;
-                    medidorMarker.idMembresia = window.idMembresia;
-                } else {
-                    alert("Error al agregar el medidor: " + jsonResponse.message);
-                }
-            } catch (e) {
-                console.error('Error al procesar la respuesta JSON:', e);
-            }
-        },
-        error: function () {
-            alert("Error al agregar el medidor.");
-        }
-    });
-}
+//     $.ajax({
+//         url: '/tercerAnio/aquaReadPro/codeigniter/index.php/geodatalogger/agregarmedidor',
+//         method: 'POST',
+//         data: {
+//             latitud: lat,
+//             longitud: lng,
+//             idDatalogger: window.idDatalogger,
+//             idMembresia: window.idMembresia,
+//             idAutor: window.idUsuario
+//         },
+//         success: function (response) {
+//             try {
+//                 console.log(response);
+//                 var jsonResponse = JSON.parse(response);
+//                 if (jsonResponse.status === 'success') {
+//                     medidorMarker.idMedidor = jsonResponse.idMedidor;
+//                     medidorMarker.idMembresia = window.idMembresia;
+//                 } else {
+//                     alert("Error al agregar el medidor: " + jsonResponse.message);
+//                 }
+//             } catch (e) {
+//                 console.error('Error al procesar la respuesta JSON:', e);
+//             }
+//         },
+//         error: function () {
+//             alert("Error al agregar el medidor.");
+//         }
+//     });
+// }
 
 function deleteMedidorMarker(medidorMarker) 
 {
