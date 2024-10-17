@@ -13,7 +13,13 @@
         <a href="<?php echo base_url(); ?>index.php/avisocobranza/gestion" class="nav-link <?php echo (current_url() == base_url() . 'index.php/avisocobranza/gestion') ? 'active' : ''; ?>">Enviados</a>
       </li>
       <li class="nav-item">
+        <a href="<?php echo base_url(); ?>index.php/avisocobranza/revision" class="nav-link <?php echo (current_url() == base_url() . 'index.php/avisocobranza/revision') ? 'active' : ''; ?>">En revisión</a>
+      </li>
+      <li class="nav-item">
         <a href="<?php echo base_url(); ?>index.php/avisocobranza/pagados" class="nav-link <?php echo (current_url() == base_url() . 'index.php/avisocobranza/pagados') ? 'active' : ''; ?>">Pagados</a>
+      </li>
+      <li class="nav-item">
+        <a href="<?php echo base_url(); ?>index.php/avisocobranza/rechazados" class="nav-link <?php echo (current_url() == base_url() . 'index.php/avisocobranza/rechazados') ? 'active' : ''; ?>">Rechazados</a>
       </li>
       <li class="nav-item">
         <a href="<?php echo base_url(); ?>index.php/avisocobranza/vencidos" class="nav-link <?php echo (current_url() == base_url() . 'index.php/avisocobranza/vencidos') ? 'active' : ''; ?>">Vencidos</a>
@@ -44,7 +50,6 @@
                                         <th>Tarifa Aplicada [Bs/m3]</th>
                                         <th>Total [Bs.]</th>
                                         <th>Fecha Vencimiento</th>
-                                        <th>Aprobar</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -65,13 +70,13 @@
                                         <td><?php echo $enviado['tarifaVigente']; ?></td>
                                         <td><?php echo number_format($total, 2); ?></td>
                                         <td><?php echo $enviado['fechaVencimiento']; ?></td>
-                                        <td>
+                                        <!-- <td>
                                           <?php echo form_open_multipart("avisocobranza/aprobarbd", ['class' => 'auto-submit-form']); ?>
                                             <input type="hidden" name="tab" value="gestion">
                                             <input type="hidden" name="id" value="<?php echo $enviado['idAviso']; ?>">
                                             <input type="checkbox" class="toggle-checkbox" name="estado" value="pagado" onchange="this.form.submit()"/>
                                           <?php echo form_close(); ?>
-                                        </td>
+                                        </td> -->
                                     </tr>
                                     <?php $cont++; } ?>
                                 </tbody>
@@ -87,7 +92,6 @@
                                         <th>Tarifa Aplicada [Bs/m3]</th>
                                         <th>Total [Bs.]</th>
                                         <th>Fecha Vencimiento</th>
-                                        <th>Aprobar</th>
                                     </tr>
                                 </tfoot>
                             </table>

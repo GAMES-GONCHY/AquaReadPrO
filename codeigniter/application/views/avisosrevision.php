@@ -29,7 +29,7 @@
                 <div class="col-xl-12">
                     <div class="panel panel-inverse">
                         <div class="panel-heading d-flex justify-content-between align-items-center">
-                            <h4 class="panel-title">Avisos Pagados</h4>
+                            <h4 class="panel-title">Avisos En Resión</h4>
                         </div>
                         <div class="panel-body">
                             <table id="pendientes" class="table table-hover table-bordered align-middle">
@@ -51,28 +51,29 @@
                                 <tbody>
                                     <?php
                                     $cont = 1;
-                                    foreach ($pagados as $pagado) {
-                                        $consumo = $pagado['lecturaActual'] - $pagado['lecturaAnterior'];
-                                        $total = $pagado['tarifaVigente'] * $consumo;
+                                    foreach ($revisados as $revisado) {
+                                        $consumo = $revisado['lecturaActual'] - $revisado['lecturaAnterior'];
+                                        $total = $revisado['tarifaVigente'] * $consumo;
                                     ?>
                                     <tr class="text-center">
                                         <td><?php echo $cont; ?></td>
-                                        <td><?php echo $pagado['codigoSocio']; ?></td>
-                                        <td><?php echo $pagado['nombreSocio']; ?></td>
+                                        <td><?php echo $revisado['codigoSocio']; ?></td>
+                                        <td><?php echo $revisado['nombreSocio']; ?></td>
                                         <td><?php echo $consumo ?> m³</td>
-                                        <td><?php echo $pagado['lecturaAnterior']; ?></td>
-                                        <td><?php echo date('Y-m-d', strtotime($pagado['fechaLecturaAnterior'])); ?></td>
-                                        <td><?php echo date('Y-m-d', strtotime($pagado['fechaLectura'])); ?></td>
-                                        <td><?php echo $pagado['tarifaVigente']; ?></td>
+                                        <td><?php echo $revisado['lecturaAnterior']; ?></td>
+                                        <td><?php echo date('Y-m-d', strtotime($revisado['fechaLecturaAnterior'])); ?></td>
+                                        <td><?php echo date('Y-m-d', strtotime($revisado['fechaLectura'])); ?></td>
+                                        <td><?php echo $revisado['tarifaVigente']; ?></td>
                                         <td><?php echo number_format($total, 2); ?></td>
-                                        <td><?php echo $pagado['fechaVencimiento']; ?></td>
+                                        <td><?php echo $revisado['fechaVencimiento']; ?></td>
                                         <td>
                                           <?php echo form_open_multipart("avisocobranza/revisarbd", ['class' => 'auto-submit-form']); ?>
-                                            <input type="hidden" name="tab" value="pagados">
-                                            <input type="hidden" name="id" value="<?php echo $pagado['idAviso']; ?>">
+                                            <input type="hidden" name="tab" value="revision">
+                                            <input type="hidden" name="id" value="<?php echo $revisado['idAviso']; ?>">
                                             <select name="estado" onchange="this.form.submit()">
-                                              <option value="" selected disabled>Seleccionar</option>
-                                              <option value="revision">Revisión</option>
+                                                <option value="" selected disabled>Seleccionar</option>
+                                                <option value="pagado">Pagado</option>
+                                                <option value="rechazado">Rechazado</option>
                                             </select>
                                           <?php echo form_close(); ?>
                                         </td>

@@ -39,23 +39,53 @@ class Avisocobranza extends CI_Controller
         $this->load->view('avisosvencidos', $data); // Carga la vista con las pestañas y datos
         $this->load->view('incrustaciones/vistascoloradmin/footeravisos');
     }
-    public function aprobarbd()
+    public function revision()
+    {
+        // Obtener los avisos por estado
+        $data['revisados'] = $this->avisocobranza_model->avisos_por_estado('revision');
+
+        // Cargar las vistas con las pestañas
+        $this->load->view('incrustaciones/vistascoloradmin/head');
+        $this->load->view('incrustaciones/vistascoloradmin/menuadmin');
+        $this->load->view('avisosrevision', $data); // Carga la vista con las pestañas y datos
+        $this->load->view('incrustaciones/vistascoloradmin/footeravisos');
+    }
+    public function rechazados()
+    {
+        // Obtener los avisos por estado
+        $data['rechazados'] = $this->avisocobranza_model->avisos_por_estado('rechazado');
+
+        // Cargar las vistas con las pestañas
+        $this->load->view('incrustaciones/vistascoloradmin/head');
+        $this->load->view('incrustaciones/vistascoloradmin/menuadmin');
+        $this->load->view('avisosrechazados', $data); // Carga la vista con las pestañas y datos
+        $this->load->view('incrustaciones/vistascoloradmin/footeravisos');
+    }
+    // public function aprobarbd()
+	// {
+	// 	$id = $_POST['id'];
+	// 	$data['estado'] = $_POST['estado'];
+    //     $tab = $_POST['tab'];
+	// 	$this->avisocobranza_model->modificar($id, $data);
+    //     redirect('avisocobranza/' . $tab);
+		
+	// }
+    public function revisarbd()
 	{
 		$id = $_POST['id'];
 		$data['estado'] = $_POST['estado'];
         $tab = $_POST['tab'];
 		$this->avisocobranza_model->modificar($id, $data);
         redirect('avisocobranza/' . $tab);
-		
-	}
-    public function reprobarbd()
-	{
-		$id = $_POST['id'];
-		$data['estado'] = $_POST['estado'];
-        
-		$this->avisocobranza_model->modificar($id, $data);
-        redirect('avisocobranza/pagados');
     }
+    // public function reprobarbd()
+	// {
+	// 	$id = $_POST['id'];
+	// 	$data['estado'] = $_POST['estado'];
+        
+	// 	$this->avisocobranza_model->modificar($id, $data);
+    //     redirect('avisocobranza/pagados');
+    // }
     public function deshabilitarbd()
 	{
 		$id = $_POST['id'];
@@ -76,10 +106,10 @@ class Avisocobranza extends CI_Controller
 	}
     public function pagaraviso()
 	{
-        $this->load->view('incrustaciones/vistascoloradmin/head');
-        $this->load->view('incrustaciones/vistascoloradmin/menuadmin');
-        $this->load->view('gestion_avisos', $data); // Carga la vista con las pestañas y datos
-        $this->load->view('incrustaciones/vistascoloradmin/footeravisos');
+        // $this->load->view('incrustaciones/vistascoloradmin/head');
+        // $this->load->view('incrustaciones/vistascoloradmin/menuadmin');
+        // $this->load->view('gestion_avisos', $data); // Carga la vista con las pestañas y datos
+        // $this->load->view('incrustaciones/vistascoloradmin/footeravisos');
 	}
 
 }

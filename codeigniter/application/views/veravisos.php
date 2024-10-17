@@ -83,14 +83,6 @@
 									style="pointer-events: none; opacity: 0.5;">
 									</a>
 								<?php endif; ?>
-								<!-- <a href="#" class="result-image" style="background-image: url('<?php echo base_url('uploads/qr/' . $aviso['img']); ?>')" 
-									data-bs-toggle="modal" 
-									data-bs-target="#qrModal" 
-									onclick="cargarImagenModal('<?php echo base_url('uploads/qr/' . $aviso['img']); ?>', 
-																'<?php echo $aviso['codigoSocio']; ?>',
-																'<?php echo $aviso['fechaLectura']; ?>',
-																<?php echo $aviso['idAviso']; ?>)">
-								</a> -->
 								<div class="result-info">
 									<h3 class="desc">Periodo: <?php echo $mes; ?></h3>
 									<h4 class="desc">Consumo: <?php echo $consumo; ?> m³</h4>
