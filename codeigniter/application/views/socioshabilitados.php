@@ -91,7 +91,7 @@
                     <td><?php echo $row->email ?></td>
                     <td>
                       <?php
-                      echo form_open_multipart("geodatalogger/geolocalizar"); // <form>
+                      echo form_open_multipart("geodatalogger/redireccionar"); // <form>
                       ?>
                         <input type="hidden" name="idSocio" value="<?php echo $row->idUsuario ?>">
                         <button type="submit" class="btn btn-outline-primary me-1 mb-1">Datalogger</button>

@@ -3,12 +3,17 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 class Geodatalogger extends CI_Controller
 {
-	public function geolocalizar()
+    public function redireccionar()
+	{
+        $idSocio = $this->input->post('idSocio'); 
+        redirect('geodatalogger/geolocalizar/' . $idSocio);
+    }
+	public function geolocalizar($idSocio)
 	{
 		$data['dataloggers'] = $this->datalogger_model->habilitados()->result_array();
         $data['medidores'] = $this->medidor_model->habilitados()->result_array();
 
-        $idSocio = $this->input->post('idSocio');
+        //$idSocio = $this->input->post('idSocio');
         
         $idMembresia = $this->membresia_model->membresia($idSocio);
         
@@ -88,7 +93,7 @@ class Geodatalogger extends CI_Controller
             log_message('error', 'Error en la inserción de datalogger: ' . json_encode($error));
             // echo json_encode(['status' => 'error', 'message' => $error]);
         }
-        redirect('geodatalogger/geolocalizar');
+        //redirect('geodatalogger/geolocalizar');
     }
     public function asignarcodigodatalogger($idDatalogger)
     {
