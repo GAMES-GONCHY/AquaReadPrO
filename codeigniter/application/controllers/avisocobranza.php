@@ -78,14 +78,14 @@ class Avisocobranza extends CI_Controller
 		$this->avisocobranza_model->modificar($id, $data);
         redirect('avisocobranza/' . $tab);
     }
-    // public function reprobarbd()
-	// {
-	// 	$id = $_POST['id'];
-	// 	$data['estado'] = $_POST['estado'];
-        
-	// 	$this->avisocobranza_model->modificar($id, $data);
-    //     redirect('avisocobranza/pagados');
-    // }
+    public function notificarsaldo()
+	{
+        $idAviso = $this->input->post('idAviso');
+        $data['saldo'] = $this->input->post('saldoPendiente');
+        $tab = $_POST['tab'];
+        $this->avisocobranza_model->notificar_saldo($idAviso, $data);
+        redirect('avisocobranza/' . $tab);
+    }
     public function deshabilitarbd()
 	{
 		$id = $_POST['id'];

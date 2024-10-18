@@ -11,6 +11,69 @@
 </div>
   <!-- END APP HEADER -->
 
+<!-- modal para notificar saldo de avisos rechazados -->
+<div class="modal modal-pos-booking fade" id="modalPosBooking">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content border-0">
+            <form id="form-notificar-saldo" action="<?php echo base_url(); ?>index.php/avisocobranza/notificarsaldo" method="post">
+                <div class="modal-body">
+                    <div class="d-flex align-items-center mb-3">
+                        <h4 class="modal-title d-flex align-items-center" style="font-size: 1.5rem; font-weight: bold;">
+                            <img src="<?php echo base_url(); ?>coloradmin/assets/img/logo/logomenu.png" height="40" class="me-2" />
+                            Notificar Saldo
+                        </h4>
+                        <a href="#" data-bs-dismiss="modal" class="ms-auto btn-close"></a>
+                    </div>
+                    <div class="row p-4 rounded" style="background-color: #f8f9fa;">
+                        <div class="col-lg-12">
+                            <table class="table table-borderless mb-0" style="font-size: 1.1rem;">
+                                <tbody>
+                                    <tr>
+                                        <td><strong style="font-weight: 600; color: #343a40;">Código del Socio:</strong> 
+                                            <span class="text-secondary" style="color: #343a40;" id="modal-codigo-socio"></span>
+                                        </td>
+                                        <td><strong style="font-weight: 600; color: #343a40;">Nombre del Socio:</strong> 
+                                            <span class="text-secondary" style="color: #343a40;" id="modal-nombre-socio"></span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong style="font-weight: 600; color: #343a40;">Total:</strong>
+                                            <span class="text-secondary" style="color: #343a40;" id="modal-total"></span>
+                                        </td>
+                                        <td><strong style="font-weight: 600; color: #343a40;">Estado:</strong> 
+                                            <span class="badge bg-danger text-uppercase" id="modal-estado"></span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong style="font-weight: 600; color: #343a40;">Notificar Saldo:</strong> 
+                                            <input type="text" name="saldoPendiente" id="modal-notificar-saldo" class="form-control" value=""> <!-- Campo editable vacío por defecto -->
+                                        </td>
+                                        <td><strong style="font-weight: 600; color: #343a40;">Fecha de Pago:</strong> 
+                                            <span class="text-secondary" style="color: #343a40;" id="modal-fecha-pago"></span>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer" style="padding: 15px;">
+                    <a href="#" class="btn btn-secondary w-100px" data-bs-dismiss="modal" style="font-size: 0.9rem; padding: 5px 10px;">Cancelar</a>
+                    <button type="submit" class="btn btn-success w-100px" style="font-size: 0.9rem; padding: 5px 10px;">Notificar</button>
+                    <!-- Campo oculto para enviar el idAviso -->
+                    <input type="hidden" name="idAviso" id="input-id-aviso">
+                    <input type="hidden" name="tab" value="rechazados">
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
 
 
 
@@ -180,6 +243,48 @@
     }
   </script>
 
+
+  <!-- modal para notificacion de saldos de avisos rechazados-->
+  <script>
+function cargarDatos(codigoSocio, nombreSocio, idAviso, total, estado, fechaPago, saldo) {
+    document.getElementById('modal-codigo-socio').textContent = codigoSocio;
+    document.getElementById('modal-nombre-socio').textContent = nombreSocio;
+    document.getElementById('modal-total').textContent = total;
+    document.getElementById('modal-estado').textContent = estado;
+    document.getElementById('modal-fecha-pago').textContent = fechaPago;
+
+    
+    // Revisar el estado y el saldo pendiente
+    var estadoElement = document.getElementById('modal-estado');
+    estadoElement.textContent = estado.toUpperCase();  // Mostrar el estado original
+
+    // Limpiar las clases de estado para evitar conflictos
+    estadoElement.classList.remove('bg-success', 'bg-danger', 'bg-warning');
+
+    if (estado == 'rechazado') {
+        // Si hay saldo pendiente, mostrar el estado como "Notificado"
+        if (saldo !== null && saldo != 0) {
+            estadoElement.textContent += " - NOTIFICADO";
+            estadoElement.classList.add('bg-warning');  // Fondo amarillo
+            estadoElement.style.color = 'black';  // Letra negra
+        } else {
+            estadoElement.classList.add('bg-danger');  // Estado rechazado por defecto
+        }
+    } else {
+        estadoElement.classList.add('bg-success');  // Otros estados como aprobado, etc.
+    }
+
+    // Solo saldo pendiente y idAviso se envían
+    document.getElementById('input-id-aviso').value = idAviso;
+
+    // Verificar si el valor de saldo es null o vacío y asignar el valor correspondiente
+    if (saldo == null || saldo == '') {
+        document.getElementById('modal-notificar-saldo').value = '';  // Campo vacío por defecto
+    } else {
+        document.getElementById('modal-notificar-saldo').value = saldo;  // Asignar el valor de saldo
+    }
+}
+  </script>
 
   </body>
 

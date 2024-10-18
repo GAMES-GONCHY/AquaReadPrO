@@ -1,7 +1,7 @@
 <div id="content" class="app-content">
-  <!-- <h1 class="page-header">Avisos de Cobranza</h1> -->
+    <!-- <h1 class="page-header">Avisos de Cobranza</h1> -->
 
-  <!-- Nav Pills para las pestañas de navegación -->
+    <!-- Nav Pills para las pestañas de navegación -->
     <ul class="nav nav-pills mb-3">
         <li class="nav-item">
             <a href="<?php echo base_url(); ?>index.php/avisocobranza/gestion" class="nav-link <?php echo (current_url() == base_url() . 'index.php/avisocobranza/gestion') ? 'active' : ''; ?>">Enviados</a>
@@ -46,6 +46,7 @@
                                         <th>Total [Bs.]</th>
                                         <th>Fecha Vencimiento</th>
                                         <th>Aprobar:</th>
+                                        <th>Notificar Saldo</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -54,6 +55,7 @@
                                     foreach ($rechazados as $rechazado) {
                                         $consumo = $rechazado['lecturaActual'] - $rechazado['lecturaAnterior'];
                                         $total = $rechazado['tarifaVigente'] * $consumo;
+                                        $fechaPago = !empty($rechazado['fechaPago']) ? date('Y-m-d', strtotime($rechazado['fechaPago'])) : 'Sin Fecha';
                                     ?>
                                     <tr class="text-center">
                                         <td><?php echo $cont; ?></td>
@@ -76,6 +78,24 @@
                                             </select>
                                             <?php echo form_close(); ?>
                                         </td>
+                                        <td>
+                                        <button 
+                                            type="button" 
+                                            class="table-booking btn btn-yellow d-block w-100" 
+                                            data-bs-toggle="modal" 
+                                            data-bs-target="#modalPosBooking"
+                                            onclick="cargarDatos('<?php echo $rechazado['codigoSocio']; ?>',
+                                                '<?php echo $rechazado['nombreSocio']; ?>',
+                                                '<?php echo $rechazado['idAviso']; ?>',
+                                                '<?php echo number_format($total, 2); ?>',
+                                                '<?php echo $rechazado['estado']; ?>',
+                                                '<?php echo $fechaPago; ?>',
+                                                '<?php echo $rechazado['saldo']; ?>')">
+                                            Notificar Saldo
+                                        </button>
+
+
+                                        </td>
                                     </tr>
                                     <?php $cont++; } ?>
                                 </tbody>
@@ -92,6 +112,7 @@
                                         <th>Total [Bs.]</th>
                                         <th>Fecha Vencimiento</th>
                                         <th>Mover a:</th>
+                                        <th>Notificar Saldo</th>
                                     </tr>
                                 </tfoot>
                             </table>

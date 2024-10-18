@@ -6,7 +6,7 @@ class Avisocobranza_model extends CI_Model
     // Obtener los avisos por estado
     public function avisos_por_estado($estado)
     {
-        $this->db->select('A.fechaVencimiento, A.idAviso, A.estado, T.tarifaMinima, T.tarifaVigente, Q.img,
+        $this->db->select('A.fechaVencimiento, A.idAviso, A.estado, A.fechaPago, A.saldo, T.tarifaMinima, T.tarifaVigente, Q.img,
                 L.lecturaAnterior, L.lecturaActual, L.fechaLectura, 
                 IFNULL((SELECT L2.fechaLectura 
                         FROM lectura L2 
@@ -60,10 +60,10 @@ class Avisocobranza_model extends CI_Model
 		$this->db->where('idAviso', $id);
 		return $this->db->update('avisocobranza', $data);
 	}
-    // Obtener los avisos por estado
+    // Obtener los avisos por estado para cada socio.
     public function avisos_por_estado_id($estado, $idUsuario)
     {
-        $this->db->select('A.fechaVencimiento, A.idAviso, A.estado, T.tarifaMinima, T.tarifaVigente, Q.img,
+        $this->db->select('A.fechaVencimiento, A.idAviso, A.estado, A.fechaPago, A.saldo, T.tarifaMinima, T.tarifaVigente, Q.img,
                 L.lecturaAnterior, L.lecturaActual, L.fechaLectura, 
                 IFNULL((SELECT L2.fechaLectura 
                         FROM lectura L2 
@@ -88,6 +88,13 @@ class Avisocobranza_model extends CI_Model
         //$this->db->where('rol', $rol);
         $query = $this->db->get();
         return $query->result_array();
+    }
+    public function notificar_saldo($idAviso, $data)
+    {
+        $data['fechaRevision'] = date('Y-m-d H:i:s');
+        $data['idAutor'] = $this->session->userdata('idUsuario');
+        $this->db->where('idAviso', $idAviso);
+        return $this->db->update('avisocobranza', $data);  // Retorna verdadero si la actualización fue exitosa
     }
 }
 
