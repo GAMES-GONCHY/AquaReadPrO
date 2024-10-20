@@ -14,7 +14,7 @@ class Crudusers_model extends CI_Model
 		}
 		else
 		{
-			$this->db->select('usuario.*, membresia.idMembresia');
+			$this->db->select('usuario.*, membresia.idMembresia, membresia.codigoSocio');
 			$this->db->from('usuario');
 			$this->db->join('membresia', 'membresia.idUsuario = usuario.idUsuario', 'inner');
 			$this->db->where('usuario.estado', 1);

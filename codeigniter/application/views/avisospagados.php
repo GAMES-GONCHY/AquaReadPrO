@@ -1,6 +1,7 @@
 <div id="content" class="app-content">
   <!-- <h1 class="page-header">Avisos de Cobranza</h1> -->
 
+  
   <!-- Nav Pills para las pestañas de navegación -->
   <ul class="nav nav-pills mb-3">
       <li class="nav-item">
@@ -39,12 +40,12 @@
                                         <th>Codigo Socio</th>
                                         <th>Socio</th>
                                         <th>Consumo (m³)</th>
+                                        <th>Periodo</th>
                                         <th>Lectura Anterior</th>
                                         <th>Fecha Lectura Anterior</th>
-                                        <th>Fecha Lectura Actual</th>
                                         <th>Tarifa Aplicada [Bs/m3]</th>
                                         <th>Total [Bs.]</th>
-                                        <th>Fecha Vencimiento</th>
+                                        <th>Fecha Pago</th>
                                         <th>Mover a:</th>
                                     </tr>
                                 </thead>
@@ -60,12 +61,13 @@
                                         <td><?php echo $pagado['codigoSocio']; ?></td>
                                         <td><?php echo $pagado['nombreSocio']; ?></td>
                                         <td><?php echo $consumo ?> m³</td>
+                                        <td><?php echo date('Y-m-d', strtotime($pagado['fechaLectura'])); ?></td>
                                         <td><?php echo $pagado['lecturaAnterior']; ?></td>
                                         <td><?php echo date('Y-m-d', strtotime($pagado['fechaLecturaAnterior'])); ?></td>
-                                        <td><?php echo date('Y-m-d', strtotime($pagado['fechaLectura'])); ?></td>
+                                      
                                         <td><?php echo $pagado['tarifaVigente']; ?></td>
                                         <td><?php echo number_format($total, 2); ?></td>
-                                        <td><?php echo $pagado['fechaVencimiento']; ?></td>
+                                        <td><?php echo date('Y-m-d', strtotime($pagado['fechaPago'])); ?></td>
                                         <td>
                                           <?php echo form_open_multipart("avisocobranza/revisarbd", ['class' => 'auto-submit-form']); ?>
                                             <input type="hidden" name="tab" value="pagados">
@@ -85,12 +87,13 @@
                                         <th>Codigo Socio</th>
                                         <th>Socio</th>
                                         <th>Consumo (m³)</th>
+                                        <th>Periodo</th>
                                         <th>Lectura Anterior</th>
                                         <th>Fecha Lectura Anterior</th>
-                                        <th>Fecha Lectura Actual</th>
+                                  
                                         <th>Tarifa Aplicada [Bs/m3]</th>
                                         <th>Total [Bs.]</th>
-                                        <th>Fecha Vencimiento</th>
+                                        <th>Fecha Pago</th>
                                         <th>Mover a:</th>
                                     </tr>
                                 </tfoot>

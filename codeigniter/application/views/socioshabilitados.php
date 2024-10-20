@@ -83,7 +83,7 @@
                       echo form_close();
                       ?>
                     </td> -->
-                    <td><?php echo $row->idMembresia ?></td>
+                    <td><?php echo $row->codigoSocio ?></td>
                     <td><?php echo $row->nickName ?></td>
                     <td><?php echo $row->nombre ?></td>
                     <td><?php echo $row->primerApellido ?></td>
