@@ -96,8 +96,7 @@ var handleDataTableCombinationSetting = function() {
                         "targets": 0, // Aplica solo a la primera columna (numeración)
                         "orderable": false // Evitar que la columna sea ordenable
                     }
-                ],
-                "order": [[ 1, 'asc' ]] // Orden por la segunda columna (por ejemplo, Código de socio)
+                ]
             };
 
             if ($(window).width() <= 1500) {

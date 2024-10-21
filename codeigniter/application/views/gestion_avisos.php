@@ -24,6 +24,9 @@
       <li class="nav-item">
         <a href="<?php echo base_url(); ?>index.php/avisocobranza/vencidos" class="nav-link <?php echo (current_url() == base_url() . 'index.php/avisocobranza/vencidos') ? 'active' : ''; ?>">Vencidos</a>
       </li>
+      <li class="nav-item">
+        <a href="<?php echo base_url(); ?>index.php/avisocobranza/deshabilitados" class="nav-link <?php echo (current_url() == base_url() . 'index.php/avisocobranza/deshabilitados') ? 'active' : ''; ?>">Eliminados</a>
+      </li>
   </ul>
 
   <!-- <div class="tab-content"> -->
@@ -44,12 +47,14 @@
                                         <th>Codigo Socio</th>
                                         <th>Socio</th>
                                         <th>Consumo (m³)</th>
+                                        <th>Periodo</th>
+                                        <th>Lectura Actual</th>
                                         <th>Lectura Anterior</th>
                                         <th>Fecha Lectura Anterior</th>
-                                        <th>Fecha Lectura Actual</th>
                                         <th>Tarifa Aplicada [Bs/m3]</th>
                                         <th>Total [Bs.]</th>
                                         <th>Fecha Vencimiento</th>
+                                        <th>Eliminar</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -64,19 +69,23 @@
                                         <td><?php echo $enviado['codigoSocio']; ?></td>
                                         <td><?php echo $enviado['nombreSocio']; ?></td>
                                         <td><?php echo $consumo ?> m³</td>
+                                        <td><?php echo date('Y-m-d', strtotime($enviado['fechaLectura'])); ?></td>
+                                        <td><?php echo $enviado['lecturaActual']; ?></td>
                                         <td><?php echo $enviado['lecturaAnterior']; ?></td>
                                         <td><?php echo date('Y-m-d', strtotime($enviado['fechaLecturaAnterior'])); ?></td>
-                                        <td><?php echo date('Y-m-d', strtotime($enviado['fechaLectura'])); ?></td>
                                         <td><?php echo $enviado['tarifaVigente']; ?></td>
                                         <td><?php echo number_format($total, 2); ?></td>
                                         <td><?php echo $enviado['fechaVencimiento']; ?></td>
-                                        <!-- <td>
-                                          <?php echo form_open_multipart("avisocobranza/aprobarbd", ['class' => 'auto-submit-form']); ?>
+                                        <td>
+                                          <?php echo form_open_multipart("avisocobranza/revisarbd"); ?>
                                             <input type="hidden" name="tab" value="gestion">
+                                            <input type="hidden" name="estado" value="deshabilitado">
                                             <input type="hidden" name="id" value="<?php echo $enviado['idAviso']; ?>">
-                                            <input type="checkbox" class="toggle-checkbox" name="estado" value="pagado" onchange="this.form.submit()"/>
+                                            <button type="submit" class="btn btn-danger btn-sm" title="Eliminar">
+                                              <i class="fas fa-trash-alt"></i>
+                                            </button>
                                           <?php echo form_close(); ?>
-                                        </td> -->
+                                        </td>
                                     </tr>
                                     <?php $cont++; } ?>
                                 </tbody>
@@ -86,12 +95,14 @@
                                         <th>Codigo Socio</th>
                                         <th>Socio</th>
                                         <th>Consumo (m³)</th>
+                                        <th>Periodo</th>
+                                        <th>Lectura Actual</th>
                                         <th>Lectura Anterior</th>
                                         <th>Fecha Lectura Anterior</th>
-                                        <th>Fecha Lectura Actual</th>
                                         <th>Tarifa Aplicada [Bs/m3]</th>
                                         <th>Total [Bs.]</th>
                                         <th>Fecha Vencimiento</th>
+                                        <th>Eliminar</th>
                                     </tr>
                                 </tfoot>
                             </table>

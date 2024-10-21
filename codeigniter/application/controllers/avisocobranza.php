@@ -61,15 +61,18 @@ class Avisocobranza extends CI_Controller
         $this->load->view('avisosrechazados', $data); // Carga la vista con las pestañas y datos
         $this->load->view('incrustaciones/vistascoloradmin/footeravisos');
     }
-    // public function aprobarbd()
-	// {
-	// 	$id = $_POST['id'];
-	// 	$data['estado'] = $_POST['estado'];
-    //     $tab = $_POST['tab'];
-	// 	$this->avisocobranza_model->modificar($id, $data);
-    //     redirect('avisocobranza/' . $tab);
+    public function deshabilitados()
+	{
+		// Obtener los avisos por estado
+        $data['deshabilitados'] = $this->avisocobranza_model->avisos_por_estado('deshabilitado');
+
+        // Cargar las vistas con las pestañas
+        $this->load->view('incrustaciones/vistascoloradmin/head');
+        $this->load->view('incrustaciones/vistascoloradmin/menuadmin');
+        $this->load->view('avisosdeshabilitados', $data); // Carga la vista con las pestañas y datos
+        $this->load->view('incrustaciones/vistascoloradmin/footeravisos');
 		
-	// }
+	}
     public function revisarbd()
 	{
 		$id = $_POST['id'];
@@ -86,14 +89,14 @@ class Avisocobranza extends CI_Controller
         $this->avisocobranza_model->notificar_saldo($idAviso, $data);
         redirect('avisocobranza/' . $tab);
     }
-    public function deshabilitarbd()
-	{
-		$id = $_POST['id'];
-		$data['estado'] = 0;
-		$rol=$_POST['rol'];
-		$this->crudusers_model->deshabilitar($id, $data);
-		redirect('crudusers/habilitados/'.$rol);
-	}
+    // public function deshabilitarbd()
+	// {
+	// 	$id = $_POST['id'];
+	// 	$data['estado'] = 'deshabilitado';
+	// 	$tab=$_POST['tab'];
+	// 	$this->crudusers_model->deshabilitar($id, $data);
+	// 	redirect('avisocobranza/' . $tab);
+	// }
 	public function habilitarbd()
 	{
 		$id = $_POST['id'];

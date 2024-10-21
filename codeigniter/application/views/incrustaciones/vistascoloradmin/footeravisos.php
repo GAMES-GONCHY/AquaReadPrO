@@ -46,7 +46,7 @@
                                     </tr>
                                     <tr>
                                         <td><strong style="font-weight: 600; color: #343a40;">Notificar Saldo:</strong> 
-                                            <input type="text" name="saldoPendiente" id="modal-notificar-saldo" class="form-control" value=""> <!-- Campo editable vacío por defecto -->
+                                            <input type="text" name="saldoPendiente" id="modal-notificar-saldo" class="form-control" value="" required> <!-- Campo editable vacío por defecto -->
                                         </td>
                                         <td><strong style="font-weight: 600; color: #343a40;">Fecha de Pago:</strong> 
                                             <span class="text-secondary" style="color: #343a40;" id="modal-fecha-pago"></span>
@@ -247,44 +247,42 @@
 
   <!-- modal para notificacion de saldos de avisos rechazados-->
   <script>
-function cargarDatos(codigoSocio, nombreSocio, idAviso, total, estado, fechaPago, saldo) {
-    document.getElementById('modal-codigo-socio').textContent = codigoSocio;
-    document.getElementById('modal-nombre-socio').textContent = nombreSocio;
-    document.getElementById('modal-total').textContent = total;
-    document.getElementById('modal-estado').textContent = estado;
-    document.getElementById('modal-fecha-pago').textContent = fechaPago;
+    function cargarDatos(codigoSocio, nombreSocio, idAviso, total, estado, fechaPago, saldo) {
+        document.getElementById('modal-codigo-socio').textContent = codigoSocio;
+        document.getElementById('modal-nombre-socio').textContent = nombreSocio;
+        document.getElementById('modal-total').textContent = total;
+        document.getElementById('modal-estado').textContent = estado;
+        document.getElementById('modal-fecha-pago').textContent = fechaPago;
 
-    
-    // Revisar el estado y el saldo pendiente
-    var estadoElement = document.getElementById('modal-estado');
-    estadoElement.textContent = estado.toUpperCase();  // Mostrar el estado original
+        
+        // Revisar el estado y el saldo pendiente
+        var estadoElement = document.getElementById('modal-estado');
+        estadoElement.textContent = estado.toUpperCase();  // Mostrar el estado original
 
-    // Limpiar las clases de estado para evitar conflictos
-    estadoElement.classList.remove('bg-success', 'bg-danger', 'bg-warning');
+        // Limpiar las clases de estado para evitar conflictos
+        estadoElement.classList.remove('bg-success', 'bg-danger', 'bg-warning');
 
-    if (estado == 'rechazado') {
-        // Si hay saldo pendiente, mostrar el estado como "Notificado"
-        if (saldo !== null && saldo != 0) {
-            estadoElement.textContent += " - NOTIFICADO";
-            estadoElement.classList.add('bg-warning');  // Fondo amarillo
-            estadoElement.style.color = 'black';  // Letra negra
+        if (estado == 'rechazado') {
+            // Si hay saldo pendiente, mostrar el estado como "Notificado"
+            if (saldo !== null && saldo != 0) {
+                estadoElement.textContent += " - NOTIFICADO";
+                estadoElement.classList.add('bg-warning');  // Fondo amarillo
+                estadoElement.style.color = 'black';  // Letra negra
+            } else {
+                estadoElement.classList.add('bg-danger');  // Estado rechazado por defecto
+            }
         } else {
-            estadoElement.classList.add('bg-danger');  // Estado rechazado por defecto
+            estadoElement.classList.add('bg-success');  // Otros estados como aprobado, etc.
         }
-    } else {
-        estadoElement.classList.add('bg-success');  // Otros estados como aprobado, etc.
-    }
 
-    // Solo saldo pendiente y idAviso se envían
-    document.getElementById('input-id-aviso').value = idAviso;
+        // Solo saldo pendiente y idAviso se envían
+        document.getElementById('input-id-aviso').value = idAviso;
 
-    // Verificar si el valor de saldo es null o vacío y asignar el valor correspondiente
-    if (saldo == null || saldo == '') {
-        document.getElementById('modal-notificar-saldo').value = '';  // Campo vacío por defecto
-    } else {
-        document.getElementById('modal-notificar-saldo').value = saldo;  // Asignar el valor de saldo
+        // Verificar si el valor de saldo es null o vacío y asignar el valor correspondiente
+        if (saldo == null || saldo == 0) {
+            document.getElementById('modal-notificar-saldo').value = '';  // Campo vacío por defecto
+        }
     }
-}
   </script>
 
   </body>

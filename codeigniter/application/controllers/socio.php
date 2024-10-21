@@ -15,7 +15,11 @@ class Socio extends CI_Controller
     public function get_avisos() 
     {
         // Obtener el estado desde la solicitud AJAX
-        $estado = $this->input->post('estado');
+        $estado = (array) $this->input->post('estado');
+        if($estado[0]=='enviado')
+        {
+            $estado[] = 'rechazado';
+        }
         $idUsuario = $this->session->userdata('idUsuario');
         // Llamar al modelo para obtener los avisos filtrados por estado
         $avisos = $this->avisocobranza_model->avisos_por_estado_id($estado,$idUsuario);
@@ -74,7 +78,6 @@ class Socio extends CI_Controller
 
             // Obtener la fecha y hora actual del servidor
             
-
             // Preparar los datos para la actualización de la base de datos
             $datosActualizacion = array(
                 'comprobante' => $nombreArchivo  // Guardar el nombre del archivo subido

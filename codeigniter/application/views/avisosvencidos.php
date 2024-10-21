@@ -18,6 +18,9 @@
         <li class="nav-item">
             <a href="<?php echo base_url(); ?>index.php/avisocobranza/vencidos" class="nav-link <?php echo (current_url() == base_url() . 'index.php/avisocobranza/vencidos') ? 'active' : ''; ?>">Vencidos</a>
         </li>
+        <li class="nav-item">
+            <a href="<?php echo base_url(); ?>index.php/avisocobranza/deshabilitados" class="nav-link <?php echo (current_url() == base_url() . 'index.php/avisocobranza/deshabilitado') ? 'active' : ''; ?>">Eliminados</a>
+        </li>
     </ul>
 
     <!-- <div class="tab-content"> -->
@@ -38,6 +41,7 @@
                                         <th>Codigo Socio</th>
                                         <th>Socio</th>
                                         <th>Consumo (m³)</th>
+                                        <th>Preriodo</th>
                                         <th>Lectura Anterior</th>
                                         <th>Fecha Lectura Anterior</th>
                                         <th>Tarifa Aplicada [Bs/m3]</th>
@@ -51,12 +55,14 @@
                                     foreach ($vencidos as $vencido) {
                                         $consumo = $vencido['lecturaActual'] - $vencido['lecturaAnterior'];
                                         $total = $vencido['tarifaVigente'] * $consumo;
+                                        $fechaLectura = date('Y-m-d', strtotime($vencido['fechaLectura']));
                                     ?>
                                     <tr class="text-center">
                                         <td><?php echo $cont; ?></td>
                                         <td><?php echo $vencido['codigoSocio']; ?></td>
                                         <td><?php echo $vencido['nombreSocio']; ?></td>
                                         <td><?php echo $consumo ?> m³</td>
+                                        <td><?php echo $fechaLectura ?></td>
                                         <td><?php echo $vencido['lecturaAnterior']; ?></td>
                                         <td><?php echo date('Y-m-d', strtotime($vencido['fechaLecturaAnterior'])); ?></td>
                                         <td><?php echo $vencido['tarifaVigente']; ?></td>
@@ -78,6 +84,7 @@
                                         <th>Codigo Socio</th>
                                         <th>Socio</th>
                                         <th>Consumo (m³)</th>
+                                        <th>Preriodo</th>
                                         <th>Lectura Anterior</th>
                                         <th>Fecha Lectura Anterior</th>
                                         <th>Tarifa Aplicada [Bs/m3]</th>

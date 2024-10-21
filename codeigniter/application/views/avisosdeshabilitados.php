@@ -32,7 +32,7 @@
                 <div class="col-xl-12">
                     <div class="panel panel-inverse">
                         <div class="panel-heading d-flex justify-content-between align-items-center">
-                            <h4 class="panel-title">Avisos Rechazados</h4>
+                            <h4 class="panel-title">Avisos Eliminados</h4>
                         </div>
                         <div class="panel-body">
                             <table id="pendientes" class="table table-hover table-bordered align-middle">
@@ -43,64 +43,45 @@
                                         <th>Socio</th>
                                         <th>Consumo (m³)</th>
                                         <th>Periodo</th>
+                                        <th>Lectura Anterior</th>
+                                        <th>Fecha Lectura Anterior</th>
                                         <th>Tarifa Aplicada [Bs/m3]</th>
                                         <th>Total [Bs.]</th>
-                                        <th>Saldo [Bs.]</th>
-                                        <th>Fecha Pago QR</th>
-                                        <th>Fecha Vencimiento</th>
-                                        <th>Mover a:</th>
-                                        <th>Notificar Saldo</th>
+                                        <th>Fecha Eliminación</th>
+                                        <th>Restaurar:</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <?php
                                     $cont = 1;
-                                    foreach ($rechazados as $rechazado) {
-                                        $consumo = $rechazado['lecturaActual'] - $rechazado['lecturaAnterior'];
-                                        $total = $rechazado['tarifaVigente'] * $consumo;
-                                        $fechaPago = !empty($rechazado['fechaPago']) ? date('Y-m-d', strtotime($rechazado['fechaPago'])) : 'Sin Fecha';
-                                        $saldo = !empty($rechazado['saldo']) ? $rechazado['saldo'] : 'Sin Saldo';
+                                    foreach ($deshabilitados as $deshabilitado) {
+                                        $consumo = $deshabilitado['lecturaActual'] - $deshabilitado['lecturaAnterior'];
+                                        $total = $deshabilitado['tarifaVigente'] * $consumo;
+                                        $fechaActualizacion = !empty($deshabilitado['fechaActualizacion']) ? date('Y-m-d', strtotime($deshabilitado['fechaActualizacion'])) : 'Sin Fecha';
+                                        $fechaLectura = date('Y-m-d', strtotime($deshabilitado['fechaLectura']));
                                     ?>
                                     <tr class="text-center">
                                         <td><?php echo $cont; ?></td>
-                                        <td><?php echo $rechazado['codigoSocio']; ?></td>
-                                        <td><?php echo $rechazado['nombreSocio']; ?></td>
-                                        <td><?php echo $consumo ?> m³</td>
-                                        <td><?php echo date('Y-m-d', strtotime($rechazado['fechaLectura'])); ?></td>
-                                        <td><?php echo $rechazado['tarifaVigente']; ?></td>
-                                        <td><?php echo number_format($total, 2); ?></td>
-
-                                        <td><?php echo $saldo; ?></td>
-                                        <td><?php echo $fechaPago; ?></td>
+                                        <td><?php echo $deshabilitado['codigoSocio']; ?></td>
+                                        <td><?php echo $deshabilitado['nombreSocio']; ?></td>
+                                        <td><?php echo $consumo ;?> m³</td>
+                                        <td><?php echo $fechaLectura ;?></td>
+                                        <td><?php echo $deshabilitado['lecturaAnterior']; ?></td>
+                                        <td><?php echo date('Y-m-d', strtotime($deshabilitado['fechaLecturaAnterior'])); ?></td>
                                         
-                                        <td><?php echo $rechazado['fechaVencimiento']; ?></td>
+                                        <td><?php echo $deshabilitado['tarifaVigente']; ?></td>
+                                        <td><?php echo number_format($total, 2); ?></td>
+                                        <td><?php echo $fechaActualizacion
+                                        ; ?></td>
                                         <td>
-                                            <?php echo form_open_multipart("avisocobranza/revisarbd", ['class' => 'auto-submit-form']); ?>
-                                            <input type="hidden" name="tab" value="rechazados">
-                                            <input type="hidden" name="id" value="<?php echo $rechazado['idAviso']; ?>">
-                                            <select name="estado" onchange="this.form.submit()">
-                                                <option value="" selected disabled>Seleccionar</option>
-                                                <option value="revision">Revision</option>
-                                            </select>
+                                            <?php echo form_open_multipart("avisocobranza/revisarbd"); ?>
+                                            <input type="hidden" name="tab" value="deshabilitados">
+                                            <input type="hidden" name="estado" value="enviado">
+                                            <input type="hidden" name="id" value="<?php echo $deshabilitado['idAviso']; ?>">
+                                            <button type="submit" class="btn btn-success btn-sm" title="Restaurar">
+                                                <i class="fas fa-recycle"></i> <!-- Ícono de reciclaje para restauración -->
+                                            </button>
                                             <?php echo form_close(); ?>
-                                        </td>
-                                        <td>
-                                        <button 
-                                            type="button" 
-                                            class="table-booking btn btn-yellow btn-sm d-block w-100" 
-                                            data-bs-toggle="modal" 
-                                            data-bs-target="#modalPosBooking"
-                                            onclick="cargarDatos('<?php echo $rechazado['codigoSocio']; ?>',
-                                                '<?php echo $rechazado['nombreSocio']; ?>',
-                                                '<?php echo $rechazado['idAviso']; ?>',
-                                                '<?php echo number_format($total, 2); ?>',
-                                                '<?php echo $rechazado['estado']; ?>',
-                                                '<?php echo $fechaPago; ?>',
-                                                '<?php echo $rechazado['saldo']; ?>')">
-                                            Notificar
-                                        </button>
-
-
                                         </td>
                                     </tr>
                                     <?php $cont++; } ?>
@@ -112,13 +93,12 @@
                                         <th>Socio</th>
                                         <th>Consumo (m³)</th>
                                         <th>Periodo</th>
+                                        <th>Lectura Anterior</th>
+                                        <th>Fecha Lectura Anterior</th>
                                         <th>Tarifa Aplicada [Bs/m3]</th>
                                         <th>Total [Bs.]</th>
-                                        <th>Saldo</th>
-                                        <th>Fecha Pago QR</th>
-                                        <th>Fecha Vencimiento</th>
-                                        <th>Mover a:</th>
-                                        <th>Notificar Saldo</th>
+                                        <th>Fecha Eliminación</th>
+                                        <th>Restaurar:</th>
                                     </tr>
                                 </tfoot>
                             </table>

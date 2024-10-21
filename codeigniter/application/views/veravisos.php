@@ -16,15 +16,15 @@
 
                 <div class="d-flex">
 					<div class="dropdown me-2" id="dropdown-avisos">
-						<a href="#" id="filterButton" class="btn btn-default dropdown-toggle" data-bs-toggle="dropdown">
-							Filtrar por <b class="caret"></b>
+						<a href="#" id="filterButton" class="btn btn-default dropdown-toggle" data-bs-toggle="dropdown" data-status="enviado">
+							Filtrar por<b class="caret"></b>
 						</a>
 						<div class="dropdown-menu dropdown-menu-start" role="menu">
 							<a href="javascript:;" class="dropdown-item" data-status="enviado">Pendientes</a>
 							<a href="javascript:;" class="dropdown-item" data-status="revision">En revisión</a>
 							<a href="javascript:;" class="dropdown-item" data-status="pagado">Pagados</a>
-							<a href="javascript:;" class="dropdown-item" data-status="rechazado">Rechazados</a>
 							<a href="javascript:;" class="dropdown-item" data-status="vencido">Vencidos</a>
+							<a href="javascript:;" class="dropdown-item" data-status="rechazado">Rechazados</a>
 						</div>
 					</div>
                 </div>
@@ -57,6 +57,8 @@
 									$fechaLectura = new DateTime($aviso['fechaLectura']);
 									$mes = $meses[$fechaLectura->format('F')];  // Obtener el nombre del mes
 									$anio = $fechaLectura->format('Y');  // Obtener el año
+									$fechaLectura = $fechaLectura->format('Y/m/d');
+									$fechaLecturaAnterior = date('Y-m-d', strtotime($aviso['fechaLecturaAnterior']));
 								} else {
 									$fechaLectura = null;
 									$mes = "Mes no disponible"; // Mensaje alternativo si no hay fecha de lectura
@@ -77,7 +79,7 @@
 																	'<?php echo $aviso['codigoSocio']; ?>',
 																	'<?php echo $aviso['fechaLectura']; ?>',
 																	<?php echo $aviso['idAviso']; ?>,
-																	'<?php echo !empty($aviso['saldo']) ? $aviso['saldo'] : ""; ?>',
+																	'<?php echo !empty($aviso['saldo']) ? $aviso['saldo'] : ''; ?>',
 																	'<?php echo $aviso['estado']; ?>')">
 										</a>
 
@@ -113,8 +115,8 @@
 											'<?php echo $consumo; ?>',
 											'<?php echo $aviso['lecturaActual']; ?>',
 											'<?php echo $aviso['lecturaAnterior']; ?>',
-											'<?php echo $aviso['fechaLectura']; ?>',
-											'<?php echo $aviso['fechaLecturaAnterior']; ?>',
+											'<?php echo $fechaLectura; ?>',
+											'<?php echo $fechaLecturaAnterior; ?>',
 
 											'<?php echo $aviso['tarifaVigente']; ?>',
 											'<?php echo $aviso['tarifaMinima']; ?>',
@@ -122,7 +124,8 @@
 											'<?php echo number_format($total, 2); ?>',
 											'<?php echo $aviso['fechaVencimiento']; ?>',
 											'<?php echo ($aviso['estado'] == 'enviado') ? 'Pendiente' : $aviso['estado']; ?>',
-											'<?php echo $aviso['fechaPago']; ?>')">
+											'<?php echo $aviso['fechaPago']; ?>',
+											<?php echo $aviso['saldo']; ?>)">
 										Aviso de Cobranza
 									</button>
 

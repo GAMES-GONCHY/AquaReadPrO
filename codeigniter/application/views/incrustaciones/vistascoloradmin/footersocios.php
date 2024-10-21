@@ -40,8 +40,8 @@
                                         <td><strong style="font-weight: 600;">Lectura Anterior:</strong> <span class="text-secondary" id="modal-lectura-anterior"></span></td>
                                     </tr>
                                     <tr>
-                                        <td><strong style="font-weight: 600;">Fecha de Lectura:</strong> <span class="text-secondary" id="modal-fecha-lectura"></span></td>
-                                        <td><strong style="font-weight: 600;">Fecha de Lectura Anterior:</strong> <span class="text-secondary" id="modal-fecha-lectura-anterior"></span></td>
+                                        <td><strong style="font-weight: 600;">Fecha Lectura Actual:</strong> <span class="text-secondary" id="modal-fecha-lectura"></span></td>
+                                        <td><strong style="font-weight: 600;">Fecha Lectura Anterior:</strong> <span class="text-secondary" id="modal-fecha-lectura-anterior"></span></td>
                                     </tr>
                                     <tr>
                                         <td><strong style="font-weight: 600;">Tarifa Vigente:</strong> <span class="text-secondary" id="modal-tarifa-vigente"></span></td>
@@ -53,6 +53,9 @@
                                     </tr>
                                     <tr>
                                         <td><strong style="font-weight: 600;">Estado:</strong> <span class="badge bg-success text-uppercase" id="modal-estado"></span></td>
+                                        
+                                        <td><strong id="modal-label-saldo" style="font-weight: 700; color: #343a40;">Saldo: </strong><span class="fw-bold text-dark" id="modal-saldo"> 0</span></td>
+                                        
                                     </tr>
                                 </tbody>
                             </table>
@@ -60,8 +63,7 @@
                     </div>
                 </div>
                 <div class="modal-footer" style="padding: 15px;">
-                    <a href="#" class="btn btn-secondary w-100px" data-bs-dismiss="modal" style="font-size: 0.9rem; padding: 5px 10px;">Cancelar</a>
-                    <button type="submit" class="btn btn-success w-100px" style="font-size: 0.9rem; padding: 5px 10px;">Guardar</button>
+                    <a href="#" class="btn btn-success w-100px" data-bs-dismiss="modal" style="font-size: 0.9rem; padding: 5px 10px;">Ok!</a>
                 </div>
             </div>
         </div>
@@ -73,7 +75,7 @@
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="qrModalLabel">Código QR</h5>
+                    <h5 class="modal-title" id="qrModalLabel">Paga tus cuentas pendientes aquí</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body text-center">
@@ -84,7 +86,6 @@
                         <label id="label-saldo" for="saldo" class="form-label" style="font-size: 1.2rem; margin-right: 10px;">Saldo: </label>
                         <h4 id="saldo" class="form-control" style="border: none; font-size: 1.2rem; font-weight: bold; color: black; display: inline-block; width: auto;"></h4>
                     </div>
-
 
                     <!-- Formulario para subir comprobante de pago -->
                     <form action="<?php echo base_url('index.php/socio/subir'); ?>" method="post" enctype="multipart/form-data">
@@ -287,15 +288,63 @@
 
 
 <!-- script para funcionalidad drop down del selector de avisos de cobranza socios -->
+<!-- <script>
+    $(document).ready(function() {
+        // Detectar el click en los elementos del dropdown de la sección de avisos
+        $('#dropdown-avisos .dropdown-item').on('click', function() {
+            var estado = $(this).data('status'); // Obtener el valor del estado (enviado, revision, pagado, rechazado, vencido)
+            var selectedText = $(this).text();  // Obtener el texto de la opción seleccionada
+
+            // Actualizar el texto del botón "Filtrar por" con la opción seleccionada
+            //$('#filterButton').text(selectedText);
+            $('#filterButton').html(selectedText + ' <b class="caret"></b>');
+
+            // Realizar la solicitud AJAX para obtener los avisos filtrados por estado
+            $.ajax({
+                url: '<?php echo base_url(); ?>index.php/socio/get_avisos', // Ruta hacia el controlador que manejará la solicitud
+                type: 'POST', // Tipo de solicitud
+                data: { estado: estado }, // Enviar el estado como parámetro
+                success: function(response) {
+                    $('#avisos-container').html(response);  // Actualizar la vista parcial dentro del contenedor
+                },
+                error: function(xhr, status, error) {
+                    $('#avisos-container').html('<p>Ocurrió un error al cargar los avisos. Inténtalo nuevamente.</p>');
+                }
+            });
+        });
+    });
+
+</script> -->
+<!-- script para funcionalidad drop down del selector de avisos de cobranza socios -->
 <script>
 $(document).ready(function() {
+    // Lógica para seleccionar la primera opción por defecto
+    var firstOption = $('#dropdown-avisos .dropdown-item').first(); // Obtener la primera opción del dropdown
+    var estadoInicial = firstOption.data('status'); // Obtener el valor 'data-status' de la primera opción
+    var selectedTextInicial = firstOption.text(); // Obtener el texto de la primera opción
+
+    // Actualizar el botón "Filtrar por" con la primera opción por defecto
+    $('#filterButton').html(selectedTextInicial + ' <b class="caret"></b>');
+
+    // Realizar la solicitud AJAX para obtener los avisos filtrados por el estado inicial
+    $.ajax({
+        url: '<?php echo base_url(); ?>index.php/socio/get_avisos', // Ruta hacia el controlador que manejará la solicitud
+        type: 'POST', // Tipo de solicitud
+        data: { estado: estadoInicial }, // Enviar el estado inicial como parámetro
+        success: function(response) {
+            $('#avisos-container').html(response);  // Actualizar la vista parcial dentro del contenedor
+        },
+        error: function(xhr, status, error) {
+            $('#avisos-container').html('<p>Ocurrió un error al cargar los avisos. Inténtalo nuevamente.</p>');
+        }
+    });
+
     // Detectar el click en los elementos del dropdown de la sección de avisos
     $('#dropdown-avisos .dropdown-item').on('click', function() {
         var estado = $(this).data('status'); // Obtener el valor del estado (enviado, revision, pagado, rechazado, vencido)
         var selectedText = $(this).text();  // Obtener el texto de la opción seleccionada
 
         // Actualizar el texto del botón "Filtrar por" con la opción seleccionada
-        //$('#filterButton').text(selectedText);
         $('#filterButton').html(selectedText + ' <b class="caret"></b>');
 
         // Realizar la solicitud AJAX para obtener los avisos filtrados por estado
@@ -312,8 +361,8 @@ $(document).ready(function() {
         });
     });
 });
-
 </script>
+
 
 <!-- para buscador de avisos por mes -->
 <script>
@@ -350,7 +399,7 @@ $(document).ready(function() {
 <!-- pagos -->
 <script>
     function cargarDatos(codigoSocio, nombreSocio, mes, consumo, lecturaActual, lecturaAnterior, fechaLectura,
-                        fechaLecturaAnterior, tarifaVigente, tarifaMinima, total, fechaVencimiento, estado, fechaPago)
+                        fechaLecturaAnterior, tarifaVigente, tarifaMinima, total, fechaVencimiento, estado, fechaPago, saldo)
     {
         // Asignar los valores recibidos al modal
         document.getElementById('modal-codigo-socio').textContent = codigoSocio;
@@ -366,6 +415,8 @@ $(document).ready(function() {
         document.getElementById('modal-total').textContent = "Bs. " + total;
         document.getElementById('modal-fecha-vencimiento').textContent = fechaVencimiento;
         document.getElementById('modal-estado').textContent = estado;
+        
+
 
         // Cambiar el color del estado dependiendo de si es 'vencido' o 'pendiente'
         var estadoElement = document.getElementById('modal-estado');
@@ -378,7 +429,7 @@ $(document).ready(function() {
         }
 
         // Verificar si el estado es 'pagado' para mostrar solo la fechaPago y cambiar el título
-        if (estado === 'pagado') {
+        if (estado == 'pagado') {
             var fechaFormateada = new Date(fechaPago).toLocaleDateString();
             document.getElementById('modal-fecha-vencimiento').textContent = fechaFormateada;
             document.getElementById('modal-titulo-fecha').textContent = "Fecha de Pago:";
@@ -394,17 +445,31 @@ $(document).ready(function() {
         var baseUrl = '<?php echo base_url(); ?>';
         
             if (estado == 'enviado') {
-                modalTitle.innerHTML = '<img src="' + baseUrl + 'coloradmin/assets/img/logo/logomenu.png" height="40" class="me-2" /> Aviso Pendiente';
+                modalTitle.innerHTML = '<img src="' + baseUrl + 'coloradmin/assets/img/logo/logomenu.png" height="40" class="me-2" /> Avisos Pendiente';
             } else if (estado == 'pagado') {
                 modalTitle.innerHTML = '<img src="' + baseUrl + 'coloradmin/assets/img/logo/logomenu.png" height="40" class="me-2" /> Detalle Recibo';
             } else if (estado == 'vencido') {
                 modalTitle.innerHTML = '<img src="' + baseUrl + 'coloradmin/assets/img/logo/logomenu.png" height="40" class="me-2" /> Aviso Vencido';
             } else if (estado == 'revision') {
-                modalTitle.innerHTML = '<img src="' + baseUrl + 'coloradmin/assets/img/logo/logomenu.png" height="40" class="me-2" /> Aviso en Revisión';
+                modalTitle.innerHTML = '<img src="' + baseUrl + 'coloradmin/assets/img/logo/logomenu.png" height="40" class="me-2" /> Comprobante en Revisión';
             } else if (estado == 'rechazado') {
-                modalTitle.innerHTML = '<img src="' + baseUrl + 'coloradmin/assets/img/logo/logomenu.png" height="40" class="me-2" /> Comprobante Rechazado';
+                modalTitle.innerHTML = '<img src="' + baseUrl + 'coloradmin/assets/img/logo/logomenu.png" height="40" class="me-2" /> Comprobante Denegado';
+
             } else {
                 modalTitle.textContent = "Detalle de Aviso"; // Valor por defecto si el estado no es reconocido
+            }
+
+            // Lógica para mostrar el saldo solo si el estado es 'rechazado' y el saldo no es null o 0
+            var saldoElement = document.getElementById('modal-saldo');
+            var saldoLabel = document.querySelector('td strong[style*="Saldo"]'); // El elemento de la etiqueta de saldo
+
+            if (estado == 'rechazado' && saldo !== null && saldo != 0) {
+                saldoElement.textContent = saldo; // Mostrar el saldo
+                saldoElement.parentElement.style.display = ''; // Mostrar el campo del saldo
+                saldoLabel.style.display = ''; // Mostrar la etiqueta
+            } else {
+                saldoElement.parentElement.style.display = 'none'; // Ocultar el campo del saldo
+                saldoLabel.style.display = 'none'; // Ocultar la etiqueta
             }
         
     }
@@ -415,7 +480,7 @@ $(document).ready(function() {
 
 
 <!-- actualiza la vista parcial de avisos -->
-<script>
+<!-- <script>
 $(document).ready(function() {
     // Este script escucha los mensajes JSON después de la subida del comprobante
     // Asegúrate de que el controlador envía el mensaje JSON correctamente
@@ -448,8 +513,8 @@ $(document).ready(function() {
         }
     });
 });
-</script>
+</script> -->
 
-  </body>
+</body>
 
-  </html>
+</html>

@@ -6,7 +6,7 @@ class Avisocobranza_model extends CI_Model
     // Obtener los avisos por estado
     public function avisos_por_estado($estado)
     {
-        $this->db->select('A.fechaVencimiento, A.idAviso, A.estado, A.fechaPago, A.saldo, T.tarifaMinima, T.tarifaVigente, Q.img,
+        $this->db->select('A.fechaVencimiento, A.idAviso, A.estado, A.fechaPago, A.saldo, A.fechaActualizacion, T.tarifaMinima, T.tarifaVigente, Q.img,
                 L.lecturaAnterior, L.lecturaActual, L.fechaLectura, 
                 IFNULL((SELECT L2.fechaLectura 
                         FROM lectura L2 
@@ -25,19 +25,17 @@ class Avisocobranza_model extends CI_Model
         $this->db->join('membresia ME', 'M.idMembresia = ME.idMembresia', 'inner');
         $this->db->join('usuario U', 'ME.idUsuario = U.idUsuario', 'inner');
         $this->db->where('A.estado', $estado); // Reemplaza 'pendiente' por el valor que necesites
-        $this->db->order_by('L.fechaLectura', 'DESC');
+        
+        $this->db->order_by("CASE WHEN A.estado = 'enviado' THEN L.fechaLectura ELSE A.fechaActualizacion END", 'DESC', FALSE);
 
 
-
-
-        //$this->db->where('rol', $rol);
         $query = $this->db->get();
         return $query->result_array();
     }
     public function modificar($id, $data)
 	{
 		$data['idAutor']=$this->session->userdata('idUsuario');
-		$data['fechaRevision']=date('Y-m-d H:i:s');
+		$data['fechaActualizacion']=date('Y-m-d H:i:s');
 		$this->db->where('idAviso', $id);
 		$this->db->update('avisocobranza', $data);
 	}
@@ -56,7 +54,9 @@ class Avisocobranza_model extends CI_Model
 	{
 		$data['idAutor']=$this->session->userdata('idUsuario');
         $data['estado'] = 'revision';
+        $data['saldo'] = 0;
 		$data['fechaPago']=date('Y-m-d H:i:s');
+        $data['fechaActualizacion']=date('Y-m-d H:i:s');
 		$this->db->where('idAviso', $id);
 		return $this->db->update('avisocobranza', $data);
 	}
@@ -81,17 +81,18 @@ class Avisocobranza_model extends CI_Model
         $this->db->join('medidor M', 'L.idMedidor = M.idMedidor', 'inner');
         $this->db->join('membresia ME', 'M.idMembresia = ME.idMembresia', 'inner');
         $this->db->join('usuario U', 'ME.idUsuario = U.idUsuario', 'inner');
-        $this->db->where('A.estado', $estado); // Reemplaza 'pendiente' por el valor que necesites
         $this->db->where('U.idUsuario', $idUsuario);
-        $this->db->order_by('L.fechaLectura', 'DESC');
 
-        //$this->db->where('rol', $rol);
+        $this->db->where_in('A.estado', $estado);
+
+        $this->db->order_by('L.fechaLectura', 'DESC');
+        
         $query = $this->db->get();
         return $query->result_array();
     }
     public function notificar_saldo($idAviso, $data)
     {
-        $data['fechaRevision'] = date('Y-m-d H:i:s');
+        $data['fechaActualizacion'] = date('Y-m-d H:i:s');
         $data['idAutor'] = $this->session->userdata('idUsuario');
         $this->db->where('idAviso', $idAviso);
         return $this->db->update('avisocobranza', $data);  // Retorna verdadero si la actualización fue exitosa

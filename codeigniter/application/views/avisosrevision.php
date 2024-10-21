@@ -18,6 +18,9 @@
       <li class="nav-item">
         <a href="<?php echo base_url(); ?>index.php/avisocobranza/vencidos" class="nav-link <?php echo (current_url() == base_url() . 'index.php/avisocobranza/vencidos') ? 'active' : ''; ?>">Vencidos</a>
       </li>
+      <li class="nav-item">
+        <a href="<?php echo base_url(); ?>index.php/avisocobranza/deshabilitados" class="nav-link <?php echo (current_url() == base_url() . 'index.php/avisocobranza/deshabilitados') ? 'active' : ''; ?>">Eliminados</a>
+      </li>
   </ul>
 
 
@@ -39,12 +42,12 @@
                                         <th>Codigo Socio</th>
                                         <th>Socio</th>
                                         <th>Consumo (m³)</th>
+                                        <th>Periodo</th>
+                                        <th>Lectura Actual</th>
                                         <th>Lectura Anterior</th>
-                                        <th>Fecha Lectura Anterior</th>
-                                        <th>Fecha Lectura Actual</th>
                                         <th>Tarifa Aplicada [Bs/m3]</th>
                                         <th>Total [Bs.]</th>
-                                        <th>Fecha Vencimiento</th>
+                                        <th>Fecha Pago QR</th>
                                         <th>Mover a:</th>
                                     </tr>
                                 </thead>
@@ -54,18 +57,20 @@
                                     foreach ($revisados as $revisado) {
                                         $consumo = $revisado['lecturaActual'] - $revisado['lecturaAnterior'];
                                         $total = $revisado['tarifaVigente'] * $consumo;
+                                        $fechaPago = !empty($revisado['fechaPago']) ? date('Y-m-d', strtotime($revisado['fechaPago'])) : 'Sin Fecha';
+                                        $fechaLectura = date('Y-m-d', strtotime($revisado['fechaLectura']));
                                     ?>
                                     <tr class="text-center">
                                         <td><?php echo $cont; ?></td>
                                         <td><?php echo $revisado['codigoSocio']; ?></td>
                                         <td><?php echo $revisado['nombreSocio']; ?></td>
-                                        <td><?php echo $consumo ?> m³</td>
+                                        <td><?php echo $consumo; ?> m³</td>
+                                        <td><?php echo $fechaLectura; ?></td>
+                                        <td><?php echo $revisado['lecturaActual']; ?></td>
                                         <td><?php echo $revisado['lecturaAnterior']; ?></td>
-                                        <td><?php echo date('Y-m-d', strtotime($revisado['fechaLecturaAnterior'])); ?></td>
-                                        <td><?php echo date('Y-m-d', strtotime($revisado['fechaLectura'])); ?></td>
                                         <td><?php echo $revisado['tarifaVigente']; ?></td>
                                         <td><?php echo number_format($total, 2); ?></td>
-                                        <td><?php echo $revisado['fechaVencimiento']; ?></td>
+                                        <td><?php echo $fechaPago; ?></td>
                                         <td>
                                           <?php echo form_open_multipart("avisocobranza/revisarbd", ['class' => 'auto-submit-form']); ?>
                                             <input type="hidden" name="tab" value="revision">
@@ -86,12 +91,12 @@
                                         <th>Codigo Socio</th>
                                         <th>Socio</th>
                                         <th>Consumo (m³)</th>
+                                        <th>Periodo</th>
+                                        <th>Lectura Actual</th>
                                         <th>Lectura Anterior</th>
-                                        <th>Fecha Lectura Anterior</th>
-                                        <th>Fecha Lectura Actual</th>
                                         <th>Tarifa Aplicada [Bs/m3]</th>
                                         <th>Total [Bs.]</th>
-                                        <th>Fecha Vencimiento</th>
+                                        <th>Fecha Pago QR</th>
                                         <th>Mover a:</th>
                                     </tr>
                                 </tfoot>
