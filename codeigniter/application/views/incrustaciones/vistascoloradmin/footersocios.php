@@ -54,7 +54,7 @@
                                     <tr>
                                         <td><strong style="font-weight: 600;">Estado:</strong> <span class="badge bg-success text-uppercase" id="modal-estado"></span></td>
                                         
-                                        <td><strong id="modal-label-saldo" style="font-weight: 700; color: #343a40;">Saldo: </strong><span class="fw-bold text-dark" id="modal-saldo"> 0</span></td>
+                                        <td><strong id="modal-label-saldo" style="font-weight: 700; color: #343a40;">Saldo: </strong><span class="fw-bold text-dark" id="modal-saldo"></span></td>
                                         
                                     </tr>
                                 </tbody>
@@ -273,7 +273,7 @@
         if (estado === 'rechazado' && saldo !== null && saldo > 0) {
             saldoContainer.style.display = 'flex';  // Mostrar el contenedor del saldo
             labelSaldo.style.display = 'block';  // Mostrar el label del saldo
-            document.getElementById('saldo').innerText = saldo;  // Actualizar el valor del saldo
+            document.getElementById('saldo').innerText = saldo + ' Bs.';  // Actualizar el valor del saldo
         } else {
             saldoContainer.style.display = 'none';  // Ocultar el contenedor del saldo
             labelSaldo.style.display = 'none';  // Ocultar el label del saldo
@@ -464,7 +464,7 @@ $(document).ready(function() {
             var saldoLabel = document.querySelector('td strong[style*="Saldo"]'); // El elemento de la etiqueta de saldo
 
             if (estado == 'rechazado' && saldo !== null && saldo != 0) {
-                saldoElement.textContent = saldo; // Mostrar el saldo
+                saldoElement.textContent = saldo + ' Bs.'; // Mostrar el saldo
                 saldoElement.parentElement.style.display = ''; // Mostrar el campo del saldo
                 saldoLabel.style.display = ''; // Mostrar la etiqueta
             } else {

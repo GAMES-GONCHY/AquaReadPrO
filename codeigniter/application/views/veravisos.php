@@ -24,7 +24,7 @@
 							<a href="javascript:;" class="dropdown-item" data-status="revision">En revisión</a>
 							<a href="javascript:;" class="dropdown-item" data-status="pagado">Pagados</a>
 							<a href="javascript:;" class="dropdown-item" data-status="vencido">Vencidos</a>
-							<a href="javascript:;" class="dropdown-item" data-status="rechazado">Rechazados</a>
+							<!-- <a href="javascript:;" class="dropdown-item" data-status="rechazado">Rechazados</a> -->
 						</div>
 					</div>
                 </div>
