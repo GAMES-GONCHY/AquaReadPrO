@@ -75,12 +75,12 @@
                                         ; ?></td>
                                         <td>
                                             <?php echo form_open_multipart("avisocobranza/revisarbd"); ?>
-                                            <input type="hidden" name="tab" value="deshabilitados">
-                                            <input type="hidden" name="estado" value="enviado">
-                                            <input type="hidden" name="id" value="<?php echo $deshabilitado['idAviso']; ?>">
-                                            <button type="submit" class="btn btn-success btn-sm" title="Restaurar">
-                                                <i class="fas fa-recycle"></i> <!-- Ícono de reciclaje para restauración -->
-                                            </button>
+                                                <input type="hidden" name="id" value="<?php echo $deshabilitado['idAviso']; ?>">
+                                                <input type="hidden" name="estado" value="enviado">
+                                                <input type="hidden" name="tab" value="deshabilitados">
+                                                <button type="submit" class="btn btn-success btn-sm" title="Restaurar">
+                                                    <i class="fas fa-recycle"></i> <!-- Ícono de reciclaje para restauración -->
+                                                </button>
                                             <?php echo form_close(); ?>
                                         </td>
                                     </tr>

@@ -43,6 +43,7 @@
                         <th>Fecha Lectura</th>
                         <th>Codigo Medidor</th>
                         <th>Puerto</th>
+                        <!-- <th>Restaurar</th> -->
                     </tr>
                 </thead>
                 <tbody id="lecturas-body">
@@ -50,13 +51,21 @@
                     $cont = 1;
                     foreach ($lecdeshabilitados as $lectura) { // Procesar las lecturas obtenidas de la base de datos
                     ?>
-                        <tr>
+                        <tr class="text-center">
                             <td><?php echo $cont; ?></td>
                             <td><?php echo $lectura['lecturaAnterior'] !== null ? $lectura['lecturaAnterior'] : 0; ?></td>
                             <td><?php echo $lectura['lecturaActual']; ?></td>
                             <td><?php echo $lectura['fechaLectura']; ?></td>
                             <td><?php echo $lectura['codigoMedidor']; ?></td>
                             <td><?php echo $lectura['puerto']; ?></td>
+                            <!-- <td>
+                              <?php echo form_open_multipart("lecturadl/habilitarbd"); ?>
+                                  <input type="hidden" name="id" value="<?php echo $lectura['idLectura']; ?>">
+                                  <button type="submit" class="btn btn-success btn-sm" title="Restaurar">
+                                      <i class="fas fa-recycle"></i> 
+                                  </button>
+                              <?php echo form_close(); ?>
+                            </td> -->
                         </tr>
                     <?php
                         $cont++;
@@ -71,6 +80,7 @@
                         <th>Fecha Lectura</th>
                         <th>Codigo Medidor</th>
                         <th>Puerto</th>
+                        <!-- <th>Restaurar</th> -->
                     </tr>
                 </tfoot>
             </table>

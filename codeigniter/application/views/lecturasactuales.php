@@ -39,7 +39,7 @@
               <th>Código Socio</th>
               <th>Socio</th>
               <th>Fecha Lectura</th>
-              <th>Acciones</th>
+              <!-- <th>Acciones</th> -->
             </tr>
           </thead>
           <tbody id="lecturas-body">
@@ -47,7 +47,7 @@
             $cont = 1;
             foreach ($lecturas as $lectura) {
             ?>
-              <tr>
+              <tr class="text-center">
                 <td><?php echo $cont; ?></td>
                 <td><?php echo $lectura['lecturaAnterior'] !== null ? $lectura['lecturaAnterior'] : 0; ?></td>
                 <td><?php echo $lectura['lecturaActual']; ?></td>
@@ -56,7 +56,7 @@
                 <td><?php echo $lectura['codigoSocio']; ?></td>
                 <td><?php echo $lectura['nombreSocio']; ?></td>
                 <td><?php echo $lectura['fechaLectura']; ?></td>
-                <td>
+                <!-- <td>
                   <div class="btn-group" role="group">
                     <?php echo form_open_multipart("lecturadl/deshabilitarbd"); ?>
                     <input type="hidden" name="id" value="<?php echo $lectura['idLectura']; ?>">
@@ -65,7 +65,7 @@
                     </button>
                     <?php echo form_close(); ?>
                   </div>
-                </td>
+                </td> -->
               </tr>
             <?php
               $cont++;
@@ -82,7 +82,7 @@
               <th>Código Socio</th>
               <th>Socio</th>
               <th>Fecha Lectura</th>
-              <th>Acciones</th>
+              <!-- <th>Acciones</th> -->
             </tr>
           </tfoot>
         </table>

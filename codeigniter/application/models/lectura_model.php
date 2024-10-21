@@ -74,7 +74,7 @@ class Lectura_model extends CI_Model
         $this->db->truncate('lectura_temp');
     }
     
-    public function deshabilitar($id, $data) 
+    public function modificar($id, $data) 
     {
         $data['idAutor']=$this->session->userdata('idUsuario');
 		$data['fechaActualizacion']=date('Y-m-d H:i:s');

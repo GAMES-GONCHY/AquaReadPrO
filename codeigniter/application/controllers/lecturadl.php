@@ -223,8 +223,14 @@ class Lecturadl extends CI_Controller
     {
         $id = $_POST['id'];
 		$data['estado'] = 0;
-
-		$this->lectura_model->deshabilitar($id, $data);
+		$this->lectura_model->modificar($id, $data);
 		redirect('lecturadl/mostrarlectura');
+    }
+    public function habilitarbd()
+    {
+        $id = $_POST['id'];
+		$data['estado'] = 1;
+		$this->lectura_model->modificar($id, $data);
+		redirect('lecturadl/deshabilitados');
     }
 }

@@ -75,9 +75,9 @@ class Avisocobranza extends CI_Controller
 	}
     public function revisarbd()
 	{
-		$id = $_POST['id'];
-		$data['estado'] = $_POST['estado'];
-        $tab = $_POST['tab'];
+		$id = $this->input->post('id');
+		$data['estado'] = $this->input->post('estado');
+        $tab = $this->input->post('tab');
 		$this->avisocobranza_model->modificar($id, $data);
         redirect('avisocobranza/' . $tab);
     }

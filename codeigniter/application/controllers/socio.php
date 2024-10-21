@@ -19,6 +19,7 @@ class Socio extends CI_Controller
         if($estado[0]=='enviado')
         {
             $estado[] = 'rechazado';
+            $estado[] = 'vencido';
         }
         $idUsuario = $this->session->userdata('idUsuario');
         // Llamar al modelo para obtener los avisos filtrados por estado
