@@ -1,11 +1,12 @@
+
 <div id="content" class="app-content">
+  
   <div class="d-flex justify-content-center align-items-center bg-dark-transparent rounded p-3 mb-4 shadow-sm">
       <h1 class="h3 mb-0 text-white">Avisos de Cobranza</h1>
       <button class="btn btn-outline-light p-2" data-toggle="modal" data-target="#configModal" title="Configuración" style="margin-left: 0.5cm;">
         <i class="fas fa-cog"></i>
       </button>
   </div>
-
 
   <!-- Nav Pills para las pestañas de navegación -->
   <ul class="nav nav-pills mb-3">
@@ -30,88 +31,100 @@
   </ul>
 
   <!-- <div class="tab-content"> -->
-    <!-- Tabla de Pendientes -->
-    <!-- <div class="tab-pane fade active show" id="nav-pills-tab-1"> -->
-        <div class="container mt-4">
-            <div class="row">
-                <div class="col-xl-12">
-                    <div class="panel panel-inverse">
-                        <div class="panel-heading d-flex justify-content-between align-items-center">
-                            <h4 class="panel-title">Avisos Enviados</h4>
+    <div class="container mt-4">
+        <div class="row">
+            <div class="col-xl-12">
+                <div class="panel panel-inverse">
+                    <div class="panel-heading d-flex justify-content-between align-items-center">
+                        <h4 class="panel-title">Avisos Enviados</h4>
+                        <div class="panel-body p-0">
+                          <form class="form-horizontal form-bordered">
+                            <div class="form-group row">
+                              <label class="form-label col-form-label col-lg-4">Advance Date Ranges</label>
+                              <div class="col-lg-8">
+                                <div id="advance-daterange" class="btn btn-default d-flex text-start align-items-center">
+                                  <span class="flex-1"></span>
+                                  <i class="fa fa-caret-down"></i>
+                                </div>
+                              </div>
+                            </div>
+                          </form>
                         </div>
-                        <div class="panel-body">
-                            <table id="pendientes" class="table table-hover table-bordered align-middle">
-                                <thead>
-                                    <tr>
-                                        <th>No.</th>
-                                        <th>Codigo Socio</th>
-                                        <th>Socio</th>
-                                        <th>Consumo (m³)</th>
-                                        <th>Periodo</th>
-                                        <th>Lectura Actual</th>
-                                        <th>Lectura Anterior</th>
-                                        <th>Fecha Lectura Anterior</th>
-                                        <th>Tarifa Aplicada [Bs/m3]</th>
-                                        <th>Total [Bs.]</th>
-                                        <th>Fecha Vencimiento</th>
-                                        <th>Eliminar</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <?php
-                                    $cont = 1;
-                                    foreach ($enviados as $enviado) {
-                                        $consumo = $enviado['lecturaActual'] - $enviado['lecturaAnterior'];
-                                        $total = $enviado['tarifaVigente'] * $consumo;
-                                    ?>
-                                    <tr class="text-center">
-                                        <td><?php echo $cont; ?></td>
-                                        <td><?php echo $enviado['codigoSocio']; ?></td>
-                                        <td><?php echo $enviado['nombreSocio']; ?></td>
-                                        <td><?php echo $consumo ?> m³</td>
-                                        <td><?php echo date('Y-m-d', strtotime($enviado['fechaLectura'])); ?></td>
-                                        <td><?php echo $enviado['lecturaActual']; ?></td>
-                                        <td><?php echo $enviado['lecturaAnterior']; ?></td>
-                                        <td><?php echo date('Y-m-d', strtotime($enviado['fechaLecturaAnterior'])); ?></td>
-                                        <td><?php echo $enviado['tarifaVigente']; ?></td>
-                                        <td><?php echo number_format($total, 2); ?></td>
-                                        <td><?php echo $enviado['fechaVencimiento']; ?></td>
-                                        <td>
-                                          <?php echo form_open_multipart("avisocobranza/revisarbd"); ?>
-                                            <input type="hidden" name="tab" value="gestion">
-                                            <input type="hidden" name="estado" value="deshabilitado">
-                                            <input type="hidden" name="id" value="<?php echo $enviado['idAviso']; ?>">
-                                            <button type="submit" class="btn btn-danger btn-sm" title="Eliminar">
-                                              <i class="fas fa-trash-alt"></i>
-                                            </button>
-                                          <?php echo form_close(); ?>
-                                        </td>
-                                    </tr>
-                                    <?php $cont++; } ?>
-                                </tbody>
-                                <tfoot>
-                                    <tr>
-                                        <th>No.</th>
-                                        <th>Codigo Socio</th>
-                                        <th>Socio</th>
-                                        <th>Consumo (m³)</th>
-                                        <th>Periodo</th>
-                                        <th>Lectura Actual</th>
-                                        <th>Lectura Anterior</th>
-                                        <th>Fecha Lectura Anterior</th>
-                                        <th>Tarifa Aplicada [Bs/m3]</th>
-                                        <th>Total [Bs.]</th>
-                                        <th>Fecha Vencimiento</th>
-                                        <th>Eliminar</th>
-                                    </tr>
-                                </tfoot>
-                            </table>
-                        </div>
+                    </div>
+                    
+                    <div class="panel-body">
+                        <table id="pendientes" class="table table-hover table-bordered align-middle">
+                            <thead>
+                                <tr>
+                                    <th>No.</th>
+                                    <th>Codigo Socio</th>
+                                    <th>Socio</th>
+                                    <th>Consumo (m³)</th>
+                                    <th>Periodo</th>
+                                    <th>Lectura Actual</th>
+                                    <th>Lectura Anterior</th>
+                                    <th>Fecha Lectura Anterior</th>
+                                    <th>Tarifa Aplicada [Bs/m3]</th>
+                                    <th>Total [Bs.]</th>
+                                    <th>Fecha Vencimiento</th>
+                                    <th>Eliminar</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php
+                                $cont = 1;
+                                foreach ($enviados as $enviado) {
+                                    $consumo = $enviado['lecturaActual'] - $enviado['lecturaAnterior'];
+                                    $total = $enviado['tarifaVigente'] * $consumo;
+                                ?>
+                                <tr class="text-center">
+                                    <td><?php echo $cont; ?></td>
+                                    <td><?php echo $enviado['codigoSocio']; ?></td>
+                                    <td><?php echo $enviado['nombreSocio']; ?></td>
+                                    <td><?php echo $consumo ?> m³</td>
+                                    <td><?php echo date('Y-m-d', strtotime($enviado['fechaLectura'])); ?></td>
+                                    <td><?php echo $enviado['lecturaActual']; ?></td>
+                                    <td><?php echo $enviado['lecturaAnterior']; ?></td>
+                                    <td><?php echo date('Y-m-d', strtotime($enviado['fechaLecturaAnterior'])); ?></td>
+                                    <td><?php echo $enviado['tarifaVigente']; ?></td>
+                                    <td><?php echo number_format($total, 2); ?></td>
+                                    <td><?php echo $enviado['fechaVencimiento']; ?></td>
+                                    <td>
+                                      <?php echo form_open_multipart("avisocobranza/revisarbd"); ?>
+                                        <input type="hidden" name="tab" value="gestion">
+                                        <input type="hidden" name="estado" value="deshabilitado">
+                                        <input type="hidden" name="id" value="<?php echo $enviado['idAviso']; ?>">
+                                        <button type="submit" class="btn btn-danger btn-sm" title="Eliminar">
+                                          <i class="fas fa-trash-alt"></i>
+                                        </button>
+                                      <?php echo form_close(); ?>
+                                    </td>
+                                </tr>
+                                <?php $cont++; } ?>
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <th>No.</th>
+                                    <th>Codigo Socio</th>
+                                    <th>Socio</th>
+                                    <th>Consumo (m³)</th>
+                                    <th>Periodo</th>
+                                    <th>Lectura Actual</th>
+                                    <th>Lectura Anterior</th>
+                                    <th>Fecha Lectura Anterior</th>
+                                    <th>Tarifa Aplicada [Bs/m3]</th>
+                                    <th>Total [Bs.]</th>
+                                    <th>Fecha Vencimiento</th>
+                                    <th>Eliminar</th>
+                                </tr>
+                            </tfoot>
+                        </table>
                     </div>
                 </div>
             </div>
-        <!-- </div> -->
-    <!-- </div> -->
+        </div>
+    </div>
+  <!-- </div> -->
 
     <!-- Código del modal principal para cargar nueva imagen QR -->
     <div class="modal fade" id="configModal" tabindex="-1" role="dialog" aria-labelledby="configModalLabel" aria-hidden="true">

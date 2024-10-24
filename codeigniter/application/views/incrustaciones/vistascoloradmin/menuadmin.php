@@ -163,20 +163,29 @@
             <div class="menu-header">Navigation</div>
 
             <!-- Reportes -->
-            <div class="menu-item has-sub <?php echo ($this->uri->segment(2) === 'panel') ? 'active' : ''; ?>">
+            <div class="menu-item has-sub <?php echo ($this->uri->segment(1) === 'usuario' || $this->uri->segment(1) === 'reporte') ? 'active' : ''; ?>">
                 <a href="javascript:;" class="menu-link">
                     <div class="menu-icon"><i class="fa fa-th-large"></i></div>
                     <div class="menu-text">Reportes</div>
                     <div class="menu-caret"></div>
                 </a>
                 <div class="menu-submenu">
-                    <div class="menu-item <?php echo ($this->uri->segment(2) === 'panel') ? 'active' : ''; ?>">
+                    <!-- Submenú de Dashboard para 'usuario/panel' -->
+                    <div class="menu-item <?php echo ($this->uri->segment(1) === 'usuario' && $this->uri->segment(2) === 'panel') ? 'active' : ''; ?>">
                         <a href="<?php echo base_url('index.php/usuario/panel'); ?>" class="menu-link">
-                            <div class="menu-text">Ver Reportes</div>
+                            <div class="menu-text">Dashboard</div>
+                        </a>
+                    </div>
+
+                    <!-- Submenú de Reportes para 'reporte/historialpagos' -->
+                    <div class="menu-item <?php echo ($this->uri->segment(1) === 'reporte' && $this->uri->segment(2) === 'historialpagos') ? 'active' : ''; ?>">
+                        <a href="<?php echo base_url('index.php/reporte/historialpagos'); ?>" class="menu-link">
+                            <div class="menu-text">Configurar reportes</div>
                         </a>
                     </div>
                 </div>
             </div>
+
 
            <!-- Usuarios -->
             <div class="menu-item has-sub <?php echo ($this->uri->segment(1) === 'crudusers' && $this->uri->segment(2) === 'habilitados') ? 'active' : ''; ?>">

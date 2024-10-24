@@ -11,63 +11,64 @@
 </div>
   <!-- END APP HEADER -->
 
-<!-- modal para notificar saldo de avisos rechazados -->
-<div class="modal modal-pos-booking fade" id="modalPosBooking">
-    <div class="modal-dialog modal-lg modal-dialog-centered">
+
+  <!-- modal para configuracion de reportes -->
+  <div class="modal modal-pos-booking fade" id="modalPosBooking">
+    <div class="modal-dialog modal-lg">
         <div class="modal-content border-0">
-            <form id="form-notificar-saldo" action="<?php echo base_url(); ?>index.php/avisocobranza/notificarsaldo" method="post">
-                <div class="modal-body">
-                    <div class="d-flex align-items-center mb-3">
-                        <h4 class="modal-title d-flex align-items-center" style="font-size: 1.5rem; font-weight: bold;">
-                            <img src="<?php echo base_url(); ?>coloradmin/assets/img/logo/logomenu.png" height="40" class="me-2" />
-                            Notificar Saldo
-                        </h4>
-                        <a href="#" data-bs-dismiss="modal" class="ms-auto btn-close"></a>
-                    </div>
-                    <div class="row p-4 rounded" style="background-color: #f8f9fa;">
-                        <div class="col-lg-12">
-                            <table class="table table-borderless mb-0" style="font-size: 1.1rem;">
-                                <tbody>
-                                    <tr>
-                                        <td><strong style="font-weight: 600; color: #343a40;">Código del Socio:</strong> 
-                                            <span class="text-secondary" style="color: #343a40;" id="modal-codigo-socio"></span>
-                                        </td>
-                                        <td><strong style="font-weight: 600; color: #343a40;">Nombre del Socio:</strong> 
-                                            <span class="text-secondary" style="color: #343a40;" id="modal-nombre-socio"></span>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td><strong style="font-weight: 600; color: #343a40;">Total:</strong>
-                                            <span class="text-secondary" style="color: #343a40;" id="modal-total"></span>
-                                        </td>
-                                        <td><strong style="font-weight: 600; color: #343a40;">Estado:</strong> 
-                                            <span class="badge bg-danger text-uppercase" id="modal-estado"></span>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td><strong style="font-weight: 600; color: #343a40;">Notificar Saldo:</strong> 
-                                            <input type="text" name="saldoPendiente" id="modal-notificar-saldo" class="form-control" value="" required> <!-- Campo editable vacío por defecto -->
-                                        </td>
-                                        <td><strong style="font-weight: 600; color: #343a40;">Fecha de Pago:</strong> 
-                                            <span class="text-secondary" style="color: #343a40;" id="modal-fecha-pago"></span>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
+            <div class="modal-body">
+                <div class="d-flex align-items-center mb-3">
+                    <h4 class="modal-title d-flex align-items-center" style="font-size: 1.5rem; font-weight: bold;">
+                        <img src="<?php echo base_url(); ?>coloradmin/assets/img/logo/logomenu.png" height="40" class="me-2" />
+                        Detalle del Aviso
+                    </h4>
+                    <a href="#" data-bs-dismiss="modal" class="ms-auto btn-close"></a>
+                </div>
+                <div class="row p-4 rounded" style="background-color: #f8f9fa;">
+                    <div class="col-lg-12">
+                        <table class="table table-borderless mb-0" style="font-size: 1.1rem;">
+                            <tbody>
+                                <tr>
+                                    <td><strong style="font-weight: 600;">Código del Socio:</strong> <span class="text-secondary" id="modal-codigo-socio"></span></td>
+                                    <td><strong style="font-weight: 600;">Nombre del Socio:</strong> <span class="text-secondary" id="modal-nombre-socio"></span></td>
+                                </tr>
+                                <tr>
+                                    <td><strong style="font-weight: 600;">Periodo:</strong> <span class="text-secondary" id="modal-periodo"></span></td>
+                                    <td><strong style="font-weight: 600;">Consumo:</strong> <span class="text-secondary" id="modal-consumo"></span></td>
+                                </tr>
+                                <tr>
+                                    <td><strong style="font-weight: 600;">Lectura Actual:</strong> <span class="text-secondary" id="modal-lectura-actual"></span></td>
+                                    <td><strong style="font-weight: 600;">Lectura Anterior:</strong> <span class="text-secondary" id="modal-lectura-anterior"></span></td>
+                                </tr>
+                                <tr>
+                                    <td><strong style="font-weight: 600;">Fecha Lectura Actual:</strong> <span class="text-secondary" id="modal-fecha-lectura"></span></td>
+                                    <td><strong style="font-weight: 600;">Fecha Lectura Anterior:</strong> <span class="text-secondary" id="modal-fecha-lectura-anterior"></span></td>
+                                </tr>
+                                <tr>
+                                    <td><strong style="font-weight: 600;">Tarifa Vigente:</strong> <span class="text-secondary" id="modal-tarifa-vigente"></span></td>
+                                    <td><strong style="font-weight: 600;">Tarifa Mínima:</strong> <span class="text-secondary" id="modal-tarifa-minima"></span></td>
+                                </tr>
+                                <tr>
+                                    <td><strong style="font-weight: 700; color: #343a40;">Total:</strong> <span class="fw-bold text-dark" id="modal-total"></span></td>
+                                    <td><strong id="modal-titulo-fecha" style="font-weight: 600;">Fecha de Vencimiento:</strong> <span class="text-danger" id="modal-fecha-vencimiento"></span></td>
+                                </tr>
+                                <tr>
+                                    <td><strong style="font-weight: 600;">Estado:</strong> <span class="badge bg-success text-uppercase" id="modal-estado"></span></td>
+                                    
+                                    <td><strong id="modal-label-saldo" style="font-weight: 700; color: #343a40;">Saldo: </strong><span class="fw-bold text-dark" id="modal-saldo"></span></td>
+                                    
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
-                <div class="modal-footer" style="padding: 15px;">
-                    <a href="#" class="btn btn-secondary w-100px" data-bs-dismiss="modal" style="font-size: 0.9rem; padding: 5px 10px;">Cancelar</a>
-                    <button type="submit" class="btn btn-success w-100px" style="font-size: 0.9rem; padding: 5px 10px;">Notificar</button>
-                    <!-- Campo oculto para enviar el idAviso -->
-                    <input type="hidden" name="idAviso" id="input-id-aviso">
-                    <input type="hidden" name="tab" value="rechazados">
-                </div>
-            </form>
+            </div>
+            <div class="modal-footer" style="padding: 15px;">
+                <a href="#" class="btn btn-success w-100px" data-bs-dismiss="modal" style="font-size: 0.9rem; padding: 5px 10px;">Ok!</a>
+            </div>
         </div>
     </div>
-</div>
+  </div>
 
 
 
@@ -230,19 +231,6 @@
     });
   </script>
 
-  <!-- modal qr -->
-  <script>
-    function previewImage(event) {
-      var reader = new FileReader();
-      reader.onload = function() {
-        var previewOutput = document.getElementById('qrPreview');
-        var expandedOutput = document.getElementById('qrExpanded');
-        previewOutput.src = reader.result; // Cambia la imagen del contenedor principal
-        expandedOutput.src = reader.result; // Cambia la imagen del modal de expansión
-      };
-      reader.readAsDataURL(event.target.files[0]);
-    }
-  </script>
 
 
   <!-- modal para notificacion de saldos de avisos rechazados-->
@@ -286,24 +274,10 @@
   </script>
 
 
-
+<!-- datepicker range -->
 <script src="<?php echo base_url(); ?>coloradmin/assets/plugins/moment/min/moment.min.js"></script>
 <script src="<?php echo base_url(); ?>coloradmin/assets/plugins/bootstrap-daterangepicker/daterangepicker.js"></script>
-<!-- <script>
-  $("#advance-daterange").daterangepicker({
-    opens: "right",
-    format: "MM/DD/YYYY",
-    separator: " to ",
-    startDate: moment().subtract(29,"days"),
-    endDate: moment(),
-    minDate: "01/01/2024",
-    maxDate: "12/31/2024",
-    
-  }, function (start, end) {
-    $("#default-daterange input").val(start.format("MMMM D, YYYY") + " - " + end.format("MMMM D, YYYY"));
-  });
-</script> -->
-
+<!-- script para datepicker range -->
 <script>
   $("#advance-daterange").daterangepicker({
     opens: "right",
