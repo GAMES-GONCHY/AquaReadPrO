@@ -65,7 +65,9 @@
     
     <link href="<?php echo base_url(); ?>coloradmin/assets/plugins/bootstrap-calendar/css/bootstrap_calendar.css" rel="stylesheet" />
   
-  
+
+
+
 
     
   <!-- Estilo para cambiar de backgroud -->
@@ -90,8 +92,37 @@
 </style>
 
 
+<!-- modal reportes -->
+ <style>
 
+.daterangepicker {
+  z-index: 1060 !important;
+}
+#advance-daterange {
+  background-color: #fff; /* Fondo blanco */
+  color: #000; /* Texto negro */
+  border: 1px solid #000; /* Borde negro */
+  padding: 10px; /* Relleno */
+  border-radius: 5px; /* Bordes redondeados */
+}
 
+#advance-daterange i {
+  color: #000; /* Color del ícono en el input */
+}
+
+#advance-daterange:hover {
+  background-color: #e0e0e0; /* Fondo más oscuro en hover */
+  border-color: #000; /* Mantiene el borde negro en hover */
+}
+
+#advance-daterange:focus {
+  outline: none; /* Quita el contorno predeterminado en focus */
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.5); /* Sombra al hacer focus */
+}
+#criterio::placeholder {
+    color: #808080; /* Color gris */
+  }
+ </style>
 
 
 

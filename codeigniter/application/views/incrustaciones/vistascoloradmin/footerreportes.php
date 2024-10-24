@@ -11,64 +11,88 @@
 </div>
   <!-- END APP HEADER -->
 
-
-  <!-- modal para configuracion de reportes -->
-  <div class="modal modal-pos-booking fade" id="modalPosBooking">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content border-0">
-            <div class="modal-body">
-                <div class="d-flex align-items-center mb-3">
-                    <h4 class="modal-title d-flex align-items-center" style="font-size: 1.5rem; font-weight: bold;">
-                        <img src="<?php echo base_url(); ?>coloradmin/assets/img/logo/logomenu.png" height="40" class="me-2" />
-                        Detalle del Aviso
-                    </h4>
-                    <a href="#" data-bs-dismiss="modal" class="ms-auto btn-close"></a>
-                </div>
-                <div class="row p-4 rounded" style="background-color: #f8f9fa;">
-                    <div class="col-lg-12">
-                        <table class="table table-borderless mb-0" style="font-size: 1.1rem;">
-                            <tbody>
-                                <tr>
-                                    <td><strong style="font-weight: 600;">Código del Socio:</strong> <span class="text-secondary" id="modal-codigo-socio"></span></td>
-                                    <td><strong style="font-weight: 600;">Nombre del Socio:</strong> <span class="text-secondary" id="modal-nombre-socio"></span></td>
-                                </tr>
-                                <tr>
-                                    <td><strong style="font-weight: 600;">Periodo:</strong> <span class="text-secondary" id="modal-periodo"></span></td>
-                                    <td><strong style="font-weight: 600;">Consumo:</strong> <span class="text-secondary" id="modal-consumo"></span></td>
-                                </tr>
-                                <tr>
-                                    <td><strong style="font-weight: 600;">Lectura Actual:</strong> <span class="text-secondary" id="modal-lectura-actual"></span></td>
-                                    <td><strong style="font-weight: 600;">Lectura Anterior:</strong> <span class="text-secondary" id="modal-lectura-anterior"></span></td>
-                                </tr>
-                                <tr>
-                                    <td><strong style="font-weight: 600;">Fecha Lectura Actual:</strong> <span class="text-secondary" id="modal-fecha-lectura"></span></td>
-                                    <td><strong style="font-weight: 600;">Fecha Lectura Anterior:</strong> <span class="text-secondary" id="modal-fecha-lectura-anterior"></span></td>
-                                </tr>
-                                <tr>
-                                    <td><strong style="font-weight: 600;">Tarifa Vigente:</strong> <span class="text-secondary" id="modal-tarifa-vigente"></span></td>
-                                    <td><strong style="font-weight: 600;">Tarifa Mínima:</strong> <span class="text-secondary" id="modal-tarifa-minima"></span></td>
-                                </tr>
-                                <tr>
-                                    <td><strong style="font-weight: 700; color: #343a40;">Total:</strong> <span class="fw-bold text-dark" id="modal-total"></span></td>
-                                    <td><strong id="modal-titulo-fecha" style="font-weight: 600;">Fecha de Vencimiento:</strong> <span class="text-danger" id="modal-fecha-vencimiento"></span></td>
-                                </tr>
-                                <tr>
-                                    <td><strong style="font-weight: 600;">Estado:</strong> <span class="badge bg-success text-uppercase" id="modal-estado"></span></td>
-                                    
-                                    <td><strong id="modal-label-saldo" style="font-weight: 700; color: #343a40;">Saldo: </strong><span class="fw-bold text-dark" id="modal-saldo"></span></td>
-                                    
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-            <div class="modal-footer" style="padding: 15px;">
-                <a href="#" class="btn btn-success w-100px" data-bs-dismiss="modal" style="font-size: 0.9rem; padding: 5px 10px;">Ok!</a>
-            </div>
+<!-- Modal para configuración de reportes -->
+ <!-- Modal para configuración de reportes -->
+<div class="modal fade" id="modalPosBooking">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content border-0">
+      <!-- Encabezado del modal -->
+      <div class="modal-header">
+        <div class="d-flex align-items-center">
+          <img src="<?php echo base_url(); ?>coloradmin/assets/img/logo/logomenu.png" height="40" class="me-2" />
+          <h4 class="modal-title" style="font-size: 1.5rem; font-weight: bold;">Detalle del Aviso</h4>
         </div>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+
+      <!-- Cuerpo del modal -->
+      <div class="modal-body">
+        <div class="panel-body p-0">
+          <form id="formReporte" class="form-horizontal form-bordered">
+            <div class="row">
+              <div class="col-lg-6">
+                <!-- Código Usuario -->
+                <div class="form-group row">
+                  <label class="form-label col-form-label col-lg-4">Socio</label>
+                  <div class="col-lg-8 position-relative">
+                    <input type="text" class="form-control" id="criterio" name="criterio" placeholder="Ingrese apellido o código" style="border: 2px solid #343a40; color: #333333;" oninput="this.value = this.value.toUpperCase();" required>
+
+                    <!-- <span id="socioValido" class="text-success" style="display:none; position: absolute; right: 15px; top: 50%; transform: translateY(-50%); font-size: 20px;">
+                      <i class="fas fa-check-circle"></i>
+                    </span> -->
+                  </div>
+                </div>
+
+                <!-- Rango de Fechas -->
+                <div class="form-group row">
+                  <label class="form-label col-form-label col-lg-4">Rango de Fechas</label>
+                  <div class="col-lg-8">
+                    <div id="advance-daterange" class="btn btn-default d-flex text-start align-items-center">
+                      <span class="flex-1">Seleccionar rango de fechas</span>
+                      <i class="fa fa-caret-down"></i>
+                    </div>
+                    <input type="hidden" id="fechaInicio" name="fechaInicio">
+                    <input type="hidden" id="fechaFin" name="fechaFin">
+                  </div>
+                </div>
+              </div>
+
+              <!-- Tabla de Resultados de la Búsqueda -->
+              <div class="col-lg-6">
+                <div id="resultadosBusqueda" style="display:none;">
+                  <h5 style="color: #000;">Resultados de la Búsqueda</h5> 
+                  <table class="table table-bordered table">
+                    <thead>
+                    <tr>
+                      <th style="color: #000;">Nombre Completo</th>
+                      <th style="color: #000;">Código Usuario</th>
+                    </tr>
+                    </thead>
+                    <tbody id="tablaResultados" style="color: #000;">
+                      <!-- Aquí se insertarán los resultados -->
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <!-- Pie del modal -->
+      <div class="modal-footer" style="padding: 5px;">
+      <button type="button" class="btn btn-success" id="generarReporte" style="font-size: 0.9rem; padding: 5px 10px; width: 150px;">Generar Reporte</button>
+
+
+      </div>
     </div>
   </div>
+</div>
+
+
+
+
+
 
 
 
@@ -235,8 +259,8 @@
 
   <!-- modal para notificacion de saldos de avisos rechazados-->
   <script>
-    function cargarDatos(codigoSocio, nombreSocio, idAviso, total, estado, fechaPago, saldo) {
-        document.getElementById('modal-codigo-socio').textContent = codigoSocio;
+    function cargarDatos(criterio, nombreSocio, idAviso, total, estado, fechaPago, saldo) {
+        document.getElementById('modal-codigo-socio').textContent = criterio;
         document.getElementById('modal-nombre-socio').textContent = nombreSocio;
         document.getElementById('modal-total').textContent = total;
         document.getElementById('modal-estado').textContent = estado;
@@ -277,13 +301,19 @@
 <!-- datepicker range -->
 <script src="<?php echo base_url(); ?>coloradmin/assets/plugins/moment/min/moment.min.js"></script>
 <script src="<?php echo base_url(); ?>coloradmin/assets/plugins/bootstrap-daterangepicker/daterangepicker.js"></script>
+
+
+
+
 <!-- script para datepicker range -->
 <script>
+$(document).ready(function() {
+  // Inicializar daterangepicker
   $("#advance-daterange").daterangepicker({
     opens: "right",
     locale: {
-      format: "DD/MM/YYYY", // Mantiene el formato original
-      separator: " a ", // Traducción del separador
+      format: "DD/MM/YYYY",
+      separator: " a ",
       applyLabel: "Aplicar",
       cancelLabel: "Cancelar",
       fromLabel: "Desde",
@@ -291,25 +321,85 @@
       customRangeLabel: "Personalizado",
       daysOfWeek: ["Do", "Lu", "Ma", "Mi", "Ju", "Vi", "Sa"],
       monthNames: ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"],
-      firstDay: 1 // Comienza la semana el lunes
+      firstDay: 1
     },
     startDate: moment().subtract(29, "days"),
-    endDate: moment(),
-    minDate: "01/01/2024",
-    maxDate: "31/12/2024",
-    ranges: { // Agrega la funcionalidad de rangos predefinidos
-      'Hoy': [moment(), moment()],
-      'Ayer': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-      'Últimos 7 días': [moment().subtract(6, 'days'), moment()],
-      'Últimos 30 días': [moment().subtract(29, 'days'), moment()],
-      'Este mes': [moment().startOf('month'), moment().endOf('month')],
-      'Mes pasado': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
-    }
-  }, function (start, end) {
-    $("#default-daterange input").val(start.format("D MMMM, YYYY") + " - " + end.format("D MMMM, YYYY"));
+    endDate: moment()
+  }, function(start, end) {
+    // Actualizar las fechas en los inputs ocultos
+    $('#fechaInicio').val(start.format('YYYY-MM-DD'));
+    $('#fechaFin').val(end.format('YYYY-MM-DD'));
+    
+    // Mostrar el rango seleccionado en el botón de rango de fechas
+    $("#advance-daterange span").html(start.format('DD/MM/YYYY') + " a " + end.format('DD/MM/YYYY'));
   });
-</script>
 
+  // Buscar socio cuando se complete el campo del código de usuario (evento blur)
+  $('#criterio').on('blur', function() {
+    buscarSocio();  // Llamar a la función buscarSocio cuando pierda el foco
+  });
+
+  // Escuchar el evento de la tecla Enter en el campo de código de socio
+  $('#criterio').on('keydown', function(e) {
+    if (e.key === 'Enter') {
+      e.preventDefault();  // Evitar que el formulario se envíe
+      buscarSocio();  // Llamar a la función buscarSocio cuando se presione Enter
+    }
+  });
+
+  // Función para buscar socio
+  function buscarSocio() {
+    var criterio = $('#criterio').val();  // Obtener el valor del campo
+
+    if (criterio) {  // Si hay un código de usuario
+      $.ajax({
+        url: '<?php echo base_url("index.php/reporte/buscar_socio"); ?>',  // URL del controlador
+        type: 'POST',
+        data: {criterio: criterio},  // Enviar el código de usuario
+        success: function(response) {
+          if (response === 'false') {
+            // Si no se encuentra el código de socio
+            
+            $('#criterio').addClass('is-invalid');
+            $('#socioValido').hide();
+            $('#resultadosBusqueda').hide();  // Esconder tabla si no hay resultados
+          } else {
+            // Si se encuentra el código de socio
+            $('#criterio').removeClass('is-invalid').addClass('is-valid');
+            var socio = JSON.parse(response);
+
+            // Mostrar la palomita verde cuando el socio es encontrado
+            $('#socioValido').show();
+
+            // Mostrar la tabla de resultados
+            $('#resultadosBusqueda').show();
+
+            // Insertar el resultado en la tabla
+            var fila = '<tr><td>' + socio.nombre + '</td><td>' + socio.codigoSocio + '</td></tr>';
+            $('#tablaResultados').html(fila);  // Reemplazar el contenido de la tabla con el nuevo resultado
+          }
+        }
+      });
+    }
+  }
+
+  // Enviar el formulario cuando se haga clic en "Generar Reporte"
+  $('#generarReporte').on('click', function() {
+    var criterio = $('#criterio').val();
+    var fechaInicio = $('#fechaInicio').val();
+    var fechaFin = $('#fechaFin').val();
+
+    if (!criterio || !fechaInicio || !fechaFin) {
+      alert('Por favor, complete todos los campos.');
+      return;
+    }
+
+    // Aquí puedes realizar la acción para generar el reporte
+    alert('Generando reporte para el socio con código ' + criterio + ' desde ' + fechaInicio + ' hasta ' + fechaFin);
+  });
+});
+
+</script>
 
 
 
