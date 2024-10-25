@@ -257,45 +257,7 @@
 
 
 
-  <!-- modal para notificacion de saldos de avisos rechazados-->
-  <script>
-    function cargarDatos(criterio, nombreSocio, idAviso, total, estado, fechaPago, saldo) {
-        document.getElementById('modal-codigo-socio').textContent = criterio;
-        document.getElementById('modal-nombre-socio').textContent = nombreSocio;
-        document.getElementById('modal-total').textContent = total;
-        document.getElementById('modal-estado').textContent = estado;
-        document.getElementById('modal-fecha-pago').textContent = fechaPago;
 
-        
-        // Revisar el estado y el saldo pendiente
-        var estadoElement = document.getElementById('modal-estado');
-        estadoElement.textContent = estado.toUpperCase();  // Mostrar el estado original
-
-        // Limpiar las clases de estado para evitar conflictos
-        estadoElement.classList.remove('bg-success', 'bg-danger', 'bg-warning');
-
-        if (estado == 'rechazado') {
-            // Si hay saldo pendiente, mostrar el estado como "Notificado"
-            if (saldo !== null && saldo != 0) {
-                estadoElement.textContent += " - NOTIFICADO";
-                estadoElement.classList.add('bg-warning');  // Fondo amarillo
-                estadoElement.style.color = 'black';  // Letra negra
-            } else {
-                estadoElement.classList.add('bg-danger');  // Estado rechazado por defecto
-            }
-        } else {
-            estadoElement.classList.add('bg-success');  // Otros estados como aprobado, etc.
-        }
-
-        // Solo saldo pendiente y idAviso se envían
-        document.getElementById('input-id-aviso').value = idAviso;
-
-        // Verificar si el valor de saldo es null o vacío y asignar el valor correspondiente
-        if (saldo == null || saldo == 0) {
-            document.getElementById('modal-notificar-saldo').value = '';  // Campo vacío por defecto
-        }
-    }
-  </script>
 
 
 <!-- datepicker range -->
@@ -333,6 +295,20 @@ $(document).ready(function() {
     // Mostrar el rango seleccionado en el botón de rango de fechas
     $("#advance-daterange span").html(start.format('DD/MM/YYYY') + " a " + end.format('DD/MM/YYYY'));
   });
+  
+  // Actualizar el ID del formulario a 'formReporte' en el evento 'show.bs.modal'
+  $('#modalPosBooking').on('show.bs.modal', function () {
+    $('#formReporte')[0].reset();  // Restablecer el formulario
+    $('#criterio').removeClass('is-valid is-invalid');  // Quitar clases de validación
+    $('#criterio').val('');  // Limpiar campo de socio
+    $('#advance-daterange span').html('Seleccionar rango de fechas');  // Resetear el texto del daterangepicker
+    $('#fechaInicio').val('');
+    $('#fechaFin').val('');
+    $('#socioValido').hide();  // Ocultar icono de validación
+    $('#resultadosBusqueda').hide();  // Ocultar resultados
+  });
+
+  
 
   // Buscar socio cuando se complete el campo del código de usuario (evento blur)
   $('#criterio').on('blur', function() {
