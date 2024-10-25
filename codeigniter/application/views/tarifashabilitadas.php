@@ -2,6 +2,9 @@
 <div id="content" class="app-content">
 
   <div class="container mt-4">
+
+    
+
     <!-- Contenedor para centrar las tarjetas -->
     <div class="d-flex justify-content-left mb-4 w-100">
       <div class="d-inline-flex" style="gap: 0;">
@@ -26,7 +29,21 @@
         </div>
       </div>
     </div>
+    <!-- Mensajes de éxito y error -->
+    <?php if($this->session->flashdata('success')): ?>
+      <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <?php echo $this->session->flashdata('success'); ?>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+    <?php endif; ?>
 
+    <?php if($this->session->flashdata('error')): ?>
+      <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <?php echo $this->session->flashdata('error'); ?>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+    <?php endif; ?>
+    <!-- Fin de mensajes de éxito y error -->
     <div class="row">
       <div class="col-xl-12">
         <div class="panel panel-inverse">
@@ -56,7 +73,7 @@
                     $cont = 1;
                     foreach ($tarifas->result() as $row) {
                     ?>
-                        <tr id="row_<?php echo $row->idTarifa; ?>"> <!-- Agregar ID único a la fila -->
+                        <tr id="row_<?php echo $row->idTarifa; ?>" style="text-align: center;"><!-- Agregar ID único a la fila -->
                             <td><?php echo $cont ?></td>
                             <td><?php echo $row->tarifaVigente ?></td>
                             <td><?php echo $row->tarifaMinima ?></td>

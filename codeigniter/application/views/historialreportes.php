@@ -4,7 +4,7 @@
   <div class="row mb-4">
     <!-- Button 1: Historial de Pagos -->
     <div class="col-xl-2 col-md-6">
-      <a href="#" data-bs-toggle="modal" data-bs-target="#modalPosBooking" class="table-booking">
+      <a href="#" data-bs-toggle="modal" data-bs-target="#modalPosBooking" data-title="Historial de Pagos" class="table-booking">
         <div class="widget widget-stats bg-gradient-red">
           <div class="stats-icon stats-icon-lg"><i class="fa fa-globe fa-fw"></i></div>
           <div class="stats-content">
@@ -21,7 +21,7 @@
 
     <!-- Button 2: Historial de Consumos -->
     <div class="col-xl-2 col-md-6">
-      <a href="#" data-bs-toggle="modal" data-bs-target="#modalPosBooking" class="table-booking">
+      <a href="#" data-bs-toggle="modal" data-bs-target="#modalPosBooking" data-title="Historial de Comsumos" class="table-booking">
         <div class="widget widget-stats bg-gradient-cyan-blue">
           <div class="stats-icon stats-icon-lg"><i class="fa fa-dollar-sign fa-fw"></i></div>
           <div class="stats-content">
@@ -38,7 +38,7 @@
 
     <!-- Button 3: Historial de Lecturas -->
     <div class="col-xl-2 col-md-6">
-      <a href="#" data-bs-toggle="modal" data-bs-target="#modalPosBooking" class="table-booking">
+      <a href="#" data-bs-toggle="modal" data-bs-target="#modalPosBooking" data-title="Historial de Lecturas" class="table-booking">
         <div class="widget widget-stats bg-gradient-orange-red">
           <div class="stats-icon stats-icon-lg"><i class="fa fa-archive fa-fw"></i></div>
           <div class="stats-content">
@@ -55,7 +55,7 @@
 
     <!-- Button 4: Historial de Avisos Pendientes -->
     <div class="col-xl-2 col-md-6">
-      <a href="#" data-bs-toggle="modal" data-bs-target="#modalPosBooking" class="table-booking">
+      <a href="#" data-bs-toggle="modal" data-bs-target="#modalPosBooking" data-title="Historial de avisos Pendientes" class="table-booking">
         <div class="widget widget-stats bg-gradient-green">
           <div class="stats-icon stats-icon-lg"><i class="fa fa-comment-alt fa-fw"></i></div>
           <div class="stats-content">
@@ -72,7 +72,7 @@
 
     <!-- Button 5: Top 10 Consumidores -->
     <div class="col-xl-2 col-md-6">
-      <a href="#" data-bs-toggle="modal" data-bs-target="#modalPosBooking" class="table-booking">
+      <a href="#" data-bs-toggle="modal" data-bs-target="#modalPosBooking" data-title="Ranking Consumidores" class="table-booking">
         <div class="widget widget-stats bg-gradient-purple">
           <div class="stats-icon stats-icon-lg"><i class="fa fa-chart-line fa-fw"></i></div>
           <div class="stats-content">

@@ -51,21 +51,31 @@ class Tarifa extends CI_Controller
 	{
 		// Recibir los datos del formulario
 		$id = $_POST['idTarifa'];
+
 		$data['tarifaMinima'] = $_POST['tarifaMinima'];
 		$data['tarifaVigente'] = $_POST['tarifaVigente'];
 		$data['fechaInicioVigencia'] = $_POST['fechaInicioVigencia'];
 		// Llamar al modelo para modificar los datos
 
-		if($this->tarifa_model->modificar($id, $data))
+		if($this->tarifa_model->consultarregistrosdelectura($id))
 		{
-			echo "modificado correctamente";
+			// Establecer un mensaje de error en caso de que existan lecturas
+			$this->session->set_flashdata('error', 'Ya existen avisos de cobranza asociados. Favor crear una nueva tarifa');
 		}
 		else
 		{
-			echo "modificado error";
+			// Intentar modificar los datos de la tarifa
+			if($this->tarifa_model->modificar($id, $data))
+			{
+				$this->session->set_flashdata('success', 'Tarifa modificada correctamente.');
+			}
+			else
+			{
+				$this->session->set_flashdata('error', 'Error al modificar la tarifa. Intente otra vez');
+			}
 		}
 
-		// Redirigir después de modificar
+		// Redirigir después de modificar, mostrando mensajes de éxito o error
 		redirect('tarifa/habilitados');
 	}
 

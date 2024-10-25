@@ -80,6 +80,15 @@ class Tarifa_model extends CI_Model
 
         $query = $this->db->get();
     }
+    public function consultarregistrosdelectura($id)
+    {
+        $this->db->from('avisocobranza A');
+        $this->db->join('tarifa T', 'A.idTarifa = T.idTarifa', 'inner');
+        $this->db->where('A.idTarifa', $id);
 
+        $count = $this->db->count_all_results();
+        
+        return $count > 0;
+    }
 
 }

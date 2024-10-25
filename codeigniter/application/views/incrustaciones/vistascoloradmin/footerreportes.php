@@ -295,6 +295,12 @@ $(document).ready(function() {
     // Mostrar el rango seleccionado en el botón de rango de fechas
     $("#advance-daterange span").html(start.format('DD/MM/YYYY') + " a " + end.format('DD/MM/YYYY'));
   });
+
+  // Actualización del título del modal al hacer clic en los botones
+  $('.table-booking').on('click', function() {
+    var title = $(this).data('title');
+    $('#modalPosBooking .modal-title').text(title);
+  });
   
   // Actualizar el ID del formulario a 'formReporte' en el evento 'show.bs.modal'
   $('#modalPosBooking').on('show.bs.modal', function () {
