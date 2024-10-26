@@ -330,7 +330,7 @@ $(document).ready(function() {
   });
 
   // Función para buscar socio
-  function buscarSocio() {
+function buscarSocio() {
     var criterio = $('#criterio').val();  // Obtener el valor del campo
 
     if (criterio) {  // Si hay un código de usuario
@@ -341,14 +341,13 @@ $(document).ready(function() {
         success: function(response) {
           if (response === 'false') {
             // Si no se encuentra el código de socio
-            
             $('#criterio').addClass('is-invalid');
             $('#socioValido').hide();
             $('#resultadosBusqueda').hide();  // Esconder tabla si no hay resultados
           } else {
-            // Si se encuentra el código de socio
+            // Si se encuentran socios, convierte la respuesta en un array
             $('#criterio').removeClass('is-invalid').addClass('is-valid');
-            var socio = JSON.parse(response);
+            var socios = JSON.parse(response);
 
             // Mostrar la palomita verde cuando el socio es encontrado
             $('#socioValido').show();
@@ -356,14 +355,19 @@ $(document).ready(function() {
             // Mostrar la tabla de resultados
             $('#resultadosBusqueda').show();
 
-            // Insertar el resultado en la tabla
-            var fila = '<tr><td>' + socio.nombre + '</td><td>' + socio.codigoSocio + '</td></tr>';
-            $('#tablaResultados').html(fila);  // Reemplazar el contenido de la tabla con el nuevo resultado
+            // Limpiar la tabla antes de agregar nuevos resultados
+            $('#tablaResultados').empty();
+
+            // Insertar cada resultado en la tabla
+            socios.forEach(function(socio) {
+              var fila = '<tr><td>' + socio.nombre + '</td><td>' + socio.codigoSocio + '</td></tr>';
+              $('#tablaResultados').append(fila);  // Agregar cada fila a la tabla
+            });
           }
         }
       });
     }
-  }
+}
 
   // Enviar el formulario cuando se haga clic en "Generar Reporte"
   $('#generarReporte').on('click', function() {

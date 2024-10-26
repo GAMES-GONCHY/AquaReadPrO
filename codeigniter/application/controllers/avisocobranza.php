@@ -78,6 +78,11 @@ class Avisocobranza extends CI_Controller
 		$id = $this->input->post('id');
 		$data['estado'] = $this->input->post('estado');
         $tab = $this->input->post('tab');
+        $idAutor = $this->session->userdata('idUsuario');
+
+        //VARIABLE SETEADA PARA BDD trigger CREADOR DE REPORTES HISTORIAL DE PAGOS
+        $this->db->query("SET @idAutor = '{$idAutor}'");
+
 		$this->avisocobranza_model->modificar($id, $data);
         redirect('avisocobranza/' . $tab);
     }

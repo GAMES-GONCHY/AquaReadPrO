@@ -34,18 +34,22 @@ class Socio extends CI_Controller
         $mes = $this->input->post('mes');
         $anio = $this->input->post('anio');
         $codigoSocio = $this->input->post('codigoSocio');
+        //quitar los espacios en blanco al inicio y al final
+        $codigoSocio = trim($codigoSocio);
+
         $idAviso = $this->input->post('idAviso');
 
-        // Configuración de la ruta base para el socio
+        //Configuración de la ruta base para el socio
         $rutaSocio = './uploads/comprobantes/' . $codigoSocio;
 
-        // Verificar si la carpeta del socio existe, si no, crearla
-        if (!is_dir($rutaSocio))
+        //Verificar si la carpeta del socio existe, si no, crearla
+        if (!file_exists($rutaSocio)) 
         {
-            mkdir($rutaSocio, 0755, true);  // Crear la carpeta con permisos 0755
+            mkdir($rutaSocio, 0777, true);  // Crear la carpeta con permisos 0755
         }
+        
 
-        // Configuración para la subida del archivo
+        //Configuración para la subida del archivo
         $config['upload_path'] = $rutaSocio;
         $config['allowed_types'] = 'jpg|jpeg|png|pdf';
         $config['max_size'] = 2048;  // Tamaño máximo del archivo: 2MB
@@ -100,4 +104,5 @@ class Socio extends CI_Controller
             }
         }
     }
+    
 }

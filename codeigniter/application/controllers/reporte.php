@@ -15,9 +15,11 @@ class Reporte extends CI_Controller
     {
         // Recibir el código del socio desde la petición AJAX
         $criterio = $this->input->post('criterio');  // Cambiado a $criterio
+        $fechaInicio = $this->input->post('fechaInicio');
+        $fechaFin = $this->input->post('fechaFin');
         
         // Buscar al socio en la base de datos
-        $socio = $this->reporte_model->obtener_socio_por_codigo($criterio);
+        $socio = $this->reporte_model->obtener_socio_por_criterio($criterio);
         
         if ($socio)
         {
@@ -28,5 +30,18 @@ class Reporte extends CI_Controller
             echo 'false';  // Si no se encuentran resultados
         }
     }
+    public function filtrar_reportes()
+    {
+        $criterio = $this->input->post('criterio');  // Código o apellido del socio
+        $fechaInicio = $this->input->post('fechaInicio');
+        $fechaFin = $this->input->post('fechaFin');
+        
+        // Llama al modelo para obtener los reportes filtrados
+        $data['reportes'] = $this->reporte_model->obtener_reportes($criterio, $fechaInicio, $fechaFin);
+        
+        // Retorna los datos como JSON para ser usados por JavaScript
+        echo json_encode($data['reportes']);
+    }
+    
 
 }
