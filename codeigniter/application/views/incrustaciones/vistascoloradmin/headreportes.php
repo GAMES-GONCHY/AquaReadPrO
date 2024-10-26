@@ -122,6 +122,9 @@
 #criterio::placeholder {
     color: #808080; /* Color gris */
   }
+  .seleccionado {
+    background-color: #d1e7dd; /* Color para indicar selección */
+}
  </style>
 
 

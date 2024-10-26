@@ -11,8 +11,8 @@
 </div>
   <!-- END APP HEADER -->
 
+
 <!-- Modal para configuración de reportes -->
- <!-- Modal para configuración de reportes -->
 <div class="modal fade" id="modalPosBooking">
   <div class="modal-dialog modal-lg">
     <div class="modal-content border-0">
@@ -36,10 +36,6 @@
                   <label class="form-label col-form-label col-lg-4">Socio</label>
                   <div class="col-lg-8 position-relative">
                     <input type="text" class="form-control" id="criterio" name="criterio" placeholder="Ingrese apellido o código" style="border: 2px solid #343a40; color: #333333;" oninput="this.value = this.value.toUpperCase();" required>
-
-                    <!-- <span id="socioValido" class="text-success" style="display:none; position: absolute; right: 15px; top: 50%; transform: translateY(-50%); font-size: 20px;">
-                      <i class="fas fa-check-circle"></i>
-                    </span> -->
                   </div>
                 </div>
 
@@ -63,10 +59,10 @@
                   <h5 style="color: #000;">Resultados de la Búsqueda</h5> 
                   <table class="table table-bordered table">
                     <thead>
-                    <tr>
-                      <th style="color: #000;">Nombre Completo</th>
-                      <th style="color: #000;">Código Usuario</th>
-                    </tr>
+                      <tr>
+                        <th style="color: #000;">Nombre Completo</th>
+                        <th style="color: #000;">Código Usuario</th>
+                      </tr>
                     </thead>
                     <tbody id="tablaResultados" style="color: #000;">
                       <!-- Aquí se insertarán los resultados -->
@@ -75,19 +71,22 @@
                 </div>
               </div>
             </div>
+
+            <!-- Campos ocultos para almacenar el socio seleccionado -->
+            <input type="hidden" id="codigoSocioSeleccionado" name="codigoSocioSeleccionado">
+            <input type="hidden" id="nombreSocioSeleccionado" name="nombreSocioSeleccionado">
           </form>
         </div>
       </div>
 
       <!-- Pie del modal -->
       <div class="modal-footer" style="padding: 5px;">
-      <button type="button" class="btn btn-success" id="generarReporte" style="font-size: 0.9rem; padding: 5px 10px; width: 150px;">Generar Reporte</button>
-
-
+        <button type="button" class="btn btn-success" id="previsualizar" style="font-size: 0.9rem; padding: 5px 10px; width: 150px;">Previsualizar</button>
       </div>
     </div>
   </div>
 </div>
+
 
 
 
@@ -142,7 +141,7 @@
   <script src="<?php echo base_url(); ?>coloradmin/assets/plugins/pdfmake/build/pdfmake.min.js"></script>
   <script src="<?php echo base_url(); ?>coloradmin/assets/plugins/pdfmake/build/vfs_fonts.js"></script>
   <script src="<?php echo base_url(); ?>coloradmin/assets/plugins/jszip/dist/jszip.min.js"></script>
-  <script src="<?php echo base_url(); ?>coloradmin/assets/js/demo/table-manage-combine.demo1.js"></script>
+  <script src="<?php echo base_url(); ?>coloradmin/assets/js/demo/table-manage-combine.demo.js"></script>
   <!-- <script src="<?php echo base_url(); ?>coloradmin/assets/js/demo/table-manage-combine.demo-exportacion-pdf.js"></script> -->
   <script src="<?php echo base_url(); ?>coloradmin/assets/plugins/@highlightjs/cdn-assets/highlight.min.js"></script>
 
@@ -330,60 +329,134 @@ $(document).ready(function() {
   });
 
   // Función para buscar socio
-function buscarSocio() {
-    var criterio = $('#criterio').val();  // Obtener el valor del campo
+// Función para buscar socio
+  function buscarSocio()
+  {
+      var criterio = $('#criterio').val();  // Obtener el valor del campo
 
-    if (criterio) {  // Si hay un código de usuario
+      if (criterio) {  // Si hay un código de usuario
+          $.ajax({
+              url: '<?php echo base_url("index.php/reporte/buscar_socio"); ?>',  // URL del controlador
+              type: 'POST',
+              data: {criterio: criterio},  // Enviar el código de usuario
+              success: function(response) {
+                  if (response === 'false') {
+                      // Si no se encuentra el código de socio
+                      $('#criterio').addClass('is-invalid');
+                      $('#socioValido').hide();
+                      $('#resultadosBusqueda').hide();  // Esconder tabla si no hay resultados
+                  } else {
+                      // Si se encuentran socios
+                      $('#criterio').removeClass('is-invalid').addClass('is-valid');
+                      var socios = JSON.parse(response);
+
+                      // Mostrar la palomita verde cuando el socio es encontrado
+                      $('#socioValido').show();
+
+                      // Mostrar la tabla de resultados
+                      $('#resultadosBusqueda').show();
+
+                      // Limpiar la tabla antes de agregar nuevos resultados
+                      $('#tablaResultados').empty();
+
+                      // Insertar cada resultado en la tabla y agregar evento de selección
+                      socios.forEach(function(socio) {
+                          var fila = '<tr class="fila-socio" data-codigo="' + socio.codigoSocio + '" data-nombre="' + socio.nombre + '">' +
+                              '<td>' + socio.nombre + '</td>' +
+                              '<td>' + socio.codigoSocio + '</td>' +
+                              '</tr>';
+                          $('#tablaResultados').append(fila);
+                      });
+
+                      // Agregar evento de clic a cada fila para seleccionar el socio
+                      $('.fila-socio').on('click', function() {
+                          // Remover la selección de otras filas
+                          $('.fila-socio').removeClass('seleccionado');
+                          
+                          // Agregar la clase de selección a la fila clicada
+                          $(this).addClass('seleccionado');
+                          
+                          // Almacenar los datos del socio seleccionado
+                          var codigoSocio = $(this).data('codigo');
+                          var nombreSocio = $(this).data('nombre');
+                          
+                          // Guardar los datos seleccionados en campos ocultos o variables globales
+                          $('#codigoSocioSeleccionado').val(codigoSocio);
+                          $('#nombreSocioSeleccionado').val(nombreSocio);
+                      });
+                  }
+              }
+          });
+      }
+  }
+
+  // Enviar el formulario cuando se haga clic en "Previsualizar"
+    $('#previsualizar').on('click', function() {
+      var codigoSocio = $('#codigoSocioSeleccionado').val();
+      var fechaInicio = $('#fechaInicio').val();
+      var fechaFin = $('#fechaFin').val();
+
+      // Validación de selección: verificar que no haya campos vacíos
+      if (!codigoSocio || !fechaInicio || !fechaFin) {
+          alert('Por favor, complete todos los campos y seleccione un socio.');
+          return;
+      }
+
+      // Depuración: Mostrar en la consola los datos que se enviarán
+      console.log('Datos enviados:', { codigoSocio, fechaInicio, fechaFin });
+
+      // Enviar datos al backend para obtener el historial de pagos
       $.ajax({
-        url: '<?php echo base_url("index.php/reporte/buscar_socio"); ?>',  // URL del controlador
-        type: 'POST',
-        data: {criterio: criterio},  // Enviar el código de usuario
-        success: function(response) {
-          if (response === 'false') {
-            // Si no se encuentra el código de socio
-            $('#criterio').addClass('is-invalid');
-            $('#socioValido').hide();
-            $('#resultadosBusqueda').hide();  // Esconder tabla si no hay resultados
-          } else {
-            // Si se encuentran socios, convierte la respuesta en un array
-            $('#criterio').removeClass('is-invalid').addClass('is-valid');
-            var socios = JSON.parse(response);
+          url: '<?php echo base_url("index.php/reporte/obtener_historial_pagos"); ?>',  // Cambia esta URL según tu ruta
+          type: 'POST',
+          data: {
+              codigoSocio: codigoSocio,
+              fechaInicio: fechaInicio,
+              fechaFin: fechaFin
+          },
+          success: function(response) {
+              // Depuración: Verificar la respuesta recibida del servidor
+              console.log('Respuesta recibida:', response);
 
-            // Mostrar la palomita verde cuando el socio es encontrado
-            $('#socioValido').show();
+              // Intentar analizar la respuesta JSON
+              try {
+                  var pagos = JSON.parse(response);
 
-            // Mostrar la tabla de resultados
-            $('#resultadosBusqueda').show();
+                  // Verificar si la respuesta tiene contenido
+                  if (pagos && pagos.length > 0) {
+                      // Limpiar y llenar la tabla de historial de pagos
+                      $('#datatable').DataTable().clear();
+                      pagos.forEach(function(pago) {
+                          $('#datatable').DataTable().row.add([
+                              pago.socio,
+                              pago.codigoSocio,
+                              pago.consumo,
+                              pago.totalPagado,
+                              pago.saldoPendiente,
+                              pago.fechaPago,
+                              pago.estado
+                          ]).draw();
+                      });
+                  } else {
+                      alert('No se encontraron pagos para el rango de fechas seleccionado.');
+                  }
 
-            // Limpiar la tabla antes de agregar nuevos resultados
-            $('#tablaResultados').empty();
-
-            // Insertar cada resultado en la tabla
-            socios.forEach(function(socio) {
-              var fila = '<tr><td>' + socio.nombre + '</td><td>' + socio.codigoSocio + '</td></tr>';
-              $('#tablaResultados').append(fila);  // Agregar cada fila a la tabla
-            });
+                  // Cerrar el modal
+                  $('#modalPosBooking').modal('hide');
+              } catch (error) {
+                  console.error('Error al interpretar la respuesta:', error);
+                  alert('Ocurrió un error al interpretar los datos del servidor.');
+              }
+          },
+          error: function(xhr, status, error) {
+              console.error('Error en la solicitud AJAX:', error);
+              alert('Ocurrió un error al obtener el historial de pagos. Intente nuevamente.');
           }
-        }
       });
-    }
-}
-
-  // Enviar el formulario cuando se haga clic en "Generar Reporte"
-  $('#generarReporte').on('click', function() {
-    var criterio = $('#criterio').val();
-    var fechaInicio = $('#fechaInicio').val();
-    var fechaFin = $('#fechaFin').val();
-
-    if (!criterio || !fechaInicio || !fechaFin) {
-      alert('Por favor, complete todos los campos.');
-      return;
-    }
-
-    // Aquí puedes realizar la acción para generar el reporte
-    alert('Generando reporte para el socio con código ' + criterio + ' desde ' + fechaInicio + ' hasta ' + fechaFin);
   });
+
 });
+
 
 </script>
 

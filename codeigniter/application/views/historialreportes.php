@@ -102,15 +102,16 @@
             </div>
           </div>
           <div class="panel-body">
-            <table id="datatable" class="table table-hover table-bordered align-middle">
+            <table id="datatable" class="table table-hover table-bordered align-middle" style="text-align: center;">
               <thead>
                 <tr>
-                  <th width="1%">No.</th>
-                  <th>Tarifa vigente</th>
-                  <th>Inicio de vigencia</th>
-                  <th>Tarifa mínima</th>
-                  <th>Fecha Modificacion</th>
-                  <th>Restaurar</th>
+                  <th width="1%">socio</th>
+                  <th width="1%">codigoSocio</th>
+                  <th>consumo</th>
+                  <th>total</th>
+                  <th>saldo</th>
+                  <th>fechapago</th>
+                  <th>estado</th>
                 </tr>
               </thead>
               <tbody>
@@ -119,11 +120,12 @@
               <tfoot>
                 <tr>
                   <th width="1%">No.</th>
-                  <th>Tarifa vigente</th>
-                  <th>Inicio de vigencia</th>
-                  <th>Tarifa mínima</th>
-                  <th>Fecha Modificacion</th>
-                  <th>Restaurar</th>
+                  <th>idreportepago</th>
+                  <th>consumo</th>
+                  <th>total</th>
+                  <th>saldo</th>
+                  <th>fechapago</th>
+                  <th>estado</th>
                 </tr>
               </tfoot>
             </table>

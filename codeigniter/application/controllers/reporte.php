@@ -30,18 +30,52 @@ class Reporte extends CI_Controller
             echo 'false';  // Si no se encuentran resultados
         }
     }
-    public function filtrar_reportes()
+    // public function filtrar_reportes()
+    // {
+    //     $criterio = $this->input->post('criterio');  // Código o apellido del socio
+    //     $fechaInicio = $this->input->post('fechaInicio');
+    //     $fechaFin = $this->input->post('fechaFin');
+        
+    //     // Llama al modelo para obtener los reportes filtrados
+    //     $data['reportes'] = $this->reporte_model->obtener_reportes($criterio, $fechaInicio, $fechaFin);
+        
+    //     // Retorna los datos como JSON para ser usados por JavaScript
+    //     echo json_encode($data['reportes']);
+    // }
+    // public function generar_reporte() 
+    // {
+    //     // Recibir datos del formulario
+    //     $codigoSocio = $this->input->post('codigoSocio');
+    //     $fechaInicio = $this->input->post('fechaInicio');
+    //     $fechaFin = $this->input->post('fechaFin');
+
+    //     // Llama al modelo para obtener los datos del reporte
+    //     $reporteData = $this->reporte_model->obtener_historial_pagos($codigoSocio, $fechaInicio, $fechaFin);
+
+    //     // Verifica si hay datos para el reporte
+    //     if ($reporteData) {
+    //         // Aquí puedes generar el reporte, por ejemplo, en formato PDF o devolver una vista
+    //         // Para este ejemplo, supongamos que generas una URL para visualizar el reporte
+    //         $response = ['url' => base_url("path/to/generated/report.pdf")];
+    //         echo json_encode($response);
+    //     } else {
+    //         echo json_encode(['error' => 'No se encontraron datos para el reporte.']);
+    //     }
+    // }
+
+    public function obtener_historial_pagos() 
     {
-        $criterio = $this->input->post('criterio');  // Código o apellido del socio
+        // Recibir datos del formulario
+        $codigoSocio = $this->input->post('codigoSocio');
         $fechaInicio = $this->input->post('fechaInicio');
         $fechaFin = $this->input->post('fechaFin');
-        
-        // Llama al modelo para obtener los reportes filtrados
-        $data['reportes'] = $this->reporte_model->obtener_reportes($criterio, $fechaInicio, $fechaFin);
-        
-        // Retorna los datos como JSON para ser usados por JavaScript
-        echo json_encode($data['reportes']);
+
+        // Llama al modelo para obtener los datos del historial de pagos
+        $historialPagos = $this->reporte_model->obtener_historial_pagos($codigoSocio, $fechaInicio, $fechaFin);
+
+        // Retorna los datos como JSON
+        echo json_encode($historialPagos);
     }
-    
+
 
 }
