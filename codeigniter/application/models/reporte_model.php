@@ -24,7 +24,7 @@ class Reporte_model extends CI_Model
 	// }
 	public function obtener_socio_por_criterio($criterio) 
 	{
-		$this->db->select("CONCAT_WS(' ', U.nombre, U.primerApellido, IFNULL(U.segundoApellido, '')) AS nombre, M.codigoSocio");
+		$this->db->select("CONCAT_WS(' ', U.nombre, U.primerApellido, IFNULL(U.segundoApellido, '')) AS nombre, M.codigoSocio, M.idMembresia");
 		$this->db->from('usuario U');
 		$this->db->join('membresia M', 'U.idUsuario = M.idUsuario', 'inner');
 		
@@ -47,14 +47,15 @@ class Reporte_model extends CI_Model
 	}
 	// 
 		
-	public function obtener_historial_pagos($codigoSocio, $fechaInicio, $fechaFin) 
+	public function obtener_historial_pagos($data) 
 	{
-		$this->db->select('socio, codigoSocio, consumo, totalPagado, saldoPendiente, fechaPago, estado');
+		$this->db->select('socio, totalPagado, fechaLectura, fechaPago');
 		$this->db->from('reportepagos');
 		$this->db->where('estado', 'pagado');
-		$this->db->where('codigoSocio', $codigoSocio);
-		$this->db->where('fechaPago >=', $fechaInicio);
-		$this->db->where('fechaPago <=', $fechaFin);
+		$this->db->where('idMembresia', $data['idMembresia']);
+		$this->db->where('codigoSocio', $data['codigoSocio']);
+		$this->db->where('fechaPago >=', $data['fechaInicio']);
+		$this->db->where('fechaPago <=', $data['fechaFin']);
 
 		$query = $this->db->get();
 

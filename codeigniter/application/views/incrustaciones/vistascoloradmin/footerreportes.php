@@ -75,6 +75,7 @@
             <!-- Campos ocultos para almacenar el socio seleccionado -->
             <input type="hidden" id="codigoSocioSeleccionado" name="codigoSocioSeleccionado">
             <input type="hidden" id="nombreSocioSeleccionado" name="nombreSocioSeleccionado">
+            <input type="hidden" id="idMembresiaSeleccionado" name="idMembresiaSeleccionado">
           </form>
         </div>
       </div>
@@ -283,9 +284,7 @@ $(document).ready(function() {
       daysOfWeek: ["Do", "Lu", "Ma", "Mi", "Ju", "Vi", "Sa"],
       monthNames: ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"],
       firstDay: 1
-    },
-    startDate: moment().subtract(4, "days"),
-    endDate: moment()
+    }
   }, function(start, end) {
     // Actualizar las fechas en los inputs ocultos
     $('#fechaInicio').val(start.format('YYYY-MM-DD'));
@@ -361,7 +360,7 @@ $(document).ready(function() {
 
                       // Insertar cada resultado en la tabla y agregar evento de selección
                       socios.forEach(function(socio) {
-                          var fila = '<tr class="fila-socio" data-codigo="' + socio.codigoSocio + '" data-nombre="' + socio.nombre + '">' +
+                          var fila = '<tr class="fila-socio" data-codigo="' + socio.codigoSocio + '" data-nombre="' + socio.nombre + '" data-idmembresia="' + socio.idMembresia + '">' +
                               '<td>' + socio.nombre + '</td>' +
                               '<td>' + socio.codigoSocio + '</td>' +
                               '</tr>';
@@ -379,10 +378,18 @@ $(document).ready(function() {
                           // Almacenar los datos del socio seleccionado
                           var codigoSocio = $(this).data('codigo');
                           var nombreSocio = $(this).data('nombre');
+                          var idMembresia = $(this).data('idmembresia');
                           
                           // Guardar los datos seleccionados en campos ocultos o variables globales
                           $('#codigoSocioSeleccionado').val(codigoSocio);
                           $('#nombreSocioSeleccionado').val(nombreSocio);
+                          $('#idMembresiaSeleccionado').val(idMembresia);
+                          // Verificación de idMembresia en la consola
+                          console.log('Seleccionado idMembresia en clic:', idMembresia);
+
+                          // Depuración: Verificar los valores de los campos ocultos
+                          console.log('Código Socio seleccionado:', $('#codigoSocioSeleccionado').val());
+                          console.log('ID Membresia seleccionado:', $('#idMembresiaSeleccionado').val());
                       });
                   }
               }
@@ -392,18 +399,22 @@ $(document).ready(function() {
 
   // Enviar el formulario cuando se haga clic en "Previsualizar"
     $('#previsualizar').on('click', function() {
+
+      var tipoReporte = $('#modalPosBooking').data('reporte');
+
       var codigoSocio = $('#codigoSocioSeleccionado').val();
+      var idMembresia = $('#idMembresiaSeleccionado').val();
       var fechaInicio = $('#fechaInicio').val();
       var fechaFin = $('#fechaFin').val();
 
       // Validación de selección: verificar que no haya campos vacíos
-      if (!codigoSocio || !fechaInicio || !fechaFin) {
+      if (!codigoSocio || !idMembresia || !fechaInicio || !fechaFin) {
           alert('Por favor, complete todos los campos y seleccione un socio.');
           return;
       }
 
       // Depuración: Mostrar en la consola los datos que se enviarán
-      console.log('Datos enviados:', { codigoSocio, fechaInicio, fechaFin });
+      console.log('Datos enviados:', { codigoSocio, fechaInicio, fechaFin, idMembresia });
 
       // Enviar datos al backend para obtener el historial de pagos
       $.ajax({
@@ -411,6 +422,7 @@ $(document).ready(function() {
           type: 'POST',
           data: {
               codigoSocio: codigoSocio,
+              idMembresia: idMembresia,
               fechaInicio: fechaInicio,
               fechaFin: fechaFin
           },
@@ -426,20 +438,21 @@ $(document).ready(function() {
                   if (pagos && pagos.length > 0) {
                       // Limpiar y llenar la tabla de historial de pagos
                       $('#datatable').DataTable().clear();
+                      let meses = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
                       
                       let contador = 1; // Inicializar el contador
                       
                       pagos.forEach(function(pago) {
-                          $('#datatable').DataTable().row.add([
-                              contador++,  // Agregar el contador e incrementarlo
-                              pago.socio,
-                              pago.codigoSocio,
-                              pago.consumo,
-                              pago.totalPagado,
-                              pago.saldoPendiente,
-                              pago.fechaPago,
-                              pago.estado
-                          ]).draw();
+                        var fecha = new Date(pago.fechaLectura);
+                        var mesLiteralAno = meses[fecha.getMonth()] + " " + fecha.getFullYear();
+                         // Formatear pago.fechaPago para mostrar solo la fecha
+                        var fechaPago = new Date(pago.fechaPago).toLocaleDateString();
+                            $('#datatable').DataTable().row.add([
+                            contador++,  
+                            mesLiteralAno,  // Fecha formateada
+                            pago.totalPagado,
+                            fechaPago
+                        ]).draw();
                       });
                   } else {
                       alert('No se encontraron pagos para el rango de fechas seleccionado.');
@@ -468,22 +481,48 @@ $(document).ready(function() {
   document.getElementById('generarPDFBtn').addEventListener('click', function () {
       // Obtener los valores de los parámetros
       const codigoSocio = document.getElementById('codigoSocioSeleccionado').value;
+      const idMembresia = document.getElementById('idMembresiaSeleccionado').value;
+      const nombreSocio = document.getElementById('nombreSocioSeleccionado').value;
       const fechaInicio = document.getElementById('fechaInicio').value;
       const fechaFin = document.getElementById('fechaFin').value;
 
       // Verificar que todos los parámetros están completos
-      if (!codigoSocio || !fechaInicio || !fechaFin) {
-          alert('Por favor, completa todos los campos para generar el PDF.');
+      if (!codigoSocio || !fechaInicio || !fechaFin || !idMembresia) {
+          alert('Por favor, configura el reporte para generar el PDF.');
           return;
       }
 
-      // Construir la URL para generar el PDF
-      const url = `<?php echo base_url('index.php/reporte/generar_pdf'); ?>?codigoSocio=${codigoSocio}&fechaInicio=${fechaInicio}&fechaFin=${fechaFin}`;
+      // Crear un formulario en JavaScript
+      const form = document.createElement('form');
+      form.method = 'POST';
+      form.action = '<?php echo base_url('index.php/reporte/generar_pdf'); ?>';
+      form.target = '_blank';
 
-      // Redirigir a la URL para generar el PDF
-      window.open(url, '_blank');
+      // Crear inputs ocultos para enviar los datos
+      const inputs = [
+          { name: 'codigoSocio', value: codigoSocio },
+          { name: 'idMembresia', value: idMembresia },
+          { name: 'fechaInicio', value: fechaInicio },
+          { name: 'fechaFin', value: fechaFin }
+      ];
+
+      inputs.forEach(inputData => {
+          const input = document.createElement('input');
+          input.type = 'hidden';
+          input.name = inputData.name;
+          input.value = inputData.value;
+          form.appendChild(input);
+      });
+
+      // Agregar el formulario al documento y enviarlo
+      document.body.appendChild(form);
+      form.submit();
+
+      // Eliminar el formulario después de enviarlo
+      document.body.removeChild(form);
   });
 </script>
+
 
 
 

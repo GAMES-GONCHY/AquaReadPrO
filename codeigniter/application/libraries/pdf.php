@@ -10,6 +10,7 @@
 				// Mostrar el logotipo en la primera página
 				$rutaimg = base_url() . "coloradmin/assets/img/logo/logomenu.png";
 				$this->Image($rutaimg, 10, 6, 30); // Ajuste de posición (x = 10, y = 6, ancho = 30)
+
 			}
 		
 		}
