@@ -94,7 +94,10 @@
       <div class="col-xl-12">
         <div class="panel panel-inverse">
           <div class="panel-heading d-flex justify-content-between align-items-center">
-            <h4 class="panel-title">Reportes</h4>
+              <!-- Botón para Generar PDF -->
+            <a id="generarPDFBtn" class="btn btn-xs btn-success">
+              <i class="fa fa-file-pdf"></i> Generar PDF
+            </a>
             <div class="panel-heading-btn">
               <a href="javascript:;" class="btn btn-xs btn-icon btn-default" data-toggle="panel-expand"><i class="fa fa-expand"></i></a>
               <a href="javascript:;" class="btn btn-xs btn-icon btn-success" data-toggle="panel-reload"><i class="fa fa-redo"></i></a>
@@ -105,11 +108,12 @@
             <table id="datatable" class="table table-hover table-bordered align-middle" style="text-align: center;">
               <thead>
                 <tr>
-                  <th width="1%">socio</th>
-                  <th width="1%">codigoSocio</th>
-                  <th>consumo</th>
+                  <th width="1%">N°</th>
+                  <th>socio</th>
+                  <th width="5%">codigoSocio</th>
+                  <th width="5%">consumo</th>
                   <th>total</th>
-                  <th>saldo</th>
+                  <th width="5%">saldo</th>
                   <th>fechapago</th>
                   <th>estado</th>
                 </tr>
@@ -120,10 +124,11 @@
               <tfoot>
                 <tr>
                   <th width="1%">No.</th>
-                  <th>idreportepago</th>
-                  <th>consumo</th>
+                  <th>socio</th>
+                  <th width="5%">codigoSocio</th>
+                  <th width="5%">consumo</th>
                   <th>total</th>
-                  <th>saldo</th>
+                  <th width="5%">saldo</th>
                   <th>fechapago</th>
                   <th>estado</th>
                 </tr>

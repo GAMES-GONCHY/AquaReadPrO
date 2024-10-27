@@ -38,37 +38,20 @@ class Reporte_model extends CI_Model
 
 		if ($query->num_rows() > 0)
 		{
-			return $query->result();  // Retorna el primer resultado encontrado (un solo socio)
+			return $query->result();
 		}
 		else
 		{
-			return false;  // Si no se encuentra el socio
+			return false;
 		}
 	}
-	// public function obtener_reportes($criterio, $fechaInicio, $fechaFin)
-	// {
-	// 	$this->db->select('socio, codigoSocio, consumo, totalPagado, fechaPago, IFNULL(saldoPendiente, 0), estado');
-	// 	$this->db->from('reportepagos');
+	// 
 		
-	// 	// Filtra por código o apellido de socio
-	// 	$this->db->group_start();
-	// 	$this->db->like('socio', $criterio);
-	// 	$this->db->or_like('codigoSocio', $criterio);
-	// 	$this->db->group_end();
-		
-	// 	// Filtra por rango de fechas
-	// 	if ($fechaInicio && $fechaFin) {
-	// 		$this->db->where('fechaPago >=', $fechaInicio);
-	// 		$this->db->where('fechaPago <=', $fechaFin);
-	// 	}
-		
-	// 	$query = $this->db->get();
-	// 	return $query->result();
-	// }	
 	public function obtener_historial_pagos($codigoSocio, $fechaInicio, $fechaFin) 
 	{
 		$this->db->select('socio, codigoSocio, consumo, totalPagado, saldoPendiente, fechaPago, estado');
 		$this->db->from('reportepagos');
+		$this->db->where('estado', 'pagado');
 		$this->db->where('codigoSocio', $codigoSocio);
 		$this->db->where('fechaPago >=', $fechaInicio);
 		$this->db->where('fechaPago <=', $fechaFin);

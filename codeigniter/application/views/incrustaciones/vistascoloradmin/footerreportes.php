@@ -284,7 +284,7 @@ $(document).ready(function() {
       monthNames: ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"],
       firstDay: 1
     },
-    startDate: moment().subtract(29, "days"),
+    startDate: moment().subtract(4, "days"),
     endDate: moment()
   }, function(start, end) {
     // Actualizar las fechas en los inputs ocultos
@@ -407,7 +407,7 @@ $(document).ready(function() {
 
       // Enviar datos al backend para obtener el historial de pagos
       $.ajax({
-          url: '<?php echo base_url("index.php/reporte/obtener_historial_pagos"); ?>',  // Cambia esta URL según tu ruta
+          url: '<?php echo base_url("index.php/reporte/historial_pagos"); ?>',  // Cambia esta URL según tu ruta
           type: 'POST',
           data: {
               codigoSocio: codigoSocio,
@@ -426,8 +426,12 @@ $(document).ready(function() {
                   if (pagos && pagos.length > 0) {
                       // Limpiar y llenar la tabla de historial de pagos
                       $('#datatable').DataTable().clear();
+                      
+                      let contador = 1; // Inicializar el contador
+                      
                       pagos.forEach(function(pago) {
                           $('#datatable').DataTable().row.add([
+                              contador++,  // Agregar el contador e incrementarlo
                               pago.socio,
                               pago.codigoSocio,
                               pago.consumo,
@@ -456,8 +460,29 @@ $(document).ready(function() {
   });
 
 });
+</script>
 
 
+<!-- script para generar pdf -->
+<script>
+  document.getElementById('generarPDFBtn').addEventListener('click', function () {
+      // Obtener los valores de los parámetros
+      const codigoSocio = document.getElementById('codigoSocioSeleccionado').value;
+      const fechaInicio = document.getElementById('fechaInicio').value;
+      const fechaFin = document.getElementById('fechaFin').value;
+
+      // Verificar que todos los parámetros están completos
+      if (!codigoSocio || !fechaInicio || !fechaFin) {
+          alert('Por favor, completa todos los campos para generar el PDF.');
+          return;
+      }
+
+      // Construir la URL para generar el PDF
+      const url = `<?php echo base_url('index.php/reporte/generar_pdf'); ?>?codigoSocio=${codigoSocio}&fechaInicio=${fechaInicio}&fechaFin=${fechaFin}`;
+
+      // Redirigir a la URL para generar el PDF
+      window.open(url, '_blank');
+  });
 </script>
 
 
