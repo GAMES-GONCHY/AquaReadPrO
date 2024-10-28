@@ -533,7 +533,7 @@ $(document).ready(function() {
       // Crear un formulario en JavaScript
       const form = document.createElement('form');
       form.method = 'POST';
-      form.action = '<?php echo base_url('index.php/reporte/generar_pdf'); ?>';
+      form.action = '<?php echo base_url('index.php/reporte/generar_pdf_pago'); ?>';
       form.target = '_blank';
 
       // Crear inputs ocultos para enviar los datos

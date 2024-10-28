@@ -140,7 +140,7 @@ class Reporte extends CI_Controller
         // Retornar los datos como JSON con headers y data
         echo json_encode($response);
     }
-    public function generar_pdf()
+    public function generar_pdf_pago()
     {
         // Obtener los parámetros desde la solicitud
         $data['codigoSocio'] = $this->input->post('codigoSocio');
@@ -148,7 +148,119 @@ class Reporte extends CI_Controller
         $data['fechaInicio'] = $this->input->post('fechaInicio');
         $data['fechaFin'] = $this->input->post('fechaFin');
         $data['tipoReporte'] = $this->input->post('tipoReporte');
-        log_message('error', 'Tipo de reporte recibido en controlador: ' . $data['tipoReporte']);
+        log_message('info', 'Tipo de reporte recibido en controlador: ' . $data['tipoReporte']);
+        $socio = $this->input->post('nombreSocio');
+        
+        // Llamar al modelo para obtener el historial de pagos
+        $pagos = $this->reporte_model->obtener_datos_historicos($data);
+    
+        // Crear la instancia de PDF y configurar la orientación y márgenes
+        $pdf = new Pdf('P', 'mm', 'Letter');
+        $pdf->AliasNbPages();
+        $pdf->SetLeftMargin(20);
+        $pdf->AddPage();
+        
+        // Encabezado principal
+        $pdf->SetFillColor(200, 200, 200);
+        $pdf->SetTextColor(0, 0, 0);
+        $pdf->SetFont('Arial', 'B', 16);
+    
+        // Calcular el ancho disponible para la celda
+        $pageWidth = $pdf->GetPageWidth();
+        $margenIzquierdo = 45; // Ajuste para desplazar la tabla más hacia la derecha
+        $margenDerecho = 30;
+        $anchoDisponible = $pageWidth - $margenIzquierdo - $margenDerecho;
+    
+        // Centrar el texto usando el ancho disponible
+        $pdf->SetX($margenIzquierdo);
+        $pdf->Cell($anchoDisponible, 15, utf8_decode('Historial de Pagos'), 0, 1, 'C', true);
+        $pdf->Ln(5);
+    
+        // Subtítulo "AquaReadPro"
+        $pdf->SetFont('Arial', 'B', 12);
+        $pdf->SetY(25);
+        $pdf->SetX(10);
+        $pdf->Cell(50, 10, 'AquaReadPro', 0, 1, 'L');
+        $pdf->Ln(5);
+    
+        // Detalles del socio y periodo
+        $pdf->SetTextColor(0, 0, 0);
+        $pdf->SetFont('Arial', '', 10);
+        $pdf->SetY(50);
+        $pdf->SetX($margenIzquierdo);
+        $pdf->Cell(0, 5, utf8_decode('Código: ') . $data['codigoSocio'], 0, 1, 'L');
+        $pdf->SetX($margenIzquierdo);
+        $pdf->Cell(0, 5, utf8_decode('Socio: ') . $socio, 0, 1, 'L');
+    
+        // Formateo de fechas con mes en literal en español
+        $fmt = new IntlDateFormatter('es_ES', IntlDateFormatter::LONG, IntlDateFormatter::NONE);
+        $fmt->setPattern("MMMM '-' y");
+    
+        $fechaInicioFormateada = $fmt->format(new DateTime($data['fechaInicio']));
+        $fechaFinFormateada = $fmt->format(new DateTime($data['fechaFin']));
+        $pdf->SetX($margenIzquierdo);
+        $pdf->Cell(0, 5, 'Periodo: ' . $fechaInicioFormateada . ' al ' . $fechaFinFormateada, 0, 1, 'L');
+        $pdf->SetX($margenIzquierdo);
+        $pdf->Cell(0, 5, utf8_decode('Fecha de emisión: ') . date('d/m/Y'), 0, 1, 'L');
+        $pdf->Ln(10);
+    
+        // Configuración de la tabla y centrado horizontal
+        $tableStartX = $margenIzquierdo; // Usar el mismo margen para la tabla
+    
+        // Encabezado de la tabla
+        $pdf->SetFont('Arial', 'B', 10);
+        $pdf->SetFillColor(220, 220, 220);
+        $pdf->SetX($tableStartX);
+        $pdf->Cell(10, 10, '#', 0, 0, 'C', true);
+        $pdf->Cell(40, 10, utf8_decode('Mes - Año'), 0, 0, 'C', true);
+        $pdf->Cell(40, 10, 'Total Pagado', 0, 0, 'C', true);
+        $pdf->Cell(40, 10, 'Fecha Pago', 0, 1, 'C', true);
+    
+        // Datos de la tabla
+        $pdf->SetFont('Arial', '', 10);
+        $pdf->SetFillColor(240, 240, 240);
+        $fill = false;
+        $totalPagado = 0;
+        $contador = 1;
+    
+        $meses = ["enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"];
+    
+        foreach ($pagos as $pago) {
+            $pdf->SetX($tableStartX);
+            $pdf->Cell(10, 10, $contador++, 0, 0, 'C', $fill);
+    
+            $fechaLectura = strtotime($pago['fechaLectura']);
+            $mesLiteral = $meses[date('n', $fechaLectura) - 1];
+            $anio = date('Y', $fechaLectura);
+    
+            $pdf->Cell(40, 10, ucfirst($mesLiteral) . ' ' . $anio, 0, 0, 'C', $fill);
+            $pdf->Cell(40, 10, number_format($pago['totalPagado'], 2), 0, 0, 'C', $fill);
+            $pdf->Cell(40, 10, date('d/m/Y', strtotime($pago['fechaPago'])), 0, 1, 'C', $fill);
+            $totalPagado += $pago['totalPagado'];
+            $fill = !$fill;
+        }
+    
+        // Fila de Totales
+        $pdf->SetX($tableStartX);
+        $pdf->SetFont('Arial', 'B', 10);
+        $pdf->SetFillColor(220, 220, 220);
+        $pdf->Cell(10, 8, '', 0, 0, 'C', true);
+        $pdf->Cell(40, 8, 'Totales:', 0, 0, 'L', true);
+        $pdf->Cell(40, 8, number_format($totalPagado, 2), 0, 0, 'C', true);
+        $pdf->Cell(40, 8, '', 0, 1, 'C', true);
+    
+        // Salida del PDF
+        $pdf->Output('Historial_Pagos_' . $data['codigoSocio'] . '.pdf', 'I');
+    }
+    public function generar_pdf_consumo()
+    {
+        // Obtener los parámetros desde la solicitud
+        $data['codigoSocio'] = $this->input->post('codigoSocio');
+        $data['idMembresia'] = $this->input->post('idMembresia');
+        $data['fechaInicio'] = $this->input->post('fechaInicio');
+        $data['fechaFin'] = $this->input->post('fechaFin');
+        $data['tipoReporte'] = $this->input->post('tipoReporte');
+        log_message('info', 'Tipo de reporte recibido en controlador: ' . $data['tipoReporte']);
         $socio = $this->input->post('nombreSocio');
         
         // Llamar al modelo para obtener el historial de pagos
