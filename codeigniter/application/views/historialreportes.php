@@ -38,11 +38,11 @@
 
     <!-- Button 4: Historial de Avisos Pendientes -->
     <div class="col-xl-2 col-md-6">
-      <a href="#" data-bs-toggle="modal" data-bs-target="#modalPosBooking" data-reporte="avisos" data-title="Historial de avisos Pendientes" class="table-booking">
+      <a href="#" data-bs-toggle="modal" data-bs-target="#modalPosBooking" data-reporte="avisos" data-title="Historial de avisos Vencidos - Rechazados" class="table-booking">
         <div class="widget widget-stats bg-gradient-green">
           <div class="stats-icon stats-icon-lg"><i class="fa fa-comment-alt fa-fw"></i></div>
           <div class="stats-content">
-            <div class="stats-title">HISTORIAL DE AVISOS PENDIENTES</div>
+            <div class="stats-title">AVISOS VENCIDOS - RECHAZADOS</div>
             <div class="stats-number">3,988</div>
             <div class="stats-progress progress">
               <div class="progress-bar" style="width: 54.9%;"></div>

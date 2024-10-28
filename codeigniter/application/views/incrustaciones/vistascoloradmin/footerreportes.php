@@ -31,6 +31,7 @@
           <form id="formReporte" class="form-horizontal form-bordered">
             <div class="row">
               <div class="col-lg-6">
+                
                 <!-- Código Usuario -->
                 <div class="form-group row">
                   <label class="form-label col-form-label col-lg-4">Socio</label>
@@ -50,6 +51,10 @@
                     <input type="hidden" id="fechaInicio" name="fechaInicio">
                     <input type="hidden" id="fechaFin" name="fechaFin">
                   </div>
+                </div>
+                <!-- Contenedor de mensaje para cuando no se encuentran registros -->
+                <div id="mensajeSinRegistros" style="display: none; color: #dc3545; font-weight: bold; text-align: center;">
+                    No se encontraron registros para el rango de fechas seleccionado. Favor seleccione un rango de fechas diferente.
                 </div>
               </div>
 
@@ -296,14 +301,27 @@ $(document).ready(function() {
     $("#advance-daterange span").html(start.format('DD/MM/YYYY') + " a " + end.format('DD/MM/YYYY'));
   });
 
-  // Actualización del título del modal al hacer clic en los botones
+  // Actualización del título del modal y configuración de `data-reporte` al hacer clic en las tarjetas
   $('.table-booking').on('click', function() {
-    var tipoReporte = $(this).data('reporte'); 
-    //window.tipoReporte = $(this).data('reporte'); // Obtener `data-reporte` de la tarjeta
-    $('#modalPosBooking').data('reporte', tipoReporte);  // Establecer `data-reporte` en el modal
-    var title = $(this).data('title');
-    $('#modalPosBooking .modal-title').text(title);
+      var tipoReporte = $(this).data('reporte'); 
+      $('#modalPosBooking').data('reporte', tipoReporte);  // Establecer `data-reporte` en el modal
+      var title = $(this).data('title');
+      $('#modalPosBooking .modal-title').text(title);
+
+      console.log('Tipo de reporte:', tipoReporte);
+
+      // Ajustar el campo `criterio` según el tipo de reporte antes de abrir el modal
+      if (tipoReporte == "avisos") {
+          $('#criterio').removeAttr('required'); // Campo no obligatorio para "avisos vencidos"
+          console.log('Campo criterio no es obligatorio');
+      } else {
+          $('#criterio').attr('required', 'required'); // Campo obligatorio para otros reportes
+      }
+
+      // Abrir el modal después de la configuración
+      $('#modalPosBooking').modal('show');
   });
+
   
   // Actualizar el ID del formulario a 'formReporte' en el evento 'show.bs.modal'
   $('#modalPosBooking').on('show.bs.modal', function () {
@@ -315,6 +333,9 @@ $(document).ready(function() {
     $('#fechaFin').val('');
     $('#socioValido').hide();  // Ocultar icono de validación
     $('#resultadosBusqueda').hide();  // Ocultar resultados
+
+    // Ocultar el mensaje de "No se encontraron registros" al mostrar el modal
+    $('#mensajeSinRegistros').hide();
   });
 
   
@@ -404,110 +425,102 @@ $(document).ready(function() {
       }
   }
 
-  // Enviar el formulario cuando se haga clic en "Previsualizar"
-    $('#previsualizar').on('click', function() {
+  $('#previsualizar').on('click', function(e) {
+    e.preventDefault(); // Evitar el envío automático
 
-      var tipoReporte = $('#modalPosBooking').data('reporte');
-      console.log('Tipo de reporte antes de enviar el formulario:', tipoReporte);
-      window.tipoReporte = tipoReporte;
+    var tipoReporte = $('#modalPosBooking').data('reporte');
+    console.log('Tipo de reporte antes de enviar el formulario:', tipoReporte);
+    window.tipoReporte = tipoReporte;
+    var codigoSocio = $('#codigoSocioSeleccionado').val();
+    var idMembresia = $('#idMembresiaSeleccionado').val();
+    var fechaInicio = $('#fechaInicio').val();
+    var fechaFin = $('#fechaFin').val();
 
+    // Ocultar el mensaje de "No se encontraron registros" antes de cada nueva consulta
+    $('#mensajeSinRegistros').hide();
 
-      var codigoSocio = $('#codigoSocioSeleccionado').val();
-      var idMembresia = $('#idMembresiaSeleccionado').val();
-      var fechaInicio = $('#fechaInicio').val();
-      var fechaFin = $('#fechaFin').val();
+    // Validación de selección: verificar campos vacíos según el tipo de reporte
+    if (!fechaInicio || !fechaFin || (tipoReporte !== "avisos" && (!codigoSocio || !idMembresia))) {
+        alert('Por favor, complete todos los campos y seleccione un socio.');
+        return;
+    }
 
-      // Validación de selección: verificar que no haya campos vacíos
-      if (!codigoSocio || !idMembresia || !fechaInicio || !fechaFin) {
-          alert('Por favor, complete todos los campos y seleccione un socio.');
-          return;
-      }
+    // Depuración: Mostrar en la consola los datos que se enviarán
+    console.log('Datos enviados:', { tipoReporte, codigoSocio, fechaInicio, fechaFin, idMembresia });
 
-      // Depuración: Mostrar en la consola los datos que se enviarán
-      console.log('Datos enviados:', { tipoReporte, codigoSocio, fechaInicio, fechaFin, idMembresia });
-
-      // Enviar datos al backend para obtener el historial de pagos
-      $.ajax({
-          url: '<?php echo base_url("index.php/reporte/obtener_reporte"); ?>',  // Cambia esta URL según tu ruta
-          type: 'POST',
-          data: {
-              tipoReporte: tipoReporte,
-              codigoSocio: codigoSocio,
-              idMembresia: idMembresia,
-              fechaInicio: fechaInicio,
-              fechaFin: fechaFin
-          },
-          success: function(response) {
-            // Depuración: Verificar la respuesta recibida del servidor
+    // Enviar datos al backend para obtener el historial de pagos
+    $.ajax({
+        url: '<?php echo base_url("index.php/reporte/obtener_reporte"); ?>',  // Cambia esta URL según tu ruta
+        type: 'POST',
+        data: {
+            tipoReporte: tipoReporte,
+            codigoSocio: codigoSocio,
+            idMembresia: idMembresia,
+            fechaInicio: fechaInicio,
+            fechaFin: fechaFin
+        },
+        success: function(response) {
             console.log('Respuesta recibida:', response);
-
-            // Intentar analizar la respuesta JSON
             try {
-              var datosReporte = JSON.parse(response);  // Cambiamos `pagos` por `datosReporte` para manejar la estructura completa de JSON
+                var datosReporte = JSON.parse(response);
 
-              // Verificar si la respuesta tiene contenido en `data`
-              if (datosReporte.data && datosReporte.data.length > 0) {
-                // Limpiar y llenar la tabla de historial de pagos
-                $('#datatable').DataTable().clear();
-                $('#datatable').DataTable().columns().header().to$().each(function(index, element)
-                {
-                  $(element).text(datosReporte.headers[index]);
-                });
+                if (datosReporte.data && datosReporte.data.length > 0) {
+                    $('#mensajeSinRegistros').hide();  // Ocultar el mensaje de "sin registros"
+                    $('#datatable').DataTable().clear();
+                    $('#datatable').DataTable().columns().header().to$().each(function(index, element) {
+                        $(element).text(datosReporte.headers[index]);
+                    });
 
-                // Declaración del arreglo de meses y contador
-                let meses = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
-                let contador = 1; // Inicializar el contador
+                    let meses = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
+                    let contador = 1;
 
-                // Llenar la tabla con los datos según el tipo de reporte
-                datosReporte.data.forEach(function(fila) {
-                    if (tipoReporte == 'pagos') {
-                        // Formateo de "Mes - Año" para pagos
-                        var fechaLectura = new Date(fila[1]);
-                        var mesLiteralAno = meses[fechaLectura.getMonth()] + " " + fechaLectura.getFullYear();
+                    datosReporte.data.forEach(function(fila) {
+                        if (tipoReporte == 'pagos') {
+                            var fechaLectura = new Date(fila[1]);
+                            var mesLiteralAno = meses[fechaLectura.getMonth()] + " " + fechaLectura.getFullYear();
+                            var fechaPago = new Date(fila[3]).toLocaleDateString();
 
-                        // Formatear la fecha de pago para mostrar solo día, mes y año
-                        var fechaPago = new Date(fila[3]).toLocaleDateString();
+                            $('#datatable').DataTable().row.add([
+                                contador++,
+                                mesLiteralAno,
+                                fila[2],
+                                fechaPago
+                            ]).draw();
+                        } else if (tipoReporte == 'consumos') {
+                            var fechaLecturaConsumo = new Date(fila[1]);
+                            var mesLiteralAnoConsumo = meses[fechaLecturaConsumo.getMonth()] + " " + fechaLecturaConsumo.getFullYear();
 
-                        // Agregar la fila a la tabla con el formato específico para pagos
-                        $('#datatable').DataTable().row.add([
-                            contador++,      // Número secuencial
-                            mesLiteralAno,   // Mes - Año formateado
-                            fila[2],         // Total [Bs.]
-                            fechaPago        // Fecha pago formateada
-                        ]).draw();
-                    } else if (tipoReporte == 'consumos') {
-                        // Formateo de "Mes - Año" para consumos
-                        var fechaLecturaConsumo = new Date(fila[1]);
-                        var mesLiteralAnoConsumo = meses[fechaLecturaConsumo.getMonth()] + " " + fechaLecturaConsumo.getFullYear();
+                            $('#datatable').DataTable().row.add([
+                                contador++,
+                                mesLiteralAnoConsumo,
+                                fila[2],
+                                fila[3]
+                            ]).draw();
+                        }
+                    });
 
-                        // Agregar la fila a la tabla con el formato específico para consumos
-                        $('#datatable').DataTable().row.add([
-                            contador++,          // Número secuencial
-                            mesLiteralAnoConsumo, // Mes - Año formateado
-                            fila[2],             // Consumo [m3]
-                            fila[3]              // Observación
-                        ]).draw();
-                    }
-                });
-                // Cerrar el modal
-                $('#modalPosBooking').modal('hide');
-            } else {
-                alert('No se encontraron registros para el rango de fechas seleccionado.');
-            }
+                    $('#modalPosBooking').modal('hide');
+                } else {
+                    // Mostrar mensaje en el modal cuando no hay registros y agregar animación
+                    $('#mensajeSinRegistros').fadeIn(300).delay(200).fadeOut(200).fadeIn(300); // Breve animación para llamar la atención
+                    $('#datatable').DataTable().clear().draw();
+                }
 
             } catch (error) {
-                  console.error('Error al interpretar la respuesta:', error);
-                  alert('Ocurrió un error al interpretar los datos del servidor.');
-              }
-          },
-          error: function(xhr, status, error) {
-              // Manejo de errores de la solicitud AJAX
-              console.error('Error en la solicitud AJAX:', error);
-              console.error('Detalles del error:', xhr.responseText);
-              alert('Ocurrió un error al obtener el reporte. Intente nuevamente.');
-          }
-      });
-  });
+                console.error('Error al interpretar la respuesta:', error);
+                alert('Ocurrió un error al interpretar los datos del servidor.');
+            }
+        },
+        error: function(xhr, status, error) {
+            console.error('Error en la solicitud AJAX:', error);
+            console.error('Detalles del error:', xhr.responseText);
+            alert('Ocurrió un error al obtener el reporte. Intente nuevamente.');
+        }
+    });
+});
+
+
+
 });
 </script>
 
