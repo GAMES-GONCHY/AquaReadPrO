@@ -47,6 +47,99 @@ class Reporte extends CI_Controller
         // Retorna los datos como JSON
         echo json_encode($historialPagos);
     }
+    public function obtener_reporte() 
+    {
+        $tipoReporte = $this->input->post('tipoReporte');
+        $data['codigoSocio'] = $this->input->post('codigoSocio');
+        $data['idMembresia'] = $this->input->post('idMembresia');
+        $data['fechaInicio'] = $this->input->post('fechaInicio');
+        $data['fechaFin'] = $this->input->post('fechaFin');
+        $data['tipoReporte'] = $this->input->post('tipoReporte');
+        $response = [];
+
+        if ($tipoReporte == 'pagos')
+        {
+            // Definir encabezados para "pagos"
+            $response['headers'] = ["No.", "Mes - Año", "Total [Bs.]", "Fecha pago"];
+
+            // Obtener datos del modelo
+            $historialPagos = $this->reporte_model->obtener_datos_historicos($data);
+
+            if (!empty($historialPagos))
+            {
+                // Formatear datos para la respuesta JSON
+                $response['data'] = array_map(function($pago, $index)
+                {
+                    return [
+                        $index + 1, // Número de fila
+                        $pago['fechaLectura'], // Ejemplo: "Mayo 2024"
+                        $pago['totalPagado'], // Ejemplo: "80.00"
+                        $pago['fechaPago'] // Ejemplo: "25/10/2024"
+                    ];
+                }, $historialPagos, array_keys($historialPagos));
+            } 
+            else
+            {
+                $response['data'] = []; // Si no hay datos, devolvemos un arreglo vacío
+            }
+        }
+        elseif ($tipoReporte == 'consumos')
+        {
+            // Definir encabezados para "consumos"
+            $response['headers'] = ["No.", "Mes - Año", "Consumo [m3]", "Observación"];
+
+             // Obtener datos del modelo
+            $historialConsumos = $this->reporte_model->obtener_datos_historicos($data);
+
+            if (!empty($historialConsumos))
+            {
+                // Formatear datos para la respuesta JSON
+                $response['data'] = array_map(function($consumo, $index)
+                {
+                    return [
+                        $index + 1, // Número de fila
+                        $consumo['fechaLectura'], // Ejemplo: "Mayo 2024"
+                        $consumo['consumo'], // Ejemplo: "180.00"
+                        $consumo['observacion']
+                    ];
+                }, $historialConsumos, array_keys($historialConsumos));
+            }
+            else
+            {
+                $response['data'] = [];
+            }
+        }
+        // else
+        // {
+        //     // Definir encabezados para "avisos"
+        //     $response['headers'] = ["No.", "Mes - Año", "Saldo", "estado", "Fecha Vencimiento"];
+
+        //      // Obtener datos del modelo
+        //     //$historialAvisos = $this->reporte_model->obtener_historial_avisos($data);
+
+        //     if (!empty($historialAvisos))
+        //     {
+        //         // Formatear datos para la respuesta JSON
+        //         $response['data'] = array_map(function($aviso, $index)
+        //         {
+        //             return [
+        //                 $index + 1, // Número de fila
+        //                 $aviso['mes_anio'], // Ejemplo: "Mayo 2024"
+        //                 $aviso['saldo'], // Saldo pendiente
+        //                 $aviso['estado'], // Estado del aviso
+        //                 $aviso['fecha_vencimiento'], // Fecha de vencimiento
+        //             ];
+        //         }, $historialAvisos, array_keys($historialAvisos));
+        //     } 
+        //     else
+        //     {
+        //         $response['data'] = [];
+        //     }
+        // }
+        
+        // Retornar los datos como JSON con headers y data
+        echo json_encode($response);
+    }
     public function generar_pdf()
     {
         // Obtener los parámetros desde la solicitud
@@ -54,10 +147,12 @@ class Reporte extends CI_Controller
         $data['idMembresia'] = $this->input->post('idMembresia');
         $data['fechaInicio'] = $this->input->post('fechaInicio');
         $data['fechaFin'] = $this->input->post('fechaFin');
+        $data['tipoReporte'] = $this->input->post('tipoReporte');
+        log_message('error', 'Tipo de reporte recibido en controlador: ' . $data['tipoReporte']);
         $socio = $this->input->post('nombreSocio');
         
         // Llamar al modelo para obtener el historial de pagos
-        $pagos = $this->reporte_model->obtener_historial_pagos($data);
+        $pagos = $this->reporte_model->obtener_datos_historicos($data);
     
         // Crear la instancia de PDF y configurar la orientación y márgenes
         $pdf = new Pdf('P', 'mm', 'Letter');
@@ -134,14 +229,14 @@ class Reporte extends CI_Controller
             $pdf->SetX($tableStartX);
             $pdf->Cell(10, 10, $contador++, 0, 0, 'C', $fill);
     
-            $fechaLectura = strtotime($pago->fechaLectura);
+            $fechaLectura = strtotime($pago['fechaLectura']);
             $mesLiteral = $meses[date('n', $fechaLectura) - 1];
             $anio = date('Y', $fechaLectura);
     
             $pdf->Cell(40, 10, ucfirst($mesLiteral) . ' ' . $anio, 0, 0, 'C', $fill);
-            $pdf->Cell(40, 10, number_format($pago->totalPagado, 2), 0, 0, 'C', $fill);
-            $pdf->Cell(40, 10, date('d/m/Y', strtotime($pago->fechaPago)), 0, 1, 'C', $fill);
-            $totalPagado += $pago->totalPagado;
+            $pdf->Cell(40, 10, number_format($pago['totalPagado'], 2), 0, 0, 'C', $fill);
+            $pdf->Cell(40, 10, date('d/m/Y', strtotime($pago['fechaPago'])), 0, 1, 'C', $fill);
+            $totalPagado += $pago['totalPagado'];
             $fill = !$fill;
         }
     
@@ -157,5 +252,6 @@ class Reporte extends CI_Controller
         // Salida del PDF
         $pdf->Output('Historial_Pagos_' . $data['codigoSocio'] . '.pdf', 'I');
     }
+    
     
 }

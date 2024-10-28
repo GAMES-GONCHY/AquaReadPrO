@@ -47,11 +47,20 @@ class Reporte_model extends CI_Model
 	}
 	// 
 		
-	public function obtener_historial_pagos($data) 
+	public function obtener_datos_historicos($data) 
 	{
-		$this->db->select('socio, totalPagado, fechaLectura, fechaPago');
-		$this->db->from('reportepagos');
-		$this->db->where('estado', 'pagado');
+		$this->db->select('socio, totalPagado, fechaLectura, fechaPago, consumo, observacion');
+		$this->db->from('reportepagosconsumos');
+
+		// Condición de estado según el tipo de reporte
+		if ($data['tipoReporte'] == 'pagos')
+		{
+			$this->db->where('estado', 'pagado');  // Historial de pagos: estado = 'pagado'
+		}
+		elseif ($data['tipoReporte'] == 'consumos')
+		{
+			$this->db->where('estado !=', 'deshabilitado');  // Historial de consumos: estado distinto de 'deshabilitado'
+		}
 		$this->db->where('idMembresia', $data['idMembresia']);
 		$this->db->where('codigoSocio', $data['codigoSocio']);
 		$this->db->where('fechaPago >=', $data['fechaInicio']);
@@ -61,7 +70,7 @@ class Reporte_model extends CI_Model
 
 		// Retorna los resultados como un array de objetos
 		if ($query->num_rows() > 0) {
-			return $query->result();
+			return $query->result_array(); 
 		} else {
 			return [];
 		}
