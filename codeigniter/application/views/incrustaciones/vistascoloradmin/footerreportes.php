@@ -425,12 +425,14 @@ $(document).ready(function() {
       }
   }
 
-  $('#previsualizar').on('click', function(e) {
+// Enviar el formulario cuando se haga clic en "Previsualizar"
+$('#previsualizar').on('click', function(e) {
     e.preventDefault(); // Evitar el envío automático
 
     var tipoReporte = $('#modalPosBooking').data('reporte');
     console.log('Tipo de reporte antes de enviar el formulario:', tipoReporte);
     window.tipoReporte = tipoReporte;
+
     var codigoSocio = $('#codigoSocioSeleccionado').val();
     var idMembresia = $('#idMembresiaSeleccionado').val();
     var fechaInicio = $('#fechaInicio').val();
@@ -448,7 +450,7 @@ $(document).ready(function() {
     // Depuración: Mostrar en la consola los datos que se enviarán
     console.log('Datos enviados:', { tipoReporte, codigoSocio, fechaInicio, fechaFin, idMembresia });
 
-    // Enviar datos al backend para obtener el historial de pagos
+    // Enviar datos al backend para obtener el historial de pagos, consumos o avisos
     $.ajax({
         url: '<?php echo base_url("index.php/reporte/obtener_reporte"); ?>',  // Cambia esta URL según tu ruta
         type: 'POST',
@@ -461,6 +463,7 @@ $(document).ready(function() {
         },
         success: function(response) {
             console.log('Respuesta recibida:', response);
+
             try {
                 var datosReporte = JSON.parse(response);
 
@@ -474,8 +477,10 @@ $(document).ready(function() {
                     let meses = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
                     let contador = 1;
 
+                    // Llenar la tabla con los datos según el tipo de reporte
                     datosReporte.data.forEach(function(fila) {
                         if (tipoReporte == 'pagos') {
+                            // Formato para pagos
                             var fechaLectura = new Date(fila[1]);
                             var mesLiteralAno = meses[fechaLectura.getMonth()] + " " + fechaLectura.getFullYear();
                             var fechaPago = new Date(fila[3]).toLocaleDateString();
@@ -487,14 +492,31 @@ $(document).ready(function() {
                                 fechaPago
                             ]).draw();
                         } else if (tipoReporte == 'consumos') {
+                            // Formato para consumos
                             var fechaLecturaConsumo = new Date(fila[1]);
                             var mesLiteralAnoConsumo = meses[fechaLecturaConsumo.getMonth()] + " " + fechaLecturaConsumo.getFullYear();
 
                             $('#datatable').DataTable().row.add([
                                 contador++,
                                 mesLiteralAnoConsumo,
-                                fila[2],
+                                parseFloat(fila[2]).toFixed(2),  // Formatear a dos decimales
                                 fila[3]
+                            ]).draw();
+                        } else if (tipoReporte == 'avisos') {
+                            // Formato específico para avisos
+                            var socio = fila[0];             // Nombre del socio
+                            var codigoSocio = fila[7];       // Código del socio
+                            var fechaLectura = new Date(fila[2]);
+                            var mesLiteralAnoLectura = meses[fechaLectura.getMonth()] + " " + fechaLectura.getFullYear(); // Formato literal
+                            var estado = fila[6];            // Estado del aviso
+
+                            // Añadir la fila al DataTable
+                            $('#datatable').DataTable().row.add([
+                                contador++,
+                                socio,
+                                codigoSocio,
+                                mesLiteralAnoLectura,
+                                estado
                             ]).draw();
                         }
                     });
@@ -518,6 +540,7 @@ $(document).ready(function() {
         }
     });
 });
+
 
 
 

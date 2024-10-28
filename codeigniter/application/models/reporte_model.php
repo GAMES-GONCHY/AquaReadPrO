@@ -49,7 +49,7 @@ class Reporte_model extends CI_Model
 		
 	public function obtener_datos_historicos($data) 
 	{
-		$this->db->select('socio, totalPagado, fechaLectura, fechaPago, consumo, observacion');
+		$this->db->select('socio, totalPagado, fechaLectura, fechaPago, consumo, observacion, estado, codigoSocio');
 		$this->db->from('reportepagosconsumos');
 
 		// Condición de estado según el tipo de reporte
@@ -69,6 +69,38 @@ class Reporte_model extends CI_Model
 		$query = $this->db->get();
 
 		// Retorna los resultados como un array de objetos
+		if ($query->num_rows() > 0) {
+			return $query->result_array(); 
+		} else {
+			return [];
+		}
+	}
+	public function historial_consumo($data)
+	{
+		// Construir consulta con Active Record en CodeIgniter
+		$this->db->select("CONCAT_WS(' ', U.nombre, U.primerApellido, IFNULL(U.segundoApellido, '')) AS socio", FALSE);
+		$this->db->select('(L.lecturaActual - L.lecturaAnterior)/100 AS consumo', FALSE);
+		$this->db->select('ME.codigoSocio, L.fechaLectura');
+		$this->db->select("
+			CASE
+				WHEN (L.lecturaActual - L.lecturaAnterior) < 10 THEN 'Consumo mínimo'
+				WHEN (L.lecturaActual - L.lecturaAnterior) < 20 THEN 'Consumo moderado'
+				WHEN (L.lecturaActual - L.lecturaAnterior) < 30 THEN 'Estándar'
+				WHEN (L.lecturaActual - L.lecturaAnterior) < 40 THEN 'Consumo alto'
+				ELSE 'Consumo muy alto'
+			END AS observacion", FALSE);
+		$this->db->from('avisocobranza A');
+		$this->db->join('lectura L', 'A.idLectura = L.idLectura', 'inner');
+		$this->db->join('medidor M', 'L.idMedidor = M.idMedidor', 'inner');
+		$this->db->join('membresia ME', 'M.idMembresia = ME.idMembresia', 'inner');
+		$this->db->join('usuario U', 'ME.idUsuario = U.idUsuario', 'inner');
+		$this->db->where('ME.idMembresia', $data['idMembresia']);
+		$this->db->where('A.estado <>', 'deshabilitado');
+		$this->db->where('L.fechaLectura >=', $data['fechaInicio']);
+		$this->db->where('L.fechaLectura <=', $data['fechaFin']);
+
+		$query = $this->db->get();
+
 		if ($query->num_rows() > 0) {
 			return $query->result_array(); 
 		} else {

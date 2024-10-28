@@ -113,8 +113,8 @@
 											'<?php echo $aviso['nombreSocio']; ?>',
 											'<?php echo $mes; ?>',
 											'<?php echo $consumo; ?>',
-											'<?php echo $aviso['lecturaActual']; ?>',
-											'<?php echo $aviso['lecturaAnterior']; ?>',
+											'<?php echo ($aviso['lecturaActual'])*100; ?>',
+											'<?php echo ($aviso['lecturaAnterior'])*100; ?>',
 											'<?php echo $fechaLectura; ?>',
 											'<?php echo $fechaLecturaAnterior; ?>',
 

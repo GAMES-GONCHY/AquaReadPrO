@@ -7,7 +7,7 @@ class Avisocobranza_model extends CI_Model
     public function avisos_por_estado($estado)
     {
         $this->db->select('A.fechaVencimiento, A.idAviso, A.estado, A.fechaPago, A.saldo, A.fechaActualizacion, T.tarifaMinima, T.tarifaVigente, Q.img,
-                L.lecturaAnterior, L.lecturaActual, L.fechaLectura, 
+                (L.lecturaAnterior)/100 AS lecturaAnterior, (L.lecturaActual)/100 AS lecturaActual, L.fechaLectura, 
                 IFNULL((SELECT L2.fechaLectura 
                         FROM lectura L2 
                         INNER JOIN medidor M2 ON L2.idMedidor = M2.idMedidor
@@ -16,7 +16,7 @@ class Avisocobranza_model extends CI_Model
                         AND MONTH(L2.fechaLectura) = MONTH(DATE_SUB(L.fechaLectura, INTERVAL 1 MONTH))), 
                         L.fechaLectura) AS fechaLecturaAnterior, 
                 ME.codigoSocio, 
-                CONCAT(U.nombre, " ", U.primerApellido, " ", IFNULL(U.segundoApellido, "")) AS nombreSocio');
+                CONCAT(U.nombre, " ", U.primerApellido, " ", IFNULL(U.segundoApellido, "")) AS nombreSocio',FALSE);
         $this->db->from('avisoCobranza A');
         $this->db->join('qr Q', 'A.idQr = Q.idQr', 'inner');
         $this->db->join('tarifa T', 'A.idTarifa = T.idTarifa', 'inner');
@@ -64,7 +64,7 @@ class Avisocobranza_model extends CI_Model
     public function avisos_por_estado_id($estado, $idUsuario)
     {
         $this->db->select('A.fechaVencimiento, A.idAviso, A.estado, A.fechaPago, A.saldo, T.tarifaMinima, T.tarifaVigente, Q.img,
-                L.lecturaAnterior, L.lecturaActual, L.fechaLectura, 
+                (L.lecturaAnterior)/100 AS lecturaAnterior, (L.lecturaActual)/100 AS lecturaActual, L.fechaLectura, 
                 IFNULL((SELECT L2.fechaLectura 
                         FROM lectura L2 
                         INNER JOIN medidor M2 ON L2.idMedidor = M2.idMedidor
@@ -73,7 +73,7 @@ class Avisocobranza_model extends CI_Model
                         AND MONTH(L2.fechaLectura) = MONTH(DATE_SUB(L.fechaLectura, INTERVAL 1 MONTH))), 
                         L.fechaLectura) AS fechaLecturaAnterior, 
                 ME.codigoSocio, 
-                CONCAT(U.nombre, " ", U.primerApellido, " ", IFNULL(U.segundoApellido, "")) AS nombreSocio');
+                CONCAT(U.nombre, " ", U.primerApellido, " ", IFNULL(U.segundoApellido, "")) AS nombreSocio',FALSE);
         $this->db->from('avisoCobranza A');
         $this->db->join('qr Q', 'A.idQr = Q.idQr', 'inner');
         $this->db->join('tarifa T', 'A.idTarifa = T.idTarifa', 'inner');

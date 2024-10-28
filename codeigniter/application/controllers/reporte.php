@@ -51,7 +51,7 @@ class Reporte extends CI_Controller
     {
         $tipoReporte = $this->input->post('tipoReporte');
         $data['codigoSocio'] = $this->input->post('codigoSocio');
-        $data['idMembresia'] = $this->input->post('idMembresia');
+        $data['idMembresia'] = trim($this->input->post('idMembresia'));
         $data['fechaInicio'] = $this->input->post('fechaInicio');
         $data['fechaFin'] = $this->input->post('fechaFin');
         $data['tipoReporte'] = $this->input->post('tipoReporte');
@@ -89,7 +89,7 @@ class Reporte extends CI_Controller
             $response['headers'] = ["No.", "Mes - Año", "Consumo [m3]", "Observación"];
 
              // Obtener datos del modelo
-            $historialConsumos = $this->reporte_model->obtener_datos_historicos($data);
+            $historialConsumos = $this->reporte_model->historial_consumo($data);
 
             if (!empty($historialConsumos))
             {
@@ -264,7 +264,7 @@ class Reporte extends CI_Controller
         $socio = $this->input->post('socio');
         
         // Llamar al modelo para obtener el historial de consumos
-        $consumos = $this->reporte_model->obtener_datos_historicos($data);
+        $consumos = $this->reporte_model->historial_consumo($data);
         
         // Crear la instancia de PDF y configurar la orientación y márgenes
         $pdf = new Pdf('P', 'mm', 'Letter');
