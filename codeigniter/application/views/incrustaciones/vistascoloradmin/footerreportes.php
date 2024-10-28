@@ -518,11 +518,23 @@ $(document).ready(function() {
   {
       // Obtener los valores de los parámetros
       const codigoSocio = document.getElementById('codigoSocioSeleccionado').value;
+      const socio = document.getElementById('nombreSocioSeleccionado').value;
       const idMembresia = document.getElementById('idMembresiaSeleccionado').value;
       const nombreSocio = document.getElementById('nombreSocioSeleccionado').value;
       const fechaInicio = document.getElementById('fechaInicio').value;
       const fechaFin = document.getElementById('fechaFin').value;
       const tipoReporte = window.tipoReporte;
+
+      var funcion;
+
+      if(tipoReporte == 'pagos')
+      {
+        funcion = 'generar_pdf_pago';
+      }
+      else
+      {
+        funcion = 'generar_pdf_consumo';
+      }
 
       console.log('Tipo de reporteeeeeeeeee:', tipoReporte); // Añadir esta línea para depurar
 
@@ -533,12 +545,13 @@ $(document).ready(function() {
       // Crear un formulario en JavaScript
       const form = document.createElement('form');
       form.method = 'POST';
-      form.action = '<?php echo base_url('index.php/reporte/generar_pdf_pago'); ?>';
+      form.action = '<?php echo base_url('index.php/reporte/'); ?>' + funcion;
       form.target = '_blank';
 
       // Crear inputs ocultos para enviar los datos
       const inputs = [
           { name: 'codigoSocio', value: codigoSocio },
+          { name: 'socio', value: socio },
           { name: 'idMembresia', value: idMembresia },
           { name: 'fechaInicio', value: fechaInicio },
           { name: 'fechaFin', value: fechaFin },
