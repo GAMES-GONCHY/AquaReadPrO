@@ -464,7 +464,8 @@ $('#previsualizar').on('click', function(e) {
         success: function(response) {
             console.log('Respuesta recibida:', response);
 
-            try {
+            try
+            {
                 var datosReporte = JSON.parse(response);
 
                 if (datosReporte.data && datosReporte.data.length > 0) {
@@ -502,23 +503,29 @@ $('#previsualizar').on('click', function(e) {
                                 parseFloat(fila[2]).toFixed(2),  // Formatear a dos decimales
                                 fila[3]
                             ]).draw();
-                        } else if (tipoReporte == 'avisos') {
-                            // Formato específico para avisos
-                            var socio = fila[0];             // Nombre del socio
-                            var codigoSocio = fila[7];       // Código del socio
-                            var fechaLectura = new Date(fila[2]);
-                            var mesLiteralAnoLectura = meses[fechaLectura.getMonth()] + " " + fechaLectura.getFullYear(); // Formato literal
-                            var estado = fila[6];            // Estado del aviso
+                          } else if (tipoReporte == 'avisos') {
+                          // Recorrer los datos recibidos para formatearlos en la tabla
+                          datosReporte.data.forEach(function(fila) {
+                              var socio = fila['socio'];                 // Nombre completo del socio
+                              var codigoSocio = fila['codigoSocio'];     // Código del socio
+                              var fechaLectura = new Date(fila['fechaLectura']);
+                              var mesLiteralAnoLectura = meses[fechaLectura.getMonth()]
+                              var total = parseFloat(fila['total']).toFixed(2);  // Total formateado con 2 decimales
+                              var saldo = parseFloat(fila['saldo']).toFixed(2); // Saldo con 2 decimales y moneda
+                              var estado = fila['estado'];               // Estado del aviso
 
-                            // Añadir la fila al DataTable
-                            $('#datatable').DataTable().row.add([
-                                contador++,
-                                socio,
-                                codigoSocio,
-                                mesLiteralAnoLectura,
-                                estado
-                            ]).draw();
-                        }
+                              // Añadir la fila al DataTable
+                              $('#datatable').DataTable().row.add([
+                                  contador++,
+                                  socio,
+                                  codigoSocio,
+                                  mesLiteralAnoLectura,
+                                  total, // Añadir el símbolo de moneda
+                                  saldo,
+                                  estado
+                              ]).draw();
+                          });
+                      }
                     });
 
                     $('#modalPosBooking').modal('hide');
@@ -527,8 +534,9 @@ $('#previsualizar').on('click', function(e) {
                     $('#mensajeSinRegistros').fadeIn(300).delay(200).fadeOut(200).fadeIn(300); // Breve animación para llamar la atención
                     $('#datatable').DataTable().clear().draw();
                 }
-
-            } catch (error) {
+            }
+            catch (error)
+            {
                 console.error('Error al interpretar la respuesta:', error);
                 alert('Ocurrió un error al interpretar los datos del servidor.');
             }

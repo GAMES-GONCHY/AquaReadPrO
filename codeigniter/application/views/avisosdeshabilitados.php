@@ -66,7 +66,7 @@
                                         <td><?php echo $deshabilitado['nombreSocio']; ?></td>
                                         <td><?php echo $consumo ;?> m³</td>
                                         <td><?php echo $fechaLectura ;?></td>
-                                        <td><?php echo $deshabilitado['lecturaAnterior']; ?></td>
+                                        <td><?php echo ($deshabilitado['lecturaAnterior'])*100; ?></td>
                                         <td><?php echo date('Y-m-d', strtotime($deshabilitado['fechaLecturaAnterior'])); ?></td>
                                         
                                         <td><?php echo $deshabilitado['tarifaVigente']; ?></td>

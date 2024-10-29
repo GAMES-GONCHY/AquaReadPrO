@@ -109,33 +109,34 @@ class Reporte extends CI_Controller
                 $response['data'] = [];
             }
         }
-        // else
-        // {
-        //     // Definir encabezados para "avisos"
-        //     $response['headers'] = ["No.", "Mes - Año", "Saldo", "estado", "Fecha Vencimiento"];
+        elseif($tipoReporte == 'avisos')
+        {
+            $response['headers'] = ["No.", "Socio", "Código", "Mes", "Total [Bs]", "Saldo [Bs]", "Estado"];
 
-        //      // Obtener datos del modelo
-        //     //$historialAvisos = $this->reporte_model->obtener_historial_avisos($data);
+             // Obtener datos del modelo
+            $historialAvisos = $this->reporte_model->historial_avisos($data);
 
-        //     if (!empty($historialAvisos))
-        //     {
-        //         // Formatear datos para la respuesta JSON
-        //         $response['data'] = array_map(function($aviso, $index)
-        //         {
-        //             return [
-        //                 $index + 1, // Número de fila
-        //                 $aviso['mes_anio'], // Ejemplo: "Mayo 2024"
-        //                 $aviso['saldo'], // Saldo pendiente
-        //                 $aviso['estado'], // Estado del aviso
-        //                 $aviso['fecha_vencimiento'], // Fecha de vencimiento
-        //             ];
-        //         }, $historialAvisos, array_keys($historialAvisos));
-        //     } 
-        //     else
-        //     {
-        //         $response['data'] = [];
-        //     }
-        // }
+            if (!empty($historialAvisos))
+            {
+                // Formatear datos para la respuesta JSON
+                $response['data'] = array_map(function($aviso, $index)
+                {
+                    return [
+                        $index + 1, // Número de fila
+                        $aviso['socio'],
+                        $aviso['codigoSocio'],
+                        $aviso['fechaLectura'],// Ejemplo: "Mayo"
+                        $aviso['total'],
+                        $aviso['saldo'], // Saldo pendiente
+                        $aviso['estado'], // Estado del aviso
+                    ];
+                }, $historialAvisos, array_keys($historialAvisos));
+            } 
+            else
+            {
+                $response['data'] = [];
+            }
+        }
         
         // Retornar los datos como JSON con headers y data
         echo json_encode($response);

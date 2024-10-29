@@ -63,7 +63,7 @@
                                         <td><?php echo $vencido['nombreSocio']; ?></td>
                                         <td><?php echo $consumo ?> m³</td>
                                         <td><?php echo $fechaLectura ?></td>
-                                        <td><?php echo $vencido['lecturaAnterior']; ?></td>
+                                        <td><?php echo ($vencido['lecturaAnterior'])*100; ?></td>
                                         <td><?php echo date('Y-m-d', strtotime($vencido['fechaLecturaAnterior'])); ?></td>
                                         <td><?php echo $vencido['tarifaVigente']; ?></td>
                                         <td><?php echo number_format($total, 2); ?></td>

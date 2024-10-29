@@ -83,10 +83,10 @@ class Reporte_model extends CI_Model
 		$this->db->select('ME.codigoSocio, L.fechaLectura');
 		$this->db->select("
 			CASE
-				WHEN (L.lecturaActual - L.lecturaAnterior) < 10 THEN 'Consumo mínimo'
-				WHEN (L.lecturaActual - L.lecturaAnterior) < 20 THEN 'Consumo moderado'
-				WHEN (L.lecturaActual - L.lecturaAnterior) < 30 THEN 'Estándar'
-				WHEN (L.lecturaActual - L.lecturaAnterior) < 40 THEN 'Consumo alto'
+				WHEN (L.lecturaActual - L.lecturaAnterior)/100 < 10 THEN 'Consumo mínimo'
+				WHEN (L.lecturaActual - L.lecturaAnterior)/100 < 20 THEN 'Consumo moderado'
+				WHEN (L.lecturaActual - L.lecturaAnterior)/100 < 30 THEN 'Estándar'
+				WHEN (L.lecturaActual - L.lecturaAnterior)/100 < 40 THEN 'Consumo alto'
 				ELSE 'Consumo muy alto'
 			END AS observacion", FALSE);
 		$this->db->from('avisocobranza A');
@@ -99,6 +99,36 @@ class Reporte_model extends CI_Model
 		$this->db->where('L.fechaLectura >=', $data['fechaInicio']);
 		$this->db->where('L.fechaLectura <=', $data['fechaFin']);
 
+		$query = $this->db->get();
+
+		if ($query->num_rows() > 0) {
+			return $query->result_array(); 
+		} else {
+			return [];
+		}
+	}
+	public function historial_avisos($data)
+	{
+		
+
+		
+		$this->db->select("CONCAT_WS(' ', U.nombre, U.primerApellido, IFNULL(U.segundoApellido, '')) AS socio", FALSE);
+		$this->db->select('ME.codigoSocio, L.fechaLectura');
+		$this->db->select('(L.lecturaActual - L.lecturaAnterior)*T.tarifaVigente/100 AS total', FALSE);
+		$this->db->select('IFNULL(A.saldo, 0)', FALSE);
+		$this->db->select('A.estado');
+		$this->db->join('lectura L', 'A.idLectura = L.idLectura', 'inner');
+		$this->db->join('medidor M', 'L.idMedidor = M.idMedidor', 'inner');
+		$this->db->join('membresia ME', 'M.idMembresia = ME.idMembresia', 'inner');
+		$this->db->join('usuario U', 'ME.idUsuario = U.idUsuario', 'inner');
+		$this->db->join('tarifa T', 'A.idTarifa = T.idTarifa', 'inner');
+		if (!empty($data['idMembresia']))
+		{
+			$this->db->where('ME.idMembresia', $data['idMembresia']);
+		}
+		$this->db->where('A.estado <>', 'deshabilitado');
+		$this->db->where('L.fechaLectura >=', $data['fechaInicio']);
+		$this->db->where('L.fechaLectura <=', $data['fechaFin']);
 		$query = $this->db->get();
 
 		if ($query->num_rows() > 0) {

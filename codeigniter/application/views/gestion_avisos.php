@@ -83,8 +83,8 @@
                                     <td><?php echo $enviado['nombreSocio']; ?></td>
                                     <td><?php echo $consumo ?> m³</td>
                                     <td><?php echo date('Y-m-d', strtotime($enviado['fechaLectura'])); ?></td>
-                                    <td><?php echo $enviado['lecturaActual']; ?></td>
-                                    <td><?php echo $enviado['lecturaAnterior']; ?></td>
+                                    <td><?php echo ($enviado['lecturaActual'])*100; ?></td>
+                                    <td><?php echo ($enviado['lecturaAnterior'])*100; ?></td>
                                     <td><?php echo date('Y-m-d', strtotime($enviado['fechaLecturaAnterior'])); ?></td>
                                     <td><?php echo $enviado['tarifaVigente']; ?></td>
                                     <td><?php echo number_format($total, 2); ?></td>

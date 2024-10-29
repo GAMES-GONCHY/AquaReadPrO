@@ -65,7 +65,7 @@
                                         <td><?php echo $pagado['nombreSocio']; ?></td>
                                         <td><?php echo $consumo ?> m³</td>
                                         <td><?php echo date('Y-m-d', strtotime($pagado['fechaLectura'])); ?></td>
-                                        <td><?php echo $pagado['lecturaAnterior']; ?></td>
+                                        <td><?php echo ($pagado['lecturaAnterior'])*100; ?></td>
                                         <td><?php echo date('Y-m-d', strtotime($pagado['fechaLecturaAnterior'])); ?></td>
                                       
                                         <td><?php echo $pagado['tarifaVigente']; ?></td>

@@ -66,8 +66,8 @@
                                         <td><?php echo $revisado['nombreSocio']; ?></td>
                                         <td><?php echo $consumo; ?> m³</td>
                                         <td><?php echo $fechaLectura; ?></td>
-                                        <td><?php echo $revisado['lecturaActual']; ?></td>
-                                        <td><?php echo $revisado['lecturaAnterior']; ?></td>
+                                        <td><?php echo ($revisado['lecturaActual'])*100; ?></td>
+                                        <td><?php echo ($revisado['lecturaAnterior'])*100; ?></td>
                                         <td><?php echo $revisado['tarifaVigente']; ?></td>
                                         <td><?php echo number_format($total, 2); ?></td>
                                         <td><?php echo $fechaPago; ?></td>
