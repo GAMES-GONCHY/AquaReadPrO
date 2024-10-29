@@ -115,9 +115,12 @@
               <thead>
                 <tr>
                   <th width="1%">No.</th>
+                  <th>Socio</th>
+                  <th>Código</th>
                   <th>Mes - Año</th>
-                  <th>Total [Bs.]</th>
-                  <th>Fecha pago</th>
+                  <!-- <th>Total [Bs.]</th>
+                  <th>Saldo</th>
+                  <th>Estado</th> -->
                 </tr>
               </thead>
               <tbody>
@@ -126,9 +129,12 @@
               <tfoot>
                 <tr>
                   <th width="1%">No.</th>
+                  <th>Socio</th>
+                  <th>Código</th>
                   <th>Mes - Año</th>
-                  <th>Total [Bs.]</th>
-                  <th>Fecha pago</th>
+                  <!-- <th>Total [Bs.]</th>
+                  <th>Saldo</th>
+                  <th>Estado</th> -->
                 </tr>
               </tfoot>
             </table>

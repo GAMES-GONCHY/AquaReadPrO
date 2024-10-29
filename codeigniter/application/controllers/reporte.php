@@ -51,7 +51,7 @@ class Reporte extends CI_Controller
     {
         $tipoReporte = $this->input->post('tipoReporte');
         $data['codigoSocio'] = $this->input->post('codigoSocio');
-        $data['idMembresia'] = trim($this->input->post('idMembresia'));
+        $data['idMembresia'] = trim($this->input->post('idMembresia') ?? '');
         $data['fechaInicio'] = $this->input->post('fechaInicio');
         $data['fechaFin'] = $this->input->post('fechaFin');
         $data['tipoReporte'] = $this->input->post('tipoReporte');
@@ -112,10 +112,9 @@ class Reporte extends CI_Controller
         elseif($tipoReporte == 'avisos')
         {
             $response['headers'] = ["No.", "Socio", "Código", "Mes", "Total [Bs]", "Saldo [Bs]", "Estado"];
-
              // Obtener datos del modelo
             $historialAvisos = $this->reporte_model->historial_avisos($data);
-
+            log_message('debug', 'Datos de historial_avisos: ' . print_r($historialAvisos, true)); // Verifica si saldo aparece en todos los registros
             if (!empty($historialAvisos))
             {
                 // Formatear datos para la respuesta JSON

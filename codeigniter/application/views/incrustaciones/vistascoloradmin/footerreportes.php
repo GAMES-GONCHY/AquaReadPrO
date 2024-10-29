@@ -309,7 +309,7 @@ $(document).ready(function() {
       $('#modalPosBooking .modal-title').text(title);
 
       console.log('Tipo de reporte:', tipoReporte);
-
+      configurarEncabezadosTabla(tipoReporte);
       // Ajustar el campo `criterio` según el tipo de reporte antes de abrir el modal
       if (tipoReporte == "avisos") {
           $('#criterio').removeAttr('required'); // Campo no obligatorio para "avisos vencidos"
@@ -354,7 +354,6 @@ $(document).ready(function() {
   });
 
   // Función para buscar socio
-// Función para buscar socio
   function buscarSocio()
   {
       var criterio = $('#criterio').val();  // Obtener el valor del campo
@@ -425,8 +424,61 @@ $(document).ready(function() {
       }
   }
 
-// Enviar el formulario cuando se haga clic en "Previsualizar"
-$('#previsualizar').on('click', function(e) {
+  function configurarEncabezadosTabla(tipoReporte)
+  {
+      // Destruir la tabla actual
+      $('#datatable').DataTable().clear().destroy();
+
+      // Limpiar encabezados y pie de tabla
+      $('#datatable thead').empty();
+      $('#datatable tfoot').empty();
+
+      // Crear encabezados dinámicamente según el tipo de reporte
+      var encabezados = '';
+      var pie = '';
+
+      if (tipoReporte === 'avisos') {
+          encabezados = `
+              <tr>
+                  <th>No.</th>
+                  <th>Socio</th>
+                  <th>Código</th>
+                  <th>Mes</th>
+                  <th>Total [Bs.]</th>
+                  <th>Saldo [Bs.]</th>
+                  <th>Estado</th>
+              </tr>`;
+      } else if (tipoReporte === 'pagos') {
+          encabezados = `
+              <tr>
+                  <th>No.</th>
+                  <th>Mes - Año</th>
+                  <th>Total [Bs.]</th>
+                  <th>Fecha pago</th>
+              </tr>`;
+      } else if (tipoReporte === 'consumos') {
+          encabezados = `
+              <tr>
+                  <th>No.</th>
+                  <th>Mes - Año</th>
+                  <th>Consumo [m3]</th>
+                  <th>Observación</th>
+              </tr>`;
+      }
+
+      // Añadir encabezados y pie de página a la tabla
+      $('#datatable thead').html(encabezados);
+      $('#datatable tfoot').html(encabezados);
+
+      // Reinicializar la tabla utilizando las configuraciones del script externo
+      TableManageCombine.init();
+  }
+
+  
+
+  // Enviar el formulario cuando se haga clic en "Previsualizar"
+  $('#previsualizar').on('click', function(e)
+  {
     e.preventDefault(); // Evitar el envío automático
 
     var tipoReporte = $('#modalPosBooking').data('reporte');
@@ -451,68 +503,67 @@ $('#previsualizar').on('click', function(e) {
     console.log('Datos enviados:', { tipoReporte, codigoSocio, fechaInicio, fechaFin, idMembresia });
 
     // Enviar datos al backend para obtener el historial de pagos, consumos o avisos
-    $.ajax({
-        url: '<?php echo base_url("index.php/reporte/obtener_reporte"); ?>',  // Cambia esta URL según tu ruta
-        type: 'POST',
-        data: {
-            tipoReporte: tipoReporte,
-            codigoSocio: codigoSocio,
-            idMembresia: idMembresia,
-            fechaInicio: fechaInicio,
-            fechaFin: fechaFin
-        },
-        success: function(response) {
-            console.log('Respuesta recibida:', response);
-
-            try
+        $.ajax({
+            url: '<?php echo base_url("index.php/reporte/obtener_reporte"); ?>',  // Cambia esta URL según tu ruta
+            type: 'POST',
+            data: {
+                tipoReporte: tipoReporte,
+                codigoSocio: codigoSocio,
+                idMembresia: idMembresia,
+                fechaInicio: fechaInicio,
+                fechaFin: fechaFin
+            },
+            success: function(response)
             {
-                var datosReporte = JSON.parse(response);
+                console.log('Respuesta recibida:', response);
+                try
+                {
+                    var datosReporte = JSON.parse(response);
 
-                if (datosReporte.data && datosReporte.data.length > 0) {
-                    $('#mensajeSinRegistros').hide();  // Ocultar el mensaje de "sin registros"
-                    $('#datatable').DataTable().clear();
-                    $('#datatable').DataTable().columns().header().to$().each(function(index, element) {
-                        $(element).text(datosReporte.headers[index]);
-                    });
+                    if (datosReporte.data && datosReporte.data.length > 0) {
+                        $('#mensajeSinRegistros').hide();  // Ocultar el mensaje de "sin registros"
+                        $('#datatable').DataTable().clear();
+                        $('#datatable').DataTable().columns().header().to$().each(function(index, element) {
+                            $(element).text(datosReporte.headers[index]);
+                        });
 
-                    let meses = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
-                    let contador = 1;
+                        let meses = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
+                        let contador = 1;
 
-                    // Llenar la tabla con los datos según el tipo de reporte
-                    datosReporte.data.forEach(function(fila) {
-                        if (tipoReporte == 'pagos') {
-                            // Formato para pagos
-                            var fechaLectura = new Date(fila[1]);
-                            var mesLiteralAno = meses[fechaLectura.getMonth()] + " " + fechaLectura.getFullYear();
-                            var fechaPago = new Date(fila[3]).toLocaleDateString();
+                        // Llenar la tabla con los datos según el tipo de reporte
+                        datosReporte.data.forEach(function(fila) {
+                            if (tipoReporte == 'pagos') {
+                                // Formato para pagos
+                                var fechaLectura = new Date(fila[1]);
+                                var mesLiteralAno = meses[fechaLectura.getMonth()] + " " + fechaLectura.getFullYear();
+                                var fechaPago = new Date(fila[3]).toLocaleDateString();
 
-                            $('#datatable').DataTable().row.add([
-                                contador++,
-                                mesLiteralAno,
-                                fila[2],
-                                fechaPago
-                            ]).draw();
-                        } else if (tipoReporte == 'consumos') {
-                            // Formato para consumos
-                            var fechaLecturaConsumo = new Date(fila[1]);
-                            var mesLiteralAnoConsumo = meses[fechaLecturaConsumo.getMonth()] + " " + fechaLecturaConsumo.getFullYear();
+                                $('#datatable').DataTable().row.add([
+                                    contador++,
+                                    mesLiteralAno,
+                                    fila[2],
+                                    fechaPago
+                                ]).draw();
+                            } else if (tipoReporte == 'consumos') {
+                                // Formato para consumos
+                                var fechaLecturaConsumo = new Date(fila[1]);
+                                var mesLiteralAnoConsumo = meses[fechaLecturaConsumo.getMonth()] + " " + fechaLecturaConsumo.getFullYear();
 
-                            $('#datatable').DataTable().row.add([
-                                contador++,
-                                mesLiteralAnoConsumo,
-                                parseFloat(fila[2]).toFixed(2),  // Formatear a dos decimales
-                                fila[3]
-                            ]).draw();
-                          } else if (tipoReporte == 'avisos') {
-                          // Recorrer los datos recibidos para formatearlos en la tabla
-                          datosReporte.data.forEach(function(fila) {
-                              var socio = fila['socio'];                 // Nombre completo del socio
-                              var codigoSocio = fila['codigoSocio'];     // Código del socio
-                              var fechaLectura = new Date(fila['fechaLectura']);
-                              var mesLiteralAnoLectura = meses[fechaLectura.getMonth()]
-                              var total = parseFloat(fila['total']).toFixed(2);  // Total formateado con 2 decimales
-                              var saldo = parseFloat(fila['saldo']).toFixed(2); // Saldo con 2 decimales y moneda
-                              var estado = fila['estado'];               // Estado del aviso
+                                $('#datatable').DataTable().row.add([
+                                    contador++,
+                                    mesLiteralAnoConsumo,
+                                    parseFloat(fila[2]).toFixed(2),  // Formatear a dos decimales
+                                    fila[3]
+                                ]).draw();
+                              } else if (tipoReporte == 'avisos') {
+                              // Formato para avisos
+                              var socio = fila[1];                        // Nombre completo del socio
+                              var codigoSocio = fila[2];                  // Código del socio
+                              var fechaLecturaAviso = new Date(fila[3]);
+                              var mesLiteralAnoLectura = meses[fechaLecturaAviso.getMonth()];
+                              var total = parseFloat(fila[4]).toFixed(2); // Total con 2 decimales
+                              var saldo = parseFloat(fila[5]).toFixed(2); // Saldo con 2 decimales
+                              var estado = fila[6];                       // Estado del aviso
 
                               // Añadir la fila al DataTable
                               $('#datatable').DataTable().row.add([
@@ -520,38 +571,34 @@ $('#previsualizar').on('click', function(e) {
                                   socio,
                                   codigoSocio,
                                   mesLiteralAnoLectura,
-                                  total, // Añadir el símbolo de moneda
+                                  total,
                                   saldo,
                                   estado
                               ]).draw();
-                          });
-                      }
-                    });
+                          }
+                        });
 
-                    $('#modalPosBooking').modal('hide');
-                } else {
-                    // Mostrar mensaje en el modal cuando no hay registros y agregar animación
-                    $('#mensajeSinRegistros').fadeIn(300).delay(200).fadeOut(200).fadeIn(300); // Breve animación para llamar la atención
-                    $('#datatable').DataTable().clear().draw();
+                        $('#modalPosBooking').modal('hide');
+                    } else {
+                        // Mostrar mensaje en el modal cuando no hay registros y agregar animación
+                        $('#mensajeSinRegistros').fadeIn(300).delay(200).fadeOut(200).fadeIn(300); // Breve animación para llamar la atención
+                        $('#datatable').DataTable().clear().draw();
+                    }
                 }
-            }
-            catch (error)
+                catch (error)
+                {
+                    console.error('Error al interpretar la respuesta:', error);
+                    alert('Ocurrió un error al interpretar los datos del servidor.');
+                }
+              },
+            error: function(xhr, status, error)
             {
-                console.error('Error al interpretar la respuesta:', error);
-                alert('Ocurrió un error al interpretar los datos del servidor.');
+                console.error('Error en la solicitud AJAX:', error);
+                console.error('Detalles del error:', xhr.responseText);
+                alert('Ocurrió un error al obtener el reporte. Intente nuevamente.');
             }
-        },
-        error: function(xhr, status, error) {
-            console.error('Error en la solicitud AJAX:', error);
-            console.error('Detalles del error:', xhr.responseText);
-            alert('Ocurrió un error al obtener el reporte. Intente nuevamente.');
-        }
-    });
-});
-
-
-
-
+          });
+  });
 });
 </script>
 
