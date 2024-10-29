@@ -192,14 +192,17 @@ class Reporte extends CI_Controller
         $pdf->SetX($margenIzquierdo);
         $pdf->Cell(0, 5, utf8_decode('Socio: ') . $socio, 0, 1, 'L');
     
-        // Formateo de fechas con mes en literal en español
-        $fmt = new IntlDateFormatter('es_ES', IntlDateFormatter::LONG, IntlDateFormatter::NONE);
-        $fmt->setPattern("MMMM '-' y");
-    
-        $fechaInicioFormateada = $fmt->format(new DateTime($data['fechaInicio']));
-        $fechaFinFormateada = $fmt->format(new DateTime($data['fechaFin']));
+        // Crear el formateador de fecha para el mes en literal y año completo
+        $fmtMesLiteral = new IntlDateFormatter('es_ES', IntlDateFormatter::LONG, IntlDateFormatter::NONE);
+        $fmtMesLiteral->setPattern("d MMMM 'de' y"); // Formato para obtener "13 Enero de 2024"
+
+        // Formatear la fecha de inicio y fin con el nuevo patrón
+        $fechaInicioFormateada = $fmtMesLiteral->format(new DateTime($data['fechaInicio']));
+        $fechaFinFormateada = $fmtMesLiteral->format(new DateTime($data['fechaFin']));
+
+        // Imprimir el periodo en el formato deseado
         $pdf->SetX($margenIzquierdo);
-        $pdf->Cell(0, 5, 'Periodo: ' . $fechaInicioFormateada . ' al ' . $fechaFinFormateada, 0, 1, 'L');
+        $pdf->Cell(0, 5, 'Periodo: ' .$data['fechaInicio'] . ' a ' .$data['fechaFin'], 0, 1, 'L');
         $pdf->SetX($margenIzquierdo);
         $pdf->Cell(0, 5, utf8_decode('Fecha de emisión: ') . date('d/m/Y'), 0, 1, 'L');
         $pdf->Ln(10);
@@ -350,6 +353,130 @@ class Reporte extends CI_Controller
         // Salida del PDF
         $pdf->Output('Historial_Consumos_' . $data['codigoSocio'] . '.pdf', 'I');
     }
-    
+    public function generar_pdf_avisos()
+    {
+        // Obtener los parámetros desde la solicitud
+        if (!empty($this->input->post('codigoSocio') && $this->input->post('idMembresia'))) {
+            $data['codigoSocio'] = $this->input->post('codigoSocio');
+            $data['idMembresia'] = $this->input->post('idMembresia');
+        }
+        $data['fechaInicio'] = $this->input->post('fechaInicio');
+        $data['fechaFin'] = $this->input->post('fechaFin');
+        $data['tipoReporte'] = $this->input->post('tipoReporte');
+        $socio = $this->input->post('socio');
+
+        // Llamar al modelo para obtener el historial de avisos
+        $avisos = $this->reporte_model->historial_avisos($data);
+
+        // Crear la instancia de PDF y configurar la orientación y márgenes
+        $pdf = new Pdf('P', 'mm', 'Letter');
+        $pdf->AliasNbPages();
+        $pdf->SetLeftMargin(20);
+        $pdf->AddPage();
+
+        // Encabezado principal
+        $pdf->SetFillColor(200, 200, 200);
+        $pdf->SetTextColor(0, 0, 0);
+        $pdf->SetFont('Arial', 'B', 16);
+
+        // Calcular el ancho disponible para la celda
+        $pageWidth = $pdf->GetPageWidth();
+        $margenIzquierdo = 45;
+        $margenDerecho = 30;
+        $anchoDisponible = $pageWidth - $margenIzquierdo - $margenDerecho;
+
+        // Título del reporte
+        $pdf->SetX($margenIzquierdo);
+        $pdf->Cell($anchoDisponible, 15, utf8_decode('Historial de Avisos'), 0, 1, 'C', true);
+        $pdf->Ln(5);
+
+        // Subtítulo "AquaReadPro"
+        $pdf->SetFont('Arial', 'B', 12);
+        $pdf->SetY(25);
+        $pdf->SetX(10);
+        $pdf->Cell(50, 10, 'AquaReadPro', 0, 1, 'L');
+        $pdf->Ln(5);
+
+        // Detalles del socio y periodo
+        $pdf->SetTextColor(0, 0, 0);
+        $pdf->SetFont('Arial', '', 10);
+        $pdf->SetY(50);
+
+        // Validar y mostrar el código del socio solo si está definido
+        if (!empty($data['codigoSocio'])) {
+            $pdf->SetX($margenIzquierdo - 20);
+            $pdf->Cell(0, 5, utf8_decode('Código: ') . $data['codigoSocio'], 0, 1, 'L');
+        }
+
+        // Validar y mostrar el nombre del socio solo si está definido
+        if (!empty($socio)) {
+            $pdf->SetX($margenIzquierdo - 20);
+            $pdf->Cell(0, 5, utf8_decode('Socio: ') . $socio, 0, 1, 'L');
+        }
+
+        // Formateo de fechas con día, mes en literal y año en español
+        $fmt = new IntlDateFormatter('es_ES', IntlDateFormatter::LONG, IntlDateFormatter::NONE);
+        $fmt->setPattern("d 'de' MMMM 'de' y");
+
+        $fechaInicioFormateada = $fmt->format(new DateTime($data['fechaInicio']));
+        $fechaFinFormateada = $fmt->format(new DateTime($data['fechaFin']));
+        $pdf->SetX($margenIzquierdo - 20);
+        $pdf->Cell(0, 5, 'Periodo: ' . $fechaInicioFormateada . ' a ' . $fechaFinFormateada, 0, 1, 'L');
+        $pdf->SetX($margenIzquierdo - 20);
+        $pdf->Cell(0, 5, utf8_decode('Fecha de emisión: ') . date('d/m/Y'), 0, 1, 'L');
+        $pdf->Ln(10);
+
+        // Configuración de la tabla de avisos
+        $tableStartX = $margenIzquierdo - 20;
+
+        // Encabezado de la tabla para avisos
+        $pdf->SetFont('Arial', 'B', 10);
+        $pdf->SetFillColor(220, 220, 220);
+        $pdf->SetX($tableStartX);
+        $pdf->Cell(10, 10, '#', 0, 0, 'C', true);
+        $pdf->Cell(20, 10, utf8_decode('Código'), 0, 0, 'C', true); // Columna para Código
+        $pdf->Cell(60, 10, utf8_decode('Socio'), 0, 0, 'C', true); // Columna para Socio
+        $pdf->Cell(20, 10, utf8_decode('Mes'), 0, 0, 'C', true);
+        $pdf->Cell(20, 10, 'Total [Bs]', 0, 0, 'C', true);
+        $pdf->Cell(20, 10, 'Saldo [Bs]', 0, 0, 'C', true);
+        $pdf->Cell(20, 10, 'Estado', 0, 1, 'C', true);
+
+        // Datos de la tabla de avisos
+        $pdf->SetFont('Arial', '', 10);
+        $pdf->SetFillColor(240, 240, 240);
+        $fill = false;
+        $contador = 1;
+
+        // Crear un formateador solo para el mes en literal
+        $fmtMesLiteral = new IntlDateFormatter('es_ES', IntlDateFormatter::LONG, IntlDateFormatter::NONE);
+        $fmtMesLiteral->setPattern("MMMM");
+
+        foreach ($avisos as $aviso) {
+            $pdf->SetX($tableStartX);
+            $pdf->Cell(10, 10, $contador++, 0, 0, 'C', $fill);
+
+            // Agregar el valor de `codigoSocio`
+            $pdf->Cell(20, 10, $aviso['codigoSocio'], 0, 0, 'C', $fill);
+
+            // Agregar el valor de `socio`
+            $pdf->Cell(60, 10, utf8_decode($aviso['socio']), 0, 0, 'C', $fill);
+
+            // Convertir la fecha a solo el mes en texto literal usando el nuevo formateador
+            $mesLiteral = $fmtMesLiteral->format(new DateTime($aviso['fechaLectura']));
+            
+            $pdf->Cell(20, 10, ucfirst($mesLiteral), 0, 0, 'C', $fill);
+            $pdf->Cell(20, 10, number_format($aviso['total'], 2), 0, 0, 'C', $fill);
+            $pdf->Cell(20, 10, number_format($aviso['saldo'], 2), 0, 0, 'C', $fill);
+            $pdf->Cell(20, 10, utf8_decode($aviso['estado']), 0, 1, 'C', $fill);
+
+            // Alternar el color de fondo
+            $fill = !$fill;
+        }
+
+        // Salida del PDF
+        $codigoSocio = !empty($data['codigoSocio']) ? $data['codigoSocio'] : 'General';
+        $pdf->Output('Historial_Avisos_' . $codigoSocio . '.pdf', 'I');
+    }
+
     
 }

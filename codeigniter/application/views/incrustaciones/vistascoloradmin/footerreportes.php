@@ -604,7 +604,7 @@ $(document).ready(function() {
 
 
 <!-- script para generar pdf -->
-<script>
+<!-- <script>
   document.getElementById('generarPDFBtn').addEventListener('click', function ()
   {
       // Obtener los valores de los parámetros
@@ -664,7 +664,72 @@ $(document).ready(function() {
       // Eliminar el formulario después de enviarlo
       document.body.removeChild(form);
   });
+</script> -->
+<script>
+  document.getElementById('generarPDFBtn').addEventListener('click', function () {
+      // Obtener los valores de los parámetros
+      const codigoSocio = document.getElementById('codigoSocioSeleccionado').value;
+      const socio = document.getElementById('nombreSocioSeleccionado').value;
+      const idMembresia = document.getElementById('idMembresiaSeleccionado').value;
+      const nombreSocio = document.getElementById('nombreSocioSeleccionado').value;
+      const fechaInicio = document.getElementById('fechaInicio').value;
+      const fechaFin = document.getElementById('fechaFin').value;
+      const tipoReporte = window.tipoReporte;
+
+      // Determinar la función a usar para cada tipo de reporte
+      let funcion;
+      if (tipoReporte == 'pagos'){
+          funcion = 'generar_pdf_pago';
+      } else if (tipoReporte == 'consumos') {
+          funcion = 'generar_pdf_consumo';
+      } else if (tipoReporte == 'avisos') {
+          funcion = 'generar_pdf_avisos'; // Agregamos la función para "avisos"
+      } else {
+          alert('Tipo de reporte no reconocido.');
+          return;
+      }
+
+      console.log('Tipo de reporte:', tipoReporte); // Log para depuración
+
+      // Validación de datos
+      // if (!codigoSocio || !fechaInicio || !fechaFin || !idMembresia || !tipoReporte) {
+      //     alert('Por favor, configura el reporte para generar el PDF.');
+      //     return;
+      // }
+
+      // Crear un formulario en JavaScript
+      const form = document.createElement('form');
+      form.method = 'POST';
+      form.action = '<?php echo base_url('index.php/reporte/'); ?>' + funcion;
+      form.target = '_blank';
+
+      // Crear inputs ocultos para enviar los datos
+      const inputs = [
+          { name: 'codigoSocio', value: codigoSocio },
+          { name: 'socio', value: socio },
+          { name: 'idMembresia', value: idMembresia },
+          { name: 'fechaInicio', value: fechaInicio },
+          { name: 'fechaFin', value: fechaFin },
+          { name: 'tipoReporte', value: tipoReporte }
+      ];
+
+      inputs.forEach(inputData => {
+          const input = document.createElement('input');
+          input.type = 'hidden';
+          input.name = inputData.name;
+          input.value = inputData.value;
+          form.appendChild(input);
+      });
+
+      // Agregar el formulario al documento y enviarlo
+      document.body.appendChild(form);
+      form.submit();
+
+      // Eliminar el formulario después de enviarlo
+      document.body.removeChild(form);
+  });
 </script>
+
 
 
 

@@ -121,7 +121,7 @@ class Reporte_model extends CI_Model
 		$this->db->join('membresia ME', 'M.idMembresia = ME.idMembresia', 'inner');
 		$this->db->join('usuario U', 'ME.idUsuario = U.idUsuario', 'inner');
 		$this->db->join('tarifa T', 'A.idTarifa = T.idTarifa', 'inner');
-		if (!empty($data['idMembresia']))
+		if (!empty($data['idMembresia'])&&!empty($data['codigoSocio']))
 		{
 			$this->db->where('ME.idMembresia', $data['idMembresia']);
 		}
@@ -129,6 +129,7 @@ class Reporte_model extends CI_Model
 
 		$this->db->where('L.fechaLectura >=', $data['fechaInicio']);
 		$this->db->where('L.fechaLectura <=', $data['fechaFin']);
+		$this->db->order_by('L.fechaLectura', 'DESC');
 		$query = $this->db->get();
 
 		if ($query->num_rows() > 0) {
