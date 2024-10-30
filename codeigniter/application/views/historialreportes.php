@@ -3,12 +3,12 @@
   <!-- Fila de botones con widgets -->
   <div class="row mb-4">
     <!-- Button 1: Historial de Pagos -->
-    <div class="col-xl-2 col-md-6">
+    <div class="col-xl-3 col-md-6">
       <a href="#" data-bs-toggle="modal" data-bs-target="#modalPosBooking" data-reporte="pagos" data-title="Historial de Pagos" class="table-booking">
         <div class="widget widget-stats bg-gradient-red">
           <div class="stats-icon stats-icon-lg"><i class="fa fa-globe fa-fw"></i></div>
           <div class="stats-content">
-            <div class="stats-title">HISTORIAL DE PAGOS <br><br></div>
+            <div class="stats-title">HISTORIAL DE PAGOS</div>
             <div class="stats-number">7,842,900</div>
             <div class="stats-progress progress">
               <div class="progress-bar" style="width: 70.1%;"></div>
@@ -20,7 +20,7 @@
     </div>
 
     <!-- Button 2: Historial de Consumos -->
-    <div class="col-xl-2 col-md-6">
+    <div class="col-xl-3 col-md-6">
       <a href="#" data-bs-toggle="modal" data-bs-target="#modalPosBooking" data-reporte="consumos" data-title="Historial de Comsumos" class="table-booking">
         <div class="widget widget-stats bg-gradient-cyan-blue">
           <div class="stats-icon stats-icon-lg"><i class="fa fa-dollar-sign fa-fw"></i></div>
@@ -37,7 +37,7 @@
     </div>
 
     <!-- Button 4: Historial de Avisos Pendientes -->
-    <div class="col-xl-2 col-md-6">
+    <div class="col-xl-3 col-md-6">
       <a href="#" data-bs-toggle="modal" data-bs-target="#modalPosBooking" data-reporte="avisos" data-title="Historial de avisos Vencidos - Rechazados" class="table-booking">
         <div class="widget widget-stats bg-gradient-green">
           <div class="stats-icon stats-icon-lg"><i class="fa fa-comment-alt fa-fw"></i></div>
@@ -53,25 +53,8 @@
       </a>
     </div>
 
-    <!-- Button 3: Historial de Lecturas -->
-    <div class="col-xl-2 col-md-6">
-      <a href="#" data-bs-toggle="modal" data-bs-target="#modalPosBooking" data-reporte="lecturas" data-title="Historial de Lecturas" class="table-booking">
-        <div class="widget widget-stats bg-gradient-orange-red">
-          <div class="stats-icon stats-icon-lg"><i class="fa fa-archive fa-fw"></i></div>
-          <div class="stats-content">
-            <div class="stats-title">HISTORIAL DE LECTURAS</div>
-            <div class="stats-number">38,900</div>
-            <div class="stats-progress progress">
-              <div class="progress-bar" style="width: 76.3%;"></div>
-            </div>
-            <div class="stats-desc">Better than last week (76.3%)</div>
-          </div>
-        </div>
-      </a>
-    </div>
-
     <!-- Button 5: Top 10 Consumidores -->
-    <div class="col-xl-2 col-md-6">
+    <div class="col-xl-3 col-md-6">
       <a href="#" data-bs-toggle="modal" data-bs-target="#modalPosBooking" data-reporte="ranking" data-title="Ranking Consumidores" class="table-booking">
         <div class="widget widget-stats bg-gradient-purple">
           <div class="stats-icon stats-icon-lg"><i class="fa fa-chart-line fa-fw"></i></div>

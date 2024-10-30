@@ -279,27 +279,40 @@
 $(document).ready(function() {
   // Inicializar daterangepicker
   $("#advance-daterange").daterangepicker({
-    opens: "right",
-    locale: {
-      format: "DD/MM/YYYY",
-      separator: " a ",
-      applyLabel: "Aplicar",
-      cancelLabel: "Cancelar",
-      fromLabel: "Desde",
-      toLabel: "Hasta",
-      customRangeLabel: "Personalizado",
-      daysOfWeek: ["Do", "Lu", "Ma", "Mi", "Ju", "Vi", "Sa"],
-      monthNames: ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"],
-      firstDay: 1
-    }
-  }, function(start, end) {
-    // Actualizar las fechas en los inputs ocultos
-    $('#fechaInicio').val(start.format('YYYY-MM-DD'));
-    $('#fechaFin').val(end.format('YYYY-MM-DD'));
-    
-    // Mostrar el rango seleccionado en el botón de rango de fechas
-    $("#advance-daterange span").html(start.format('DD/MM/YYYY') + " a " + end.format('DD/MM/YYYY'));
-  });
+        opens: "right",
+        locale: {
+          format: "DD/MM/YYYY",
+          separator: " a ",
+          applyLabel: "Aplicar",
+          cancelLabel: "Cancelar",
+          fromLabel: "Desde",
+          toLabel: "Hasta",
+          customRangeLabel: "Personalizado",
+          daysOfWeek: ["Do", "Lu", "Ma", "Mi", "Ju", "Vi", "Sa"],
+          monthNames: ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"],
+          firstDay: 1
+        },
+        showDropdowns: true, // Habilita el selector de mes y año
+        minDate: "01/01/2023", // Fecha mínima
+        maxDate: "31/12/2025", // Fecha máxima (ajústala según tus necesidades)
+        ranges: {
+          'Hoy': [moment(), moment()],
+          'Ayer': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+          'Últimos 7 días': [moment().subtract(6, 'days'), moment()],
+          'Últimos 30 días': [moment().subtract(29, 'days'), moment()],
+          'Este mes': [moment().startOf('month'), moment().endOf('month')],
+          'Mes pasado': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+        }
+    }, function(start, end) {
+        // Actualizar las fechas en los inputs ocultos
+        $('#fechaInicio').val(start.format('YYYY-MM-DD'));
+        $('#fechaFin').val(end.format('YYYY-MM-DD'));
+        
+        // Mostrar el rango seleccionado en el botón de rango de fechas
+        $("#advance-daterange span").html(start.format('DD/MM/YYYY') + " a " + end.format('DD/MM/YYYY'));
+    });
+
+
 
   // Actualización del título del modal y configuración de `data-reporte` al hacer clic en las tarjetas
   $('.table-booking').on('click', function() {
@@ -328,9 +341,9 @@ $(document).ready(function() {
     $('#formReporte')[0].reset();  // Restablecer el formulario
     $('#criterio').removeClass('is-valid is-invalid');  // Quitar clases de validación
     $('#criterio').val('');  // Limpiar campo de socio
-    $('#advance-daterange span').html('Seleccionar rango de fechas');  // Resetear el texto del daterangepicker
-    $('#fechaInicio').val('');
-    $('#fechaFin').val('');
+    //$('#advance-daterange span').html('Seleccionar rango de fechas');  // Resetear el texto del daterangepicker
+    // $('#fechaInicio').val('');
+    // $('#fechaFin').val('');
     $('#socioValido').hide();  // Ocultar icono de validación
     $('#resultadosBusqueda').hide();  // Ocultar resultados
 
@@ -480,6 +493,7 @@ $(document).ready(function() {
   $('#previsualizar').on('click', function(e)
   {
     e.preventDefault(); // Evitar el envío automático
+
 
     var tipoReporte = $('#modalPosBooking').data('reporte');
     console.log('Tipo de reporte antes de enviar el formulario:', tipoReporte);
