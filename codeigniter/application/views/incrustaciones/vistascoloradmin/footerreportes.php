@@ -81,6 +81,7 @@
             <input type="hidden" id="codigoSocioSeleccionado" name="codigoSocioSeleccionado">
             <input type="hidden" id="nombreSocioSeleccionado" name="nombreSocioSeleccionado">
             <input type="hidden" id="idMembresiaSeleccionado" name="idMembresiaSeleccionado">
+            <!-- <input type="hidden" id="inputSocio" name="inputSocio"> -->
           </form>
         </div>
       </div>
@@ -504,6 +505,11 @@ $(document).ready(function() {
       var codigoSocio = $('#codigoSocioSeleccionado').val();
       var idMembresia = $('#idMembresiaSeleccionado').val();
     }
+    else
+    {
+      $('#codigoSocioSeleccionado').val('');
+      $('#idMembresiaSeleccionado').val('');
+    }
     var fechaInicio = $('#fechaInicio').val();
     var fechaFin = $('#fechaFin').val();
 
@@ -685,10 +691,14 @@ $(document).ready(function() {
 <script>
   document.getElementById('generarPDFBtn').addEventListener('click', function () {
       // Obtener los valores de los parámetros
-      const codigoSocio = document.getElementById('codigoSocioSeleccionado').value;
-      const socio = document.getElementById('nombreSocioSeleccionado').value;
-      const idMembresia = document.getElementById('idMembresiaSeleccionado').value;
-      const nombreSocio = document.getElementById('nombreSocioSeleccionado').value;
+
+        const codigoSocio = document.getElementById('codigoSocioSeleccionado').value;
+        const socio = document.getElementById('nombreSocioSeleccionado').value;
+        const idMembresia = document.getElementById('idMembresiaSeleccionado').value;
+        const nombreSocio = document.getElementById('nombreSocioSeleccionado').value;
+
+
+
       const fechaInicio = document.getElementById('fechaInicio').value;
       const fechaFin = document.getElementById('fechaFin').value;
       const tipoReporte = window.tipoReporte;

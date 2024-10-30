@@ -131,7 +131,12 @@ class Reporte_model extends CI_Model
 
 		$this->db->where('L.fechaLectura >=', $data['fechaInicio']);
 		$this->db->where('L.fechaLectura <=', $data['fechaFin']);
-		$this->db->order_by('L.fechaLectura', 'DESC');
+
+		// Ordenar primero por codigoSocio y luego por fechaLectura en orden descendente
+		$this->db->order_by('ME.codigoSocio', 'ASC');
+		$this->db->order_by('L.fechaLectura', 'ASC');
+
+
 		$query = $this->db->get();
 
 		if ($query->num_rows() > 0) {
