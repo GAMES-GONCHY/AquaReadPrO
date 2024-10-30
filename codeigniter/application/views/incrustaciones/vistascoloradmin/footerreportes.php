@@ -494,13 +494,16 @@ $(document).ready(function() {
   {
     e.preventDefault(); // Evitar el envío automático
 
-
     var tipoReporte = $('#modalPosBooking').data('reporte');
     console.log('Tipo de reporte antes de enviar el formulario:', tipoReporte);
     window.tipoReporte = tipoReporte;
 
-    var codigoSocio = $('#codigoSocioSeleccionado').val();
-    var idMembresia = $('#idMembresiaSeleccionado').val();
+    var criterio = $('#criterio').val();
+    if(criterio)
+    {
+      var codigoSocio = $('#codigoSocioSeleccionado').val();
+      var idMembresia = $('#idMembresiaSeleccionado').val();
+    }
     var fechaInicio = $('#fechaInicio').val();
     var fechaFin = $('#fechaFin').val();
 

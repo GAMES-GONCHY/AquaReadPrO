@@ -65,6 +65,7 @@ class Reporte_model extends CI_Model
 		$this->db->where('codigoSocio', $data['codigoSocio']);
 		$this->db->where('fechaPago >=', $data['fechaInicio']);
 		$this->db->where('fechaPago <=', $data['fechaFin']);
+		$this->db->order_by('fechaLectura', 'ASC');
 
 		$query = $this->db->get();
 
@@ -98,6 +99,7 @@ class Reporte_model extends CI_Model
 		$this->db->where('A.estado <>', 'deshabilitado');
 		$this->db->where('L.fechaLectura >=', $data['fechaInicio']);
 		$this->db->where('L.fechaLectura <=', $data['fechaFin']);
+		$this->db->order_by('L.fechaLectura', 'ASC');
 
 		$query = $this->db->get();
 

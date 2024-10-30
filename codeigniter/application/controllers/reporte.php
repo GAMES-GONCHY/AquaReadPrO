@@ -215,7 +215,7 @@ class Reporte extends CI_Controller
         $pdf->SetFillColor(220, 220, 220);
         $pdf->SetX($tableStartX);
         $pdf->Cell(10, 10, '#', 0, 0, 'C', true);
-        $pdf->Cell(40, 10, utf8_decode('Mes - Año'), 0, 0, 'C', true);
+        $pdf->Cell(40, 10, 'Avisos pagados', 0, 0, 'C', true);
         $pdf->Cell(40, 10, 'Total Pagado', 0, 0, 'C', true);
         $pdf->Cell(40, 10, 'Fecha Pago', 0, 1, 'C', true);
     
