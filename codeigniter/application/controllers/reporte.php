@@ -50,8 +50,11 @@ class Reporte extends CI_Controller
     public function obtener_reporte() 
     {
         $tipoReporte = $this->input->post('tipoReporte');
-        $data['codigoSocio'] = $this->input->post('codigoSocio');
-        $data['idMembresia'] = trim($this->input->post('idMembresia') ?? '');
+        if($tipoReporte!='ranking')
+        {
+            $data['codigoSocio'] = $this->input->post('codigoSocio');
+            $data['idMembresia'] = trim($this->input->post('idMembresia') ?? '');
+        }
         $data['fechaInicio'] = $this->input->post('fechaInicio');
         $data['fechaFin'] = $this->input->post('fechaFin');
         $data['tipoReporte'] = $this->input->post('tipoReporte');
@@ -136,7 +139,32 @@ class Reporte extends CI_Controller
                 $response['data'] = [];
             }
         }
-        
+        elseif ($tipoReporte == 'ranking') 
+        {
+            // Definir encabezados para "ranking"
+            $response['headers'] = ["Top", "Código", "Socio", "Consumo [m3]", "Total [Bs]"]; 
+            // Obtener datos del modelo para el ranking
+            $rankingConsumo = $this->reporte_model->obtener_top_consumidores($data);
+            
+            if (!empty($rankingConsumo)) 
+            {
+                // Formatear los datos para el Top 10 de consumidores
+                $response['data'] = array_map(function($consumidor, $index) 
+                {
+                    return [
+                        $index + 1, // Número de ranking (1 a 10)
+                        $consumidor['codigo'], // Código del socio
+                        $consumidor['socio'], // Nombre del socio
+                        $consumidor['consumo'], // Consumo total con 2 decimales
+                        $consumidor['total'] // Total con 2 decimales
+                    ];
+                }, $rankingConsumo, array_keys($rankingConsumo));
+            } 
+            else 
+            {
+                $response['data'] = []; // Si no hay datos, devolvemos un arreglo vacío
+            }
+        }               
         // Retornar los datos como JSON con headers y data
         echo json_encode($response);
     }
@@ -495,7 +523,121 @@ class Reporte extends CI_Controller
         $codigoSocio = !empty($data['codigoSocio']) ? $data['codigoSocio'] : 'General';
         $pdf->Output('Historial_Avisos_' . $codigoSocio . '.pdf', 'I');
     }
-    
+    public function generar_pdf_ranking()
+    {
+        // Obtener los parámetros desde la solicitud
+        $data['fechaInicio'] = $this->input->post('fechaInicio');
+        $data['fechaFin'] = $this->input->post('fechaFin');
+        $data['tipoReporte'] = $this->input->post('tipoReporte');
+
+        // Llamar al modelo para obtener el top 10 de consumidores
+        $rankingConsumo = $this->reporte_model->obtener_top_consumidores($data);
+
+        // Crear la instancia de PDF y configurar la orientación y márgenes
+        $pdf = new Pdf('P', 'mm', 'Letter');
+        $pdf->AliasNbPages();
+        $pdf->SetLeftMargin(20);
+        $pdf->AddPage();
+
+        // Encabezado principal
+        $pdf->SetFillColor(200, 200, 200);
+        $pdf->SetTextColor(0, 0, 0);
+        $pdf->SetFont('Arial', 'B', 16);
+
+        // Calcular el ancho disponible para la celda
+        $pageWidth = $pdf->GetPageWidth();
+        $margenIzquierdo = 45;
+        $margenDerecho = 30;
+        $anchoDisponible = $pageWidth - $margenIzquierdo - $margenDerecho;
+
+        // Título del reporte
+        $pdf->SetX($margenIzquierdo);
+        $pdf->Cell($anchoDisponible, 15, utf8_decode('Top 10 Consumidores'), 0, 1, 'C', true);
+        $pdf->Ln(5);
+
+        // Subtítulo "AquaReadPro"
+        $pdf->SetFont('Arial', 'B', 12);
+        $pdf->SetY(25);
+        $pdf->SetX(10);
+        $pdf->Cell(50, 10, 'AquaReadPro', 0, 1, 'L');
+        $pdf->Ln(5);
+
+        // Detalles del periodo
+        $pdf->SetTextColor(0, 0, 0);
+        $pdf->SetFont('Arial', '', 10);
+        $pdf->SetY(50);
+
+        // Formateo de fechas con día, mes en literal y año en español
+        $fmt = new IntlDateFormatter('es_ES', IntlDateFormatter::LONG, IntlDateFormatter::NONE);
+        $fmt->setPattern("d 'de' MMMM 'de' y");
+
+        $fechaInicioFormateada = $fmt->format(new DateTime($data['fechaInicio']));
+        $fechaFinFormateada = $fmt->format(new DateTime($data['fechaFin']));
+        $pdf->SetX($margenIzquierdo - 20);
+        $pdf->Cell(0, 5, 'Periodo: ' . $fechaInicioFormateada . ' a ' . $fechaFinFormateada, 0, 1, 'L');
+        $pdf->SetX($margenIzquierdo - 20);
+        $pdf->Cell(0, 5, utf8_decode('Fecha de emisión: ') . date('d/m/Y'), 0, 1, 'L');
+        $pdf->Ln(10);
+
+        // Configuración de la tabla de ranking
+        $tableStartX = $margenIzquierdo - 20;
+
+        // Encabezado de la tabla para ranking
+        $pdf->SetFont('Arial', 'B', 10);
+        $pdf->SetFillColor(220, 220, 220);
+        $pdf->SetX($tableStartX);
+        $pdf->Cell(10, 10, 'No.', 0, 0, 'C', true);
+        $pdf->Cell(20, 10, utf8_decode('Código'), 0, 0, 'C', true);
+        $pdf->Cell(60, 10, utf8_decode('Socio'), 0, 0, 'C', true);
+        $pdf->Cell(30, 10, 'Consumo [m3]', 0, 0, 'C', true);
+        $pdf->Cell(30, 10, 'Total [Bs]', 0, 1, 'C', true);
+
+        // Datos de la tabla de ranking
+        $pdf->SetFont('Arial', '', 10);
+        $pdf->SetFillColor(240, 240, 240);
+        $fill = false;
+        $contador = 1;
+        $totalConsumo = 0;
+        $totalBs = 0;
+
+        foreach ($rankingConsumo as $consumidor) {
+            $pdf->SetX($tableStartX);
+            $pdf->Cell(10, 10, $contador++, 0, 0, 'C', $fill);
+
+            // Agregar el valor de `codigo`
+            $pdf->Cell(20, 10, $consumidor['codigo'], 0, 0, 'C', $fill);
+
+            // Agregar el valor de `socio`
+            $pdf->Cell(60, 10, utf8_decode($consumidor['socio']), 0, 0, 'C', $fill);
+
+            // Agregar el valor de `consumo` formateado con 2 decimales
+            $pdf->Cell(30, 10, number_format($consumidor['consumo'], 2), 0, 0, 'C', $fill);
+
+            // Agregar el valor de `total` formateado con 2 decimales
+            $pdf->Cell(30, 10, number_format($consumidor['total'], 2), 0, 1, 'C', $fill);
+
+            // Sumar los totales
+            $totalConsumo += $consumidor['consumo'];
+            $totalBs += $consumidor['total'];
+
+            // Alternar el color de fondo
+            $fill = !$fill;
+        }
+
+        // Fila de totales
+        $pdf->SetX($tableStartX);
+        $pdf->SetFont('Arial', 'B', 10);
+        $pdf->SetFillColor(220, 220, 220);
+        $pdf->Cell(10, 10, '', 0, 0, 'C', true);
+        $pdf->Cell(20, 10, '', 0, 0, 'C', true);
+        $pdf->Cell(60, 10, 'Totales:', 0, 0, 'C', true);
+        $pdf->Cell(30, 10, number_format($totalConsumo, 2), 0, 0, 'C', true); // Total en columna 'Consumo [m3]'
+        $pdf->Cell(30, 10, number_format($totalBs, 2), 0, 1, 'C', true); // Total en columna 'Total [Bs]'
+
+        // Salida del PDF
+        $pdf->Output('Ranking_Consumidores.pdf', 'I');
+    }
+
 
     
 }

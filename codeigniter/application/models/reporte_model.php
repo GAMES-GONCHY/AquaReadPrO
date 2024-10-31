@@ -146,4 +146,32 @@ class Reporte_model extends CI_Model
 			return [];
 		}
 	}
+	public function obtener_top_consumidores($data)
+	{
+		$this->db->select('ME.codigoSocio AS codigo');
+		$this->db->select("CONCAT_WS(' ', U.nombre, U.primerApellido, IFNULL(U.segundoApellido, '')) AS socio", FALSE);
+		$this->db->select('(L.lecturaActual - L.lecturaAnterior)/100 AS consumo', FALSE);
+		$this->db->select('(L.lecturaActual - L.lecturaAnterior)*T.tarifaVigente/100 AS total', FALSE);
+		$this->db->from('avisocobranza A');
+		$this->db->join('lectura L', 'A.idLectura = L.idLectura', 'inner');
+		$this->db->join('medidor M', 'L.idMedidor = M.idMedidor', 'inner');
+		$this->db->join('membresia ME', 'M.idMembresia = ME.idMembresia', 'inner');
+		$this->db->join('usuario U', 'ME.idUsuario = U.idUsuario', 'inner');
+		$this->db->join('tarifa T', 'A.idTarifa = T.idTarifa', 'inner');
+		$this->db->where('A.estado <>', 'deshabilitado');
+		// Filtrar por mes y año de fechaInicio y fechaFin
+		$this->db->where("DATE_FORMAT(L.fechaLectura, '%Y-%m') >=", date('Y-m', strtotime($data['fechaInicio'])));
+		$this->db->where("DATE_FORMAT(L.fechaLectura, '%Y-%m') <=", date('Y-m', strtotime($data['fechaFin'])));
+		$this->db->order_by('consumo', 'DESC');
+
+		$query = $this->db->get();
+
+		if ($query->num_rows() > 0) {
+			$result = $query->result_array();
+			// Seleccionar los primeros 10 elementos después de ordenar
+			return array_slice($result, 0, 10);
+		} else {
+			return [];
+		}
+	}
 }

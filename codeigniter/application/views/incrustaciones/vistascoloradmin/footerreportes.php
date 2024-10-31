@@ -367,7 +367,7 @@ $(document).ready(function() {
   });
   // Escuchar el evento de la tecla Enter en el campo de código de socio
   $('#criterio').on('keydown', function(e) {
-    if (e.key === 'Enter') {
+    if (e.key == 'Enter') {
       e.preventDefault();  // Evitar que el formulario se envíe
       buscarSocio();  // Llamar a la función buscarSocio cuando se presione Enter
     }
@@ -486,10 +486,11 @@ $(document).ready(function() {
       } else{
         encabezados = `
               <tr>
-                  <th>No.</th>
-                  <th>Mes - Año</th>
+                  <th>Top</th>
+                  <th>Código</th>
+                  <th>Socio</th>
                   <th>Consumo [m3]</th>
-                  <th>Observación</th>
+                  <th>Total [Bs.]</th>
               </tr>`;
       }
 
@@ -530,7 +531,13 @@ $(document).ready(function() {
     $('#mensajeSinRegistros').hide();
 
     // Validación de selección: verificar campos vacíos según el tipo de reporte
-    if (!fechaInicio || !fechaFin || (tipoReporte !== "avisos" && (!codigoSocio || !idMembresia))) {
+    // if (!fechaInicio || !fechaFin || (tipoReporte !== "avisos" && (!codigoSocio || !idMembresia))) {
+    //     alert('Por favor, complete todos los campos y seleccione un socio.');
+    //     return;
+    // }
+
+    // Validación de selección: verificar campos vacíos según el tipo de reporte
+    if (!fechaInicio || !fechaFin || (tipoReporte !== "avisos" && tipoReporte !== "ranking" && (!codigoSocio || !idMembresia))) {
         alert('Por favor, complete todos los campos y seleccione un socio.');
         return;
     }
@@ -538,35 +545,53 @@ $(document).ready(function() {
     // Depuración: Mostrar en la consola los datos que se enviarán
     console.log('Datos enviados:', { tipoReporte, codigoSocio, fechaInicio, fechaFin, idMembresia });
 
-    // Enviar datos al backend para obtener el historial de pagos, consumos o avisos
-        $.ajax({
-            url: '<?php echo base_url("index.php/reporte/obtener_reporte"); ?>',  // Cambia esta URL según tu ruta
-            type: 'POST',
-            data: {
-                tipoReporte: tipoReporte,
-                codigoSocio: codigoSocio,
-                idMembresia: idMembresia,
-                fechaInicio: fechaInicio,
-                fechaFin: fechaFin
-            },
-            success: function(response)
-            {
-                console.log('Respuesta recibida:', response);
-                try
-                {
-                    var datosReporte = JSON.parse(response);
+    // Enviar datos al backend para obtener el historial de pagos, consumos, avisos o ranking
+    $.ajax({
+        url: '<?php echo base_url("index.php/reporte/obtener_reporte"); ?>',  // Cambia esta URL según tu ruta
+        type: 'POST',
+        data: {
+            tipoReporte: tipoReporte,
+            codigoSocio: codigoSocio,
+            idMembresia: idMembresia,
+            fechaInicio: fechaInicio,
+            fechaFin: fechaFin
+        },
+        success: function(response) {
+            console.log('Respuesta recibida:', response);
+            try {
+                var datosReporte = JSON.parse(response);
 
-                    if (datosReporte.data && datosReporte.data.length > 0) {
-                        $('#mensajeSinRegistros').hide();  // Ocultar el mensaje de "sin registros"
-                        $('#datatable').DataTable().clear();
-                        $('#datatable').DataTable().columns().header().to$().each(function(index, element) {
-                            $(element).text(datosReporte.headers[index]);
-                        });
+                if (datosReporte.data && datosReporte.data.length > 0) {
+                    $('#mensajeSinRegistros').hide();  // Ocultar el mensaje de "sin registros"
+                    $('#datatable').DataTable().clear();
+                    $('#datatable').DataTable().columns().header().to$().each(function(index, element) {
+                        $(element).text(datosReporte.headers[index]);
+                    });
 
-                        let meses = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
-                        let contador = 1;
+                    let meses = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
+                    let contador = 1;
 
-                        // Llenar la tabla con los datos según el tipo de reporte
+                        // Llenar la tabla con los datos para el tipo de reporte "ranking"
+                        if (tipoReporte == 'ranking')
+                        {
+                            // Formato para el ranking de consumidores (Top 10)
+                            datosReporte.data.slice(0, 10).forEach(function(fila, index) { // Limitado a los 10 primeros
+                                var numeroRanking = index + 1;               // Número de ranking (1 a 10)
+                                var codigo = fila[1];                        // Código del socio
+                                var socio = fila[2];                         // Nombre del socio
+                                var consumo = parseFloat(fila[3]); // Consumo total con 2 decimales
+                                var total = parseFloat(fila[4]);   // Total con 2 decimales
+
+                                $('#datatable').DataTable().row.add([
+                                    numeroRanking,
+                                    codigo,
+                                    socio,
+                                    consumo,
+                                    total
+                                ]).draw();
+                            });
+                        } else {
+                        // Llenar la tabla con los datos para los otros tipos de reporte
                         datosReporte.data.forEach(function(fila) {
                             if (tipoReporte == 'pagos') {
                                 // Formato para pagos
@@ -591,49 +616,48 @@ $(document).ready(function() {
                                     parseFloat(fila[2]).toFixed(2),  // Formatear a dos decimales
                                     fila[3]
                                 ]).draw();
-                              } else if (tipoReporte == 'avisos') {
-                              // Formato para avisos
-                              var socio = fila[1];                        // Nombre completo del socio
-                              var codigoSocio = fila[2];                  // Código del socio
-                              var fechaLecturaAviso = new Date(fila[3]);
-                              var mesLiteralAnoLectura = meses[fechaLecturaAviso.getMonth()];
-                              var total = parseFloat(fila[4]).toFixed(2); // Total con 2 decimales
-                              var saldo = parseFloat(fila[5]).toFixed(2); // Saldo con 2 decimales
-                              var estado = fila[6];                       // Estado del aviso
+                            } else if (tipoReporte == 'avisos') {
+                                // Formato para avisos
+                                var socio = fila[1];                        // Nombre completo del socio
+                                var codigoSocio = fila[2];                  // Código del socio
+                                var fechaLecturaAviso = new Date(fila[3]);
+                                var mesLiteralAnoLectura = meses[fechaLecturaAviso.getMonth()];
+                                var total = parseFloat(fila[4]).toFixed(2); // Total con 2 decimales
+                                var saldo = parseFloat(fila[5]).toFixed(2); // Saldo con 2 decimales
+                                var estado = fila[6];                       // Estado del aviso
 
-                              // Añadir la fila al DataTable
-                              $('#datatable').DataTable().row.add([
-                                  contador++,
-                                  socio,
-                                  codigoSocio,
-                                  mesLiteralAnoLectura,
-                                  total,
-                                  saldo,
-                                  estado
-                              ]).draw();
-                          }
+                                // Añadir la fila al DataTable
+                                $('#datatable').DataTable().row.add([
+                                    contador++,
+                                    socio,
+                                    codigoSocio,
+                                    mesLiteralAnoLectura,
+                                    total,
+                                    saldo,
+                                    estado
+                                ]).draw();
+                            }
                         });
-
-                        $('#modalPosBooking').modal('hide');
-                    } else {
-                        // Mostrar mensaje en el modal cuando no hay registros y agregar animación
-                        $('#mensajeSinRegistros').fadeIn(300).delay(200).fadeOut(200).fadeIn(300); // Breve animación para llamar la atención
-                        $('#datatable').DataTable().clear().draw();
                     }
+
+                    $('#modalPosBooking').modal('hide');
+                } else {
+                    // Mostrar mensaje en el modal cuando no hay registros y agregar animación
+                    $('#mensajeSinRegistros').fadeIn(300).delay(200).fadeOut(200).fadeIn(300); // Breve animación para llamar la atención
+                    $('#datatable').DataTable().clear().draw();
                 }
-                catch (error)
-                {
-                    console.error('Error al interpretar la respuesta:', error);
-                    alert('Ocurrió un error al interpretar los datos del servidor.');
-                }
-              },
-            error: function(xhr, status, error)
-            {
-                console.error('Error en la solicitud AJAX:', error);
-                console.error('Detalles del error:', xhr.responseText);
-                alert('Ocurrió un error al obtener el reporte. Intente nuevamente.');
+            } catch (error) {
+                console.error('Error al interpretar la respuesta:', error);
+                alert('Ocurrió un error al interpretar los datos del servidor.');
             }
-          });
+        },
+        error: function(xhr, status, error) {
+            console.error('Error en la solicitud AJAX:', error);
+            console.error('Detalles del error:', xhr.responseText);
+            alert('Ocurrió un error al obtener el reporte. Intente nuevamente.');
+        }
+    });
+
   });
 });
 </script>
@@ -643,26 +667,24 @@ $(document).ready(function() {
 <script>
   document.getElementById('generarPDFBtn').addEventListener('click', function () {
       // Obtener los valores de los parámetros
-
-        const codigoSocio = document.getElementById('codigoSocioSeleccionado').value;
-        const socio = document.getElementById('nombreSocioSeleccionado').value;
-        const idMembresia = document.getElementById('idMembresiaSeleccionado').value;
-        const nombreSocio = document.getElementById('nombreSocioSeleccionado').value;
-
-
-
+      const codigoSocio = document.getElementById('codigoSocioSeleccionado').value;
+      const socio = document.getElementById('nombreSocioSeleccionado').value;
+      const idMembresia = document.getElementById('idMembresiaSeleccionado').value;
+      const nombreSocio = document.getElementById('nombreSocioSeleccionado').value;
       const fechaInicio = document.getElementById('fechaInicio').value;
       const fechaFin = document.getElementById('fechaFin').value;
       const tipoReporte = window.tipoReporte;
 
       // Determinar la función a usar para cada tipo de reporte
       let funcion;
-      if (tipoReporte == 'pagos'){
+      if (tipoReporte == 'pagos') {
           funcion = 'generar_pdf_pago';
       } else if (tipoReporte == 'consumos') {
           funcion = 'generar_pdf_consumo';
       } else if (tipoReporte == 'avisos') {
-          funcion = 'generar_pdf_avisos'; // Agregamos la función para "avisos"
+          funcion = 'generar_pdf_avisos';
+      } else if (tipoReporte == 'ranking') {
+          funcion = 'generar_pdf_ranking';
       } else {
           alert('Tipo de reporte no reconocido.');
           return;
@@ -670,11 +692,14 @@ $(document).ready(function() {
 
       console.log('Tipo de reporte:', tipoReporte); // Log para depuración
 
-      // Validación de datos
-      // if (!codigoSocio || !fechaInicio || !fechaFin || !idMembresia || !tipoReporte) {
-      //     alert('Por favor, configura el reporte para generar el PDF.');
-      //     return;
-      // }
+      // Validación de datos según el tipo de reporte
+      if (['pagos', 'consumos'].includes(tipoReporte) && (!codigoSocio || !fechaInicio || !fechaFin || !idMembresia || !tipoReporte)) {
+          alert('Por favor, configura el reporte para generar el PDF.');
+          return;
+      } else if (['ranking', 'avisos'].includes(tipoReporte) && (!fechaInicio || !fechaFin || !tipoReporte)) {
+          alert('Por favor, selecciona el rango de fechas para el reporte de ' + tipoReporte + '.');
+          return;
+      }
 
       // Crear un formulario en JavaScript
       const form = document.createElement('form');
@@ -684,14 +709,13 @@ $(document).ready(function() {
 
       // Crear inputs ocultos para enviar los datos
       const inputs = [
-          { name: 'codigoSocio', value: codigoSocio },
-          { name: 'socio', value: socio },
-          { name: 'idMembresia', value: idMembresia },
+          { name: 'codigoSocio', value: (tipoReporte === 'ranking' || tipoReporte === 'avisos') ? '' : codigoSocio },
+          { name: 'socio', value: (tipoReporte === 'ranking' || tipoReporte === 'avisos') ? '' : socio },
+          { name: 'idMembresia', value: (tipoReporte === 'ranking' || tipoReporte === 'avisos') ? '' : idMembresia },
           { name: 'fechaInicio', value: fechaInicio },
           { name: 'fechaFin', value: fechaFin },
           { name: 'tipoReporte', value: tipoReporte }
       ];
-
       inputs.forEach(inputData => {
           const input = document.createElement('input');
           input.type = 'hidden';
@@ -708,6 +732,7 @@ $(document).ready(function() {
       document.body.removeChild(form);
   });
 </script>
+
 
 
 
