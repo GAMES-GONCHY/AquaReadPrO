@@ -38,17 +38,7 @@
                     <div class="panel-heading d-flex justify-content-between align-items-center">
                         <h4 class="panel-title">Avisos Enviados</h4>
                         <div class="panel-body p-0">
-                          <form class="form-horizontal form-bordered">
-                            <div class="form-group row">
-                              <label class="form-label col-form-label col-lg-4">Advance Date Ranges</label>
-                              <div class="col-lg-8">
-                                <div id="advance-daterange" class="btn btn-default d-flex text-start align-items-center">
-                                  <span class="flex-1"></span>
-                                  <i class="fa fa-caret-down"></i>
-                                </div>
-                              </div>
-                            </div>
-                          </form>
+                          
                         </div>
                     </div>
                     

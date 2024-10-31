@@ -33,7 +33,7 @@
               <div class="col-lg-6">
                 
                 <!-- Código Usuario -->
-                <div class="form-group row">
+                <div class="form-group row" id="criterio-container">
                   <label class="form-label col-form-label col-lg-4">Socio</label>
                   <div class="col-lg-8 position-relative">
                     <input type="text" class="form-control" id="criterio" name="criterio" placeholder="Ingrese apellido o código" style="border: 2px solid #343a40; color: #333333;" oninput="this.value = this.value.toUpperCase();" required>
@@ -324,12 +324,19 @@ $(document).ready(function() {
 
       console.log('Tipo de reporte:', tipoReporte);
       configurarEncabezadosTabla(tipoReporte);
-      // Ajustar el campo `criterio` según el tipo de reporte antes de abrir el modal
-      if (tipoReporte == "avisos") {
-          $('#criterio').removeAttr('required'); // Campo no obligatorio para "avisos vencidos"
-          console.log('Campo criterio no es obligatorio');
+      
+      // Ajustar la visibilidad del contenedor `criterio-container` según el tipo de reporte
+      if (tipoReporte == "avisos")
+      {
+          $('#criterio').removeAttr('required').attr('type', 'text'); // Campo no obligatorio para "avisos vencidos"
+          $('#criterio-container').show(); // Mostrar el contenedor
+          console.log('Campo criterio no es obligatorio, pero visible');
+      } else if (tipoReporte == "ranking") {
+          $('#criterio-container').hide(); // Ocultar el contenedor para "ranking"
+          console.log('Campo criterio y etiqueta ocultos para ranking');
       } else {
-          $('#criterio').attr('required', 'required'); // Campo obligatorio para otros reportes
+          $('#criterio').attr('required', 'required').attr('type', 'text'); // Campo obligatorio para otros reportes
+          $('#criterio-container').show(); // Mostrar el contenedor
       }
 
       // Abrir el modal después de la configuración
@@ -358,7 +365,6 @@ $(document).ready(function() {
   $('#criterio').on('blur', function() {
     buscarSocio();  // Llamar a la función buscarSocio cuando pierda el foco
   });
-
   // Escuchar el evento de la tecla Enter en el campo de código de socio
   $('#criterio').on('keydown', function(e) {
     if (e.key === 'Enter') {
@@ -366,7 +372,6 @@ $(document).ready(function() {
       buscarSocio();  // Llamar a la función buscarSocio cuando se presione Enter
     }
   });
-
   // Función para buscar socio
   function buscarSocio()
   {
@@ -472,6 +477,14 @@ $(document).ready(function() {
               </tr>`;
       } else if (tipoReporte === 'consumos') {
           encabezados = `
+              <tr>
+                  <th>No.</th>
+                  <th>Mes - Año</th>
+                  <th>Consumo [m3]</th>
+                  <th>Observación</th>
+              </tr>`;
+      } else{
+        encabezados = `
               <tr>
                   <th>No.</th>
                   <th>Mes - Año</th>
@@ -627,67 +640,6 @@ $(document).ready(function() {
 
 
 <!-- script para generar pdf -->
-<!-- <script>
-  document.getElementById('generarPDFBtn').addEventListener('click', function ()
-  {
-      // Obtener los valores de los parámetros
-      const codigoSocio = document.getElementById('codigoSocioSeleccionado').value;
-      const socio = document.getElementById('nombreSocioSeleccionado').value;
-      const idMembresia = document.getElementById('idMembresiaSeleccionado').value;
-      const nombreSocio = document.getElementById('nombreSocioSeleccionado').value;
-      const fechaInicio = document.getElementById('fechaInicio').value;
-      const fechaFin = document.getElementById('fechaFin').value;
-      const tipoReporte = window.tipoReporte;
-
-      var funcion;
-
-      if(tipoReporte == 'pagos')
-      {
-        funcion = 'generar_pdf_pago';
-      }
-      else
-      {
-        funcion = 'generar_pdf_consumo';
-      }
-
-      console.log('Tipo de reporteeeeeeeeee:', tipoReporte); // Añadir esta línea para depurar
-
-      if (!codigoSocio || !fechaInicio || !fechaFin || !idMembresia || !tipoReporte) {
-          alert('Por favor, configura el reporte para generar el PDF.');
-          return;
-      }
-      // Crear un formulario en JavaScript
-      const form = document.createElement('form');
-      form.method = 'POST';
-      form.action = '<?php echo base_url('index.php/reporte/'); ?>' + funcion;
-      form.target = '_blank';
-
-      // Crear inputs ocultos para enviar los datos
-      const inputs = [
-          { name: 'codigoSocio', value: codigoSocio },
-          { name: 'socio', value: socio },
-          { name: 'idMembresia', value: idMembresia },
-          { name: 'fechaInicio', value: fechaInicio },
-          { name: 'fechaFin', value: fechaFin },
-          { name: 'tipoReporte', value: tipoReporte }
-      ];
-
-      inputs.forEach(inputData => {
-          const input = document.createElement('input');
-          input.type = 'hidden';
-          input.name = inputData.name;
-          input.value = inputData.value;
-          form.appendChild(input);
-      });
-
-      // Agregar el formulario al documento y enviarlo
-      document.body.appendChild(form);
-      form.submit();
-
-      // Eliminar el formulario después de enviarlo
-      document.body.removeChild(form);
-  });
-</script> -->
 <script>
   document.getElementById('generarPDFBtn').addEventListener('click', function () {
       // Obtener los valores de los parámetros
