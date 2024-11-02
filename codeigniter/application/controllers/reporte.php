@@ -249,18 +249,20 @@ class Reporte extends CI_Controller
         $pdf->Cell(0, 5, utf8_decode('Código: ') . $data['codigoSocio'], 0, 1, 'L');
         $pdf->SetX($margenIzquierdo);
         $pdf->Cell(0, 5, utf8_decode('Socio: ') . $socio, 0, 1, 'L');
-    
-        // Crear el formateador de fecha para el mes en literal y año completo
-        $fmtMesLiteral = new IntlDateFormatter('es_ES', IntlDateFormatter::LONG, IntlDateFormatter::NONE);
-        $fmtMesLiteral->setPattern("d MMMM 'de' y"); // Formato para obtener "13 Enero de 2024"
 
-        // Formatear la fecha de inicio y fin con el nuevo patrón
-        $fechaInicioFormateada = $fmtMesLiteral->format(new DateTime($data['fechaInicio']));
-        $fechaFinFormateada = $fmtMesLiteral->format(new DateTime($data['fechaFin']));
+        // Formateo de fechas con día, mes en literal y año en español
+        $fmt = new IntlDateFormatter('es_ES', IntlDateFormatter::LONG, IntlDateFormatter::NONE);
+        $fmt->setPattern("d MMMM y");
+
+        $fechaInicioFormateada = ucfirst($fmt->format(new DateTime($data['fechaInicio'])));
+        $fechaFinFormateada = ucfirst($fmt->format(new DateTime($data['fechaFin'])));
+
+
+
 
         // Imprimir el periodo en el formato deseado
         $pdf->SetX($margenIzquierdo);
-        $pdf->Cell(0, 5, 'Periodo: ' .$data['fechaInicio'] . ' a ' .$data['fechaFin'], 0, 1, 'L');
+        $pdf->Cell(0, 5, 'Periodo: ' .$fechaInicioFormateada. ' a ' . $fechaFinFormateada, 0, 1, 'L');
         $pdf->SetX($margenIzquierdo);
         $pdf->Cell(0, 5, utf8_decode('Fecha de emisión: ') . date('d/m/Y'), 0, 1, 'L');
         $pdf->Ln(10);
@@ -274,7 +276,7 @@ class Reporte extends CI_Controller
         $pdf->SetX($tableStartX);
         $pdf->Cell(10, 10, '#', 0, 0, 'C', true);
         $pdf->Cell(40, 10, 'Avisos pagados', 0, 0, 'C', true);
-        $pdf->Cell(40, 10, 'Total Pagado', 0, 0, 'C', true);
+        $pdf->Cell(40, 10, 'Total Pagado [Bs.]', 0, 0, 'C', true);
         $pdf->Cell(40, 10, 'Fecha Pago', 0, 1, 'C', true);
     
         // Datos de la tabla
@@ -365,12 +367,13 @@ class Reporte extends CI_Controller
         $pdf->SetX($margenIzquierdo);
         $pdf->Cell(0, 5, utf8_decode('Socio: ') . $socio, 0, 1, 'L');
         
-        // Formateo de fechas con mes en literal en español
+        // Formateo de fechas con día, mes en literal y año en español
         $fmt = new IntlDateFormatter('es_ES', IntlDateFormatter::LONG, IntlDateFormatter::NONE);
-        $fmt->setPattern("MMMM '-' y");
-        
-        $fechaInicioFormateada = $fmt->format(new DateTime($data['fechaInicio']));
-        $fechaFinFormateada = $fmt->format(new DateTime($data['fechaFin']));
+        $fmt->setPattern("d MMMM y");
+
+        $fechaInicioFormateada = ucfirst($fmt->format(new DateTime($data['fechaInicio'])));
+        $fechaFinFormateada = ucfirst($fmt->format(new DateTime($data['fechaFin'])));
+
         $pdf->SetX($margenIzquierdo);
         $pdf->Cell(0, 5, 'Periodo: ' . $fechaInicioFormateada . ' a ' . $fechaFinFormateada, 0, 1, 'L');
         $pdf->SetX($margenIzquierdo);
@@ -394,6 +397,7 @@ class Reporte extends CI_Controller
         $pdf->SetFillColor(240, 240, 240);
         $fill = false;
         $contador = 1;
+        $totalConsumo = 0;  // Variable para almacenar el total de consumo
         
         foreach ($consumos as $consumo) {
             $pdf->SetX($tableStartX);
@@ -405,12 +409,24 @@ class Reporte extends CI_Controller
             $pdf->Cell(40, 10, ucfirst($mesLiteral), 0, 0, 'C', $fill);
             $pdf->Cell(40, 10, number_format($consumo['consumo'], 2), 0, 0, 'C', $fill);
             $pdf->Cell(40, 10, utf8_decode($consumo['observacion']), 0, 1, 'C', $fill);
+            
+            $totalConsumo += $consumo['consumo'];  // Sumar el consumo al total
             $fill = !$fill;
         }
+        
+        // Agregar fila de totales
+        $pdf->SetFont('Arial', 'B', 10);
+        $pdf->SetFillColor(220, 220, 220);  // Color de fondo para la fila de totales
+        $pdf->SetX($tableStartX);
+        $pdf->Cell(10, 10, '', 0, 0, 'C', true);                // Columna de número vacía
+        $pdf->Cell(40, 10, 'Total', 0, 0, 'C', true);           // Etiqueta de total
+        $pdf->Cell(40, 10, number_format($totalConsumo, 2), 0, 0, 'C', true);  // Total de consumo
+        $pdf->Cell(40, 10, '', 0, 1, 'C', true);                // Columna de observación vacía
         
         // Salida del PDF
         $pdf->Output('Historial_Consumos_' . $data['codigoSocio'] . '.pdf', 'I');
     }
+    
     public function generar_pdf_avisos()
     {
         // Obtener los parámetros desde la solicitud
@@ -446,7 +462,7 @@ class Reporte extends CI_Controller
     
         // Título del reporte
         $pdf->SetX($margenIzquierdo);
-        $pdf->Cell($anchoDisponible, 15, utf8_decode('Historial de Avisos'), 0, 1, 'C', true);
+        $pdf->Cell($anchoDisponible, 15, utf8_decode('Historial de Avisos Vencidos / Rechazados'), 0, 1, 'C', true);
         $pdf->Ln(5);
     
         // Subtítulo "AquaReadPro"
@@ -473,12 +489,14 @@ class Reporte extends CI_Controller
             $pdf->Cell(0, 5, utf8_decode('Socio: ') . $socio, 0, 1, 'L');
         }
     
+
         // Formateo de fechas con día, mes en literal y año en español
         $fmt = new IntlDateFormatter('es_ES', IntlDateFormatter::LONG, IntlDateFormatter::NONE);
-        $fmt->setPattern("d 'de' MMMM 'de' y");
-    
-        $fechaInicioFormateada = $fmt->format(new DateTime($data['fechaInicio']));
-        $fechaFinFormateada = $fmt->format(new DateTime($data['fechaFin']));
+        $fmt->setPattern("d MMMM y");
+
+        $fechaInicioFormateada = ucfirst($fmt->format(new DateTime($data['fechaInicio'])));
+        $fechaFinFormateada = ucfirst($fmt->format(new DateTime($data['fechaFin'])));
+
         $pdf->SetX($margenIzquierdo - 20);
         $pdf->Cell(0, 5, 'Periodo: ' . $fechaInicioFormateada . ' a ' . $fechaFinFormateada, 0, 1, 'L');
         $pdf->SetX($margenIzquierdo - 20);
@@ -494,11 +512,11 @@ class Reporte extends CI_Controller
         $pdf->SetX($tableStartX);
         $pdf->Cell(10, 10, '#', 0, 0, 'C', true);
         $pdf->Cell(20, 10, utf8_decode('Código'), 0, 0, 'C', true); // Columna para Código
-        $pdf->Cell(60, 10, utf8_decode('Socio'), 0, 0, 'C', true); // Columna para Socio
-        $pdf->Cell(20, 10, utf8_decode('Mes'), 0, 0, 'C', true);
+        $pdf->Cell(60, 10, utf8_decode('Socio'), 0, 0, 'L', true); // Columna para Socio
+        $pdf->Cell(20, 10, utf8_decode('Mes'), 0, 0, 'R', true);
         $pdf->Cell(20, 10, 'Total [Bs]', 0, 0, 'C', true);
         $pdf->Cell(20, 10, 'Saldo [Bs]', 0, 0, 'C', true);
-        $pdf->Cell(20, 10, 'Estado', 0, 1, 'C', true);
+        $pdf->Cell(20, 10, 'Estado', 0, 1, 'R', true);
     
         // Datos de la tabla de avisos
         $pdf->SetFont('Arial', '', 10);
@@ -520,15 +538,15 @@ class Reporte extends CI_Controller
             $pdf->Cell(20, 10, $aviso['codigoSocio'], 0, 0, 'C', $fill);
     
             // Agregar el valor de `socio`
-            $pdf->Cell(60, 10, utf8_decode($aviso['socio']), 0, 0, 'C', $fill);
+            $pdf->Cell(60, 10, utf8_decode($aviso['socio']), 0, 0, 'L', $fill);
     
             // Convertir la fecha a solo el mes en texto literal usando el nuevo formateador
             $mesLiteral = $fmtMesLiteral->format(new DateTime($aviso['fechaLectura']));
             
-            $pdf->Cell(20, 10, ucfirst($mesLiteral), 0, 0, 'C', $fill);
+            $pdf->Cell(20, 10, ucfirst($mesLiteral), 0, 0, 'R', $fill);
             $pdf->Cell(20, 10, number_format($aviso['total'], 2), 0, 0, 'C', $fill);
             $pdf->Cell(20, 10, number_format($aviso['saldo'], 2), 0, 0, 'C', $fill);
-            $pdf->Cell(20, 10, utf8_decode($aviso['estado']), 0, 1, 'C', $fill);
+            $pdf->Cell(20, 10, ucfirst(utf8_decode($aviso['estado'])), 0, 1, 'R', $fill);
     
             // Sumar los totales
             $totalTotal += $aviso['total'];
@@ -543,11 +561,13 @@ class Reporte extends CI_Controller
         $pdf->SetFont('Arial', 'B', 10);
         $pdf->SetFillColor(220, 220, 220);
         $pdf->Cell(10, 10, '', 0, 0, 'C', true);
-        $pdf->Cell(20, 10, '', 0, 0, 'C', true);
+        $pdf->Cell(20, 10, 'Totales', 0, 0, 'C', true);
         $pdf->Cell(60, 10, '', 0, 0, 'C', true);
         $pdf->Cell(20, 10, '', 0, 0, 'C', true);
-        $pdf->Cell(20, 10, number_format($totalTotal, 2), 0, 0, 'C', true); // Total en columna 'Total [Bs]'
-        $pdf->Cell(20, 10, number_format($totalSaldo, 2), 0, 1, 'C', true); // Total en columna 'Saldo [Bs]'
+        $pdf->Cell(20, 10, number_format($totalTotal, 2), 0, 0, 'C', true);// Total en columna 'Saldo [Bs]'
+        $pdf->Cell(20, 10, number_format($totalSaldo, 2), 0, 0, 'C', true); // Total en columna 'Total [Bs]'
+        $pdf->Cell(20, 10, '', 0, 0, 'C', true); 
+        
     
         // Salida del PDF
         $codigoSocio = !empty($data['codigoSocio']) ? $data['codigoSocio'] : 'General';
@@ -599,7 +619,7 @@ class Reporte extends CI_Controller
 
         // Formateo de fechas con día, mes en literal y año en español
         $fmt = new IntlDateFormatter('es_ES', IntlDateFormatter::LONG, IntlDateFormatter::NONE);
-        $fmt->setPattern("d 'de' MMMM 'de' y");
+        $fmt->setPattern("d MMMM y");
 
         $fechaInicioFormateada = $fmt->format(new DateTime($data['fechaInicio']));
         $fechaFinFormateada = $fmt->format(new DateTime($data['fechaFin']));
@@ -618,7 +638,7 @@ class Reporte extends CI_Controller
         $pdf->SetX($tableStartX);
         $pdf->Cell(10, 10, 'No.', 0, 0, 'C', true);
         $pdf->Cell(20, 10, utf8_decode('Código'), 0, 0, 'C', true);
-        $pdf->Cell(60, 10, utf8_decode('Socio'), 0, 0, 'C', true);
+        $pdf->Cell(60, 10, utf8_decode('Socio'), 0, 0, 'L', true);
         $pdf->Cell(30, 10, 'Consumo [m3]', 0, 0, 'C', true);
         $pdf->Cell(30, 10, 'Total [Bs]', 0, 1, 'C', true);
 
@@ -638,7 +658,7 @@ class Reporte extends CI_Controller
             $pdf->Cell(20, 10, $consumidor['codigo'], 0, 0, 'C', $fill);
 
             // Agregar el valor de `socio`
-            $pdf->Cell(60, 10, utf8_decode($consumidor['socio']), 0, 0, 'C', $fill);
+            $pdf->Cell(60, 10, utf8_decode($consumidor['socio']), 0, 0, 'L', $fill);
 
             // Agregar el valor de `consumo` formateado con 2 decimales
             $pdf->Cell(30, 10, number_format($consumidor['consumo'], 2), 0, 0, 'C', $fill);
@@ -659,8 +679,8 @@ class Reporte extends CI_Controller
         $pdf->SetFont('Arial', 'B', 10);
         $pdf->SetFillColor(220, 220, 220);
         $pdf->Cell(10, 10, '', 0, 0, 'C', true);
-        $pdf->Cell(20, 10, '', 0, 0, 'C', true);
-        $pdf->Cell(60, 10, 'Totales:', 0, 0, 'C', true);
+        $pdf->Cell(20, 10, 'Totales:', 0, 0, 'C', true);
+        $pdf->Cell(60, 10, '', 0, 0, 'C', true);
         $pdf->Cell(30, 10, number_format($totalConsumo, 2), 0, 0, 'C', true); // Total en columna 'Consumo [m3]'
         $pdf->Cell(30, 10, number_format($totalBs, 2), 0, 1, 'C', true); // Total en columna 'Total [Bs]'
 

@@ -28,23 +28,16 @@
       <!-- Cuerpo del modal -->
       <div class="modal-body">
         <div class="panel-body p-0">
-          <form id="formReporte" class="form-horizontal form-bordered">
+        <form id="formReporte" class="form-horizontal form-bordered">
             <div class="row">
               <div class="col-lg-6">
                 
-                <!-- Código Usuario -->
-                <div class="form-group row" id="criterio-container">
-                  <label class="form-label col-form-label col-lg-4">Socio</label>
-                  <div class="col-lg-8 position-relative">
-                    <input type="text" class="form-control" id="criterio" name="criterio" placeholder="Ingrese apellido o código" style="border: 2px solid #343a40; color: #333333;" oninput="this.value = this.value.toUpperCase();" required>
-                  </div>
-                </div>
 
                 <!-- Rango de Fechas -->
                 <div class="form-group row">
-                  <label class="form-label col-form-label col-lg-4">Rango de Fechas</label>
-                  <div class="col-lg-8">
-                    <div id="advance-daterange" class="btn btn-default d-flex text-start align-items-center">
+                  <label class="form-label col-form-label col-lg-4" style="padding: 10px;">Rango de Fechas</label>
+                  <div class="col-lg-8" style="padding: 10px;">
+                    <div id="advance-daterange" class="btn btn-default d-flex text-start align-items-center" style="padding: 10px;">
                       <span class="flex-1">Seleccionar rango de fechas</span>
                       <i class="fa fa-caret-down"></i>
                     </div>
@@ -52,6 +45,19 @@
                     <input type="hidden" id="fechaFin" name="fechaFin">
                   </div>
                 </div>
+
+                <!-- Código Usuario -->
+                <div class="form-group row" id="criterio-container">
+                  <label class="form-label col-form-label col-lg-4" style="padding: 10px;">Socio</label>
+                  <div class="col-lg-8 position-relative" style="padding: 10px;">
+                    <input type="text" class="form-control" id="criterio" name="criterio" placeholder="Ingrese apellido o código" 
+                          style="border: 2px solid #343a40; color: #333333; padding: 10px;" 
+                          oninput="this.value = this.value.toUpperCase();" required>
+                  </div>
+                </div>
+
+                
+
                 <!-- Contenedor de mensaje para cuando no se encuentran registros -->
                 <div id="mensajeSinRegistros" style="display: none; color: #dc3545; font-weight: bold; text-align: center;">
                     No se encontraron registros para el rango de fechas seleccionado. Favor seleccione un rango de fechas diferente.
@@ -290,7 +296,8 @@
 $(document).ready(function() {
   // Inicializar daterangepicker
   $("#advance-daterange").daterangepicker({
-        opens: "right",
+        opens: "right",  // Asegura que se abra hacia la derecha
+        // drops: "center",
         locale: {
           format: "DD/MM/YYYY",
           separator: " a ",
@@ -324,7 +331,6 @@ $(document).ready(function() {
     });
 
 
-
   // Actualización del título del modal y configuración de `data-reporte` al hacer clic en las tarjetas
   $('.table-booking').on('click', function() {
       var tipoReporte = $(this).data('reporte'); 
@@ -348,6 +354,18 @@ $(document).ready(function() {
           $('#criterio').attr('required', 'required').attr('type', 'text'); // Campo obligatorio para otros reportes
           $('#criterio-container').show(); // Mostrar el contenedor
       }
+
+      
+
+     // Cuando el modal se muestra, habilita el scroll en el body
+    $('#modalPosBooking').on('shown.bs.modal', function () {
+        $('body').addClass('modal-open-scroll');
+    });
+
+    // Cuando el modal se oculta, deshabilita el scroll en el body
+    $('#modalPosBooking').on('hidden.bs.modal', function () {
+        $('body').removeClass('modal-open-scroll');
+    });
 
       // Abrir el modal después de la configuración
       $('#modalPosBooking').modal('show');

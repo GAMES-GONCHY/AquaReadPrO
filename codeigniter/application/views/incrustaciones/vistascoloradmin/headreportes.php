@@ -144,6 +144,11 @@
   .seleccionado {
     background-color: #d1e7dd; /* Color para indicar selección */
 }
+.daterangepicker {
+    max-height: 400px; /* Ajusta el valor según necesites */
+    overflow-y: auto; /* Habilita el scroll vertical */
+    /* overflow-x: auto; Habilita el scroll vertical */
+}
  </style>
 
 
