@@ -230,14 +230,16 @@ class Reporte_model extends CI_Model
 		// Retorna el resultado o null si no hay datos
 		return $result ? $result : null;
 	}
-
 	public function obtener_consumo_x_tiempo()
 	{
-		// Definir la consulta usando Active Record
-		$this->db->select("SUM(lecturaActual - lecturaAnterior) / 100 AS consumo");
-		$this->db->select("DATE_FORMAT(fechaLectura, '%Y-%m') AS mes");
-		$this->db->from("lectura");
-		$this->db->where("DATE_FORMAT(fechaLectura, '%Y-%m') >= ", "DATE_FORMAT(DATE_SUB(CURDATE(), INTERVAL 7 MONTH), '%Y-%m')", false);
+		$this->db->select("DATE_FORMAT(L.fechaLectura, '%Y-%m') AS mes", false);
+		$this->db->select("SUM((L.lecturaActual - L.lecturaAnterior) / 100) AS total_consumido", false);
+		$this->db->select("SUM(CASE WHEN A.estado = 'pagado' THEN (L.lecturaActual - L.lecturaAnterior) * T.tarifaVigente / 100 ELSE 0 END) AS total_pagado", false);
+		$this->db->from('lectura L');
+		$this->db->join('avisocobranza A', 'L.idLectura = A.idLectura');
+		$this->db->join('tarifa T', 'A.idTarifa = T.idTarifa');
+		$this->db->where("L.estado", 1);
+		$this->db->where("DATE_FORMAT(L.fechaLectura, '%Y-%m') >= DATE_FORMAT(DATE_SUB(CURDATE(), INTERVAL 7 MONTH), '%Y-%m')", null, false);
 		$this->db->group_by("mes");
 		$this->db->order_by("mes", "ASC");
 	
@@ -247,5 +249,16 @@ class Reporte_model extends CI_Model
 		// Retornar los resultados en formato de arreglo
 		return $query->result_array();
 	}
+
+	// $this->db->select("DATE_FORMAT(L.fechaLectura, '%Y-%m') AS mes", false);
+	// $this->db->select("SUM((L.lecturaActual - L.lecturaAnterior) / 100) AS total_consumido", false);
+	// $this->db->select("SUM(CASE WHEN A.estado = 'pagado' THEN (L.lecturaActual - L.lecturaAnterior) * T.tarifaVigente / 100 ELSE 0 END) AS total_pagado", false);
+	// $this->db->from('lectura L');
+	// $this->db->join('avisocobranza A', 'L.idLectura = A.idLectura');
+	// $this->db->join('tarifa T', 'A.idTarifa = T.idTarifa');
+	// $this->db->where("L.estado", 1);
+	// $this->db->where("DATE_FORMAT(L.fechaLectura, '%Y-%m') >= DATE_FORMAT(DATE_SUB(CURDATE(), INTERVAL 7 MONTH), '%Y-%m')", null, false);
+	// $this->db->group_by("mes");
+	// $this->db->order_by("mes", "ASC");
 
 }

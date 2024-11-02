@@ -29,6 +29,11 @@ class Reporte extends CI_Controller
         }
 
         log_message('debug', 'top 1: ' . print_r($data['top1'], true));
+
+
+        
+
+
         //$data['historial'] = $this->reporte_model->get_pagos();
         $this->load->view('incrustaciones/vistascoloradmin/headreportes');
         $this->load->view('incrustaciones/vistascoloradmin/menuadmin');
@@ -668,7 +673,5 @@ class Reporte extends CI_Controller
         
         echo json_encode(['cantidad' => $total]);
     }
-    public function grafico_consumo_tiempo()
-    {
-    }
+
 }

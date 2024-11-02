@@ -534,27 +534,33 @@ var handleStoreSessionSparkline = function() {
 
 
 
-
-
 var handleVisitorsAreaChart = function() {
     $.ajax({
-        url: obtenerConsumoUrl, // Asegúrate de que esta variable esté configurada en el archivo PHP
+        url: obtenerConsumoUrl, // Asegúrate de que esta variable esté configurada correctamente en el archivo PHP
         method: 'GET',
         dataType: 'json',
         success: function(response) {
             console.log("Datos obtenidos:", response);
 
-            // Crear una única serie de datos para el "Consumo Mensual"
+            // Crear dos series de datos: una para el "Consumo Mensual" y otra para los "Pagos Mensuales"
             var visitorAreaChartData = [
                 {
                     'key': 'Consumo Mensual',
                     'color': COLOR_AQUA,
                     'values': response.map(function(item) {
-                        return [new Date(item.mes + "-01").getTime(), parseFloat(item.consumo)];
+                        return [new Date(item.mes + "-01").getTime(), parseFloat(item.total_consumido)];
+                    })
+                },
+                {
+                    'key': 'Pagos Mensuales',
+                    'color': COLOR_BLUE,
+                    'values': response.map(function(item) {
+                        return [new Date(item.mes + "-01").getTime(), parseFloat(item.total_pagado)];
                     })
                 }
             ];
 
+            // Configurar y renderizar el gráfico
             if ($('#visitors-line-chart').length !== 0) {
                 nv.addGraph(function() {
                     var stackedAreaChart = nv.models.stackedAreaChart()
@@ -572,11 +578,14 @@ var handleVisitorsAreaChart = function() {
                             var monthsName = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
                             var date = new Date(d);
                             return monthsName[date.getMonth()] + ' ' + date.getFullYear();
-                        });
+                        })
+                        .tickValues(response.map(function(item) {
+                            return new Date(item.mes + "-01").getTime();
+                        })); // Mostrar solo los meses correspondientes a los datos
 
-                    // Configuración del eje Y con un rango específico
-                    stackedAreaChart.yDomain([0, 250]); // Ampliado el máximo a 300 para un gráfico más esbelto
-                    stackedAreaChart.yAxis.tickFormat(d3.format(',.0f')); // Formato sin decimales
+                    // Configuración del eje Y con el rango deseado (ajustado en el último paso)
+                    stackedAreaChart.yDomain([0, 400]);
+                    stackedAreaChart.yAxis.tickFormat(d3.format(',.0f'));
 
                     // Renderizar el gráfico
                     d3.select('#visitors-line-chart').selectAll("*").remove();
@@ -596,6 +605,8 @@ var handleVisitorsAreaChart = function() {
         }
     });
 };
+
+
 
 
 
