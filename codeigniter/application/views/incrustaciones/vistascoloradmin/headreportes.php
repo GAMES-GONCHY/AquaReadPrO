@@ -21,7 +21,26 @@
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 
+    <!-- TOAST notificaciones -->
+    <link href="<?php echo base_url(); ?>coloradmin/assets/plugins/gritter/css/jquery.gritter.css" rel="stylesheet" />
+    <style>
+      #gritter-notice-wrapper
+      {
+          z-index: 1060 !important; /* Superior al modal de Bootstrap (1050) */
+      }
+      /* Oculta el texto original de cierre */
 
+      /* Agrega el texto "Cerrar" como contenido personalizado */
+      .gritter-close:after {
+          content: "Cerrar"; /* Texto que reemplaza "Close" */
+          visibility: visible;
+          position: absolute;
+          top: 0;
+          left: 0;
+          color: inherit; /* Usa el color original del botón */
+      }
+
+    </style>
 
 
     <!-- DataTables CSS -->

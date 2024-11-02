@@ -1,4 +1,4 @@
-    <div id="footer" class="app-footer mx-0 px-0">
+<div id="footer" class="app-footer mx-0 px-0">
       <h5 class="mb-0">&copy; 2024 <b>Aqua</b>ReadPro - by G@mes Rights Reserved</h5>
     </div>
   </div>
@@ -270,9 +270,19 @@
 <script src="<?php echo base_url(); ?>coloradmin/assets/plugins/moment/min/moment.min.js"></script>
 <script src="<?php echo base_url(); ?>coloradmin/assets/plugins/bootstrap-daterangepicker/daterangepicker.js"></script>
 
+<!-- TOAST NOTIFICACIONES -->
+<script src="<?php echo base_url(); ?>coloradmin/assets/plugins/gritter/js/jquery.gritter.js"></script>
+<!-- SCRIPT TOAST NOTIFICACIONES -->
+
+
+
+
+
+
 
 <script>
   window.tipoReporte = '';
+  window.flag=false;
 </script>
 
 <!-- script para datepicker range -->
@@ -349,9 +359,7 @@ $(document).ready(function() {
     $('#formReporte')[0].reset();  // Restablecer el formulario
     $('#criterio').removeClass('is-valid is-invalid');  // Quitar clases de validación
     $('#criterio').val('');  // Limpiar campo de socio
-    //$('#advance-daterange span').html('Seleccionar rango de fechas');  // Resetear el texto del daterangepicker
-    // $('#fechaInicio').val('');
-    // $('#fechaFin').val('');
+
     $('#socioValido').hide();  // Ocultar icono de validación
     $('#resultadosBusqueda').hide();  // Ocultar resultados
 
@@ -359,12 +367,22 @@ $(document).ready(function() {
     $('#mensajeSinRegistros').hide();
   });
 
-  
+  // Buscar socio en tiempo real cuando el usuario escribe en el campo
+  $('#criterio').on('input', function() {
+      //window.flag = true;
+      // Limpiar los valores de los inputs ocultos
+      $('#codigoSocioSeleccionado').val('');
+      $('#nombreSocioSeleccionado').val('');
+      $('#idMembresiaSeleccionado').val('');
 
-  // Buscar socio cuando se complete el campo del código de usuario (evento blur)
-  $('#criterio').on('blur', function() {
-    buscarSocio();  // Llamar a la función buscarSocio cuando pierda el foco
+      // Llamar a la función para buscar al socio
+      buscarSocio();
   });
+
+  // // Buscar socio cuando se complete el campo del código de usuario (evento blur)
+  // $('#criterio').on('blur', function() {
+  // buscarSocio();  // Llamar a la función buscarSocio cuando pierda el foco
+  // });
   // Escuchar el evento de la tecla Enter en el campo de código de socio
   $('#criterio').on('keydown', function(e) {
     if (e.key == 'Enter') {
@@ -372,6 +390,7 @@ $(document).ready(function() {
       buscarSocio();  // Llamar a la función buscarSocio cuando se presione Enter
     }
   });
+
   // Función para buscar socio
   function buscarSocio()
   {
@@ -531,14 +550,18 @@ $(document).ready(function() {
     $('#mensajeSinRegistros').hide();
 
     // Validación de selección: verificar campos vacíos según el tipo de reporte
-    // if (!fechaInicio || !fechaFin || (tipoReporte !== "avisos" && (!codigoSocio || !idMembresia))) {
-    //     alert('Por favor, complete todos los campos y seleccione un socio.');
-    //     return;
-    // }
-
-    // Validación de selección: verificar campos vacíos según el tipo de reporte
     if (!fechaInicio || !fechaFin || (tipoReporte !== "avisos" && tipoReporte !== "ranking" && (!codigoSocio || !idMembresia))) {
-        alert('Por favor, complete todos los campos y seleccione un socio.');
+        //alert('Por favor, complete todos los campos y seleccione un socio.');
+        $.gritter.add({
+          title: 'Por favor, complete los campos y seleccione un socio',
+          sticky: false,
+          time: 2000,
+          class_name: 'my-sticky-class gritter-dark',
+          before_open: function(){ },
+          after_open: function(e){ },
+          before_close: function(manual_close) { },
+          after_close: function(manual_close){ } 
+        });
         return;
     }
 
@@ -659,6 +682,7 @@ $(document).ready(function() {
     });
 
   });
+
 });
 </script>
 
@@ -666,27 +690,51 @@ $(document).ready(function() {
 <!-- script para generar pdf -->
 <script>
   document.getElementById('generarPDFBtn').addEventListener('click', function () {
+
       // Obtener los valores de los parámetros
       const codigoSocio = document.getElementById('codigoSocioSeleccionado').value;
       const socio = document.getElementById('nombreSocioSeleccionado').value;
       const idMembresia = document.getElementById('idMembresiaSeleccionado').value;
       const nombreSocio = document.getElementById('nombreSocioSeleccionado').value;
+
+      console.log('codigo Seleccionado:', codigoSocio);
+      console.log('idMembresia Seleccionado:', idMembresia);
+
       const fechaInicio = document.getElementById('fechaInicio').value;
       const fechaFin = document.getElementById('fechaFin').value;
       const tipoReporte = window.tipoReporte;
 
       // Determinar la función a usar para cada tipo de reporte
       let funcion;
-      if (tipoReporte == 'pagos') {
-          funcion = 'generar_pdf_pago';
-      } else if (tipoReporte == 'consumos') {
-          funcion = 'generar_pdf_consumo';
-      } else if (tipoReporte == 'avisos') {
-          funcion = 'generar_pdf_avisos';
-      } else if (tipoReporte == 'ranking') {
+      if (tipoReporte == 'pagos')
+      {
+        funcion = 'generar_pdf_pago';
+      }
+      else if (tipoReporte == 'consumos')
+      {
+        funcion = 'generar_pdf_consumo';
+      }
+      else if (tipoReporte == 'avisos')
+      {
+        funcion = 'generar_pdf_avisos';
+      }
+      else if (tipoReporte == 'ranking')
+      {
           funcion = 'generar_pdf_ranking';
-      } else {
-          alert('Tipo de reporte no reconocido.');
+      }
+      else
+      {
+          //alert('Tipo de reporte no reconocido.');
+          $.gritter.add({
+            title: 'Configure el reporte antes de generar el pdf',
+            sticky: false,
+            time: 2000,
+            class_name: 'my-sticky-class gritter-light',
+            before_open: function(){ },
+            after_open: function(e){ },
+            before_close: function(manual_close) { },
+            after_close: function(manual_close){ } 
+          });
           return;
       }
 
@@ -694,10 +742,30 @@ $(document).ready(function() {
 
       // Validación de datos según el tipo de reporte
       if (['pagos', 'consumos'].includes(tipoReporte) && (!codigoSocio || !fechaInicio || !fechaFin || !idMembresia || !tipoReporte)) {
-          alert('Por favor, configura el reporte para generar el PDF.');
+          //alert('Por favor, configura el reporte para generar el PDF.');
+          $.gritter.add({
+          title: 'Por favor, complete los campos y seleccione un socio',
+          sticky: false,
+          time: 2000,
+          class_name: 'my-sticky-class gritter-dark',
+          before_open: function(){ },
+          after_open: function(e){ },
+          before_close: function(manual_close) { },
+          after_close: function(manual_close){ } 
+        });
           return;
       } else if (['ranking', 'avisos'].includes(tipoReporte) && (!fechaInicio || !fechaFin || !tipoReporte)) {
-          alert('Por favor, selecciona el rango de fechas para el reporte de ' + tipoReporte + '.');
+          //alert('Por favor, selecciona el rango de fechas para el reporte de ' + tipoReporte + '.');
+            $.gritter.add({
+            title: 'Por favor, seleccione el rango de fechas',
+            sticky: false,
+            time: 2000,
+            class_name: 'my-sticky-class gritter-dark',
+            before_open: function(){ },
+            after_open: function(e){ },
+            before_close: function(manual_close) { },
+            after_close: function(manual_close){ } 
+          });
           return;
       }
 
@@ -709,9 +777,9 @@ $(document).ready(function() {
 
       // Crear inputs ocultos para enviar los datos
       const inputs = [
-          { name: 'codigoSocio', value: (tipoReporte === 'ranking' || tipoReporte === 'avisos') ? '' : codigoSocio },
-          { name: 'socio', value: (tipoReporte === 'ranking' || tipoReporte === 'avisos') ? '' : socio },
-          { name: 'idMembresia', value: (tipoReporte === 'ranking' || tipoReporte === 'avisos') ? '' : idMembresia },
+          { name: 'codigoSocio', value: codigoSocio },
+          { name: 'socio', value: (tipoReporte == 'ranking') ? '' : socio },
+          { name: 'idMembresia', value: (tipoReporte == 'ranking') ? '' : idMembresia },
           { name: 'fechaInicio', value: fechaInicio },
           { name: 'fechaFin', value: fechaFin },
           { name: 'tipoReporte', value: tipoReporte }
@@ -730,11 +798,30 @@ $(document).ready(function() {
 
       // Eliminar el formulario después de enviarlo
       document.body.removeChild(form);
+
+      // Vaciar los valores de los inputs ocultos después de enviar el formulario
+
   });
 </script>
 
-
-
+<!-- para escribir sobre la tarjeta de avisos vencidos -->
+<script>
+  $(document).ready(function() {
+    $.ajax({
+        url: '<?php echo base_url("index.php/reporte/obtener_avisos_vencidos_rechazados"); ?>',
+        type: 'POST',
+        dataType: 'json',
+        success: function(response) {
+            // Mostrar el resultado en la tarjeta
+            console.log("cantidad", response);
+            $('#totalVencidosRechazados').text(response.cantidad);
+        },
+        error: function(xhr, status, error) {
+            console.error('Error al obtener el total de vencidos y rechazados:', error);
+        }
+    });
+});
+</script>
 
 
 

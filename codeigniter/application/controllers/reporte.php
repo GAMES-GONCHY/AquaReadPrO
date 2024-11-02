@@ -5,11 +5,36 @@ class Reporte extends CI_Controller
 {
     public function historialpagos()
     {
+        // Llamada a la función `ufcPorcentajeAvisos` en MySQL
+        $data['porcentaje'] = $this->reporte_model->porcentaje_vencidos_rechazados();
+        log_message('debug', 'porcentaje: ' . print_r($data['porcentaje'], true));
+
+        $data['top1'] = $this->reporte_model->obtener_top1();
+
+        $data['consumo'] = $this->reporte_model->consumo_total_ultima_lectura();
+        log_message('debug', 'consumo: ' . print_r($data['consumo'], true));
+        // Establece el locale en español
+        setlocale(LC_TIME, 'es_ES.UTF-8');
+
+        // Verifica si hay una fecha en $data['top1']
+        if ($data['top1'] && isset($data['top1']['fechaLectura'])) {
+            $fecha = new DateTime($data['top1']['fechaLectura']);
+            
+            // Usa IntlDateFormatter para obtener el mes en español
+            $formatter = new IntlDateFormatter('es_ES', IntlDateFormatter::NONE, IntlDateFormatter::NONE, null, null, 'MMMM');
+            $mesEnMinuscula = $formatter->format($fecha);
+
+            // Capitaliza la primera letra del mes
+            $data['top1']['fechaLectura'] = ucfirst($mesEnMinuscula);
+        }
+
+        log_message('debug', 'top 1: ' . print_r($data['top1'], true));
         //$data['historial'] = $this->reporte_model->get_pagos();
         $this->load->view('incrustaciones/vistascoloradmin/headreportes');
         $this->load->view('incrustaciones/vistascoloradmin/menuadmin');
-        $this->load->view('historialreportes');
+        $this->load->view('historialreportes', $data);
         $this->load->view('incrustaciones/vistascoloradmin/footerreportes');
+
     }
     public function buscar_socio() 
     {
@@ -342,7 +367,7 @@ class Reporte extends CI_Controller
         $fechaInicioFormateada = $fmt->format(new DateTime($data['fechaInicio']));
         $fechaFinFormateada = $fmt->format(new DateTime($data['fechaFin']));
         $pdf->SetX($margenIzquierdo);
-        $pdf->Cell(0, 5, 'Periodo: ' . $fechaInicioFormateada . ' al ' . $fechaFinFormateada, 0, 1, 'L');
+        $pdf->Cell(0, 5, 'Periodo: ' . $fechaInicioFormateada . ' a ' . $fechaFinFormateada, 0, 1, 'L');
         $pdf->SetX($margenIzquierdo);
         $pdf->Cell(0, 5, utf8_decode('Fecha de emisión: ') . date('d/m/Y'), 0, 1, 'L');
         $pdf->Ln(10);
@@ -637,7 +662,13 @@ class Reporte extends CI_Controller
         // Salida del PDF
         $pdf->Output('Ranking_Consumidores.pdf', 'I');
     }
-
-
-    
+    public function obtener_avisos_vencidos_rechazados()
+    {
+        $total = $this->reporte_model->total_vencidos_rechazados();
+        
+        echo json_encode(['cantidad' => $total]);
+    }
+    public function grafico_consumo_tiempo()
+    {
+    }
 }

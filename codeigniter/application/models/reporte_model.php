@@ -174,4 +174,78 @@ class Reporte_model extends CI_Model
 			return [];
 		}
 	}
+	public function total_vencidos_rechazados()
+	{
+		$this->db->select('COUNT(A.idAviso) AS cantidad');
+		$this->db->from('avisocobranza A');
+		$this->db->join('lectura L', 'A.idLectura = L.idLectura', 'inner');
+		$this->db->where_in('A.estado', ['vencido', 'rechazado']);
+		$this->db->where("DATE_FORMAT(L.fechaLectura, '%Y,%m') = (SELECT DATE_FORMAT(MAX(fechaLectura), '%Y,%m') FROM lectura WHERE estado <> 0)", null, false);
+
+	
+		$query = $this->db->get();
+	
+		// Devolver el valor directamente como un número
+		$result = $query->row();
+		return $result->cantidad;
+	}
+	public function porcentaje_vencidos_rechazados()
+	{
+		// Llamada a la función `usfPorcentajeAvisos` en MySQL
+		$query = $this->db->query("SELECT ufcPorcentajeAvisos() AS porcentaje");
+
+		// Recuperar el resultado
+		$result = $query->row();
+	
+		// Retornar el resultado formateado
+		return $result->porcentaje;
+	}
+	public function obtener_top1()
+	{
+		$this->db->select('ME.codigoSocio AS codigo');
+		$this->db->select('L.fechaLectura AS fechaLectura');
+		$this->db->from('membresia ME');
+		$this->db->join('medidor M', 'ME.idMembresia = M.idMembresia', 'inner');
+		$this->db->join('lectura L', 'M.idMedidor = L.idMedidor', 'inner');
+		$this->db->join('avisocobranza A', 'A.idLectura = L.idLectura', 'inner');
+		$this->db->where('A.estado <>', 'deshabilitado');
+		$this->db->where("DATE_FORMAT(L.fechaLectura, '%Y,%m') = (SELECT DATE_FORMAT(MAX(fechaLectura), '%Y,%m') FROM lectura WHERE estado <> 0)", null, false);
+		$this->db->where("((L.lecturaActual - L.lecturaAnterior) / 100) = (SELECT MAX((lecturaActual - lecturaAnterior) / 100) FROM lectura WHERE estado <> 0 AND DATE_FORMAT(fechaLectura, '%Y,%m') = DATE_FORMAT(L.fechaLectura, '%Y,%m'))", null, false);
+
+		$query = $this->db->get();
+		$result = $query->row();
+	
+		// Retorna el resultado de ambas columnas o `null` si no hay resultado
+		return $result ? ['codigo' => $result->codigo, 'fechaLectura' => $result->fechaLectura] : null;
+	}
+
+	public function consumo_total_ultima_lectura()
+	{
+		// Llama al procedimiento almacenado
+		$query = $this->db->query("CALL uspConsumoTotalUltimaLectura()");
+
+		// Verifica si hay resultados y retorna como un arreglo de objetos
+		$result = $query->row_array();
+
+		// Retorna el resultado o null si no hay datos
+		return $result ? $result : null;
+	}
+
+	public function obtener_consumo_x_tiempo()
+	{
+		// Definir la consulta usando Active Record
+		$this->db->select("SUM(lecturaActual - lecturaAnterior) / 100 AS consumo");
+		$this->db->select("DATE_FORMAT(fechaLectura, '%Y-%m') AS mes");
+		$this->db->from("lectura");
+		$this->db->where("DATE_FORMAT(fechaLectura, '%Y-%m') >= ", "DATE_FORMAT(DATE_SUB(CURDATE(), INTERVAL 7 MONTH), '%Y-%m')", false);
+		$this->db->group_by("mes");
+		$this->db->order_by("mes", "ASC");
+	
+		// Ejecutar la consulta y obtener los resultados
+		$query = $this->db->get();
+	
+		// Retornar los resultados en formato de arreglo
+		return $query->result_array();
+	}
+
 }

@@ -97,7 +97,7 @@
 
 				</div>
 
-
+				<!-- TARJETAS ENSIMA DEL GRAFO DE CONSUMO VS TIEMPO -->
 				<div class="col-xl-6">
 
 					<div class="row">
@@ -241,10 +241,10 @@
 
 			</div>
 
-
+			<!-- GRAFICO CONSUMO VS TIEMPO -->
 			<div class="row">
 
-				<div class="col-xl-8 col-lg-6">
+				<div class="col-xl-12 col-lg-6">
 
 					<div class="card border-0 mb-3 ">
 						<div class="card-body">
@@ -277,7 +277,7 @@
 				</div>
 
 
-				<div class="col-xl-4 col-lg-6">
+				<!-- <div class="col-xl-4 col-lg-6">
 
 					<div class="card border-0 mb-3 ">
 						<div class="card-body">
@@ -326,12 +326,12 @@
 						</div>
 					</div>
 
-				</div>
+				</div> -->
 
 			</div>
 
 
-			<div class="row">
+			<!-- <div class="row">
 
 				<div class="col-xl-4 col-lg-6">
 
@@ -596,6 +596,6 @@
 
 				</div>
 
-			</div>
+			</div> -->
 		</div>
 <!-- END PAGE CONTENT -->

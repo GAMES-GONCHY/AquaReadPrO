@@ -61,14 +61,12 @@ class Usuario extends CI_Controller
 		{
 			if(($this->session->userdata('estado'))==1)
 			{
-				
-				
 				if(($this->session->userdata('rol'))==2)
 				{
-					$this->load->view('incrustaciones/vistascoloradmin/head');
+					$this->load->view('incrustaciones/vistascoloradmin/headdashboard');
 					$this->load->view('incrustaciones/vistascoloradmin/menuadmin');
 					$this->load->view('paneladmin.php');
-					$this->load->view('incrustaciones/vistascoloradmin/footer');
+					$this->load->view('incrustaciones/vistascoloradmin/footerdashboard');
 				}
 				else
 				{
@@ -119,5 +117,19 @@ class Usuario extends CI_Controller
 		}
 		redirect('usuario/panel','refresh');
 	}
-	
+	public function obtenerConsumoMensual()
+	{
+		// Verificar que el usuario esté autenticado y autorizado
+		if ($this->session->userdata('nickName') && ($this->session->userdata('estado')) == 1 && ($this->session->userdata('rol')) == 2) {
+			// Llama a la función que obtiene los datos
+			$data = $this->reporte_model->obtener_consumo_x_tiempo();
+
+			log_message('debug', 'consumo x mes: ' . print_r($data, true));
+			// Envía los datos en formato JSON
+			echo json_encode($data);
+		} else {
+			// Si no está autorizado, envía un error o redirige
+			show_error('No autorizado', 403);
+		}
+	}
 }

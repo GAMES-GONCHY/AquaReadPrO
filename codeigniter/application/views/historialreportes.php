@@ -2,52 +2,55 @@
 <div id="content" class="app-content">
   <!-- Fila de botones con widgets -->
   <div class="row mb-4">
-    <!-- Button 1: Historial de Pagos -->
-    <div class="col-xl-3 col-md-6">
-      <a href="#" data-bs-toggle="modal" data-bs-target="#modalPosBooking" data-reporte="pagos" data-title="Historial de Pagos" class="table-booking">
-        <div class="widget widget-stats bg-gradient-red">
-          <div class="stats-icon stats-icon-lg"><i class="fa fa-globe fa-fw"></i></div>
-          <div class="stats-content">
-            <div class="stats-title">HISTORIAL DE PAGOS</div>
-            <div class="stats-number">7,842,900</div>
-            <div class="stats-progress progress">
-              <div class="progress-bar" style="width: 70.1%;"></div>
-            </div>
-            <div class="stats-desc">Better than last week (70.1%)</div>
-          </div>
-        </div>
-      </a>
-    </div>
-
     <!-- Button 2: Historial de Consumos -->
     <div class="col-xl-3 col-md-6">
       <a href="#" data-bs-toggle="modal" data-bs-target="#modalPosBooking" data-reporte="consumos" data-title="Historial de Comsumos" class="table-booking">
         <div class="widget widget-stats bg-gradient-cyan-blue">
-          <div class="stats-icon stats-icon-lg"><i class="fa fa-dollar-sign fa-fw"></i></div>
+        <div class="stats-icon stats-icon-lg"><i class="fa fa-tint fa-fw"></i></div>
+
           <div class="stats-content">
             <div class="stats-title">HISTORIAL DE CONSUMOS</div>
-            <div class="stats-number">180,200</div>
+            <div class="stats-number"><?php echo number_format($consumo['consumo'], 2); ?> [m3]</div>
             <div class="stats-progress progress">
-              <div class="progress-bar" style="width: 40.5%;"></div>
+              <div class="progress-bar" style="width: 100.0%;"></div>
             </div>
-            <div class="stats-desc">Better than last week (40.5%)</div>
+            <div class="stats-desc">Periodo: <?php echo $top1['fechaLectura'];?></div>
           </div>
         </div>
       </a>
     </div>
 
-    <!-- Button 4: Historial de Avisos Pendientes -->
+    <!-- Button 1: Historial de Pagos -->
+    <div class="col-xl-3 col-md-6">
+      <a href="#" data-bs-toggle="modal" data-bs-target="#modalPosBooking" data-reporte="pagos" data-title="Historial de Pagos" class="table-booking">
+        <div class="widget widget-stats bg-gradient-red">
+          
+          <div class="stats-icon stats-icon-lg"><i class="fa fa-dollar-sign fa-fw"></i></div>
+          <div class="stats-content">
+            <div class="stats-title">HISTORIAL DE PAGOS</div>
+            <div class="stats-number"><?php echo number_format($consumo['pago'], 2); ?> [Bs.]</div>
+            <div class="stats-progress progress">
+              <div class="progress-bar" style="width: 70.1%;"></div>
+            </div>
+            <div class="stats-desc">Periodo: <?php echo $top1['fechaLectura'];?></div>
+          </div>
+        </div>
+      </a>
+    </div>
+
+    <!-- Button 4: Historial de Avisos vencidos o rechazados -->
     <div class="col-xl-3 col-md-6">
       <a href="#" data-bs-toggle="modal" data-bs-target="#modalPosBooking" data-reporte="avisos" data-title="Historial de avisos Vencidos - Rechazados" class="table-booking">
         <div class="widget widget-stats bg-gradient-green">
-          <div class="stats-icon stats-icon-lg"><i class="fa fa-comment-alt fa-fw"></i></div>
+          <div class="stats-icon stats-icon-lg"><i class="fa fa-exclamation-circle fa-fw"></i></div>
+
           <div class="stats-content">
             <div class="stats-title">AVISOS VENCIDOS - RECHAZADOS</div>
-            <div class="stats-number">3,988</div>
+            <div class="stats-number" id="totalVencidosRechazados">0</div>
             <div class="stats-progress progress">
-              <div class="progress-bar" style="width: 54.9%;"></div>
+              <div class="progress-bar" style="width: <?php echo $porcentaje; ?>%;"></div>
             </div>
-            <div class="stats-desc">Better than last week (54.9%)</div>
+            <div class="stats-desc"> (<?php echo $porcentaje; ?>%). Periodo: <?php echo $top1['fechaLectura']; ?></div>
           </div>
         </div>
       </a>
@@ -57,14 +60,15 @@
     <div class="col-xl-3 col-md-6">
       <a href="#" data-bs-toggle="modal" data-bs-target="#modalPosBooking" data-reporte="ranking" data-title="Ranking Consumidores" class="table-booking">
         <div class="widget widget-stats bg-gradient-purple">
-          <div class="stats-icon stats-icon-lg"><i class="fa fa-chart-line fa-fw"></i></div>
+          <div class="stats-icon stats-icon-lg"><i class="fa fa-trophy fa-fw"></i></div>
           <div class="stats-content">
             <div class="stats-title">TOP 10 CONSUMIDORES</div>
-            <div class="stats-number">3,988</div>
+            <div class="stats-number">Top 1: <span style="color: gold;"> <?php echo $top1['codigo']; ?></span></div>
+            
             <div class="stats-progress progress">
-              <div class="progress-bar" style="width: 54.9%;"></div>
+              <div class="progress-bar" style="width: 100.0%;"></div>
             </div>
-            <div class="stats-desc">Better than last week (54.9%)</div>
+            <div class="stats-desc">Periodo: <?php echo $top1['fechaLectura']; ?></div>
           </div>
         </div>
       </a>

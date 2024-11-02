@@ -307,7 +307,7 @@
     ga('send', 'pageview');
   </script>
 
-  <!-- Botones de exportacion dataTable -->
+  <!-- Botones de exportacion dataTable
   <script>
     var options = {
       dom: '<"dataTables_wrapper dt-bootstrap"<"row"<"col-xl-7 d-block d-sm-flex d-xl-block justify-content-center"<"d-block d-lg-inline-flex me-0 me-md-3"l><"d-block d-lg-inline-flex"B>><"col-xl-5 d-flex d-xl-block justify-content-center"fr>>t<"row"<"col-md-5"i><"col-md-7"p>>>',
@@ -345,7 +345,7 @@
     }
 
     $('#data-table-combine').DataTable(options);
-  </script>
+  </script> -->
 
   <!-- Sweet alart cierre de sesión -->
   <script>
@@ -409,28 +409,6 @@
       <?php endif; ?>
   });
 </script>
-
-<!-- lectura -->
-<!-- <script>
-  function actualizar() 
-  {
-    $.ajax({
-      url: '<?php echo base_url(); ?>index.php/lecturadl/actualizarlectura',
-      type: 'GET',
-      dataType: 'json',
-      success: function(data) {
-        // Actualizar el valor en la vista
-        $('#pulsos_value').text(data.pulsos);
-      },
-      error: function() {
-        console.log('Error al obtener la lectura de pulsos.');
-      }
-    });
-  }
-  // Llamar a la función cada 5 segundos
-  setInterval(actualizar, 50000);
-</script> -->
-
 
   </body>
 
