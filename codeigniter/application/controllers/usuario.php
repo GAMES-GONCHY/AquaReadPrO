@@ -63,9 +63,10 @@ class Usuario extends CI_Controller
 			{
 				if(($this->session->userdata('rol'))==2)
 				{
+					$data['consumo'] = $this->reporte_model->consumo_total_ultima_lectura();
 					$this->load->view('incrustaciones/vistascoloradmin/headdashboard');
 					$this->load->view('incrustaciones/vistascoloradmin/menuadmin');
-					$this->load->view('paneladmin.php');
+					$this->load->view('paneladmin.php',$data);
 					$this->load->view('incrustaciones/vistascoloradmin/footerdashboard');
 				}
 				else

@@ -36,19 +36,29 @@
     <link href="<?php echo base_url(); ?>coloradmin/assets/plugins/jvectormap-next/jquery-jvectormap.css" rel="stylesheet" />
     <link href="<?php echo base_url(); ?>coloradmin/assets/plugins/nvd3/build/nv.d3.css" rel="stylesheet" />
     <link href="<?php echo base_url(); ?>coloradmin/assets/plugins/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet" />
+    <link href="<?php echo base_url(); ?>coloradmin/assets/plugins/bootstrap-datepicker/dist/css/bootstrap-datepicker.css" rel="stylesheet" />
 
   
 
     
-  <!-- Estilo para cambiar de backgroud -->
-  <style>
-      .app-cover.new-background 
-      {
-          background-image: url('<?php echo base_url(); ?>coloradmin/assets/img/login-bg/login-bg-15.jpg'); /* Nueva imagen */
-      }
-  </style>
-
-
+    <!-- Estilo para cambiar de backgroud -->
+    <style>
+        .app-cover.new-background 
+        {
+            background-image: url('<?php echo base_url(); ?>coloradmin/assets/img/login-bg/login-bg-15.jpg'); /* Nueva imagen */
+        }
+    </style>
+    <!-- ESTILOS PARA EL POPOVER -->
+    <style>
+    .popover-body
+    {
+        color: black; /* Cambia el color del texto dentro del popover a negro */
+    }
+    .popover-header
+    {
+        color: black; /* Cambia el color del texto del encabezado a negro */
+    }
+    </style>
 
 
 </head>

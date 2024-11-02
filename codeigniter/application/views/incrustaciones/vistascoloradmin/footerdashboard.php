@@ -39,6 +39,7 @@
   <script src="<?php echo base_url(); ?>coloradmin/assets/plugins/apexcharts/dist/apexcharts.min.js"></script>
   <script src="<?php echo base_url(); ?>coloradmin/assets/plugins/moment/min/moment.min.js"></script>
   <script src="<?php echo base_url(); ?>coloradmin/assets/plugins/bootstrap-daterangepicker/daterangepicker.js"></script>
+  <script src="<?php echo base_url(); ?>coloradmin/assets/plugins/bootstrap-datepicker/dist/js/bootstrap-datepicker.js"></script>
 
   <!-- variable para script dashboard-v31,js -->
   <script>
@@ -152,6 +153,33 @@
   });
 </script>
 
+<script>
+$(document).ready(function() {
+    // Verificar si el datepicker acepta el cambio manual de idioma
+    $.fn.datepicker.dates['es'] = {
+        days: ["Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"],
+        daysShort: ["Dom", "Lun", "Mar", "Mié", "Jue", "Vie", "Sáb"],
+        daysMin: ["Do", "Lu", "Ma", "Mi", "Ju", "Vi", "Sa"],
+        months: ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"],
+        monthsShort: ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"],
+        today: "Hoy",
+        clear: "Limpiar"
+    };
+
+    // Inicializar el Datepicker en español con fecha actual por defecto
+    $("#datepicker-inline").datepicker({
+        inline: true,
+        showOtherMonths: true,
+        selectOtherMonths: true,
+        changeMonth: true,
+        changeYear: true,
+        todayHighlight: true,
+        autoclose: true,
+        format: "yyyy-mm-dd",
+        language: 'es'  // Especifica que el idioma es 'es' para usar las traducciones arriba
+    }).datepicker("setDate", new Date());  // Establecer la fecha actual
+});
+</script>
   </body>
 
   </html>
