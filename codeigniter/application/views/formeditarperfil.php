@@ -1,11 +1,11 @@
 <!-- START PAGE CONTENT -->
 <div id="content" class="app-content">
 
-  <ol class="breadcrumb float-xl-end">
+  <!-- <ol class="breadcrumb float-xl-end">
     <li class="breadcrumb-item"><a href="javascript:;">Home</a></li>
     <li class="breadcrumb-item"><a href="javascript:;">Form Stuff</a></li>
     <li class="breadcrumb-item active">Form Validation</li>
-  </ol>
+  </ol> -->
 
 
   <h1 class="page-header">Editar perfil</h1>

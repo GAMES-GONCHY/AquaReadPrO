@@ -75,7 +75,7 @@
 										<a href="#" class="result-image" style="background-image: url('<?php echo base_url('uploads/qr/' . $aviso['img']); ?>')" 
 											data-bs-toggle="modal" 
 											data-bs-target="#qrModal" 
-											onclick="cargarImagenModal('<?php echo base_url('uploads/qr/' . $aviso['img']); ?>', 
+											onclick="cargarImagenModal('<?php echo base_url('uploads/qr/'. $aviso['img']); ?>', 
 																	'<?php echo $aviso['codigoSocio']; ?>',
 																	'<?php echo $aviso['fechaLectura']; ?>',
 																	<?php echo $aviso['idAviso']; ?>,

@@ -43,13 +43,13 @@
                                         <th>Socio</th>
                                         <th>Consumo (m³)</th>
                                         <th>Periodo</th>
-                                        <th>Lectura Actual</th>
-                                        <th>Lectura Anterior</th>
+                                        <!-- <th>Lectura Actual</th>
+                                        <th>Lectura Anterior</th> -->
                                         <th>Tarifa Aplicada [Bs/m3]</th>
                                         <th>Total [Bs.]</th>
                                         <th>Fecha Pago QR</th>
-                                        <th>Mover a:</th>
                                         <th>Ver Comprobante</th>
+                                        <th>Mover a:</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -67,11 +67,16 @@
                                         <td><?php echo $revisado['nombreSocio']; ?></td>
                                         <td><?php echo $consumo; ?> m³</td>
                                         <td><?php echo $fechaLectura; ?></td>
-                                        <td><?php echo ($revisado['lecturaActual'])*100; ?></td>
-                                        <td><?php echo ($revisado['lecturaAnterior'])*100; ?></td>
+                                        <!-- <td><?php echo ($revisado['lecturaActual'])*100; ?></td>
+                                        <td><?php echo ($revisado['lecturaAnterior'])*100; ?></td> -->
                                         <td><?php echo $revisado['tarifaVigente']; ?></td>
                                         <td><?php echo number_format($total, 2); ?></td>
                                         <td><?php echo $fechaPago; ?></td>
+                                        <td>
+                                            <a href="#" data-bs-toggle="modal" data-bs-target="#comprobanteModal" onclick="cargarImagenModal('<?php echo base_url('uploads/comprobantes/' . trim($revisado['codigoSocio']) . '/' . $revisado['comprobante']); ?>')">
+                                                <img src="<?php echo base_url('uploads/comprobantes/' . trim($revisado['codigoSocio']) . '/' . $revisado['comprobante']); ?>" alt="Comprobante" style="width: 50px; height: auto;">
+                                            </a>
+                                        </td>
                                         <td>
                                           <?php echo form_open_multipart("avisocobranza/revisarbd", ['class' => 'auto-submit-form']); ?>
                                             <input type="hidden" name="tab" value="revision">
@@ -83,7 +88,6 @@
                                             </select>
                                           <?php echo form_close(); ?>
                                         </td>
-                                        <td><a href="">aqui mostrar el comprobante</a></td>
                                     </tr>
                                     <?php $cont++; } ?>
                                 </tbody>
@@ -94,13 +98,13 @@
                                         <th>Socio</th>
                                         <th>Consumo (m³)</th>
                                         <th>Periodo</th>
-                                        <th>Lectura Actual</th>
-                                        <th>Lectura Anterior</th>
+                                        <!-- <th>Lectura Actual</th>
+                                        <th>Lectura Anterior</th> -->
                                         <th>Tarifa Aplicada [Bs/m3]</th>
                                         <th>Total [Bs.]</th>
+                                        <th>Ver Comprobante</th>
                                         <th>Fecha Pago QR</th>
                                         <th>Mover a:</th>
-                                        <th>Ver Comprobante</th>
                                     </tr>
                                 </tfoot>
                             </table>
