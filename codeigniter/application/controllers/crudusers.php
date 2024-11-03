@@ -23,7 +23,7 @@ class Crudusers extends CI_Controller
 		{
 			$this->load->view('socioshabilitados', $data);
 		}	
-		$this->load->view('incrustaciones/vistascoloradmin/footer');
+		$this->load->view('incrustaciones/vistascoloradmin/footercruduser');
 	}
 	public function deshabilitados($rol)
 	{
@@ -107,13 +107,6 @@ class Crudusers extends CI_Controller
 				$this->db->insert('membresia',$data2);
 				$idMembresia=$this->db->insert_id();
 
-				// $this->db->select_max('idDatalogger');
-				// $idDatalogger = $this->db->get('datalogger')->row()->idDatalogger;
-				// $data3['idDatalogger']=$idDatalogger;
-				// $data3['idMembresia']=$idMembresia;
-				// $data3['idAutor']=$this->session->userdata('idUsuario');
-				// $this->db->insert('medidor',$data3);
-
 				$this->db->trans_complete();
 
 				if($this->db->trans_status()===FALSE)
@@ -134,18 +127,7 @@ class Crudusers extends CI_Controller
 
 			
 			$this->enviaremail($data);
-			// Envía el correo
-            // if ($this->enviaremail($data)) 
-			// {
-			// 	$this->session->set_flashdata('mensaje', 'Usuario registrado exitosamente');
-			// 	$this->session->set_flashdata('alert_type', 'success');
-            // } 
-			// else 
-			// {
-            //     $this->session->set_flashdata('mensaje', 'Usuario registrado, sin envío de correo electronico');
-			// 	$this->session->set_flashdata('alert_type', 'warning');
-            // }
-			//redirect('crudusers/agregar');
+			
 			redirect('crudusers/agregar/'. $data['rol']);
 		}
 	}

@@ -41,7 +41,8 @@
   <script src="<?php echo base_url(); ?>coloradmin/assets/plugins/blueimp-file-upload/js/jquery.fileupload-video.js"></script>
   <script src="<?php echo base_url(); ?>coloradmin/assets/plugins/blueimp-file-upload/js/jquery.fileupload-validate.js"></script>
   <script src="<?php echo base_url(); ?>coloradmin/assets/plugins/blueimp-file-upload/js/jquery.fileupload-ui.js"></script>
-  <script src="<?php echo base_url(); ?>coloradmin/assets/js/demo/form-multiple-upload.demo.js"></script>
+  <!-- este script causa error en consola OJO -->
+  <!-- <script src="<?php echo base_url(); ?>coloradmin/assets/js/demo/form-multiple-upload.demo.js"></script> -->
 
 
 
@@ -94,14 +95,13 @@
   <script src="<?php echo base_url(); ?>coloradmin/assets/plugins/pdfmake/build/vfs_fonts.js"></script>
   <script src="<?php echo base_url(); ?>coloradmin/assets/plugins/jszip/dist/jszip.min.js"></script>
   <script src="<?php echo base_url(); ?>coloradmin/assets/js/demo/table-manage-combine.demo.js"></script>
-  <script src="<?php echo base_url(); ?>coloradmin/assets/plugins/@highlightjs/cdn-assets/highlight.min.js"></script>
 
 
   <!-- Sweets alerts/Modals scripts -->
   <script src="<?php echo base_url(); ?>coloradmin/assets/plugins/sweetalert/dist/sweetalert.min.js"></script>
   <script src="<?php echo base_url(); ?>coloradmin/assets/js/demo/ui-modal-notification.demo.js"></script>
 
-  <!-- forms validations -->
+  forms validations
   <script src="<?php echo base_url(); ?>coloradmin/assets/plugins/parsleyjs/dist/parsley.min.js"></script>
   <script>
         // Configura Parsley para usar el idioma español
@@ -162,12 +162,12 @@
           }
         }).then((result) => {
           if (result) {
-            // Acción a realizar cuando el usuario confirma
+           
             swal({
               title: 'Has confirmado salir',
               icon: 'success',
-              buttons: false, // Oculta el botón de confirmación
-              timer: 2000 // Duración en milisegundos
+              buttons: false, 
+              timer: 2000 
             });
             window.location.href = '<?php echo base_url(); ?>index.php/usuario/logout';
           }
@@ -193,7 +193,7 @@
               showConfirmButton: true
           }).then(function() {
               <?php if ($this->session->flashdata('alert_type') === 'success'): ?>
-                  //window.location.href = '<?php echo base_url(); ?>index.php/crudusers/agregar';
+                  
               <?php endif; ?>
           });
       <?php endif; ?>

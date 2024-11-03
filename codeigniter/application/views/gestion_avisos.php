@@ -133,12 +133,14 @@
                 <div class="col-12">
                   <!-- Imagen QR actual -->
                   <div class="qr-container mb-2">
-                    <img id="qrPreview" src="<?php echo base_url(); ?>uploads/qr/default.jpg" 
-                        alt="QR Code" 
-                        class="img-fluid qr-image" 
-                        style="max-width: 80px; height: auto; cursor: pointer;" 
-                        data-toggle="modal" 
-                        data-target="#qrModal">
+                    <img id="qrPreview" 
+                      src="<?php echo base_url() . 'uploads/qr/default.jpg'; ?>" 
+                      alt="QR Code" 
+                      class="img-fluid qr-image" 
+                      style="max-width: 80px; height: auto; cursor: pointer;" 
+                      data-toggle="modal" 
+                      data-target="#qrModal">
+
                   </div>
 
                   <!-- Formulario para subir nueva imagen de QR -->

@@ -10,7 +10,7 @@ class Medidor extends CI_Controller
 		$this->load->view('incrustaciones/vistascoloradmin/head');
 		$this->load->view('incrustaciones/vistascoloradmin/menuadmin');
 		$this->load->view('medidoreshabilitados', $data);
-		$this->load->view('incrustaciones/vistascoloradmin/footer');
+		$this->load->view('incrustaciones/vistascoloradmin/footercruduser');
 	}
     public function deshabilitados()
 	{
@@ -19,7 +19,7 @@ class Medidor extends CI_Controller
 		$this->load->view('incrustaciones/vistascoloradmin/head');
 		$this->load->view('incrustaciones/vistascoloradmin/menuadmin');
 		$this->load->view('medidoresdeshabilitados', $data);
-		$this->load->view('incrustaciones/vistascoloradmin/footer');
+		$this->load->view('incrustaciones/vistascoloradmin/footercruduser');
 	}
 	public function habilitarbd()
 	{

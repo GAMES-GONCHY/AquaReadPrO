@@ -10,7 +10,7 @@ class Datalogger extends CI_Controller
 		$this->load->view('incrustaciones/vistascoloradmin/head');
 		$this->load->view('incrustaciones/vistascoloradmin/menuadmin');
 		$this->load->view('dataloggershabilitados', $data);
-		$this->load->view('incrustaciones/vistascoloradmin/footer');
+		$this->load->view('incrustaciones/vistascoloradmin/footercruduser');
 	}
     public function deshabilitados()
 	{
@@ -21,7 +21,7 @@ class Datalogger extends CI_Controller
 		$this->load->view('incrustaciones/vistascoloradmin/head');
 		$this->load->view('incrustaciones/vistascoloradmin/menuadmin');
 		$this->load->view('dataloggersdeshabilitados', $data);
-		$this->load->view('incrustaciones/vistascoloradmin/footer');
+		$this->load->view('incrustaciones/vistascoloradmin/footercruduser');
 	}
 	public function habilitarbd()
 	{
