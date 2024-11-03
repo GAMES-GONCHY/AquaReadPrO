@@ -12,7 +12,7 @@ class Reporte extends CI_Controller
         $data['top1'] = $this->reporte_model->obtener_top1();
 
         $data['consumo'] = $this->reporte_model->consumo_total_ultima_lectura();
-        log_message('debug', 'consumo: ' . print_r($data['consumo'], true));
+        log_message('debug', 'consumo-pago erratico: ' . print_r($data['consumo'], true));
         // Establece el locale en español
         setlocale(LC_TIME, 'es_ES.UTF-8');
 

@@ -49,6 +49,7 @@
                                         <th>Total [Bs.]</th>
                                         <th>Fecha Pago QR</th>
                                         <th>Mover a:</th>
+                                        <th>Ver Comprobante</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -82,6 +83,7 @@
                                             </select>
                                           <?php echo form_close(); ?>
                                         </td>
+                                        <td><a href="">aqui mostrar el comprobante</a></td>
                                     </tr>
                                     <?php $cont++; } ?>
                                 </tbody>
@@ -98,6 +100,7 @@
                                         <th>Total [Bs.]</th>
                                         <th>Fecha Pago QR</th>
                                         <th>Mover a:</th>
+                                        <th>Ver Comprobante</th>
                                     </tr>
                                 </tfoot>
                             </table>

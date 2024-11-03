@@ -584,7 +584,7 @@ var handleVisitorsAreaChart = function() {
                         })); // Mostrar solo los meses correspondientes a los datos
 
                     // Configuración del eje Y con el rango deseado (ajustado en el último paso)
-                    stackedAreaChart.yDomain([0, 400]);
+                    stackedAreaChart.yDomain([0, 1000]);
                     stackedAreaChart.yAxis.tickFormat(d3.format(',.0f'));
 
                     // Renderizar el gráfico

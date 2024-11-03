@@ -190,7 +190,7 @@
            <!-- Usuarios -->
             <div class="menu-item has-sub <?php echo ($this->uri->segment(1) === 'crudusers' && $this->uri->segment(2) === 'habilitados') ? 'active' : ''; ?>">
                 <a href="javascript:;" class="menu-link">
-                    <div class="menu-icon"><i class="fa fa-table"></i></div>
+                    <div class="menu-icon"><i class="fa fa-users"></i></div>
                     <div class="menu-text">Usuarios</div>
                     <div class="menu-caret"></div>
                 </a>
@@ -215,7 +215,7 @@
             <!-- Geolocalización -->
             <div class="menu-item has-sub <?php echo ($this->uri->segment(1) === 'geodatalogger') ? 'active' : ''; ?>">
                 <a href="javascript:;" class="menu-link">
-                    <div class="menu-icon"><i class="fa fa-map"></i></div>
+                    <div class="menu-icon"><i class="fa fa-map-marker"></i></div>
                     <div class="menu-text">Geolocalización</div>
                     <div class="menu-caret"></div>
                 </a>
@@ -231,7 +231,8 @@
             <!-- Lecturas -->
             <div class="menu-item has-sub <?php echo ($this->uri->segment(1) === 'lecturadl') ? 'active' : ''; ?>">
                 <a href="javascript:;" class="menu-link">
-                    <div class="menu-icon"><i class="fa fa-list-ol"></i></div>
+                    <!-- <div class="menu-icon"><i class="fa fa-list-ol"></i></div> -->
+                    <div class="menu-icon"><i class="fa fa-tint"></i></div>
                     <div class="menu-text">Lecturas</div>
                     <div class="menu-caret"></div>
                 </a>
@@ -255,14 +256,15 @@
             <!-- Dispositivos -->
             <div class="menu-item <?php echo ($this->uri->segment(1) === 'datalogger' && $this->uri->segment(2) === 'habilitados') ? 'active' : ''; ?>">
                 <a href="<?php echo base_url('index.php/datalogger/habilitados'); ?>" class="menu-link">
-                    <div class="menu-icon"><i class="fa fa-gift"></i></div>
+                    <div class="menu-icon"><i class="fa fa-microchip"></i></div>
                     <div class="menu-text">Datalogger</div>
                 </a>
             </div>
 
             <div class="menu-item <?php echo ($this->uri->segment(1) === 'medidor' && $this->uri->segment(2) === 'habilitados') ? 'active' : ''; ?>">
                 <a href="<?php echo base_url('index.php/medidor/habilitados'); ?>" class="menu-link">
-                    <div class="menu-icon"><i class="fab fa-simplybuilt"></i></div>
+                    <div class="menu-icon"><i class="fa fa-tachometer-alt"></i></div>
+
                     <div class="menu-text">Medidores</div>
                 </a>
             </div>
@@ -270,7 +272,9 @@
             <!-- Tarifa -->
             <div class="menu-item has-sub <?php echo ($this->uri->segment(1) === 'tarifa') ? 'active' : ''; ?>">
                 <a href="javascript:;" class="menu-link">
-                    <div class="menu-icon"><i class="fa fa-envelope"></i></div>
+                    <div class="menu-icon"><i class="fa fa-dollar-sign"></i></div>
+
+
                     <div class="menu-text">Tarifas</div>
                     <div class="menu-caret"></div>
                 </a>
@@ -286,7 +290,8 @@
             <!-- Avisos de Cobranza -->
             <div class="menu-item has-sub <?php echo ($this->uri->segment(1) === 'avisocobranza') ? 'active' : ''; ?>">
                 <a href="javascript:;" class="menu-link">
-                    <div class="menu-icon"><i class="fa fa-envelope"></i></div>
+                    <div class="menu-icon"><i class="fa fa-file-invoice"></i></div>
+
                     <div class="menu-text">Avisos de cobranza</div>
                     <div class="menu-caret"></div>
                 </a>
