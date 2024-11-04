@@ -62,7 +62,7 @@
         <div class="widget widget-stats bg-gradient-purple">
           <div class="stats-icon stats-icon-lg"><i class="fa fa-trophy fa-fw"></i></div>
           <div class="stats-content">
-            <div class="stats-title">TOP 10 CONSUMIDORES</div>
+            <div class="stats-title">TOP 5 CONSUMIDORES (MENSUAL)</div>
             <div class="stats-number">Top 1: <span style="color: gold;"> <?php echo $top1['codigo']; ?></span></div>
             
             <div class="stats-progress progress">

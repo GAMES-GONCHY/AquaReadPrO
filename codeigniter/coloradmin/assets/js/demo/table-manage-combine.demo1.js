@@ -13,43 +13,6 @@ var handleDataTableCombinationSetting = function() {
             var options = {
                 dom: '<"dataTables_wrapper dt-bootstrap"<"row"<"col-xl-7 d-block d-sm-flex d-xl-block justify-content-center"<"d-block d-lg-inline-flex me-0 me-md-3"l><"d-block d-lg-inline-flex"B>><"col-xl-5 d-flex d-xl-block justify-content-center"fr>>t<"row"<"col-md-5"i><"col-md-7"p>>>',
                 buttons: [
-                    {
-                        extend: 'pdfHtml5',
-                        className: 'btn-sm',
-                        customize: function(doc) {
-                            // Cambiar el título del PDF
-                            doc.content.splice(0, 1, {
-                                text: 'Historial de pagos', // Cambia este texto al título que desees
-                                fontSize: 16, // Tamaño de la fuente del título
-                                alignment: 'center', // Alineación del título
-                                margin: [0, 0, 0, 12] // Márgenes del título (arriba, derecha, abajo, izquierda)
-                            });
-
-                            // Recalcula la numeración de las filas en el PDF
-                            var rowCount = 1;
-                            doc.content[1].table.body.forEach(function(row, i) {
-                                // Aplica solo a las filas de datos, no a los encabezados
-                                if (i > 0) {
-                                    row[0].text = rowCount; // Asigna la numeración dinámica
-                                    rowCount++;
-                                }
-                            });
-
-                            // Añadir pie de página en todas las páginas del PDF
-                            doc['footer'] = function(currentPage, pageCount) {
-                                return {
-                                    text: 'Página ' + currentPage.toString() + ' de ' + pageCount.toString(),
-                                    alignment: 'center',
-                                    fontSize: 10,
-                                    margin: [0, 0, 0, 20] // Márgenes del pie de página
-                                };
-                            };
-                        },
-                        exportOptions: {
-                            // Excluir la última columna (índice 7 si es la octava columna)
-                            columns: ':not(:last-child)'
-                        }
-                    },
                     { 
                         extend: 'copy', 
                         className: 'btn-sm',
@@ -66,13 +29,6 @@ var handleDataTableCombinationSetting = function() {
                     },
                     { 
                         extend: 'excel', 
-                        className: 'btn-sm',
-                        exportOptions: {
-                            columns: ':not(:last-child)'
-                        }
-                    },
-                    { 
-                        extend: 'print', 
                         className: 'btn-sm',
                         exportOptions: {
                             columns: ':not(:last-child)'

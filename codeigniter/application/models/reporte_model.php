@@ -169,7 +169,7 @@ class Reporte_model extends CI_Model
 		if ($query->num_rows() > 0) {
 			$result = $query->result_array();
 			// Seleccionar los primeros 10 elementos después de ordenar
-			return array_slice($result, 0, 10);
+			return array_slice($result, 0, 5);
 		} else {
 			return [];
 		}
