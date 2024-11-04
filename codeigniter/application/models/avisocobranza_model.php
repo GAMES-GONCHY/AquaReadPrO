@@ -97,6 +97,17 @@ class Avisocobranza_model extends CI_Model
         $this->db->where('idAviso', $idAviso);
         return $this->db->update('avisocobranza', $data);  // Retorna verdadero si la actualización fue exitosa
     }
+    public function obtener_qr_max()
+    {
+        $this->db->select('img');
+        $this->db->from('qr');
+        $this->db->order_by('idQr', 'DESC');
+        $this->db->limit(1);
+        $query = $this->db->get();
+        $result = $query->row_array();
+
+        return $result ? $result['img'] : null;
+    }
 }
 
 

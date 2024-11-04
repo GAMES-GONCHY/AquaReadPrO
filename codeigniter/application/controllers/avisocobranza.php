@@ -9,7 +9,7 @@ class Avisocobranza extends CI_Controller
         //$this->avisocobranza_model->generar_avisos();
         // Obtener los avisos por estado
         $data['enviados'] = $this->avisocobranza_model->avisos_por_estado('enviado');
-
+        $data['qrmax'] = $this->avisocobranza_model->obtener_qr_max();
         // Cargar las vistas con las pestañas
         $this->load->view('incrustaciones/vistascoloradmin/head');
         $this->load->view('incrustaciones/vistascoloradmin/menuadmin');

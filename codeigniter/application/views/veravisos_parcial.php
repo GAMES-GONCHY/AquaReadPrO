@@ -41,10 +41,10 @@
 							<div class="result-item" data-periodo="<?php echo $mes; ?>">
 								<?php if ($aviso['estado'] == 'enviado' || $aviso['estado'] == 'vencido' || $aviso['estado'] == 'rechazado'): ?>
 										<!-- Enlace para abrir el modal -->
-										<a href="#" class="result-image" style="background-image: url('<?php echo base_url('uploads/qr/' . $aviso['img']); ?>')" 
+										<a href="#" class="result-image" style="background-image: url('<?php echo base_url('uploads/qr/' . $qrmax); ?>')" 
 											data-bs-toggle="modal" 
 											data-bs-target="#qrModal" 
-											onclick="cargarImagenModal('<?php echo base_url('uploads/qr/' . $aviso['img']); ?>', 
+											onclick="cargarImagenModal('<?php echo base_url('uploads/qr/' . $qrmax); ?>', 
 																	'<?php echo $aviso['codigoSocio']; ?>',
 																	'<?php echo $aviso['fechaLectura']; ?>',
 																	<?php echo $aviso['idAviso']; ?>,
@@ -54,7 +54,7 @@
 
 								<?php else: ?>
 									<!-- Enlace inactivo si el estado no es 'enviado' o 'vencido' -->
-									<a href="#" class="result-image" style="background-image: url('<?php echo base_url('uploads/qr/' . $aviso['img']); ?>')" 
+									<a href="#" class="result-image" style="background-image: url('<?php echo base_url('uploads/qr/' . $qrmax); ?>')" 
 									style="pointer-events: none; opacity: 0.5;">
 									</a>
 								<?php endif; ?>

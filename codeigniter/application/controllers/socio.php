@@ -7,6 +7,7 @@ class Socio extends CI_Controller
     {
         $idUsuario = $this->session->userdata('idUsuario');
         $data['avisos'] = $this->avisocobranza_model->avisos_por_estado_id('enviado',$idUsuario);
+        $data['qrmax'] = $this->avisocobranza_model->obtener_qr_max();
         $this->load->view('incrustaciones/vistascoloradmin/headsocio');
         $this->load->view('incrustaciones/vistascoloradmin/menusocio');
         $this->load->view('veravisos',$data); // Carga la vista con las pestañas y datos
@@ -24,9 +25,11 @@ class Socio extends CI_Controller
         $idUsuario = $this->session->userdata('idUsuario');
         // Llamar al modelo para obtener los avisos filtrados por estado
         $avisos = $this->avisocobranza_model->avisos_por_estado_id($estado,$idUsuario);
+        $data['qrmax'] = $this->avisocobranza_model->obtener_qr_max();
     
         // Solo cargar el contenido de avisos (dentro de #avisos-container)
-        $this->load->view('veravisos_parcial', ['avisos' => $avisos]);
+        $this->load->view('veravisos_parcial', ['avisos' => $avisos, 'qrmax' => $data['qrmax']]);
+
     }
     public function subir() 
     {

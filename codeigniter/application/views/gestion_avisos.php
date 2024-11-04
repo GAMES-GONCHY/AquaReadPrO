@@ -132,17 +132,19 @@
               <div class="row mb-3 p-2 info-section justify-content-center text-center">
                 <div class="col-12">
                   <!-- Imagen QR actual -->
-                  <div class="qr-container mb-2">
-                    <img id="qrPreview" 
-                      src="<?php echo base_url() . 'uploads/qr/default.jpg'; ?>" 
-                      alt="QR Code" 
-                      class="img-fluid qr-image" 
-                      style="max-width: 80px; height: auto; cursor: pointer;" 
-                      data-toggle="modal" 
-                      data-target="#qrModal">
-
-                  </div>
-
+                  <?php if (!empty($qrmax)): ?>
+                    <div class="qr-container mb-2">
+                      <img id="qrPreview" 
+                          src="<?php echo base_url() . 'uploads/qr/' . $qrmax; ?>" 
+                          alt="QR Code" 
+                          class="img-fluid qr-image" 
+                          style="max-width: 80px; height: auto; cursor: pointer;" 
+                          data-toggle="modal" 
+                          data-target="#qrModal">
+                    </div>
+                  <?php else: ?>
+                    <p>No se encontró imagen de QR.</p>
+                  <?php endif; ?>
                   <!-- Formulario para subir nueva imagen de QR -->
                   <form action="<?php echo base_url(); ?>index.php/qr/upload" method="post" enctype="multipart/form-data">
                     <div class="form-group">
@@ -179,7 +181,10 @@
             </button>
           </div>
           <div class="modal-body text-center">
-            <img id="qrExpanded" src="<?php echo base_url(); ?>uploads/qr/default.jpg" alt="QR Code Expanded" class="img-fluid">
+          <img id="qrExpanded" 
+              src="<?php echo base_url() . 'uploads/qr/' . (!empty($qrmax) ? $qrmax : 'default.jpg'); ?>" 
+              alt="QR Code Expanded" 
+              class="img-fluid">
           </div>
         </div>
       </div>
