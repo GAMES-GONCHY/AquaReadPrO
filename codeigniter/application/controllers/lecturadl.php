@@ -72,8 +72,8 @@ class Lecturadl extends CI_Controller
         {
             log_message('error', 'No se encontraron dataloggers activos.');
             // Si no hay dataloggers disponibles, retornar una tabla vacía
-            $this->session->set_flashdata('mensaje', 'No se encontraron medidores activos');
-			$this->session->set_flashdata('alert_type', 'error');
+            // $this->session->set_flashdata('mensaje', 'No se encontraron medidores activos');
+			// $this->session->set_flashdata('alert_type', 'error');
             return [];
         }
     }

@@ -126,7 +126,7 @@
 											'<?php echo ($aviso['estado'] == 'enviado') ? 'Pendiente' : $aviso['estado']; ?>',
 											'<?php echo $aviso['fechaPago']; ?>',
 											<?php echo $aviso['saldo']; ?>)">
-										Aviso de Cobranza
+										Detalle
 									</button>
 
 								</div>
