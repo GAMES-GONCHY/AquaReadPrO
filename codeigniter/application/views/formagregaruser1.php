@@ -1,11 +1,11 @@
 <!-- START PAGE CONTENT -->
 <div id="content" class="app-content">
 
-  <ol class="breadcrumb float-xl-end">
+  <!-- <ol class="breadcrumb float-xl-end">
     <li class="breadcrumb-item"><a href="javascript:;">Home</a></li>
     <li class="breadcrumb-item"><a href="javascript:;">Form Stuff</a></li>
     <li class="breadcrumb-item active">Form Validation</li>
-  </ol>
+  </ol> -->
 
 
   <h1 class="page-header">
@@ -51,7 +51,12 @@
             <div class="form-group row mb-3">
               <label class="col-lg-4 col-form-label form-label" for="nickname">Nickname * :</label>
               <div class="col-lg-8">
-                <input class="form-control" type="text" id="nickname" name="nickname" placeholder="Nickname" data-parsley-required="true" />
+                <!-- <input class="form-control" type="text" id="nickname" name="nickname" placeholder="Nickname" data-parsley-required="true" /> -->
+                <input class="form-control" type="text" id="nickname" name="nickname" 
+                  placeholder="Nickname" 
+                  data-parsley-required="true" 
+                  data-parsley-no-special-chars 
+                  data-parsley-no-special-chars-message="Este campo no debe contener caracteres especiales ni tener espacios al inicio o al final." />
               </div>
             </div>
 
@@ -77,7 +82,13 @@
             <div class="form-group row mb-3">
               <label class="col-lg-4 col-form-label form-label" for="email">Email * :</label>
               <div class="col-lg-8">
-                <input class="form-control" type="email" id="email" name="email" data-parsley-type="email" placeholder="Email" data-parsley-required="true" />
+                <!-- <input class="form-control" type="email" id="email" name="email" data-parsley-type="email" placeholder="Email" data-parsley-required="true" /> -->
+                <input class="form-control" type="email" id="email" name="email" 
+                  placeholder="Email" 
+                  data-parsley-required="true" 
+                  data-parsley-type="email" 
+                  data-parsley-custom-email-validation 
+                  data-parsley-custom-email-validation-message="El correo electrónico debe contener '@' y terminar en '.com'." />
               </div>
             </div>
 
@@ -91,7 +102,7 @@
                   <?php else: ?>
                     <!-- Si el rol no es 2, se muestran las opciones de Socio y Auxiliar -->
                     <option value="0" <?php echo ($rol == 0) ? 'selected' : ''; ?>>SOCIO</option>
-                    <option value="1" <?php echo ($rol == 1) ? 'selected' : ''; ?>>AUXILIAR</option>
+                    <!-- <option value="1" <?php echo ($rol == 1) ? 'selected' : ''; ?>>AUXILIAR</option> -->
                   <?php endif; ?>
                 </select>
               </div>
@@ -100,7 +111,15 @@
             <div class="form-group row mb-3">
               <label class="col-lg-4 col-form-label form-label" for="fono">Fono * :</label>
               <div class="col-lg-8">
-                <input class="form-control" type="text" id="fono" name="fono" data-parsley-type="number" placeholder="Number" data-parsley-required="true" />
+                <!-- <input class="form-control" type="number" id="fono" name="fono" data-parsley-type="number" placeholder="Number" data-parsley-required="true" /> -->
+                <input class="form-control" type="number" id="fono" name="fono" 
+                  placeholder="Number" 
+                  data-parsley-required="true" 
+                  data-parsley-type="digits" 
+                  data-parsley-min="60000000" 
+                  data-parsley-min-message="El número debe tener al menos 8 dígitos y debe empezar mínimamente con 6."
+                  data-parsley-max="79999999" 
+                  data-parsley-max-message="El número no puede exceder 8 dígitos." />
               </div>
             </div>
 
@@ -115,10 +134,7 @@
                   <input type="radio" class="form-check-input" name="genero" id="radioRequired2" value="F" />
                   <label class="form-check-label" for="radioRequired2">Femenino</label>
                 </div>
-                <!-- <div class="form-check mt-2">
-                  <input type="radio" class="form-check-input" name="radiorequired" id="radioRequired3" value="key" />
-                  <label class="form-check-label" for="radioRequired3">Radio Button 2</label>
-                </div> -->
+                
               </div>
             </div>
 

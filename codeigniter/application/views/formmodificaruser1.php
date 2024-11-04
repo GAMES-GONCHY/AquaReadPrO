@@ -1,11 +1,11 @@
 <!-- START PAGE CONTENT -->
 <div id="content" class="app-content">
 
-  <ol class="breadcrumb float-xl-end">
+  <!-- <ol class="breadcrumb float-xl-end">
     <li class="breadcrumb-item"><a href="javascript:;">Home</a></li>
     <li class="breadcrumb-item"><a href="javascript:;">Form Stuff</a></li>
     <li class="breadcrumb-item active">Form Validation</li>
-  </ol>
+  </ol> -->
 
 
   <h1 class="page-header">Modificar usuario</h1>
@@ -46,7 +46,13 @@
             <div class="form-group row mb-3">
               <label class="col-lg-4 col-form-label form-label" for="nickname">Nickname :</label>
               <div class="col-lg-8">
-                <input class="form-control" type="text" id="nickname" name="nickname" placeholder="Nickname" value="<?php echo $info['nickName']; ?>" />
+                <!-- <input class="form-control" type="text" id="nickname" name="nickname" placeholder="Nickname" value="<?php echo $info['nickName']; ?>" /> -->
+                <input class="form-control" type="text" id="nickname" name="nickname" 
+                  placeholder="Nickname" 
+                  value="<?php echo $info['nickName']; ?>" 
+                  data-parsley-no-special-chars 
+                  data-parsley-no-special-chars-message="Este campo no debe contener caracteres especiales ni tener espacios al inicio o al final." 
+                  data-parsley-required="true" />
               </div>
             </div>
           
@@ -72,7 +78,14 @@
             <div class="form-group row mb-3">
               <label class="col-lg-4 col-form-label form-label" for="email">Email * :</label>
               <div class="col-lg-8">
-                <input class="form-control" type="text" id="email" name="email" data-parsley-type="email" placeholder="Email" data-parsley-required="true" value="<?php echo $info['email'] ?>" />
+                <!-- <input class="form-control" type="email" id="email" name="email" data-parsley-type="email" placeholder="Email" data-parsley-required="true" value="<?php echo $info['email'] ?>" /> -->
+                <input class="form-control" type="email" id="email" name="email" 
+                  placeholder="Email" 
+                  data-parsley-required="true" 
+                  data-parsley-type="email" 
+                  data-parsley-custom-email-validation 
+                  value="<?php echo $info['email'] ?>" />
+
               </div>
             </div>
 
@@ -90,8 +103,17 @@
             <div class="form-group row mb-3">
               <label class="col-lg-4 col-form-label form-label" for="fono">Fono * :</label>
               <div class="col-lg-8">
-                <input class="form-control" type="text" id="fono" name="fono" data-parsley-type="number" placeholder="Number" data-parsley-required="true" data-parsley-error-message="Este valor no puede estar vacio" value="<?php echo $info['fono'] ?>" />
-              </div>
+                <!-- <input class="form-control" type="text" id="fono" name="fono" data-parsley-type="number" placeholder="Number" data-parsley-required="true" data-parsley-error-message="Este valor no puede estar vacio" value="<?php echo $info['fono'] ?>" /> -->
+
+                <input class="form-control" type="number" id="fono" name="fono"  
+                  placeholder="Number" 
+                  data-parsley-required="true"
+                  data-parsley-type="digits" 
+                  data-parsley-min="60000000" 
+                  data-parsley-min-message="El número debe tener al menos 8 dígitos y debe empezar mínimamente con 6."
+                  data-parsley-max="79999999" 
+                  data-parsley-max-message="El número no puede exceder 8 dígitos." 
+                  value="<?php echo $info['fono'] ?>" />
             </div>
 
             <div class="form-group row mb-3">

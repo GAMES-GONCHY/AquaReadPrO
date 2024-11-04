@@ -147,6 +147,7 @@
 
 
 
+
   <!-- Panel socio -->
   <!-- <script async src="https://maps.googleapis.com/maps/api/js?v=3.exp"></script> -->
   <script src="<?php echo base_url(); ?>coloradmin/assets/plugins/superbox/jquery.superbox.min.js"></script>

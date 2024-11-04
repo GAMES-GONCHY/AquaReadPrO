@@ -124,7 +124,7 @@
                             <div class="flex-grow-1">
                                 <?php echo ($this->session->userdata('nombre')) . " " . $this->session->userdata('primerApellido') . " " . $this->session->userdata('segundoApellido'); ?>
                             </div>
-                            <div class="menu-caret ms-auto"></div>
+                            <div class="menu ms-auto"></div>
                         </div>
                         <small>
                             <?php if ($this->session->userdata('rol') == 0) : ?>
@@ -138,7 +138,7 @@
                     </div>
                 </a>
             </div>
-            <div id="appSidebarProfileMenu" class="collapse">
+            <!-- <div id="appSidebarProfileMenu" class="collapse">
                 <div class="menu-item pt-5px">
                     <a href="javascript:;" class="menu-link">
                         <div class="menu-icon"><i class="fa fa-cog"></i></div>
@@ -158,9 +158,9 @@
                     </a>
                 </div>
                 <div class="menu-divider m-0"></div>
-            </div>
+            </div> -->
 
-            <div class="menu-header">Navigation</div>
+            <div class="menu-header">Menú de navegación</div>
 
             <!-- Reportes -->
             <div class="menu-item has-sub <?php echo ($this->uri->segment(1) === 'usuario' || $this->uri->segment(1) === 'reporte') ? 'active' : ''; ?>">
@@ -232,7 +232,7 @@
             <div class="menu-item has-sub <?php echo ($this->uri->segment(1) === 'lecturadl') ? 'active' : ''; ?>">
                 <a href="javascript:;" class="menu-link">
                     <!-- <div class="menu-icon"><i class="fa fa-list-ol"></i></div> -->
-                    <div class="menu-icon"><i class="fa fa-tint"></i></div>
+                    <div class="menu-icon"><i class="fa fa-broadcast-tower"></i></div>
                     <div class="menu-text">Lecturas</div>
                     <div class="menu-caret"></div>
                 </a>

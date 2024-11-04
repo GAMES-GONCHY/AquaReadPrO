@@ -101,37 +101,77 @@
   <script src="<?php echo base_url(); ?>coloradmin/assets/plugins/sweetalert/dist/sweetalert.min.js"></script>
   <script src="<?php echo base_url(); ?>coloradmin/assets/js/demo/ui-modal-notification.demo.js"></script>
 
-  forms validations
+  <!-- forms validations -->
   <script src="<?php echo base_url(); ?>coloradmin/assets/plugins/parsleyjs/dist/parsley.min.js"></script>
-  <script>
-        // Configura Parsley para usar el idioma español
-        Parsley.addMessages('es', {
-            defaultMessage: "Este valor parece ser inválido.",
-            type: {
-                email:        "Este valor debe ser una dirección de correo electrónico válida.",
-                url:          "Este valor debe ser una URL válida.",
-                number:       "Este valor debe ser un número válido.",
-                integer:      "Este valor debe ser un número entero válido.",
-                digits:       "Este valor debe ser un número entero.",
-                alphanum:     "Este valor debe ser alfanumérico."
-            },
-            notblank:       "Este valor no debe estar en blanco.",
-            required:       "Este campo es obligatorio.",
-            pattern:        "Este valor es incorrecto.",
-            min:            "Este valor debe ser mayor o igual a %s.",
-            max:            "Este valor debe ser menor o igual a %s.",
-            range:          "Este valor debe estar entre %s y %s.",
-            minlength:      "Este valor es demasiado corto. Debe contener al menos %s caracteres.",
-            maxlength:      "Este valor es demasiado largo. Debe contener %s caracteres o menos.",
-            length:         "Este valor debe tener entre %s y %s caracteres.",
-            mincheck:       "Debes seleccionar al menos %s opción.",
-            maxcheck:       "No puedes seleccionar más de %s opciones.",
-            check:          "Debes seleccionar entre %s y %s opciones.",
-            equalto:        "Este valor debe ser idéntico."
-        });
 
-        Parsley.setLocale('es');
-  </script>
+
+  <script>
+    // Configura Parsley para usar el idioma español
+    Parsley.addMessages('es', {
+        defaultMessage: "Este valor parece ser inválido.",
+        type: {
+            email:        "Este valor debe ser una dirección de correo electrónico válida.",
+            url:          "Este valor debe ser una URL válida.",
+            number:       "Este valor debe ser un número válido.",
+            integer:      "Este valor debe ser un número entero válido.",
+            digits:       "Este valor debe ser un número entero.",
+            alphanum:     "Este valor debe ser alfanumérico."
+        },
+        notblank:       "Este valor no debe estar en blanco.",
+        required:       "Este campo es obligatorio.",
+        pattern:        "Este valor es incorrecto.",
+        min:            "Este valor debe ser mayor o igual a %s.",
+        max:            "Este valor debe ser menor o igual a %s.",
+        range:          "Este valor debe estar entre %s y %s.",
+        minlength:      "Este valor es demasiado corto. Debe contener al menos %s caracteres.",
+        maxlength:      "Este valor es demasiado largo. Debe contener %s caracteres o menos.",
+        length:         "Este valor debe tener entre %s y %s caracteres.",
+        mincheck:       "Debes seleccionar al menos %s opción.",
+        maxcheck:       "No puedes seleccionar más de %s opciones.",
+        check:          "Debes seleccionar entre %s y %s opciones.",
+        equalto:        "Este valor debe ser idéntico."
+    });
+
+    Parsley.setLocale('es');
+
+    // Agrega una regla personalizada para caracteres especiales y espacios en blanco al inicio o al final
+    Parsley.addValidator('noSpecialChars', {
+        requirementType: 'string',
+        validateString: function(value) {
+            const pattern = /^[a-zA-Z0-9\s]+$/; // Permite solo letras, números y espacios
+            return pattern.test(value) && value.trim() === value; // Verifica también los espacios al inicio/final
+        },
+        messages: {
+            es: "Este campo no debe contener caracteres especiales ni tener espacios al inicio o al final."
+        }
+    });
+
+    // Agrega una regla personalizada para validar correos electrónicos que contengan "@" y terminen en ".com"
+    Parsley.addValidator('customEmailValidation', {
+        requirementType: 'string',
+        validateString: function(value) {
+            return value.includes('@') && value.endsWith('.com');
+        },
+        messages: {
+            es: "El correo electrónico debe contener '@' y terminar en '.com'."
+        }
+    });
+
+    // Configuración global de Parsley para aplicar estilos a los mensajes de error
+    Parsley.on('field:error', function() {
+        this.$element.nextAll('.parsley-errors-list').find('li').css('color', 'red');
+    });
+
+    Parsley.on('field:validate', function() {
+        // Aplica a todos los campos de texto excepto algunos que puedas excluir, si es necesario
+        if (this.$element.is('input[type="text"]')) {
+            this.$element.attr('data-parsley-no-special-chars', '');
+            this.$element.attr('data-parsley-no-special-chars-message', 'Este campo no debe contener caracteres especiales ni tener espacios al inicio o al final.');
+        }
+    });
+</script>
+
+
 
 
 

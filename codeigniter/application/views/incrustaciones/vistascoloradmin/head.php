@@ -286,6 +286,11 @@ ul li {
 }
 
 </style>
+<style>
+div.pt-2 .parsley-errors-list li {
+    color: red !important;
+}
+</style>
 
 </head>
 

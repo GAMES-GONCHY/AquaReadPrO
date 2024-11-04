@@ -91,7 +91,7 @@
                 </span>
             </a>
             <div class="dropdown-menu dropdown-menu-end me-1">
-                <a href="javascript:;" class="dropdown-item">Editar Perfil</a>
+                <!-- <a href="javascript:;" class="dropdown-item">Editar Perfil</a> -->
                 <!-- <a href="javascript:;" class="dropdown-item"><span class="badge bg-danger float-end rounded-pill">3</span> Mesanjes</a>
                 <a href="javascript:;" class="dropdown-item">Calendario</a>
                 <a href="javascript:;" class="dropdown-item">Configuraciones</a> -->
@@ -128,7 +128,7 @@
                             <div class="flex-grow-1">
                                 <?php echo ($this->session->userdata('nombre')) . " " . $this->session->userdata('primerApellido') . " " . $this->session->userdata('segundoApellido'); ?>
                             </div>
-                            <div class="menu-caret ms-auto"></div>
+                            <div class="menu ms-auto"></div>
                         </div>
                         <small>
                             Socio

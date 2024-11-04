@@ -39,7 +39,7 @@ class Crudusers extends CI_Controller
 		{
 			$this->load->view('sociosdeshabilitados', $data);
 		}
-		$this->load->view('incrustaciones/vistascoloradmin/footer');
+		$this->load->view('incrustaciones/vistascoloradmin/footercruduser');
 	}
 	public function agregar($rol)
 	{
@@ -47,7 +47,7 @@ class Crudusers extends CI_Controller
 		$this->load->view('incrustaciones/vistascoloradmin/head');
 		$this->load->view('incrustaciones/vistascoloradmin/menuadmin');
 		$this->load->view('formagregaruser1',$data);
-		$this->load->view('incrustaciones/vistascoloradmin/footer');
+		$this->load->view('incrustaciones/vistascoloradmin/footercruduser');
 	}
 	public function agregarbd()
 	{
@@ -185,7 +185,7 @@ class Crudusers extends CI_Controller
 		{
 			$this->load->view('formmodificaruser1', $data);
 		}
-		$this->load->view('incrustaciones/vistascoloradmin/footer');
+		$this->load->view('incrustaciones/vistascoloradmin/footercruduser');
 	}
 	public function modificarbd()
 	{

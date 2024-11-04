@@ -1,7 +1,7 @@
 <!-- START PAGE CONTENT -->
 <div id="content" class="app-content">
 
-    <h1 class="page-header">Avisos<small> AquaReadPro</small></h1>
+    <h1 class="page-header">Avisos de cobranza<small> AquaReadPro</small></h1>
 
     <div class="row">
         <div class="col-md-12">
