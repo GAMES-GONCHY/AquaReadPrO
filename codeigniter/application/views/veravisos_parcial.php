@@ -88,7 +88,7 @@
 											'<?php echo $fechaLecturaAnterior; ?>',
 
 											'<?php echo $aviso['tarifaVigente']; ?>',
-											'<?php echo $aviso['tarifaMinima']; ?>',
+											
 											
 											'<?php echo number_format($total, 2); ?>',
 											'<?php echo $aviso['fechaVencimiento']; ?>',

@@ -38,8 +38,9 @@
                   <th width="1%">No.</th>
                   <th>Latitud</th>
                   <th>Longitud</th>
-                  <th>Fecha instalación</th>
                   <th>Cod. Socio</th>
+                  <th>Cod. Medidor</th>
+                  <th>Fecha instalación</th>
                   <th>Habilitar</th>
                 </tr>
               </thead>
@@ -52,8 +53,9 @@
                     <td><?php echo $cont; ?></td>
                     <td><?php echo $row->latitud; ?></td>
                     <td><?php echo $row->longitud; ?></td>
+                    <td><?php echo $row->codigoSocio; ?></td>
+                    <td><?php echo $row->codigoMedidor; ?></td>
                     <td><?php echo $row->fechaRegistro; ?></td>
-                    <td><?php echo $row->idMembresia; ?></td>
                     <td>
                       <?php
                       echo form_open_multipart("medidor/habilitarbd"); // <form>
@@ -77,6 +79,7 @@
                   <th>Longitud</th>
                   <th>Fecha instalación</th>
                   <th>Cod. Socio</th>
+                  <th>Cod. Medidor</th>
                   <th>Habilitar</th>
                 </tr>
               </tfoot>

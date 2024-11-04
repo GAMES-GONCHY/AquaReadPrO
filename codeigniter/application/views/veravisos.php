@@ -7,10 +7,10 @@
         <div class="col-md-12">
             
             <!-- Buscador de periodos -->
-            <div class="input-group input-group-lg mb-3">
+            <!-- <div class="input-group input-group-lg mb-3">
                 <input id="searchInput" type="text" class="form-control input-white" placeholder="Busqueda por periodo..." />
                 <button id="searchButton" type="button" class="btn btn-primary"><i class="fa fa-search fa-fw"></i> Buscar</button>
-            </div>
+            </div> -->
 
             <div class="d-block d-md-flex align-items-center mb-3">
 
@@ -119,7 +119,7 @@
 											'<?php echo $fechaLecturaAnterior; ?>',
 
 											'<?php echo $aviso['tarifaVigente']; ?>',
-											'<?php echo $aviso['tarifaMinima']; ?>',
+											
 											
 											'<?php echo number_format($total, 2); ?>',
 											'<?php echo $aviso['fechaVencimiento']; ?>',

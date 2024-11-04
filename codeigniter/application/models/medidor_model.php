@@ -5,14 +5,20 @@ class Medidor_model extends CI_Model
 {
 	public function habilitados()
     {
-        $this->db->where('estado', 1);
-        $query = $this->db->get('medidor');
+        $this->db->select('M.idMedidor, M.latitud, M.longitud, M.codigoMedidor, M.fechaRegistro, ME.codigoSocio');
+        $this->db->from('medidor M');
+        $this->db->join('membresia ME', 'ME.idMembresia = M.idMembresia', 'inner');
+        $this->db->where('M.estado', 1);
+        $query = $this->db->get();
         return $query;
     }
     public function deshabilitados()
     {
-        $this->db->where('estado', 0);
-        $query = $this->db->get('medidor');
+        $this->db->select('M.idMedidor, M.latitud, M.longitud, M.codigoMedidor, M.fechaRegistro, ME.codigoSocio');
+        $this->db->from('medidor M');
+        $this->db->join('membresia ME', 'ME.idMembresia = M.idMembresia', 'inner');
+        $this->db->where('M.estado', 0);
+        $query = $this->db->get();
         return $query;
     }
 	public function agregar($data)

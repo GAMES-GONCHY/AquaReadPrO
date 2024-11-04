@@ -45,7 +45,7 @@
                                     </tr>
                                     <tr>
                                         <td><strong style="font-weight: 600;">Tarifa Vigente:</strong> <span class="text-secondary" id="modal-tarifa-vigente"></span></td>
-                                        <td><strong style="font-weight: 600;">Tarifa Mínima:</strong> <span class="text-secondary" id="modal-tarifa-minima"></span></td>
+                                        <!-- <td><strong style="font-weight: 600;">Tarifa Mínima:</strong> <span class="text-secondary" id="modal-tarifa-minima"></span></td> -->
                                     </tr>
                                     <tr>
                                         <td><strong style="font-weight: 700; color: #343a40;">Total:</strong> <span class="fw-bold text-dark" id="modal-total"></span></td>
@@ -399,7 +399,7 @@ $(document).ready(function() {
 <!-- pagos -->
 <script>
     function cargarDatos(codigoSocio, nombreSocio, mes, consumo, lecturaActual, lecturaAnterior, fechaLectura,
-                        fechaLecturaAnterior, tarifaVigente, tarifaMinima, total, fechaVencimiento, estado, fechaPago, saldo)
+                        fechaLecturaAnterior, tarifaVigente, total, fechaVencimiento, estado, fechaPago, saldo)
     {
         // Asignar los valores recibidos al modal
         document.getElementById('modal-codigo-socio').textContent = codigoSocio;
@@ -411,7 +411,7 @@ $(document).ready(function() {
         document.getElementById('modal-fecha-lectura').textContent = fechaLectura;
         document.getElementById('modal-fecha-lectura-anterior').textContent = fechaLecturaAnterior;
         document.getElementById('modal-tarifa-vigente').textContent = tarifaVigente;
-        document.getElementById('modal-tarifa-minima').textContent = tarifaMinima;
+        // document.getElementById('modal-tarifa-minima').textContent = tarifaMinima;
         document.getElementById('modal-total').textContent = "Bs. " + total;
         document.getElementById('modal-fecha-vencimiento').textContent = fechaVencimiento;
         document.getElementById('modal-estado').textContent = estado;

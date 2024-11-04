@@ -38,6 +38,7 @@
                   <th width="1%">No.</th>
                   <th>Latitud</th>
                   <th>Longitud</th>
+                  <th>Código Datalogger</th>
                   <th>Fecha instalación</th>
                   <th>Habilitar</th>
                 </tr>
@@ -51,6 +52,7 @@
                     <td><?php echo $cont; ?></td>
                     <td><?php echo $row->latitud; ?></td>
                     <td><?php echo $row->longitud; ?></td>
+                    <td><?php echo $row->codigoDatalogger; ?></td>
                     <td><?php echo $row->fechaRegistro; ?></td>
                     <td>
                       <?php
@@ -73,6 +75,7 @@
                   <th width="1%">No.</th>
                   <th>Latitud</th>
                   <th>Longitud</th>
+                  <th>Código Datalogger</th>
                   <th>Fecha instalación</th>
                   <th>Habilitar</th>
                 </tr>

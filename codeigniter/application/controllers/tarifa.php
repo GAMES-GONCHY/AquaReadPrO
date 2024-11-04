@@ -52,7 +52,7 @@ class Tarifa extends CI_Controller
 		// Recibir los datos del formulario
 		$id = $_POST['idTarifa'];
 
-		$data['tarifaMinima'] = $_POST['tarifaMinima'];
+		// $data['tarifaMinima'] = $_POST['tarifaMinima'];
 		$data['tarifaVigente'] = $_POST['tarifaVigente'];
 		$data['fechaInicioVigencia'] = $_POST['fechaInicioVigencia'];
 		// Llamar al modelo para modificar los datos

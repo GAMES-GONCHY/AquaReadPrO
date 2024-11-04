@@ -227,7 +227,23 @@
                     </div>
                 </div>
             </div>
+            
+            <!-- Dispositivos -->
+            <div class="menu-item <?php echo ($this->uri->segment(1) === 'datalogger' && $this->uri->segment(2) === 'habilitados') ? 'active' : ''; ?>">
+                <a href="<?php echo base_url('index.php/datalogger/habilitados'); ?>" class="menu-link">
+                    <div class="menu-icon"><i class="fa fa-microchip"></i></div>
+                    <div class="menu-text">Datalogger</div>
+                </a>
+            </div>
 
+            <div class="menu-item <?php echo ($this->uri->segment(1) === 'medidor' && $this->uri->segment(2) === 'habilitados') ? 'active' : ''; ?>">
+                <a href="<?php echo base_url('index.php/medidor/habilitados'); ?>" class="menu-link">
+                    <div class="menu-icon"><i class="fa fa-tachometer-alt"></i></div>
+
+                    <div class="menu-text">Medidores</div>
+                </a>
+            </div>
+            
             <!-- Lecturas -->
             <div class="menu-item has-sub <?php echo ($this->uri->segment(1) === 'lecturadl') ? 'active' : ''; ?>">
                 <a href="javascript:;" class="menu-link">
@@ -253,21 +269,7 @@
                 </div>
             </div>
 
-            <!-- Dispositivos -->
-            <div class="menu-item <?php echo ($this->uri->segment(1) === 'datalogger' && $this->uri->segment(2) === 'habilitados') ? 'active' : ''; ?>">
-                <a href="<?php echo base_url('index.php/datalogger/habilitados'); ?>" class="menu-link">
-                    <div class="menu-icon"><i class="fa fa-microchip"></i></div>
-                    <div class="menu-text">Datalogger</div>
-                </a>
-            </div>
-
-            <div class="menu-item <?php echo ($this->uri->segment(1) === 'medidor' && $this->uri->segment(2) === 'habilitados') ? 'active' : ''; ?>">
-                <a href="<?php echo base_url('index.php/medidor/habilitados'); ?>" class="menu-link">
-                    <div class="menu-icon"><i class="fa fa-tachometer-alt"></i></div>
-
-                    <div class="menu-text">Medidores</div>
-                </a>
-            </div>
+            
             
             <!-- Tarifa -->
             <div class="menu-item has-sub <?php echo ($this->uri->segment(1) === 'tarifa') ? 'active' : ''; ?>">

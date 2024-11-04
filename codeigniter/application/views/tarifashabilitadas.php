@@ -62,7 +62,7 @@
                     <tr>
                         <th width="1%">No.</th>
                         <th>Tarifa vigente</th>
-                        <th>Tarifa mínima</th>
+                        <!-- <th>Tarifa mínima</th> -->
                         <th>Inicio de vigencia</th>
                         <th>Modificar</th>
                         <th>Eliminar</th>
@@ -76,7 +76,7 @@
                         <tr id="row_<?php echo $row->idTarifa; ?>" style="text-align: center;"><!-- Agregar ID único a la fila -->
                             <td><?php echo $cont ?></td>
                             <td><?php echo $row->tarifaVigente ?></td>
-                            <td><?php echo $row->tarifaMinima ?></td>
+                            <!-- <td><?php echo $row->tarifaMinima ?></td> -->
                             <td><?php echo date('Y-m-d', strtotime($row->fechaInicioVigencia)); ?></td>
                             <td>
                                 <button type="button" class="btn btn-info btn-sm btnModificar"
@@ -107,7 +107,7 @@
                         <th width="1%">No.</th>
                         <th>Tarifa vigente</th>
                         <th>Inicio de vigencia</th>
-                        <th>Tarifa mínima</th>
+                        <!-- <th>Tarifa mínima</th> -->
                         <th>Modificar</th>
                         <th>Eliminar</th>
                     </tr>
@@ -142,14 +142,14 @@
                     </div>
 
                     <!-- Campo para tarifa mínima -->
-                    <div class="form-group">
+                    <!-- <div class="form-group">
                         <label for="tarifaMinima">Tarifa Mínima</label>
                         <input type="text" name="tarifaMinima" id="tarifaMinima" class="form-control" required 
                                   data-parsley-decimal41 
                                   data-parsley-trigger="input"
                                   placeholder="999.9" 
                                   maxlength="5">
-                    </div>
+                    </div> -->
 
                     <!-- Campo para fecha de inicio de vigencia -->
                     <div class="form-group">
@@ -180,12 +180,12 @@
                 <div class="modal-body">
                   <form action="<?php echo base_url('index.php/tarifa/agregar'); ?>" method="POST">
                       <div class="form-group">
-                          <label for="tarifaMinima">Tarifa Mínima</label>
+                          <!-- <label for="tarifaMinima">Tarifa Mínima</label>
                           <input type="text" name="tarifaMinima1" id="tarifaMinima1" class="form-control" required 
                                   data-parsley-decimal41 
                                   data-parsley-trigger="input"
                                   placeholder="999.9" 
-                                  maxlength="5">
+                                  maxlength="5"> -->
                       </div>
                       <div class="form-group">
                           <label for="tarifaVigente">Tarifa Vigente</label>

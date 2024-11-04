@@ -63,7 +63,7 @@ class Avisocobranza_model extends CI_Model
     // Obtener los avisos por estado para cada socio.
     public function avisos_por_estado_id($estado, $idUsuario)
     {
-        $this->db->select('A.fechaVencimiento, A.idAviso, A.estado, A.fechaPago, A.saldo, T.tarifaMinima, T.tarifaVigente, Q.img,
+        $this->db->select('A.fechaVencimiento, A.idAviso, A.estado, A.fechaPago, A.saldo, T.tarifaVigente, Q.img,
                 (L.lecturaAnterior)/100 AS lecturaAnterior, (L.lecturaActual)/100 AS lecturaActual, L.fechaLectura, 
                 IFNULL((SELECT L2.fechaLectura 
                         FROM lectura L2 

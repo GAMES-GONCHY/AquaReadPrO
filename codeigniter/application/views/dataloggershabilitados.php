@@ -42,8 +42,8 @@
                   <th width="1%">No.</th>
                   <th>Latitud</th>
                   <th>Longitud</th>
+                  <th>Código Datalogger</th>
                   <th>Fecha instalación</th>
-                  <!-- <th>Asignar IPv4</th> -->
                   <th>Deshabilitar</th>
                 </tr>
               </thead>
@@ -56,6 +56,7 @@
                     <td><?php echo $cont; ?></td>
                     <td><?php echo $row->latitud; ?></td>
                     <td><?php echo $row->longitud; ?></td>
+                    <td><?php echo $row->codigoDatalogger; ?></td>
                     <td><?php echo $row->fechaRegistro; ?></td>
                     <!-- <td>
                       <?php
@@ -88,8 +89,8 @@
                   <th width="1%">No.</th>
                   <th>Latitud</th>
                   <th>Longitud</th>
+                  <th>Código Datalogger</th>
                   <th>Fecha instalación</th>
-                  <!-- <th>Asignar/Modificar IPv4</th> -->
                   <th>Deshabilitar</th>
                 </tr>
               </tfoot>
