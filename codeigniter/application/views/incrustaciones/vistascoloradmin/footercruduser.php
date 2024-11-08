@@ -10,6 +10,49 @@
   </div>
   <!-- END APP HEADER -->
 
+<!-- modal para configuraciones de datalogger -->
+<div class="modal modal-pos-booking fade" id="modalPosBooking">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content border-0 shadow-lg" style="border-radius: 12px;">
+            <div class="modal-header text-white" style="border-top-left-radius: 12px; border-top-right-radius: 12px;">
+                <h5 class="modal-title d-flex align-items-center" style="font-size: 1.4rem; font-weight: bold;">
+                    <img src="<?php echo base_url(); ?>coloradmin/assets/img/logo/logomenu.png" height="30" class="me-2" />
+                    Configuraciones
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" style="background-color: #f4f6f9; padding: 30px;">
+                <form id="form-config-datalogger">
+                    <!-- Input oculto para idDatalogger -->
+                    <input type="hidden" id="idDatalogger" name="idDatalogger" value="">
+
+                    <!-- Input para IP -->
+                    <div class="form-floating mb-4">
+                        <input type="text" class="form-control modern-input" id="IP" name="IP">
+                        <label for="ipDatalogger" class="text-muted">Dirección IP</label>
+                    </div>
+
+                    <!-- Input para Puerto -->
+                    <div class="form-floating mb-4">
+                        <input type="text" class="form-control modern-input" id="puerto" name="puerto">
+                        <label for="puertoDatalogger" class="text-muted">Puerto</label>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer bg-light border-0 d-flex justify-content-end" style="padding: 20px;">
+                <button type="button" class="btn btn-secondary me-2" data-bs-dismiss="modal" style="font-size: 1rem; padding: 10px 20px; border-radius: 8px;">Cerrar</button>
+                <button type="button" class="btn btn-primary" id="btnGuardarConfiguracion" style="font-size: 1rem; padding: 10px 20px; border-radius: 8px;">Guardar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
 
 
 
@@ -41,11 +84,18 @@
   <script src="<?php echo base_url(); ?>coloradmin/assets/plugins/blueimp-file-upload/js/jquery.fileupload-video.js"></script>
   <script src="<?php echo base_url(); ?>coloradmin/assets/plugins/blueimp-file-upload/js/jquery.fileupload-validate.js"></script>
   <script src="<?php echo base_url(); ?>coloradmin/assets/plugins/blueimp-file-upload/js/jquery.fileupload-ui.js"></script>
-  <!-- este script causa error en consola OJO -->
-  <!-- <script src="<?php echo base_url(); ?>coloradmin/assets/js/demo/form-multiple-upload.demo.js"></script> -->
 
+  <!-- inputMask -->
+  <script src="<?php echo base_url(); ?>coloradmin/assets/js/demo/inputmask.min.js"></script>
+  <script>
+  $(document).ready(function() {
 
-
+      Inputmask({
+          alias: "ip",
+          placeholder: "0.0.0.0"
+      }).mask("#IP");
+  });
+  </script>
 
   <script>
     $('#fileupload').fileupload({
@@ -96,14 +146,14 @@
   <script src="<?php echo base_url(); ?>coloradmin/assets/plugins/jszip/dist/jszip.min.js"></script>
   <script src="<?php echo base_url(); ?>coloradmin/assets/js/demo/table-manage-combine.demo.js"></script>
 
-
+  <!-- toast -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
   <!-- Sweets alerts/Modals scripts -->
   <script src="<?php echo base_url(); ?>coloradmin/assets/plugins/sweetalert/dist/sweetalert.min.js"></script>
   <script src="<?php echo base_url(); ?>coloradmin/assets/js/demo/ui-modal-notification.demo.js"></script>
 
   <!-- forms validations -->
   <script src="<?php echo base_url(); ?>coloradmin/assets/plugins/parsleyjs/dist/parsley.min.js"></script>
-
 
   <script>
     // Configura Parsley para usar el idioma español
@@ -239,6 +289,71 @@
       <?php endif; ?>
   });
 </script>
+
+
+
+  <script>
+      function cargarDatos(idDatalogger)
+      {
+          var row = $('#datatable tbody').find('tr[data-id="' + idDatalogger + '"]');
+          var IP = row.find('.ip').text();
+          var puerto = row.find('.puerto').text();
+
+          // Asignar los valores actualizados a los inputs del modal
+          $('#idDatalogger').val(idDatalogger);
+          $('#IP').val(IP);
+          $('#puerto').val(puerto);
+      }
+
+      $('#btnGuardarConfiguracion').on('click', function() {
+          // Obtener los valores de los inputs en el modal
+          var idDatalogger = $('#idDatalogger').val();
+          var IP = $('#IP').val();
+          var puerto = $('#puerto').val();
+
+          // Enviar los datos mediante AJAX
+          $.ajax({
+              url: '<?php echo base_url("index.php/datalogger/configurar_datalogger"); ?>',
+              type: 'POST',
+              data: {
+                  idDatalogger: idDatalogger,
+                  IP: IP,
+                  puerto: puerto
+              },
+              dataType: 'json',
+              success: function(response) {
+                  if (response.status === 'success') {
+                      toastr.success(response.message);
+                      $('#modalPosBooking').modal('hide'); // Cerrar el modal
+
+                      // Actualizar los valores en la fila correspondiente del DataTable
+                      var row = $('#datatable tbody').find('tr[data-id="' + idDatalogger + '"]');
+
+                      // Actualizar las celdas de IP y Puerto en esa fila
+                      row.find('.ip').text(IP);
+                      row.find('.puerto').text(puerto);
+
+                      // Si estás utilizando DataTables, podrías necesitar redibujar la tabla
+                      window.tablaDatalogger.draw(false); // Redibuja la tabla si es necesario
+                  } else {
+                      toastr.error(response.message);
+                  }
+              },
+              error: function() {
+                  toastr.error('Error al actualizar la configuración. Inténtalo de nuevo.');
+              }
+          });
+      });
+
+      // Detectar la tecla Enter en el modal
+    $('#modalPosBooking').on('keypress', function(e) {
+        // 13 es el código de la tecla Enter
+        if (e.which === 13) {
+            e.preventDefault(); // Evita el envío del formulario
+            $('#btnGuardarConfiguracion').click(); // Simula el clic en el botón Guardar
+        }
+    });
+  </script>
 
   </body>
 

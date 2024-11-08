@@ -120,7 +120,7 @@
 
 											'<?php echo $aviso['tarifaVigente']; ?>',
 											
-											
+
 											'<?php echo number_format($total, 2); ?>',
 											'<?php echo $aviso['fechaVencimiento']; ?>',
 											'<?php echo ($aviso['estado'] == 'enviado') ? 'Pendiente' : $aviso['estado']; ?>',
@@ -128,7 +128,6 @@
 											<?php echo $aviso['saldo']; ?>)">
 										Detalle
 									</button>
-
 								</div>
 
 							</div>

@@ -47,9 +47,9 @@
     <!-- Panel Socio -->
     <link href="<?php echo base_url(); ?>coloradmin/assets/plugins/superbox/superbox.min.css" rel="stylesheet" />
     <link href="<?php echo base_url(); ?>coloradmin/assets/plugins/lity/dist/lity.min.css" rel="stylesheet" />
-    
-    <!-- switches -->
-    <link href="<?php echo base_url(); ?>coloradmin/assets/plugins/switchery/dist/switchery.min.css" rel="stylesheet" />
+
+    <!-- toast -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet"/>
     
 
     
@@ -118,7 +118,7 @@ body.modal-open {
 
 <style>
   .modal-backdrop {
-    background-color: transparent !important; /* Elimina el color de fondo oscuro */
+    background-color: transparent !important; 
 }
 </style>
 
@@ -286,9 +286,48 @@ ul li {
 }
 
 </style>
+<!-- estilos de mensajes de error validaciones -->
 <style>
 div.pt-2 .parsley-errors-list li {
     color: red !important;
+}
+</style>
+
+<!-- boton de configuraciones datalogger y modal -->
+<style>
+.btn-black:hover {
+    background-color: #b08d57; /* Dorado suave */
+    color: white;
+}
+
+.modern-input {
+    background-color: #f9fbfd;
+    border: none;
+    border-bottom: 2px solid #ced4da;
+    border-radius: 8px;
+    padding: 15px;
+    font-size: 1rem;
+    color: #495057;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease-in-out;
+}
+
+.modern-input:focus {
+    background-color: #ffffff;
+    border-color: #007bff;
+    outline: none;
+    box-shadow: 0px 4px 12px rgba(0, 123, 255, 0.2);
+}
+
+.form-floating label {
+    font-size: 0.9rem;
+    color: #6c757d;
+    padding-left: 8px;
+    transition: all 0.3s ease;
+}
+
+.modern-input:focus ~ label {
+    color: #007bff;
 }
 </style>
 

@@ -33,10 +33,10 @@
               <thead>
                 <tr>
                   <th>No.</th>
-                  <th>IP</th>
                   <th>Código Medidor</th>
-                  <th>Puerto</th>
                   <th>Código Datalogger</th>
+                  <th>IP</th>
+                  <th>Puerto</th>
                 </tr>
               </thead>
               <tbody id="lecturas-body">
@@ -46,10 +46,10 @@
                 ?>
                   <tr>
                     <td><?php echo $cont; ?></td>
-                    <td><?php echo $fallida['IP'] !== null ? $fallida['IP'] : 'sin IP'; ?></td>
-                    <td><?php echo $fallida['puerto'] !== null ? $fallida['puerto'] : 'sin puerto'; ?></td>
                     <td><?php echo $fallida['codigoMedidor'] !== null ? $fallida['codigoMedidor'] : 'sin código'; ?></td>
                     <td><?php echo $fallida['codigoDatalogger'] !== null ? $fallida['codigoDatalogger'] : 'sin código'; ?></td>
+                    <td><?php echo $fallida['IP'] !== null ? $fallida['IP'] : 'sin IP'; ?></td>
+                    <td><?php echo $fallida['puerto'] !== null ? $fallida['puerto'] : 'sin puerto'; ?></td>
                   </tr>
                 <?php
                   $cont++;
@@ -59,10 +59,10 @@
               <tfoot>
                 <tr>
                   <th>No.</th>
-                  <th>IP</th>
                   <th>Código Medidor</th>
-                  <th>Puerto</th>
                   <th>Código Datalogger</th>
+                  <th>IP</th>
+                  <th>Puerto</th>
                 </tr>
               </tfoot>
             </table>

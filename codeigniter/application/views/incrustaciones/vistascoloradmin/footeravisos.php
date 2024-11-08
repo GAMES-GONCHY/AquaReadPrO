@@ -302,20 +302,7 @@
 
 <script src="<?php echo base_url(); ?>coloradmin/assets/plugins/moment/min/moment.min.js"></script>
 <script src="<?php echo base_url(); ?>coloradmin/assets/plugins/bootstrap-daterangepicker/daterangepicker.js"></script>
-<!-- <script>
-  $("#advance-daterange").daterangepicker({
-    opens: "right",
-    format: "MM/DD/YYYY",
-    separator: " to ",
-    startDate: moment().subtract(29,"days"),
-    endDate: moment(),
-    minDate: "01/01/2024",
-    maxDate: "12/31/2024",
-    
-  }, function (start, end) {
-    $("#default-daterange input").val(start.format("MMMM D, YYYY") + " - " + end.format("MMMM D, YYYY"));
-  });
-</script> -->
+
 
 <script>
   $("#advance-daterange").daterangepicker({

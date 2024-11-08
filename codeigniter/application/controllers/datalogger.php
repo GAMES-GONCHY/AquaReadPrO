@@ -57,5 +57,22 @@ class Datalogger extends CI_Controller
 
 	// 	redirect('datalogger/agregar');
 	// }
+	public function configurar_datalogger()
+	{
+		// Obtener los valores enviados por AJAX
+		$idDatalogger = $this->input->post('idDatalogger');
+		$data['IP'] = $this->input->post('IP');
+		$data['puerto'] = $this->input->post('puerto');
+	
+		// Llamar a la función del modelo para actualizar la base de datos
+		$resultado = $this->datalogger_model->configurar($idDatalogger, $data);
+	
+		// Enviar respuesta
+		if ($resultado) {
+			echo json_encode(['status' => 'success', 'message' => 'Configuración exitosa.']);
+		} else {
+			echo json_encode(['status' => 'error', 'message' => 'Error de configuración.']);
+		}
+	}
 	
 }

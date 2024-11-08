@@ -108,7 +108,6 @@ class Lecturadl extends CI_Controller
                 // Leer el registro del puerto
                 $request = new ReadHoldingRegistersRequest($puerto, 1);
                 $response = $connection->sendAndReceive($request);
-
                 // Decodificar la respuesta
                 $pulsos = unpack('n', substr($response, 9, 2))[1];
                 

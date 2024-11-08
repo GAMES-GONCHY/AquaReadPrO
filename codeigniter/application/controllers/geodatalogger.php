@@ -10,11 +10,9 @@ class Geodatalogger extends CI_Controller
     }
 	public function geolocalizar($idSocio)
 	{
-		$data['dataloggers'] = $this->datalogger_model->habilitados()->result_array();
+		$data['dataloggers'] = $this->datalogger_model->nuevos_y_habilitados()->result_array();
         $data['medidores'] = $this->medidor_model->habilitados()->result_array();
 
-        //$idSocio = $this->input->post('idSocio');
-        
         $idMembresia = $this->membresia_model->membresia($idSocio);
         
 
