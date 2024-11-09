@@ -148,7 +148,9 @@ class Lecturadl extends CI_Controller
                     'puerto' => $puerto,
                     'idMedidor' => $idMedidor,
                     'codigoMedidor' => $codigoMedidor,
-                    'codigoDatalogger' => $codigoDatalogger
+                    'codigoDatalogger' => $codigoDatalogger,
+                    'codigoSocio' => $codigoSocio,
+                    'socio' => $socio
                 ];
             }
             finally 

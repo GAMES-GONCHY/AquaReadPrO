@@ -56,7 +56,7 @@
                                     <?php
                                     $cont = 1;
                                     foreach ($pagados as $pagado) {
-                                        $consumo = $pagado['lecturaActual'] - $pagado['lecturaAnterior'];
+                                        $consumo = round($pagado['lecturaActual'] - $pagado['lecturaAnterior'],2);
                                         $total = $pagado['tarifaVigente'] * $consumo;
                                     ?>
                                     <tr class="text-center">

@@ -49,7 +49,10 @@
     <link href="<?php echo base_url(); ?>coloradmin/assets/plugins/lity/dist/lity.min.css" rel="stylesheet" />
 
     <!-- toast -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet"/>
+    <link href="<?php echo base_url(); ?>coloradmin/assets/plugins/toastr/toastr.min.css" rel="stylesheet"/>
+    
+    <!-- sweet alert2 CDN -->
+    <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css"> -->
     
 
     

@@ -34,7 +34,8 @@
 								}
 
 								// Calcular el consumo
-								$consumo = ($aviso['lecturaActual'] - $aviso['lecturaAnterior']);
+								// $consumo = ($aviso['lecturaActual'] - $aviso['lecturaAnterior']);
+								$consumo = round($aviso['lecturaActual'] - $aviso['lecturaAnterior'], 2);
 								$total = $consumo * $aviso['tarifaVigente'];
 							?>
 							<!-- Agregar correctamente el atributo data-periodo con el mes correspondiente -->

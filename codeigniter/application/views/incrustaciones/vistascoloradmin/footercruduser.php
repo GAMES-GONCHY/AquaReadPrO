@@ -147,7 +147,7 @@
   <script src="<?php echo base_url(); ?>coloradmin/assets/js/demo/table-manage-combine.demo.js"></script>
 
   <!-- toast -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+  <script src="<?php echo base_url(); ?>coloradmin/assets/js/demo/toastr.min.js"></script>
   <!-- Sweets alerts/Modals scripts -->
   <script src="<?php echo base_url(); ?>coloradmin/assets/plugins/sweetalert/dist/sweetalert.min.js"></script>
   <script src="<?php echo base_url(); ?>coloradmin/assets/js/demo/ui-modal-notification.demo.js"></script>
@@ -292,68 +292,163 @@
 
 
 
-  <script>
-      function cargarDatos(idDatalogger)
-      {
-          var row = $('#datatable tbody').find('tr[data-id="' + idDatalogger + '"]');
-          var IP = row.find('.ip').text();
-          var puerto = row.find('.puerto').text();
+    <script>
+        function cargarDatos(idDatalogger)
+        {
+            var row = $('#datatable tbody').find('tr[data-id="' + idDatalogger + '"]');
+            var IP = row.find('.ip').text();
+            var puerto = row.find('.puerto').text();
 
-          // Asignar los valores actualizados a los inputs del modal
-          $('#idDatalogger').val(idDatalogger);
-          $('#IP').val(IP);
-          $('#puerto').val(puerto);
-      }
-
-      $('#btnGuardarConfiguracion').on('click', function() {
-          // Obtener los valores de los inputs en el modal
-          var idDatalogger = $('#idDatalogger').val();
-          var IP = $('#IP').val();
-          var puerto = $('#puerto').val();
-
-          // Enviar los datos mediante AJAX
-          $.ajax({
-              url: '<?php echo base_url("index.php/datalogger/configurar_datalogger"); ?>',
-              type: 'POST',
-              data: {
-                  idDatalogger: idDatalogger,
-                  IP: IP,
-                  puerto: puerto
-              },
-              dataType: 'json',
-              success: function(response) {
-                  if (response.status === 'success') {
-                      toastr.success(response.message);
-                      $('#modalPosBooking').modal('hide'); // Cerrar el modal
-
-                      // Actualizar los valores en la fila correspondiente del DataTable
-                      var row = $('#datatable tbody').find('tr[data-id="' + idDatalogger + '"]');
-
-                      // Actualizar las celdas de IP y Puerto en esa fila
-                      row.find('.ip').text(IP);
-                      row.find('.puerto').text(puerto);
-
-                      // Si estás utilizando DataTables, podrías necesitar redibujar la tabla
-                      window.tablaDatalogger.draw(false); // Redibuja la tabla si es necesario
-                  } else {
-                      toastr.error(response.message);
-                  }
-              },
-              error: function() {
-                  toastr.error('Error al actualizar la configuración. Inténtalo de nuevo.');
-              }
-          });
-      });
-
-      // Detectar la tecla Enter en el modal
-    $('#modalPosBooking').on('keypress', function(e) {
-        // 13 es el código de la tecla Enter
-        if (e.which === 13) {
-            e.preventDefault(); // Evita el envío del formulario
-            $('#btnGuardarConfiguracion').click(); // Simula el clic en el botón Guardar
+            // Asignar los valores actualizados a los inputs del modal
+            $('#idDatalogger').val(idDatalogger);
+            $('#IP').val(IP);
+            $('#puerto').val(puerto);
         }
-    });
-  </script>
+
+        $('#btnGuardarConfiguracion').on('click', function() {
+            // Obtener los valores de los inputs en el modal
+            var idDatalogger = $('#idDatalogger').val();
+            var IP = $('#IP').val();
+            var puerto = $('#puerto').val();
+
+            // Enviar los datos mediante AJAX
+            $.ajax({
+                url: '<?php echo base_url("index.php/datalogger/configurar_datalogger"); ?>',
+                type: 'POST',
+                data: {
+                    idDatalogger: idDatalogger,
+                    IP: IP,
+                    puerto: puerto
+                },
+                dataType: 'json',
+                success: function(response) {
+                    if (response.status === 'success') {
+                        toastr.success(response.message);
+                        $('#modalPosBooking').modal('hide'); // Cerrar el modal
+
+                        // Actualizar los valores en la fila correspondiente del DataTable
+                        var row = $('#datatable tbody').find('tr[data-id="' + idDatalogger + '"]');
+
+                        // Actualizar las celdas de IP y Puerto en esa fila
+                        row.find('.ip').text(IP);
+                        row.find('.puerto').text(puerto);
+
+                        // Si estás utilizando DataTables, podrías necesitar redibujar la tabla
+                        window.tablaDatalogger.draw(false); // Redibuja la tabla si es necesario
+                    } else {
+                        toastr.error(response.message);
+                    }
+                },
+                error: function() {
+                    toastr.error('Error al actualizar la configuración. Inténtalo de nuevo.');
+                }
+            });
+        });
+
+        // Detectar la tecla Enter en el modal
+        $('#modalPosBooking').on('keypress', function(e) {
+            // 13 es el código de la tecla Enter
+            if (e.which === 13) {
+                e.preventDefault(); // Evita el envío del formulario
+                $('#btnGuardarConfiguracion').click(); // Simula el clic en el botón Guardar
+            }
+        });
+    </script>
+
+    <!-- eliminado de datalogger -->
+    <script>
+        $(document).ready(function() {
+            window.tablaDatalogger = $('#datatable').DataTable();
+        });
+        function eliminarDatalogger(idDatalogger)
+        {
+            // Confirmación de eliminación con SweetAlert 1
+            swal({
+                title: "¿Estás seguro?",
+                text: "Es posible revertir esta acción",
+                icon: "warning",
+                buttons: ["Cancelar", "Sí, deshabilitar"],
+                dangerMode: true,
+            }).then((willDelete) => {
+                if (willDelete)
+                {
+                    $.ajax({
+                        url: '<?php echo base_url("index.php/datalogger/eliminar_datalogger"); ?>',
+                        type: 'POST',
+                        data: { idDatalogger: idDatalogger },
+                        dataType: 'json',
+                        success: function(response) {
+                            if (response.status === 'success')
+                            {
+                                toastr.success(response.message);
+                                // Verificar si el DataTable está definido
+                                if (window.tablaDatalogger) {
+                                    // Encontrar y eliminar la fila correspondiente
+                                    var row = $('#datatable tbody').find('tr[data-id="' + idDatalogger + '"]');
+                                    window.tablaDatalogger.row(row).remove().draw(false); // Actualiza la tabla sin recargar
+                                }
+                                else
+                                {
+                                    console.error('DataTable no está inicializado o disponible.');
+                                }
+                            }
+                            else
+                            {
+                                toastr.error(response.message);
+                            }
+                        },
+                        error: function() {
+                            toastr.error('Error al intentar eliminar. Inténtalo de nuevo.');
+                        }
+                    });
+                }
+                else
+                {
+                    toastr.info('Eliminación cancelada');
+                }
+            });
+        }
+    </script>
+
+    <!-- restaurar datalogger -->
+    <script>
+        function restaurarDatalogger(idDatalogger) {
+            $.ajax({
+                url: "<?php echo base_url('index.php/datalogger/restaurar_datalogger'); ?>",
+                type: "POST",
+                data: { id: idDatalogger },
+                dataType: 'json',
+                success: function(response) {
+                    if (response.status === 'success') {
+                        toastr.success("Datalogger restaurado con éxito");
+
+                        // Verifica si el DataTable está definido
+                        if (window.tablaDatalogger) {
+                            // Encuentra y elimina la fila correspondiente si existe
+                            var row = $('#datatable tbody').find('tr[data-id="' + idDatalogger + '"]');
+                            if (row.length) {
+                                window.tablaDatalogger.row(row).remove().draw(false); // Actualiza la tabla sin recargar
+                            } else {
+                                console.error('La fila con ID ' + idDatalogger + ' no se encontró en la tabla.');
+                            }
+                        } else {
+                            console.error('DataTable no está inicializado o disponible.');
+                        }
+                    } else {
+                        toastr.error("Error al restaurar el datalogger");
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.log("Status: " + status);
+                    console.log("Error: " + error);
+                    console.log("Response Text: " + xhr.responseText);
+                    toastr.error("Ocurrió un error al intentar restaurar. Inténtalo de nuevo.");
+                }
+            });
+        }
+
+    </script>
+
 
   </body>
 

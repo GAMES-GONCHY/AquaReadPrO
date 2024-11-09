@@ -32,8 +32,8 @@
           <thead>
             <tr>
               <th>No.</th>
-              <th>Lectura Anterior</th>
               <th>Lectura Actual</th>
+              <th>Lectura Anterior</th>
               <th>Código Medidor</th>
               <th>Código Datalogger</th>
               <th>Código Socio</th>
@@ -49,13 +49,14 @@
             ?>
               <tr class="text-center">
                 <td><?php echo $cont; ?></td>
-                <td><?php echo $lectura['lecturaAnterior'] !== null ? $lectura['lecturaAnterior'] : 0; ?></td>
                 <td><?php echo $lectura['lecturaActual']; ?></td>
+                <td><?php echo $lectura['lecturaAnterior'] !== null ? $lectura['lecturaAnterior'] : 0; ?></td>
                 <td><?php echo $lectura['codigoMedidor']; ?></td>
                 <td><?php echo $lectura['codigoDatalogger']; ?></td>
                 <td><?php echo $lectura['codigoSocio']; ?></td>
                 <td><?php echo $lectura['nombreSocio']; ?></td>
-                <td><?php echo $lectura['fechaLectura']; ?></td>
+                <!-- <td><?php echo $lectura['fechaLectura']; ?></td> -->
+                <td><?php echo date('d-m-Y', strtotime($lectura['fechaLectura'])); ?></td>
                 <!-- <td>
                   <div class="btn-group" role="group">
                     <?php echo form_open_multipart("lecturadl/deshabilitarbd"); ?>
@@ -75,8 +76,8 @@
           <tfoot>
             <tr>
               <th>No.</th>
-              <th>Lectura Anterior</th>
               <th>Lectura Actual</th>
+              <th>Lectura Anterior</th>
               <th>Código Medidor</th>
               <th>Código Datalogger</th>
               <th>Código Socio</th>

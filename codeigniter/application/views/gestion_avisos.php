@@ -64,7 +64,7 @@
                                 <?php
                                 $cont = 1;
                                 foreach ($enviados as $enviado) {
-                                    $consumo = $enviado['lecturaActual'] - $enviado['lecturaAnterior'];
+                                    $consumo = round($enviado['lecturaActual'] - $enviado['lecturaAnterior'],2);
                                     $total = $enviado['tarifaVigente'] * $consumo;
                                 ?>
                                 <tr class="text-center">

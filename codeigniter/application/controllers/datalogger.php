@@ -39,6 +39,37 @@ class Datalogger extends CI_Controller
 		$this->datalogger_model->modificar($id, $data);
 		redirect('datalogger/habilitados', 'refresh');
 	}
+	public function eliminar_datalogger()
+	{
+		// Obtener el ID del datalogger desde la solicitud POST
+		$idDatalogger = $this->input->post('idDatalogger');
+
+		// Comprobar que el ID no esté vacío
+		if (!$idDatalogger) {
+			echo json_encode(['status' => 'error', 'message' => 'ID de datalogger no proporcionado.']);
+			return;
+		}
+	
+		// Intentar eliminar el datalogger
+		if ($this->datalogger_model->eliminarDatalogger($idDatalogger)) {
+			// Responder con éxito
+			echo json_encode(['status' => 'success', 'message' => 'Datalogger eliminado exitosamente.']);
+		} else {
+			// Responder con error si hubo un problema al eliminar
+			echo json_encode(['status' => 'error', 'message' => 'Error al eliminar el datalogger.']);
+		}
+	}
+	public function restaurar_datalogger()
+	{
+		$id = $this->input->post('id');
+		// Procesa la restauración con el ID recibido
+		if ($this->datalogger_model->restaurarDatalogger($id))
+		{
+			echo json_encode(["status" => "success"]);
+		} else {
+			echo json_encode(["status" => "error"]);
+		}
+	}
 	// public function agregar()
 	// {
 	// 	$this->load->view('incrustaciones/vistascoloradmin/head');

@@ -75,7 +75,7 @@
                                                       '<?php echo $row->puerto; ?>')">
                                 <i class="fas fa-cog"></i> <!-- Ícono de configuración -->
                             </button>
-                            <button class="btn btn-danger btn-sm mx-1">
+                            <button class="btn btn-danger btn-sm mx-1" onclick="eliminarDatalogger('<?php echo $row->idDatalogger; ?>')">
                                 <i class="fas fa-trash"></i> <!-- Ícono de eliminar -->
                             </button>
                         </div>

@@ -56,7 +56,7 @@
                                     <?php
                                     $cont = 1;
                                     foreach ($revisados as $revisado) {
-                                        $consumo = $revisado['lecturaActual'] - $revisado['lecturaAnterior'];
+                                        $consumo = round($revisado['lecturaActual'] - $revisado['lecturaAnterior'],2);
                                         $total = $revisado['tarifaVigente'] * $consumo;
                                         $fechaPago = !empty($revisado['fechaPago']) ? date('Y-m-d', strtotime($revisado['fechaPago'])) : 'Sin Fecha';
                                         $fechaLectura = date('Y-m-d', strtotime($revisado['fechaLectura']));
