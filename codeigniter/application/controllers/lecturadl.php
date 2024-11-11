@@ -61,6 +61,7 @@ class Lecturadl extends CI_Controller
             //log_message('debug', 'Dataloggers encontrados: ' . json_encode($ipDataloggers));
             $this->actualizaryregistrar($ipDataloggers,$clave);
 
+            
             // if (!empty($lecturas)) {
             //     log_message('debug', 'Lecturas recuperadas exitosamente: ' . json_encode($lecturas));
             // } else {
@@ -75,6 +76,7 @@ class Lecturadl extends CI_Controller
             // $this->session->set_flashdata('mensaje', 'No se encontraron medidores activos');
 			// $this->session->set_flashdata('alert_type', 'error');
             return [];
+
         }
     }
 
@@ -189,12 +191,9 @@ class Lecturadl extends CI_Controller
         //$data['lecturas'] = $this->recuperarIp($clave); // Realiza la lectura de los dataloggers
         $this->recuperarIp($clave);
 
-        // Verifica si hay lecturas
-        // if (!empty($data['lecturas'])) {  
-        //     echo json_encode(['status' => 'success', 'message' => 'Lectura realizada correctamente.']); 
-        // } else {
-        //     echo json_encode(['status' => 'error', 'message' => 'No se encontraron lecturas.']);
-        // }
+        // $this->session->set_flashdata('mensaje', 'Lectura exitosa');
+        // $this->session->set_flashdata('alert_type', 'success');
+
         redirect('lecturadl/mostrarlectura');
     }
     public function mostrarlecturasfallidas()
@@ -208,12 +207,10 @@ class Lecturadl extends CI_Controller
     }
     public function actualizarlecturas($clave)//clave = 0 ->actualizar lecturas en tiempo real
     {
-        //$data['lecturas'] = $this->recuperarIp($clave);
         $this->lectura_model->truncarLecturasTemporales();
         $this->recuperarIp($clave);
         $data['lecturas']=$this->lectura_model->lecturastiemporeal();
         //$this->lectura_model->truncarLecturasTemporales();
-
         $this->load->view('incrustaciones/vistascoloradmin/head');
         $this->load->view('incrustaciones/vistascoloradmin/menuadmin');
         $this->load->view('lecturastiemporeal', $data);

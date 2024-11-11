@@ -355,7 +355,7 @@
         });
     </script>
 
-    <!-- eliminado de datalogger -->
+    <!-- dashabilitar datalogger -->
     <script>
         $(document).ready(function() {
             window.tablaDatalogger = $('#datatable').DataTable();
@@ -412,7 +412,8 @@
 
     <!-- restaurar datalogger -->
     <script>
-        function restaurarDatalogger(idDatalogger) {
+        function restaurarDatalogger(idDatalogger)
+        {
             $.ajax({
                 url: "<?php echo base_url('index.php/datalogger/restaurar_datalogger'); ?>",
                 type: "POST",
@@ -446,10 +447,111 @@
                 }
             });
         }
-
     </script>
 
+    <!-- deshabilitar medidor -->
+    <script>
+        $(document).ready(function() {
+            window.tablaMedidor = $('#datatable').DataTable(); // Inicializa DataTable para los medidores
+        });
 
-  </body>
+        function deshabilitarMedidor(idMedidor) {
+            // Confirmación de eliminación con SweetAlert 1
+            swal({
+                title: "¿Estás seguro?",
+                text: "Es posible revertir esta acción",
+                icon: "warning",
+                buttons: ["Cancelar", "Sí, deshabilitar"],
+                dangerMode: true,
+            }).then((willDelete) => {
+                if (willDelete) {
+                    $.ajax({
+                        url: '<?php echo base_url("index.php/medidor/deshabilitar_medidor"); ?>', // URL del controlador para eliminar el medidor
+                        type: 'POST',
+                        data: { idMedidor: idMedidor },
+                        dataType: 'json',
+                        success: function(response) {
+                            if (response.status === 'success') {
+                                toastr.success(response.message);
+                                // Verificar si el DataTable está definido
+                                if (window.tablaMedidor) {
+                                    // Encontrar y eliminar la fila correspondiente
+                                    var row = $('#datatable tbody').find('tr[data-id="' + idMedidor + '"]');
+                                    window.tablaMedidor.row(row).remove().draw(false); // Actualiza la tabla sin recargar
+                                }
+                                else
+                                {
+                                    console.error('DataTable no está inicializado o disponible.');
+                                }
+                            }
+                            else
+                            {
+                                toastr.error(response.message);
+                            }
+                        },
+                        error: function()
+                        {
+                            toastr.error('Error al intentar Deshabilitar. Inténtalo de nuevo.');
+                        }
+                    });
+                }
+                else
+                {
+                    toastr.info('Eliminación cancelada');
+                }
+            });
+        }
+    </script>
 
-  </html>
+    <!-- habilitar medidores -->
+    <script>
+        function habilitarMedidor(idMedidor)
+        {
+            $.ajax({
+                url: "<?php echo base_url('index.php/medidor/habilitar_medidor'); ?>",
+                type: "POST",
+                data: { id: idMedidor },
+                dataType: 'json',
+                success: function(response)
+                {
+                    if (response.status === 'success')
+                    {
+                        toastr.success("Medidor restaurado con éxito");
+                        // Verifica si el DataTable está definido
+                        if (window.tablaMedidor)
+                        {
+                            // Encuentra y elimina la fila correspondiente si existe
+                            var row = $('#datatable tbody').find('tr[data-id="' + idMedidor + '"]');
+                            if (row.length)
+                            {
+                                window.tablaMedidor.row(row).remove().draw(false); // Actualiza la tabla sin recargar
+                            }
+                            else
+                            {
+                                console.error('La fila con ID ' + idMedidor + ' no se encontró en la tabla.');
+                            }
+                        }
+                        else
+                        {
+                            console.error('DataTable no está inicializado o disponible.');
+                        }
+                    }
+                    else
+                    {
+                        toastr.error("Error al habilitar el medidor");
+                    }
+                },
+                error: function(xhr, status, error)
+                {
+                    console.log("Status: " + status);
+                    console.log("Error: " + error);
+                    console.log("Response Text: " + xhr.responseText);
+                    toastr.error("Ocurrió un error al intentar restaurar. Inténtalo de nuevo.");
+                }
+            });
+        }
+    </script>
+
+    </body>
+
+    </html>

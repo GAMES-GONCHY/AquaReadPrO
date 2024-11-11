@@ -43,7 +43,7 @@
                   <th>IP</th>
                   <th>Puerto</th>
                   <th>Fecha de Instalación</th>
-                  <th>Acción</th>
+                  <th>Habilitar</th>
                 </tr>
               </thead>
               <tbody>
@@ -81,7 +81,7 @@
                   <th>IP</th>
                   <th>Puerto</th>
                   <th>Fecha de Instalación</th>
-                  <th>Acción</th>
+                  <th>Habilitar</th>
                 </tr>
               </tfoot>
             </table>

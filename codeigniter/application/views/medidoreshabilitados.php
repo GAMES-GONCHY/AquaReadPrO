@@ -35,11 +35,11 @@
               <thead>
                 <tr>
                   <th width="1%">No.</th>
-                  <th>Latitud</th>
-                  <th>Longitud</th>
-                  <th>Fecha instalación</th>
                   <th>Cod. Medidor</th>
+                  <th>Cod. Datalogger</th>
                   <th>Cod. Socio</th>
+                  <th>Socio</th>
+                  <th>Fecha registro</th>
                   <th>Deshabilitar</th>
                 </tr>
               </thead>
@@ -48,22 +48,19 @@
                 $cont = 1;
                 foreach ($medidor->result() as $row) {
                 ?>
-                  <tr>
+                  <tr data-id="<?php echo $row->idMedidor; ?>">
                     <td><?php echo $cont; ?></td>
-                    <td><?php echo $row->latitud; ?></td>
-                    <td><?php echo $row->longitud; ?></td>
-                    <td><?php echo $row->fechaRegistro; ?></td>
                     <td><?php echo $row->codigoMedidor; ?></td>
+                    <td><?php echo $row->codigoDatalogger; ?></td>
                     <td><?php echo $row->codigoSocio; ?></td>
+                    <td><?php echo $row->nombreSocio; ?></td>
+                    <td><?php echo $row->fechaRegistro; ?></td>
                     <td>
-                      <?php
-                      echo form_open_multipart("medidor/deshabilitarbd"); // <form>
-                      ?>
-                      <input type="hidden" name="id" value="<?php echo $row->idMedidor ?>">
-                      <button type="submit" class="btn btn-danger">Dar de baja</button>
-                      <?php
-                      echo form_close(); // </form>
-                      ?>
+                        <div class="d-flex justify-content-center align-items-center">
+                            <button class="btn btn-danger btn-sm mx-1" onclick="deshabilitarMedidor('<?php echo $row->idMedidor; ?>')">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
                     </td>
                   </tr>
                 <?php
@@ -74,11 +71,11 @@
               <tfoot>
                 <tr>
                   <th width="1%">No.</th>
-                  <th>Latitud</th>
-                  <th>Longitud</th>
-                  <th>Fecha instalación</th>
                   <th>Cod. Medidor</th>
+                  <th>Cod. Datalogger</th>
                   <th>Cod. Socio</th>
+                  <th>Socio</th>
+                  <th>Fecha registro</th>
                   <th>Deshabilitar</th>
                 </tr>
               </tfoot>

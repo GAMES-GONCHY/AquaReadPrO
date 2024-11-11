@@ -175,7 +175,7 @@
     var idMembresia = <?php echo isset($idMembresia) ? $idMembresia : ''; ?>;
     // Comprobar si las variables están definidas correctamente
     console.log("currentUser:", currentUser);
-    console.log("idMembresiaaaaaaa:", idMembresia);
+    console.log("idMembresia:", idMembresia);
     console.log("idUsuario:", idUsuario);
     console.log("idDatalogger:", idDatalogger);
 </script>

@@ -46,7 +46,7 @@
                   <th>Socio</th>
                   <th>IP</th>
                   <th>Puerto</th>
-                  <th>Fecha de Instalación</th>
+                  <th>Fecha registro</th>
                   <th>Acción</th>
                 </tr>
               </thead>
@@ -95,7 +95,7 @@
                   <th>Socio</th>
                   <th>IP</th>
                   <th>Puerto</th>
-                  <th>Fecha de Instalación</th>
+                  <th>Fecha registro</th>
                   <th>Acción</th>
                 </tr>
               </tfoot>

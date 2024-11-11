@@ -190,47 +190,6 @@
     });
   </script>
 
-  <!-- lectura -->
-  <script src="<?php echo base_url(); ?>coloradmin/assets/js/dataloggers/lecturas.js"></script>
-
-  <script>
-    $(document).ready(function() {
-      $('#lecturas').on('click', function() {
-        swal({
-          title: '¿Está seguro de realizar esta accion?',
-          icon: 'success',
-          buttons: {
-            cancel: {
-              text: 'Cancelar',
-              value: null,
-              visible: true,
-              className: 'btn btn-success',
-              closeModal: true,
-            },
-            confirm: {
-              text: 'Confirmar',
-              value: true,
-              visible: true,
-              className: 'btn btn-danger',
-              closeModal: true
-            }
-          }
-        }).then((result) => {
-          if (result) {
-            // Acción a realizar cuando el usuario confirma
-            swal({
-              title: 'Registrando lecturas...',
-              icon: 'success',
-              buttons: false, // Oculta el botón de confirmación
-              timer: 2000 // Duración en milisegundos
-            });
-            window.location.href = '<?php echo base_url(); ?>index.php/lecturadl/realizarlectura';
-          }
-        });
-      });
-    });
-  </script>
-
 <!-- tarifas/modificar -->
 <script>
 function cargarDatos(idTarifa) {
@@ -258,6 +217,9 @@ function cargarDatos(idTarifa) {
 }
 
 </script>
+
+
+
 
 
 

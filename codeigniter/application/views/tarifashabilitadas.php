@@ -61,7 +61,7 @@
                 <thead>
                     <tr>
                         <th width="1%">No.</th>
-                        <th>Tarifa vigente</th>
+                        <th>Tarifa vigente [Bs.]</th>
                         <!-- <th>Tarifa mínima</th> -->
                         <th>Inicio de vigencia</th>
                         <th>Modificar</th>
@@ -105,7 +105,7 @@
                 <tfoot>
                     <tr>
                         <th width="1%">No.</th>
-                        <th>Tarifa vigente</th>
+                        <th>Tarifa vigente [Bs.]</th>
                         <th>Inicio de vigencia</th>
                         <!-- <th>Tarifa mínima</th> -->
                         <th>Modificar</th>

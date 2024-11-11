@@ -23,9 +23,6 @@ class Geodatalogger extends CI_Controller
         $data['medidores'] = json_encode($data['medidores']);
         $data['idMembresia'] = json_encode($data['idMembresia']);
 
-
-        
-        
 		$this->load->view('incrustaciones/vistascoloradmin/headmap');
 		$this->load->view('incrustaciones/vistascoloradmin/menuadmin');
         $this->load->view('geomap');
