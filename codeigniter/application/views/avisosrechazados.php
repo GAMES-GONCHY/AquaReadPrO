@@ -57,7 +57,17 @@
                                     $cont = 1;
                                     foreach ($rechazados as $rechazado) {
                                         $consumo = $rechazado['lecturaActual'] - $rechazado['lecturaAnterior'];
-                                        $total = $rechazado['tarifaVigente'] * $consumo;
+                                        
+                                        if($consumo<10)//si el consumo es menor q 10 m3 aplicar tarifado mínimo
+                                        {
+                                            $total = $rechazado['tarifaMinima'];
+                                        }
+                                        else
+                                        {
+                                            $total = $rechazado['tarifaVigente'] * $consumo;
+                                        }
+
+                                        // $total = $rechazado['tarifaVigente'] * $consumo;
                                         $fechaPago = !empty($rechazado['fechaPago']) ? date('Y-m-d', strtotime($rechazado['fechaPago'])) : 'Sin Fecha';
                                         $saldo = !empty($rechazado['saldo']) ? $rechazado['saldo'] : 'Sin Saldo';
                                     ?>

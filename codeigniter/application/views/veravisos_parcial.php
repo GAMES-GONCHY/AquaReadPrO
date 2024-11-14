@@ -36,7 +36,15 @@
 								// Calcular el consumo
 								// $consumo = ($aviso['lecturaActual'] - $aviso['lecturaAnterior']);
 								$consumo = round($aviso['lecturaActual'] - $aviso['lecturaAnterior'], 2);
-								$total = $consumo * $aviso['tarifaVigente'];
+								if($consumo<10)//si el consumo es menor q 10 m3 aplicar tarifado mínimo
+								{
+									$total = $aviso['tarifaMinima'];
+								}
+								else
+								{
+									$total = $aviso['tarifaVigente'] * $consumo;
+								}
+								// $total = $consumo * $aviso['tarifaVigente'];
 							?>
 							<!-- Agregar correctamente el atributo data-periodo con el mes correspondiente -->
 							<div class="result-item" data-periodo="<?php echo $mes; ?>">

@@ -24,7 +24,7 @@ class Avisocobranza_model extends CI_Model
         $this->db->join('medidor M', 'L.idMedidor = M.idMedidor', 'inner');
         $this->db->join('membresia ME', 'M.idMembresia = ME.idMembresia', 'inner');
         $this->db->join('usuario U', 'ME.idUsuario = U.idUsuario', 'inner');
-        $this->db->where('A.estado', $estado); // Reemplaza 'pendiente' por el valor que necesites
+        $this->db->where('A.estado', $estado);
         
         $this->db->order_by("CASE WHEN A.estado = 'enviado' THEN L.fechaLectura ELSE A.fechaActualizacion END", 'DESC', FALSE);
 
@@ -63,7 +63,7 @@ class Avisocobranza_model extends CI_Model
     // Obtener los avisos por estado para cada socio.
     public function avisos_por_estado_id($estado, $idUsuario)
     {
-        $this->db->select('A.fechaVencimiento, A.idAviso, A.estado, A.fechaPago, A.saldo, T.tarifaVigente, Q.img,
+        $this->db->select('A.fechaVencimiento, A.idAviso, A.estado, A.fechaPago, A.saldo, T.tarifaVigente, T.tarifaMinima, Q.img,
                 (L.lecturaAnterior)/100 AS lecturaAnterior, (L.lecturaActual)/100 AS lecturaActual, L.fechaLectura, 
                 IFNULL((SELECT L2.fechaLectura 
                         FROM lectura L2 

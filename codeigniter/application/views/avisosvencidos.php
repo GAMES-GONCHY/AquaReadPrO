@@ -54,7 +54,17 @@
                                     $cont = 1;
                                     foreach ($vencidos as $vencido) {
                                         $consumo = $vencido['lecturaActual'] - $vencido['lecturaAnterior'];
-                                        $total = $vencido['tarifaVigente'] * $consumo;
+
+                                        if($consumo<10)//si el consumo es menor q 10 m3 aplicar tarifado mínimo
+                                        {
+                                            $total = $vencido['tarifaMinima'];
+                                        }
+                                        else
+                                        {
+                                            $total = $vencido['tarifaVigente'] * $consumo;
+                                        }
+                                        // $total = $vencido['tarifaVigente'] * $consumo;
+
                                         $fechaLectura = date('Y-m-d', strtotime($vencido['fechaLectura']));
                                     ?>
                                     <tr class="text-center">

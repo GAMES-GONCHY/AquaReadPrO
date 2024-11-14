@@ -56,7 +56,18 @@
                                     $cont = 1;
                                     foreach ($deshabilitados as $deshabilitado) {
                                         $consumo = $deshabilitado['lecturaActual'] - $deshabilitado['lecturaAnterior'];
-                                        $total = $deshabilitado['tarifaVigente'] * $consumo;
+
+
+                                        if($consumo<10)//si el consumo es menor q 10 m3 aplicar tarifado mínimo
+                                        {
+                                            $total = $deshabilitado['tarifaMinima'];
+                                        }
+                                        else
+                                        {
+                                            $total = $deshabilitado['tarifaVigente'] * $consumo;
+                                        }
+
+                                        // $total = $deshabilitado['tarifaVigente'] * $consumo;
                                         $fechaActualizacion = !empty($deshabilitado['fechaActualizacion']) ? date('Y-m-d', strtotime($deshabilitado['fechaActualizacion'])) : 'Sin Fecha';
                                         $fechaLectura = date('Y-m-d', strtotime($deshabilitado['fechaLectura']));
                                     ?>

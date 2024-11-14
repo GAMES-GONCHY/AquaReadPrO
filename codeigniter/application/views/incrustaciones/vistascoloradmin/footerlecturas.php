@@ -192,7 +192,7 @@
 
 <!-- tarifas/modificar -->
 <script>
-function cargarDatos(idTarifa) {
+function cargarDatos(idTarifa, fechaInicioVigencia) {
     // Busca la fila correspondiente por su ID
     var fila = document.getElementById("row_" + idTarifa);
 
@@ -212,7 +212,7 @@ function cargarDatos(idTarifa) {
         // Mostrar el modal de modificación
         $('#modalModificarTarifa').modal('show');
     } else {
-        console.error("No se encontró la fila con ID:", idTarifa);
+        console.error("No se encontró la fila: ", idTarifa);
     }
 }
 

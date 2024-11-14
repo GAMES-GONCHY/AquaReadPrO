@@ -3,25 +3,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Reporte_model extends CI_Model
 {
-	// public function obtener_socio_por_criterio($criterio) 
-	// {
-	// 	// Consulta para encontrar al socio con el código proporcionado
-	// 	$this->db->select("CONCAT_WS(' ', U.nombre, U.primerApellido, IFNULL(U.segundoApellido, '')) AS nombre, M.codigoSocio");
-	// 	$this->db->from('usuario U');
-	// 	$this->db->join('membresia M', 'U.idUsuario = M.idUsuario', 'inner');
-	// 	$this->db->where('M.codigoSocio', $criterio);
-	// 	$this->db->or_where('U.primerApellido', $criterio); // Usa 'or_where' para la condición OR
-	// 	$query = $this->db->get();
-	
-	// 	if ($query->num_rows() > 0)
-	// 	{
-	// 	  return $query->row();  // Retorna el primer resultado encontrado (un solo socio)
-	// 	}
-	// 	else
-	// 	{
-	// 	  return false;  // Si no se encuentra el socio
-	// 	}
-	// }
 	public function obtener_socio_por_criterio($criterio) 
 	{
 		$this->db->select("CONCAT_WS(' ', U.nombre, U.primerApellido, IFNULL(U.segundoApellido, '')) AS nombre, M.codigoSocio, M.idMembresia");
@@ -45,7 +26,6 @@ class Reporte_model extends CI_Model
 			return false;
 		}
 	}
-	// 
 		
 	public function obtener_datos_historicos($data) 
 	{
@@ -57,7 +37,7 @@ class Reporte_model extends CI_Model
 		{
 			$this->db->where('estado', 'pagado');  // Historial de pagos: estado = 'pagado'
 		}
-		elseif ($data['tipoReporte'] == 'consumos')
+		elseif($data['tipoReporte'] == 'consumos')
 		{
 			$this->db->where('estado !=', 'deshabilitado');  // Historial de consumos: estado distinto de 'deshabilitado'
 		}
@@ -114,7 +94,10 @@ class Reporte_model extends CI_Model
 		$estados = ['rechazado','vencido'];
 		$this->db->select("CONCAT_WS(' ', U.nombre, U.primerApellido, IFNULL(U.segundoApellido, '')) AS socio", FALSE);
 		$this->db->select('ME.codigoSocio, L.fechaLectura');
-		$this->db->select('(L.lecturaActual - L.lecturaAnterior)*T.tarifaVigente/100 AS total', FALSE);
+		//$this->db->select('(L.lecturaActual - L.lecturaAnterior)*T.tarifaVigente/100 AS total', FALSE);
+		$this->db->select("IF((L.lecturaActual - L.lecturaAnterior) / 100 >= 10, 
+                            (L.lecturaActual - L.lecturaAnterior)*T.tarifaVigente/100, 
+							T.tarifaMinima) AS total", FALSE);
 		$this->db->select('IFNULL(A.saldo, 0) AS saldo', FALSE);
 		$this->db->select('A.estado AS estado');
 		$this->db->from('avisocobranza A');
@@ -142,7 +125,9 @@ class Reporte_model extends CI_Model
 		if ($query->num_rows() > 0) {
 			return $query->result_array(); 
 			
-		} else {
+		}
+		else
+		{
 			return [];
 		}
 	}
@@ -151,7 +136,10 @@ class Reporte_model extends CI_Model
 		$this->db->select('ME.codigoSocio AS codigo');
 		$this->db->select("CONCAT_WS(' ', U.nombre, U.primerApellido, IFNULL(U.segundoApellido, '')) AS socio", FALSE);
 		$this->db->select('(L.lecturaActual - L.lecturaAnterior)/100 AS consumo', FALSE);
-		$this->db->select('(L.lecturaActual - L.lecturaAnterior)*T.tarifaVigente/100 AS total', FALSE);
+		//$this->db->select('(L.lecturaActual - L.lecturaAnterior)*T.tarifaVigente/100 AS total', FALSE);
+		$this->db->select("IF((L.lecturaActual - L.lecturaAnterior)/100 >= 10, 
+                        (L.lecturaActual - L.lecturaAnterior)*T.tarifaVigente/100 , 
+                        T.tarifaMinima) AS total", FALSE);
 		$this->db->from('avisocobranza A');
 		$this->db->join('lectura L', 'A.idLectura = L.idLectura', 'inner');
 		$this->db->join('medidor M', 'L.idMedidor = M.idMedidor', 'inner');
@@ -234,7 +222,12 @@ class Reporte_model extends CI_Model
 	{
 		$this->db->select("DATE_FORMAT(L.fechaLectura, '%Y-%m') AS mes", false);
 		$this->db->select("SUM((L.lecturaActual - L.lecturaAnterior) / 100) AS total_consumido", false);
-		$this->db->select("SUM(CASE WHEN A.estado = 'pagado' THEN (L.lecturaActual - L.lecturaAnterior) * T.tarifaVigente / 100 ELSE 0 END) AS total_pagado", false);
+		//$this->db->select("SUM(CASE WHEN A.estado = 'pagado' THEN (L.lecturaActual - L.lecturaAnterior) * T.tarifaVigente / 100 ELSE 0 END) AS total_pagado", false);
+		$this->db->select("SUM(CASE WHEN A.estado = 'pagado' 
+									THEN IF((L.lecturaActual - L.lecturaAnterior) / 100 >= 10, 
+										(L.lecturaActual - L.lecturaAnterior)*T.tarifaVigente/100,
+										T.tarifaMinima)
+									ELSE 0 END) AS total_pagado", false);
 		$this->db->from('lectura L');
 		$this->db->join('avisocobranza A', 'L.idLectura = A.idLectura');
 		$this->db->join('tarifa T', 'A.idTarifa = T.idTarifa');

@@ -2,7 +2,7 @@
 <div id="content" class="app-content">
   <!-- Fila de botones con widgets -->
   <div class="row mb-4">
-    <!-- Button 2: Historial de Consumos -->
+    <!-- Button 1: Historial de Consumos -->
     <div class="col-xl-3 col-md-6">
       <a href="#" data-bs-toggle="modal" data-bs-target="#modalPosBooking" data-reporte="consumos" data-title="Historial de Comsumos" class="table-booking">
         <div class="widget widget-stats bg-gradient-cyan-blue">
@@ -20,7 +20,7 @@
       </a>
     </div>
 
-    <!-- Button 1: Historial de Pagos -->
+    <!-- Button 2: Historial de Pagos -->
     <div class="col-xl-3 col-md-6">
       <a href="#" data-bs-toggle="modal" data-bs-target="#modalPosBooking" data-reporte="pagos" data-title="Historial de Pagos" class="table-booking">
         <div class="widget widget-stats bg-gradient-red">

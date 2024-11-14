@@ -65,7 +65,14 @@
                                 $cont = 1;
                                 foreach ($enviados as $enviado) {
                                     $consumo = round($enviado['lecturaActual'] - $enviado['lecturaAnterior'],2);
-                                    $total = $enviado['tarifaVigente'] * $consumo;
+                                    if($consumo<10)//si el consumo es menor q 10 m3 aplicar tarifado mínimo
+                                    {
+                                      $total = $enviado['tarifaMinima'];
+                                    }
+                                    else
+                                    {
+                                      $total = $enviado['tarifaVigente'] * $consumo;
+                                    }
                                 ?>
                                 <tr class="text-center">
                                     <td><?php echo $cont; ?></td>

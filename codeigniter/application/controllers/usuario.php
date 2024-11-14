@@ -76,7 +76,7 @@ class Usuario extends CI_Controller
 					// $this->load->view('panelsocio1.php');
 					// $this->load->view('incrustaciones/vistascoloradmin/footersocios');
 
-					redirect('socio/pagaraviso');
+					redirect('socio/pagaraviso');//verificar aqui cierre automatico de sesion
 
 				}
 				
@@ -120,17 +120,18 @@ class Usuario extends CI_Controller
 		}
 		redirect('usuario/panel','refresh');
 	}
-	public function obtenerConsumoMensual()
+	public function obtenerConsumoMensual()//funcion para obtener datos para el grafico consumo y pagos vs tiempo
 	{
 		// Verificar que el usuario esté autenticado y autorizado
 		if ($this->session->userdata('nickName') && ($this->session->userdata('estado')) == 1 && ($this->session->userdata('rol')) == 2) {
 			// Llama a la función que obtiene los datos
 			$data = $this->reporte_model->obtener_consumo_x_tiempo();
-
 			log_message('debug', 'consumo x mes: ' . print_r($data, true));
 			// Envía los datos en formato JSON
 			echo json_encode($data);
-		} else {
+		}
+		else
+		{
 			// Si no está autorizado, envía un error o redirige
 			show_error('No autorizado', 403);
 		}

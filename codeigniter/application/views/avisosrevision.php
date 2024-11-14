@@ -57,7 +57,15 @@
                                     $cont = 1;
                                     foreach ($revisados as $revisado) {
                                         $consumo = round($revisado['lecturaActual'] - $revisado['lecturaAnterior'],2);
-                                        $total = $revisado['tarifaVigente'] * $consumo;
+                                        if($consumo<10)//si el consumo es menor q 10 m3 aplicar tarifado mínimo
+                                        {
+                                            $total = $revisado['tarifaMinima'];
+                                        }
+                                        else
+                                        {
+                                            $total = $revisado['tarifaVigente'] * $consumo;
+                                        }
+                                        // $total = $revisado['tarifaVigente'] * $consumo;
                                         $fechaPago = !empty($revisado['fechaPago']) ? date('Y-m-d', strtotime($revisado['fechaPago'])) : 'Sin Fecha';
                                         $fechaLectura = date('Y-m-d', strtotime($revisado['fechaLectura']));
                                     ?>

@@ -64,7 +64,7 @@ class Reporte extends CI_Controller
             echo 'false';  // Si no se encuentran resultados
         }
     }
-    public function historial_pagos() 
+    public function historial_pagos()//VERIFICAR USO
     {
         $data['codigoSocio'] = $this->input->post('codigoSocio');
         $data['idMembresia'] = $this->input->post('idMembresia');
