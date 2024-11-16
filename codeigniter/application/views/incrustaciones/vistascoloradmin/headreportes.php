@@ -83,8 +83,9 @@
 
     
     <link href="<?php echo base_url(); ?>coloradmin/assets/plugins/bootstrap-calendar/css/bootstrap_calendar.css" rel="stylesheet" />
-  
 
+    <!-- Estilos de jQuery UI (para personalización visual del selector) -->
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 
 
 
@@ -149,7 +150,51 @@
     overflow-y: auto; /* Habilita el scroll vertical */
     /* overflow-x: auto; Habilita el scroll vertical */
 }
+
+/* CSS PARA SELECTOR DE RANKING CONSUMIDORES Y LABEL */
+.custom-label {
+  font-weight: bold;
+  color: #333; /* Color oscuro para buen contraste */
+  font-size: 16px;
+}
+
+.custom-select {
+  background-color: #f0f0f0; /* Fondo claro para contraste */
+  border: 1px solid #ccc; /* Borde gris suave */
+  border-radius: 4px;
+  color: #333; /* Color de texto oscuro */
+}
+
+.custom-select:focus {
+  border-color: #28a745; /* Color de borde verde al enfocar */
+  box-shadow: 0 0 5px rgba(40, 167, 69, 0.5); /* Sombra verde */
+  outline: none;
+}
+
+/* Estilo general para los selectores */
+#monthPicker, #yearPicker {
+    font-size: 11px;
+    padding: 1px;
+    color: #333;
+    background-color: #f5f5f5;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    height: auto;
+}
+
+/* Ajustes específicos para dispositivos móviles */
+@media (max-width: 576px) {
+    #monthPicker {
+        width: 60px !important; /* Fuerza el ancho reducido en móviles */
+    }
+
+    #yearPicker {
+        width: 50px !important; /* Fuerza el ancho reducido en móviles */
+    }
+}
  </style>
+
+
 
 
 

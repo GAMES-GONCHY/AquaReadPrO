@@ -84,11 +84,18 @@ class Reporte extends CI_Controller
         {
             $data['codigoSocio'] = $this->input->post('codigoSocio');
             $data['idMembresia'] = trim($this->input->post('idMembresia') ?? '');
+            $data['fechaInicio'] = $this->input->post('fechaInicio');
+            $data['fechaFin'] = $this->input->post('fechaFin');
         }
-        $data['fechaInicio'] = $this->input->post('fechaInicio');
-        $data['fechaFin'] = $this->input->post('fechaFin');
+        else
+        {
+            $data['mes'] = $this->input->post('mes');
+            $data['anio'] = $this->input->post('anio');
+        }
+        
         $data['tipoReporte'] = $this->input->post('tipoReporte');
         $response = [];
+        log_message('debug', 'Datos recibidos para ranking: ' . print_r($data, true));
 
         if ($tipoReporte == 'pagos')
         {
@@ -171,16 +178,25 @@ class Reporte extends CI_Controller
         }
         elseif ($tipoReporte == 'ranking') 
         {
+
+             // Validar año en el backend
+            if ($data['anio'] > date('Y')) {
+                $response['data'] = [];
+                $response['message'] = 'El año seleccionado no es válido.';
+                echo json_encode($response);
+                return;
+            }
+
             // Definir encabezados para "ranking"
             $response['headers'] = ["Top", "Código", "Socio", "Consumo [m3]", "Total [Bs]"]; 
+
             // Obtener datos del modelo para el ranking
             $rankingConsumo = $this->reporte_model->obtener_top_consumidores($data);
             
-            if (!empty($rankingConsumo)) 
+            if (!empty($rankingConsumo))
             {
-                // Formatear los datos para el Top 10 de consumidores
-                $response['data'] = array_map(function($consumidor, $index) 
-                {
+                // Formatear los datos para el Top 5 de consumidores
+                $response['data'] = array_map(function($consumidor, $index) {
                     return [
                         $index + 1, // Número de ranking (1 a 10)
                         $consumidor['codigo'], // Código del socio
@@ -189,10 +205,11 @@ class Reporte extends CI_Controller
                         $consumidor['total'] // Total con 2 decimales
                     ];
                 }, $rankingConsumo, array_keys($rankingConsumo));
-            } 
-            else 
+            }
+            else
             {
-                $response['data'] = []; // Si no hay datos, devolvemos un arreglo vacío
+                $response['data'] = [];
+                $response['message'] = 'No se encontraron registros para el reporte ranking.';
             }
         }               
         // Retornar los datos como JSON con headers y data
@@ -575,10 +592,35 @@ class Reporte extends CI_Controller
     }
     public function generar_pdf_ranking()
     {
-        // Obtener los parámetros desde la solicitud
-        $data['fechaInicio'] = $this->input->post('fechaInicio');
-        $data['fechaFin'] = $this->input->post('fechaFin');
         $data['tipoReporte'] = $this->input->post('tipoReporte');
+        $data['opcionRanking'] = $this->input->post('opcionRanking');
+        // Obtener los parámetros desde la solicitud
+        if ($data['opcionRanking'] === 'MENSUAL') {
+            $data['mes'] = $this->input->post('mes');
+            $data['anio'] = $this->input->post('anio');
+        } elseif ($data['opcionRanking'] === 'ANUAL') {
+            $data['anio'] = $this->input->post('anio');
+            // $data['mes'] = null;
+        } else { // GLOBAL
+            $data['mes'] = null;
+            $data['anio'] = null;
+        }
+        
+        $meses = [
+            "1" => 'Enero', 
+            "2" => 'Febrero', 
+            "3" => 'Marzo', 
+            "4" => 'Abril', 
+            "5" => 'Mayo', 
+            "6" => 'Junio', 
+            "7" => 'Julio', 
+            "8" => 'Agosto', 
+            "9" => 'Septiembre', 
+            "10" => 'Octubre', 
+            "11" => 'Noviembre', 
+            "12" => 'Diciembre'
+        ];
+        
 
         // Llamar al modelo para obtener el top 10 de consumidores
         $rankingConsumo = $this->reporte_model->obtener_top_consumidores($data);
@@ -602,7 +644,7 @@ class Reporte extends CI_Controller
 
         // Título del reporte
         $pdf->SetX($margenIzquierdo);
-        $pdf->Cell($anchoDisponible, 15, utf8_decode('Top 10 Consumidores'), 0, 1, 'C', true);
+        $pdf->Cell($anchoDisponible, 15, utf8_decode('Top 5 Consumidores'), 0, 1, 'C', true);
         $pdf->Ln(5);
 
         // Subtítulo "AquaReadPro"
@@ -617,14 +659,27 @@ class Reporte extends CI_Controller
         $pdf->SetFont('Arial', '', 10);
         $pdf->SetY(50);
 
-        // Formateo de fechas con día, mes en literal y año en español
-        $fmt = new IntlDateFormatter('es_ES', IntlDateFormatter::LONG, IntlDateFormatter::NONE);
-        $fmt->setPattern("d MMMM y");
+        // Verificar si mes y año están definidos
+        if ($data['opcionRanking']=="GLOBAL")
+        {
+            $periodo = 'Global';
+        }
+        else
+        {
+            if ($data['opcionRanking']=="MENSUAL")
+            {
+                // Convertir el mes a literal
+                $mesLiteral = isset($meses[$data['mes']]) ? $meses[$data['mes']] : 'Mes desconocido';
+                $periodo = $mesLiteral . ' de ' . $data['anio'];
+            }
+            else
+            {
+                $periodo = $data['anio'];
+            }
+        }
 
-        $fechaInicioFormateada = $fmt->format(new DateTime($data['fechaInicio']));
-        $fechaFinFormateada = $fmt->format(new DateTime($data['fechaFin']));
         $pdf->SetX($margenIzquierdo - 20);
-        $pdf->Cell(0, 5, 'Periodo: ' . $fechaInicioFormateada . ' a ' . $fechaFinFormateada, 0, 1, 'L');
+        $pdf->Cell(0, 5, 'Periodo: ' . $periodo, 0, 1, 'L');
         $pdf->SetX($margenIzquierdo - 20);
         $pdf->Cell(0, 5, utf8_decode('Fecha de emisión: ') . date('d/m/Y'), 0, 1, 'L');
         $pdf->Ln(10);

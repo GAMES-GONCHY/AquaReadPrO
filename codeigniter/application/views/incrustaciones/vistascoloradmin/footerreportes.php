@@ -33,8 +33,47 @@
               <div class="col-lg-6">
                 
 
+                  <!-- Selector de opciones (MENSUAL, ANUAL, GLOBAL) -->
+                  <div class="form-group row" id="options-selector-container" style="display: none;">
+                    <label class="form-label col-form-label col-lg-4" style="padding: 10px;">Opciones</label>
+                    <div class="col-lg-8" style="padding: 10px;">
+                      <select id="opcionesRanking" name="opcionesRanking" class="form-select custom-select" style="width: 100%; padding: 10px; font-size: 16px; color: #333;">
+                        <option value="MENSUAL">MENSUAL</option>
+                        <option value="ANUAL">ANUAL</option>
+                        <option value="GLOBAL">GLOBAL</option>
+                      </select>
+                    </div>
+                  </div>
+                  <!-- Selector de Mes y Año -->
+                  <div class="form-group row" id="month-year-picker-container" style="display: none;">
+                      <label id="monthYearLabel" class="form-label col-form-label col-lg-4" style="padding: 10px;">Mes / Año</label>
+                      <div class="col-lg-8" style="padding: 10px;">
+                          <!-- Selector de Mes -->
+                          <select id="monthPicker" class="form-select" style="width: 45%; display: inline-block;">
+                              <option value="1">Enero</option>
+                              <option value="2">Febrero</option>
+                              <option value="3">Marzo</option>
+                              <option value="4">Abril</option>
+                              <option value="5">Mayo</option>
+                              <option value="6">Junio</option>
+                              <option value="7">Julio</option>
+                              <option value="8">Agosto</option>
+                              <option value="9">Septiembre</option>
+                              <option value="10">Octubre</option>
+                              <option value="11">Noviembre</option>
+                              <option value="12">Diciembre</option>
+                          </select>
+
+                          <!-- Selector de Año -->
+                          <select id="yearPicker" class="form-select" style="width: 45%; display: inline-block;">
+                              <!-- Años generados dinámicamente -->
+                          </select>
+                      </div>
+                  </div>
+
+
                 <!-- Rango de Fechas -->
-                <div class="form-group row">
+                <div class="form-group row" id="range-datepicker-container">
                   <label class="form-label col-form-label col-lg-4" style="padding: 10px;">Rango de Fechas</label>
                   <div class="col-lg-8" style="padding: 10px;">
                     <div id="advance-daterange" class="btn btn-default d-flex text-start align-items-center" style="padding: 10px;">
@@ -165,6 +204,7 @@
   <script src="<?php echo base_url(); ?>coloradmin/assets/plugins/sweetalert/dist/sweetalert.min.js"></script>
   <script src="<?php echo base_url(); ?>coloradmin/assets/js/demo/ui-modal-notification.demo.js"></script>
   
+
   
 
 
@@ -280,7 +320,8 @@
 <script src="<?php echo base_url(); ?>coloradmin/assets/plugins/gritter/js/jquery.gritter.js"></script>
 <!-- SCRIPT TOAST NOTIFICACIONES -->
 
-
+<!-- selector de mes y año tipo reporte ranking -->
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
 
 
 
@@ -330,6 +371,50 @@ $(document).ready(function() {
         $("#advance-daterange span").html(start.format('DD/MM/YYYY') + " a " + end.format('DD/MM/YYYY'));
     });
 
+    
+
+    // NUEVAS FUNCIONES
+    // 1. Configuración específica para el reporte "ranking"
+    function configurarRanking() {
+        $('#options-selector-container').show(); // Mostrar el selector inicial
+        $('#criterio-container').hide();
+        $('#range-datepicker-container').hide();
+
+        manejarCambioSelector();
+    }
+
+    // 2. Generar rango de años dinámicamente
+    function generarRangoAnios() {
+        $('#yearPicker').empty(); // Limpiar años existentes para evitar duplicados
+        const currentYear = new Date().getFullYear();
+        const startYear = 2024;
+        for (let year = startYear; year <= currentYear + 2; year++) {
+            $('#yearPicker').append(`<option value="${year}">${year}</option>`);
+        }
+    }
+
+    // 3. Manejo del cambio en el selector de opciones
+    function manejarCambioSelector()
+    {
+      const selectedOption = $('#opcionesRanking').val();
+      console.log('Opción seleccionada:', selectedOption);
+
+      if (selectedOption === 'MENSUAL') {
+          $('#monthYearLabel').text('Mes / Año');
+          $('#month-year-picker-container').show();
+          $('#monthPicker').show();
+      } else if (selectedOption === 'ANUAL') {
+          $('#monthYearLabel').text('Año');
+          $('#month-year-picker-container').show();
+          $('#monthPicker').hide();
+      } else {
+          $('#month-year-picker-container').hide();
+      }
+    }
+    // Vincular evento `change` al selector de opciones
+    $('#opcionesRanking').on('change', manejarCambioSelector);
+
+
 
   // Actualización del título del modal y configuración de `data-reporte` al hacer clic en las tarjetas
   $('.table-booking').on('click', function() {
@@ -347,12 +432,19 @@ $(document).ready(function() {
           $('#criterio').removeAttr('required').attr('type', 'text'); // Campo no obligatorio para "avisos vencidos"
           $('#criterio-container').show(); // Mostrar el contenedor
           console.log('Campo criterio no es obligatorio, pero visible');
+          $('#options-selector-container').hide();
+          $('#range-datepicker-container').show();
+          $('#month-year-picker-container').hide();
+          
       } else if (tipoReporte == "ranking") {
-          $('#criterio-container').hide(); // Ocultar el contenedor para "ranking"
+          configurarRanking(); // Llama la lógica específica para ranking
           console.log('Campo criterio y etiqueta ocultos para ranking');
       } else {
           $('#criterio').attr('required', 'required').attr('type', 'text'); // Campo obligatorio para otros reportes
           $('#criterio-container').show(); // Mostrar el contenedor
+          $('#range-datepicker-container').show();
+          $('#options-selector-container').hide();
+          $('#month-year-picker-container').hide();
       }
 
       
@@ -371,7 +463,17 @@ $(document).ready(function() {
       $('#modalPosBooking').modal('show');
   });
 
-  
+  // Manejar selección de mes y año
+  $('#monthPicker, #yearPicker').on('change', function () {
+      const selectedMonth = $('#monthPicker').val();
+      const selectedYear = $('#yearPicker').val();
+      console.log(`Mes seleccionado: ${selectedMonth}, Año seleccionado: ${selectedYear}`);
+  });
+
+
+  // Inicializar el rango de años al cargar el DOM
+  generarRangoAnios();
+
   // Actualizar el ID del formulario a 'formReporte' en el evento 'show.bs.modal'
   $('#modalPosBooking').on('show.bs.modal', function () {
     $('#formReporte')[0].reset();  // Restablecer el formulario
@@ -383,6 +485,9 @@ $(document).ready(function() {
 
     // Ocultar el mensaje de "No se encontraron registros" al mostrar el modal
     $('#mensajeSinRegistros').hide();
+
+    // Reiniciar opciones de ranking
+    $('#opcionesRanking').val('MENSUAL').trigger('change');
   });
 
   // Buscar socio en tiempo real cuando el usuario escribe en el campo
@@ -544,12 +649,11 @@ $(document).ready(function() {
   // Enviar el formulario cuando se haga clic en "Previsualizar"
   $('#previsualizar').on('click', function(e)
   {
-    e.preventDefault(); // Evitar el envío automático
+    e.preventDefault();
 
     var tipoReporte = $('#modalPosBooking').data('reporte');
     console.log('Tipo de reporte antes de enviar el formulario:', tipoReporte);
     window.tipoReporte = tipoReporte;
-
     var criterio = $('#criterio').val();
     if(criterio)
     {
@@ -568,41 +672,128 @@ $(document).ready(function() {
     $('#mensajeSinRegistros').hide();
 
     // Validación de selección: verificar campos vacíos según el tipo de reporte
-    if (!fechaInicio || !fechaFin || (tipoReporte !== "avisos" && tipoReporte !== "ranking" && (!codigoSocio || !idMembresia))) {
-        //alert('Por favor, complete todos los campos y seleccione un socio.');
+    if (tipoReporte == "consumos" || tipoReporte == "pagos")
+    {
+        if (!fechaInicio || !fechaFin || !codigoSocio || !idMembresia)
+        {
+            $.gritter.add({
+                title: 'Por favor, complete todos los campos obligatorios para este tipo de reporte.',
+                sticky: false,
+                time: 2000,
+                class_name: 'my-sticky-class gritter-dark',
+            });
+            return;
+        }
+    }
+    else if (tipoReporte == "avisos")
+    {
+        if (!fechaInicio || !fechaFin)
+        {
+            $.gritter.add({
+                title: 'Por favor, complete las fechas para este tipo de reporte.',
+                sticky: false,
+                time: 2000,
+                class_name: 'my-sticky-class gritter-dark',
+            });
+            return;
+        }
+    }
+    else if (tipoReporte == "ranking")
+    {
+        var mes = $('#monthPicker').val();
+        var anio = $('#yearPicker').val();
+        const currentYear = new Date().getFullYear();
+        const currentMonth = new Date().getMonth() +1;
+
+        if ($('#opcionesRanking').val() == 'GLOBAL')
+        {
+          mes = null;
+          anio = null;
+        }
+        else
+        {
+          if ($('#opcionesRanking').val() == 'MENSUAL')
+          {
+            // Validar el año este presente
+            if (!anio || !mes)
+            {
+                $.gritter.add({
+                    title: 'Por favor, seleccione un mes y año para el ranking mensual.',
+                    sticky: false,
+                    time: 2000,
+                    class_name: 'my-sticky-class gritter-dark',
+                });
+                return;
+            }
+            // Validar que el año no sea mayor al año actual
+            if (parseInt(anio) > currentYear || parseInt(mes) > currentMonth)
+            {
+                $.gritter.add({
+                    title: 'Por favor, seleccione un mes y año válidos.',
+                    sticky: false,
+                    time: 2000,
+                    class_name: 'my-sticky-class gritter-dark',
+                });
+                return;
+            }
+          }
+          else
+          {
+            mes = null;
+            // Validar que el año no sea mayor al año actual
+            if (parseInt(anio) > currentYear)
+            {
+                $.gritter.add({
+                    title: 'Por favor, seleccione un año válido.',
+                    sticky: false,
+                    time: 2000,
+                    class_name: 'my-sticky-class gritter-dark',
+                });
+                return;
+            }
+          }
+        } 
+    }
+    else
+    {
         $.gritter.add({
-          title: 'Por favor, complete los campos y seleccione un socio',
-          sticky: false,
-          time: 2000,
-          class_name: 'my-sticky-class gritter-dark',
-          before_open: function(){ },
-          after_open: function(e){ },
-          before_close: function(manual_close) { },
-          after_close: function(manual_close){ } 
+            title: 'Tipo de reporte desconocido. Por favor, intente nuevamente.',
+            sticky: false,
+            time: 2000,
+            class_name: 'my-sticky-class gritter-dark',
         });
         return;
     }
 
     // Depuración: Mostrar en la consola los datos que se enviarán
-    console.log('Datos enviados:', { tipoReporte, codigoSocio, fechaInicio, fechaFin, idMembresia });
+    console.log('Datos enviados:', { tipoReporte, codigoSocio, fechaInicio, fechaFin, idMembresia, mes, anio });
 
     // Enviar datos al backend para obtener el historial de pagos, consumos, avisos o ranking
     $.ajax({
         url: '<?php echo base_url("index.php/reporte/obtener_reporte"); ?>',  // Cambia esta URL según tu ruta
         type: 'POST',
-        data: {
+        data: (tipoReporte == 'ranking') 
+        ? { 
+            tipoReporte: tipoReporte,
+            mes: mes,
+            anio: anio,
+        }
+        : {
             tipoReporte: tipoReporte,
             codigoSocio: codigoSocio,
             idMembresia: idMembresia,
             fechaInicio: fechaInicio,
-            fechaFin: fechaFin
+            fechaFin: fechaFin,
         },
-        success: function(response) {
+        success: function(response)
+        {
             console.log('Respuesta recibida:', response);
-            try {
+            try
+            {
                 var datosReporte = JSON.parse(response);
 
-                if (datosReporte.data && datosReporte.data.length > 0) {
+                if (datosReporte.data && datosReporte.data.length > 0)
+                {
                     $('#mensajeSinRegistros').hide();  // Ocultar el mensaje de "sin registros"
                     $('#datatable').DataTable().clear();
                     $('#datatable').DataTable().columns().header().to$().each(function(index, element) {
@@ -615,7 +806,7 @@ $(document).ready(function() {
                         // Llenar la tabla con los datos para el tipo de reporte "ranking"
                         if (tipoReporte == 'ranking')
                         {
-                            // Formato para el ranking de consumidores (Top 10)
+                            // Formato para el ranking de consumidores (Top 5)
                             datosReporte.data.slice(0, 10).forEach(function(fila, index) { // Limitado a los 10 primeros
                                 var numeroRanking = index + 1;               // Número de ranking (1 a 10)
                                 var codigo = fila[1];                        // Código del socio
@@ -631,9 +822,11 @@ $(document).ready(function() {
                                     total
                                 ]).draw();
                             });
-                        } else {
-                        // Llenar la tabla con los datos para los otros tipos de reporte
-                        datosReporte.data.forEach(function(fila) {
+                        }
+                        else
+                        {
+                          datosReporte.data.forEach(function(fila)
+                          {
                             if (tipoReporte == 'pagos') {
                                 // Formato para pagos
                                 var fechaLectura = new Date(fila[1]);
@@ -657,7 +850,9 @@ $(document).ready(function() {
                                     parseFloat(fila[2]).toFixed(2),  // Formatear a dos decimales
                                     fila[3]
                                 ]).draw();
-                            } else if (tipoReporte == 'avisos') {
+                            } 
+                            else if (tipoReporte == 'avisos')
+                            {
                                 // Formato para avisos
                                 var socio = fila[1];                        // Nombre completo del socio
                                 var codigoSocio = fila[2];                  // Código del socio
@@ -678,16 +873,20 @@ $(document).ready(function() {
                                     estado
                                 ]).draw();
                             }
-                        });
-                    }
+                          });
+                        }
 
                     $('#modalPosBooking').modal('hide');
-                } else {
+                }
+                else
+                {
                     // Mostrar mensaje en el modal cuando no hay registros y agregar animación
                     $('#mensajeSinRegistros').fadeIn(300).delay(200).fadeOut(200).fadeIn(300); // Breve animación para llamar la atención
                     $('#datatable').DataTable().clear().draw();
                 }
-            } catch (error) {
+            }
+            catch (error)
+            {
                 console.error('Error al interpretar la respuesta:', error);
                 alert('Ocurrió un error al interpretar los datos del servidor.');
             }
@@ -700,9 +899,20 @@ $(document).ready(function() {
     });
 
   });
-
 });
 </script>
+
+
+<!-- configuracion del tipo reporte ranking -->
+<script>
+
+</script>
+
+
+
+
+
+
 
 
 <!-- script para generar pdf -->
@@ -722,6 +932,15 @@ $(document).ready(function() {
       const fechaFin = document.getElementById('fechaFin').value;
       const tipoReporte = window.tipoReporte;
 
+      // Variable para almacenar la opción de "ranking" seleccionada
+      let opcionRanking = document.getElementById('opcionesRanking').value;
+      
+
+      console.log('opcion ranking:', opcionRanking);
+
+      let mes = null;
+      let anio = null;
+
       // Determinar la función a usar para cada tipo de reporte
       let funcion;
       if (tipoReporte == 'pagos')
@@ -738,25 +957,36 @@ $(document).ready(function() {
       }
       else if (tipoReporte == 'ranking')
       {
-          funcion = 'generar_pdf_ranking';
+        funcion = 'generar_pdf_ranking';
+        
+        if (opcionRanking === 'MENSUAL')
+        {
+            mes = document.getElementById('monthPicker').value;
+            anio = document.getElementById('yearPicker').value;
+        }
+        else if (opcionRanking === 'ANUAL')
+        {
+            anio = document.getElementById('yearPicker').value;
+        }
       }
       else
       {
-          //alert('Tipo de reporte no reconocido.');
-          $.gritter.add({
-            title: 'Configure el reporte antes de generar el pdf',
-            sticky: false,
-            time: 2000,
-            class_name: 'my-sticky-class gritter-light',
-            before_open: function(){ },
-            after_open: function(e){ },
-            before_close: function(manual_close) { },
-            after_close: function(manual_close){ } 
-          });
-          return;
+        //alert('Tipo de reporte no reconocido.');
+        $.gritter.add({
+          title: 'Configure el reporte antes de generar el pdf',
+          sticky: false,
+          time: 2000,
+          class_name: 'my-sticky-class gritter-light',
+          before_open: function(){ },
+          after_open: function(e){ },
+          before_close: function(manual_close) { },
+          after_close: function(manual_close){ } 
+        });
+        return;
       }
 
       console.log('Tipo de reporte:', tipoReporte); // Log para depuración
+      
 
       // Validación de datos según el tipo de reporte
       if (['pagos', 'consumos'].includes(tipoReporte) && (!codigoSocio || !fechaInicio || !fechaFin || !idMembresia || !tipoReporte)) {
@@ -772,7 +1002,7 @@ $(document).ready(function() {
           after_close: function(manual_close){ } 
         });
           return;
-      } else if (['ranking', 'avisos'].includes(tipoReporte) && (!fechaInicio || !fechaFin || !tipoReporte)) {
+      } else if (tipoReporte == 'avisos' && (!fechaInicio || !fechaFin)) {
           //alert('Por favor, selecciona el rango de fechas para el reporte de ' + tipoReporte + '.');
             $.gritter.add({
             title: 'Por favor, seleccione el rango de fechas',
@@ -785,6 +1015,14 @@ $(document).ready(function() {
             after_close: function(manual_close){ } 
           });
           return;
+      } else if (tipoReporte == 'ranking' && opcionRanking !== 'GLOBAL' && (!anio || (opcionRanking === 'MENSUAL' && !mes))) {
+          $.gritter.add({
+            title: 'Por favor, complete los datos necesarios para el reporte ranking.',
+            sticky: false,
+            time: 2000,
+            class_name: 'my-sticky-class gritter-dark'
+          });
+          return;
       }
 
       // Crear un formulario en JavaScript
@@ -795,12 +1033,15 @@ $(document).ready(function() {
 
       // Crear inputs ocultos para enviar los datos
       const inputs = [
-          { name: 'codigoSocio', value: codigoSocio },
+          { name: 'codigoSocio', value:  (tipoReporte == 'ranking') ? '' : codigoSocio },
           { name: 'socio', value: (tipoReporte == 'ranking') ? '' : socio },
           { name: 'idMembresia', value: (tipoReporte == 'ranking') ? '' : idMembresia },
-          { name: 'fechaInicio', value: fechaInicio },
-          { name: 'fechaFin', value: fechaFin },
-          { name: 'tipoReporte', value: tipoReporte }
+          { name: 'fechaInicio', value: (tipoReporte == 'ranking') ? '' : fechaInicio },
+          { name: 'fechaFin', value: (tipoReporte == 'ranking') ? '' : fechaFin },
+          { name: 'tipoReporte', value: tipoReporte },
+          { name: 'mes', value: mes },
+          { name: 'anio', value: anio },
+          { name: 'opcionRanking', value: opcionRanking }
       ];
       inputs.forEach(inputData => {
           const input = document.createElement('input');
