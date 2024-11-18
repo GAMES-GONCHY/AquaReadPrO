@@ -18,9 +18,9 @@
       <li class="nav-item">
         <a href="<?php echo base_url(); ?>index.php/avisocobranza/vencidos" class="nav-link <?php echo (current_url() == base_url() . 'index.php/avisocobranza/vencidos') ? 'active' : ''; ?>">Vencidos</a>
       </li>
-      <li class="nav-item">
+      <!-- <li class="nav-item">
         <a href="<?php echo base_url(); ?>index.php/avisocobranza/deshabilitados" class="nav-link <?php echo (current_url() == base_url() . 'index.php/avisocobranza/deshabilitados') ? 'active' : ''; ?>">Eliminados</a>
-      </li>
+      </li> -->
   </ul>
 
 

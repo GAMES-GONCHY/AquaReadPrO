@@ -72,7 +72,7 @@ class Avisocobranza_model extends CI_Model
                         AND YEAR(L2.fechaLectura) = YEAR(DATE_SUB(L.fechaLectura, INTERVAL 1 MONTH)) 
                         AND MONTH(L2.fechaLectura) = MONTH(DATE_SUB(L.fechaLectura, INTERVAL 1 MONTH))), 
                         L.fechaLectura) AS fechaLecturaAnterior, 
-                ME.codigoSocio, 
+                ME.codigoSocio, ME.idUsuario,
                 CONCAT(U.nombre, " ", U.primerApellido, " ", IFNULL(U.segundoApellido, "")) AS nombreSocio',FALSE);
         $this->db->from('avisoCobranza A');
         $this->db->join('qr Q', 'A.idQr = Q.idQr', 'inner');

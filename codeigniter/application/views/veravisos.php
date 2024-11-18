@@ -113,7 +113,7 @@
 								</div>
 								<div class="result-price">
 									<?php echo 'Bs. ' . number_format($total, 2); ?>
-									<button 
+									<!-- <button 
 										type="button" 
 										class="table-booking btn btn-yellow d-block w-100" 
 										data-bs-toggle="modal" 
@@ -126,16 +126,20 @@
 											'<?php echo ($aviso['lecturaAnterior'])*100; ?>',
 											'<?php echo $fechaLectura; ?>',
 											'<?php echo $fechaLecturaAnterior; ?>',
-
 											'<?php echo $aviso['tarifaVigente']; ?>',
-											
-
+											'<?php echo $aviso['tarifaMinima']; ?>',
 											'<?php echo number_format($total, 2); ?>',
 											'<?php echo $aviso['fechaVencimiento']; ?>',
 											'<?php echo ($aviso['estado'] == 'enviado') ? 'Pendiente' : $aviso['estado']; ?>',
 											'<?php echo $aviso['fechaPago']; ?>',
 											<?php echo $aviso['saldo']; ?>)">
 										Detalle
+									</button> -->
+									<button 
+										type="button" 
+										class="table-booking btn btn-success d-block w-100" 
+										onclick="generarPDF('<?php echo $aviso['idUsuario']; ?>', '<?php echo $aviso['estado']; ?>')">
+										Ver Detalle
 									</button>
 								</div>
 

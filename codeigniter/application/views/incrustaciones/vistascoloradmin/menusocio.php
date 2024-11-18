@@ -136,7 +136,7 @@
                     </div>
                 </a>
             </div>
-            <div id="appSidebarProfileMenu" class="collapse">
+            <!-- <div id="appSidebarProfileMenu" class="collapse">
                 <div class="menu-item pt-5px">
                     <a href="javascript:;" class="menu-link">
                         <div class="menu-icon"><i class="fa fa-cog"></i></div>
@@ -156,8 +156,8 @@
                     </a>
                 </div>
                 <div class="menu-divider m-0"></div>
-            </div>
-            <div class="menu-header">Navigation</div>
+            </div> -->
+            <div class="menu-header">Menú de navegación</div>
 
             <!-- <div class="menu-item has-sub active">
                 <a href="javascript:;" class="menu-link">

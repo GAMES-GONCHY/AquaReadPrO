@@ -328,7 +328,9 @@ class Reporte extends CI_Controller
         $pdf->Cell(40, 8, 'Totales:', 0, 0, 'L', true);
         $pdf->Cell(40, 8, number_format($totalPagado, 2), 0, 0, 'C', true);
         $pdf->Cell(40, 8, '', 0, 1, 'C', true);
-    
+        
+        // Establecer el título del PDF
+        $pdf->SetTitle('Historial_Pagos_' . $socio);
         // Salida del PDF
         $pdf->Output('Historial_Pagos_' . $data['codigoSocio'] . '.pdf', 'I');
     }
@@ -440,8 +442,11 @@ class Reporte extends CI_Controller
         $pdf->Cell(40, 10, number_format($totalConsumo, 2), 0, 0, 'C', true);  // Total de consumo
         $pdf->Cell(40, 10, '', 0, 1, 'C', true);                // Columna de observación vacía
         
+        // Establecer el título del PDF
+        $pdf->SetTitle('Historial_Consumo_' . $socio);
+
         // Salida del PDF
-        $pdf->Output('Historial_Consumos_' . $data['codigoSocio'] . '.pdf', 'I');
+        $pdf->Output('Historial_Consumo_' . $socio . '.pdf', 'I');
     }
     
     public function generar_pdf_avisos()
@@ -585,7 +590,6 @@ class Reporte extends CI_Controller
         $pdf->Cell(20, 10, number_format($totalSaldo, 2), 0, 0, 'C', true); // Total en columna 'Total [Bs]'
         $pdf->Cell(20, 10, '', 0, 0, 'C', true); 
         
-    
         // Salida del PDF
         $codigoSocio = !empty($data['codigoSocio']) ? $data['codigoSocio'] : 'General';
         $pdf->Output('Historial_Avisos_' . $codigoSocio . '.pdf', 'I');

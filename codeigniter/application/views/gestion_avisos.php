@@ -25,9 +25,9 @@
       <li class="nav-item">
         <a href="<?php echo base_url(); ?>index.php/avisocobranza/vencidos" class="nav-link <?php echo (current_url() == base_url() . 'index.php/avisocobranza/vencidos') ? 'active' : ''; ?>">Vencidos</a>
       </li>
-      <li class="nav-item">
+      <!-- <li class="nav-item">
         <a href="<?php echo base_url(); ?>index.php/avisocobranza/deshabilitados" class="nav-link <?php echo (current_url() == base_url() . 'index.php/avisocobranza/deshabilitados') ? 'active' : ''; ?>">Eliminados</a>
-      </li>
+      </li> -->
   </ul>
 
   <!-- <div class="tab-content"> -->
@@ -57,7 +57,7 @@
                                     <th>Tarifa Aplicada [Bs/m3]</th>
                                     <th>Total [Bs.]</th>
                                     <th>Fecha Vencimiento</th>
-                                    <th>Eliminar</th>
+                                    <!-- <th>Eliminar</th> -->
                                 </tr>
                             </thead>
                             <tbody>
@@ -86,7 +86,7 @@
                                     <td><?php echo $enviado['tarifaVigente']; ?></td>
                                     <td><?php echo number_format($total, 2); ?></td>
                                     <td><?php echo $enviado['fechaVencimiento']; ?></td>
-                                    <td>
+                                    <!-- <td>
                                       <?php echo form_open_multipart("avisocobranza/revisarbd"); ?>
                                         <input type="hidden" name="tab" value="gestion">
                                         <input type="hidden" name="estado" value="deshabilitado">
@@ -95,7 +95,7 @@
                                           <i class="fas fa-trash-alt"></i>
                                         </button>
                                       <?php echo form_close(); ?>
-                                    </td>
+                                    </td> -->
                                 </tr>
                                 <?php $cont++; } ?>
                             </tbody>
@@ -112,7 +112,7 @@
                                     <th>Tarifa Aplicada [Bs/m3]</th>
                                     <th>Total [Bs.]</th>
                                     <th>Fecha Vencimiento</th>
-                                    <th>Eliminar</th>
+                                    <!-- <th>Eliminar</th> -->
                                 </tr>
                             </tfoot>
                         </table>

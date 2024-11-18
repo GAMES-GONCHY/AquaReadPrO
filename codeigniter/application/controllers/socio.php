@@ -107,5 +107,196 @@ class Socio extends CI_Controller
             }
         }
     }
+    public function generarPdfAviso()
+    {
+        $idUsuario = $this->input->post('idUsuario');
+        $estado = $this->input->post('estado');
+    
+        if (!$idUsuario || !$estado) {
+            show_error('Datos incompletos.', 400);
+            return;
+        }
+    
+        $avisos = $this->avisocobranza_model->avisos_por_estado_id($estado, $idUsuario);
+    
+        if (empty($avisos)) {
+            show_error('No se encontraron avisos.', 404);
+            return;
+        }
+    
+        require_once APPPATH . 'third_party/FPDF_Extended.php';
+    
+        // Determinar el texto del título según el estado
+        $tituloDocumento = ($estado === 'pagado') ? 'Recibo' : 'Aviso de Cobranza';
+    
+        // Calcular el período
+        $fechaLectura = strtotime($avisos[0]['fechaLectura']);
+        $mes = date('F', $fechaLectura);
+        $mesEspañol = [
+            'January' => 'Enero', 'February' => 'Febrero', 'March' => 'Marzo',
+            'April' => 'Abril', 'May' => 'Mayo', 'June' => 'Junio',
+            'July' => 'Julio', 'August' => 'Agosto', 'September' => 'Septiembre',
+            'October' => 'Octubre', 'November' => 'Noviembre', 'December' => 'Diciembre'
+        ];
+        $mesFormateado = $mesEspañol[$mes];
+        $año = date('Y', $fechaLectura);
+        $periodo = "Periodo: $mesFormateado - $año";
+    
+        // Calcular el consumo
+        $lecturaActual = $avisos[0]['lecturaActual'];
+        $lecturaAnterior = $avisos[0]['lecturaAnterior'];
+        $consumo = $lecturaActual - $lecturaAnterior;
+    
+        // Clasificar el consumo
+        if ($consumo < 10) {
+            $clasificacionConsumo = utf8_decode("Consumo Mínimo");
+            $totalPagar = $avisos[0]['tarifaMinima'];
+        } elseif ($consumo < 20) {
+            $clasificacionConsumo = "Consumo Moderado";
+            $totalPagar = $consumo * $avisos[0]['tarifaVigente'];
+        } elseif ($consumo < 30) {
+            $clasificacionConsumo = "Consumo Estándar";
+            $totalPagar = $consumo * $avisos[0]['tarifaVigente'];
+        } elseif ($consumo < 40) {
+            $clasificacionConsumo = "Consumo Elevado";
+            $totalPagar = $consumo * $avisos[0]['tarifaVigente'];
+        } else {
+            $clasificacionConsumo = "Consumo Muy Elevado";
+            $totalPagar = $consumo * $avisos[0]['tarifaVigente'];
+        }
+    
+        // Crear el PDF
+        $pdf = new FPDF_Extended('P', 'mm', array(148, 150)); // Tamaño A5
+        $pdf->AddPage();
+        $pdf->SetMargins(8, 8, 8);
+    
+        // Dibujar la franja roja diagonal
+        $pdf->SetFillColor(255, 0, 0); // Rojo
+        $pdf->Polygon([440, 450, 280, 450, 440, 350], 'F');
+    
+        // Texto dentro de la franja
+        $pdf->SetTextColor(255, 255, 255); // Texto blanco
+        $pdf->SetFont('Arial', 'B', 7);
+        $pdf->SetXY(130, 2);
+        $pdf->Cell(10, 10, strtoupper($estado), 0, 1, 'C');
+    
+        // Restaurar colores para el resto del contenido
+        $pdf->SetTextColor(0, 0, 0);
+    
+        // Título
+        $pdf->SetFont('Arial', 'B', 12);
+        $pdf->Cell(0, 5, 'AquaReadPro - ' . $tituloDocumento, 0, 1, 'C');
+        $pdf->Ln(3);
+    
+        // Agregar el período
+        $pdf->SetFont('Arial', 'I', 9);
+        $pdf->Cell(0, 5, $periodo, 0, 1, 'C');
+        $pdf->Ln(3);
+    
+        // Línea superior
+        $pdf->SetDrawColor(0, 0, 0);
+        $pdf->Line(10, 20, 138, 20);
+    
+        // Datos del cliente
+        $pdf->SetFont('Arial', '', 8);
+        $pdf->Cell(30, 4, 'CODIGO CLIENTE:', 0, 0);
+        $pdf->Cell(60, 4, $avisos[0]['codigoSocio'], 0, 1);
+    
+        $pdf->Cell(30, 4, 'NOMBRE:', 0, 0);
+        $pdf->Cell(60, 4, $avisos[0]['nombreSocio'], 0, 1);
+        $pdf->Ln(3);
+    
+        // Lectura Actual y Fecha
+        $pdf->Cell(40, 4, 'Lectura Actual:', 0, 0);
+        $pdf->Cell(30, 4, number_format($lecturaActual, 2) . utf8_decode(' m³'), 0, 0);
+        $pdf->Cell(40, 4, 'Fecha Lectura Act:', 0, 0);
+        $pdf->Cell(30, 4, date('d-m-Y', $fechaLectura), 0, 1);
+    
+        // Lectura Anterior y Fecha Anterior
+        $pdf->Cell(40, 4, 'Lectura Anterior:', 0, 0);
+        $pdf->Cell(30, 4, number_format($lecturaAnterior, 2) . utf8_decode(' m³'), 0, 0);
+        $pdf->Cell(40, 4, 'Fecha Lectura Ant:', 0, 0);
+        $pdf->Cell(30, 4, date('d-m-Y', strtotime($avisos[0]['fechaLecturaAnterior'])), 0, 1);
+        $pdf->Ln(3);
+    
+        // Consumo y Clasificación
+        $pdf->SetFont('Arial', 'B', 8);
+        $pdf->Cell(40, 4, 'Consumo:', 0, 0);
+        $pdf->Cell(50, 4, number_format($consumo, 2) . utf8_decode(' m³') . ' (' . $clasificacionConsumo . ')', 0, 1);
+        $pdf->Ln(3);
+    
+        // Tarifas
+        $pdf->SetFont('Arial', '', 8);
+        $pdf->Cell(40, 4, 'Tarifa Vigente:', 0, 0);
+        $pdf->Cell(30, 4, 'Bs. ' . number_format($avisos[0]['tarifaVigente'], 2), 0, 0);
+        $pdf->Cell(40, 4, 'Tarifa Minima:', 0, 0);
+        $pdf->Cell(30, 4, 'Bs. ' . number_format($avisos[0]['tarifaMinima'], 2), 0, 1);
+        $pdf->Ln(2);
+    
+        // Tipos de Clasificación
+        $pdf->SetFont('Arial', 'I', 7);
+        $pdf->Ln(5);
+
+        // Imprimir cada línea con alineación controlada
+        $pdf->Cell(0, 4, utf8_decode('- Consumo Mínimo: Menor a 10 m³ -> Tarifa mínima'), 0, 1, 'L');
+        $pdf->Cell(0, 4, utf8_decode('- Consumo Moderado: Menor a 20 m³ -> Tarifa vigente'), 0, 1, 'L');
+        $pdf->Cell(0, 4, utf8_decode('- Consumo Estándar: Menor a 30 m³ -> Tarifa vigente'), 0, 1, 'L');
+        $pdf->Cell(0, 4, utf8_decode('- Consumo Elevado: Menor a 40 m³ -> Tarifa vigente'), 0, 1, 'L');
+        $pdf->Cell(0, 4, utf8_decode('- Consumo Muy Elevado: Mayor o igual a 40 m³ -> Tarifa vigente'), 0, 1, 'L');
+
+        $pdf->Ln(5);
+
+
+    
+        // Totales con Fecha de Pago o Vencimiento
+        $pdf->SetFont('Arial', 'B', 8);
+        $pdf->Cell(40, 4, 'TOTAL:', 0, 0);
+        $pdf->Cell(30, 4, 'Bs. ' . number_format($totalPagar, 2), 0, 0);
+        if ($estado === 'pagado') {
+            $pdf->Cell(40, 4, 'Fecha de Pago:', 0, 0);
+            $pdf->Cell(30, 4, date('d-m-Y', strtotime($avisos[0]['fechaPago'])), 0, 1);
+        } else {
+            $pdf->Cell(40, 4, 'Fecha de Vencimiento:', 0, 0);
+            $pdf->Cell(30, 4, date('d-m-Y', strtotime($avisos[0]['fechaVencimiento'])), 0, 1);
+        }
+        $pdf->Ln(5);
+    
+        // Nota al cliente
+        $pdf->SetFont('Arial', 'I', 7);
+        $pdf->MultiCell(0, 4, 'Estimado Cliente: Se le recomienda pagar su factura antes de la fecha de vencimiento para evitar recargos adicionales.');
+        $pdf->Ln(2);
+    
+        // Pie de página
+        $pdf->SetFont('Arial', '', 7);
+        $pdf->Cell(0, 8, 'Gracias por confiar en AquaReadPro.', 0, 1, 'C');
+    
+        // Enviar el PDF
+        header('Content-Type: application/pdf');
+        header('Content-Disposition: inline; filename="Aviso_Cobranza.pdf"');
+        $pdf->Output('I');
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     
 }

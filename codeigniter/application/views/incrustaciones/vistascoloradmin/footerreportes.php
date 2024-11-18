@@ -87,7 +87,7 @@
 
                 <!-- Código Usuario -->
                 <div class="form-group row" id="criterio-container">
-                  <label class="form-label col-form-label col-lg-4" style="padding: 10px;">Socio</label>
+                  <label id="labelSocio" class="form-label col-form-label col-lg-4" style="padding: 10px;">Socio</label>
                   <div class="col-lg-8 position-relative" style="padding: 10px;">
                     <input type="text" class="form-control" id="criterio" name="criterio" placeholder="Ingrese apellido o código" 
                           style="border: 2px solid #343a40; color: #333333; padding: 10px;" 
@@ -435,6 +435,8 @@ $(document).ready(function() {
           $('#options-selector-container').hide();
           $('#range-datepicker-container').show();
           $('#month-year-picker-container').hide();
+
+          $('#labelSocio').text('Socio (opcional)');
           
       } else if (tipoReporte == "ranking") {
           configurarRanking(); // Llama la lógica específica para ranking
@@ -445,6 +447,8 @@ $(document).ready(function() {
           $('#range-datepicker-container').show();
           $('#options-selector-container').hide();
           $('#month-year-picker-container').hide();
+          // Restablecer el texto del label a "Socio"
+          $('#labelSocio').text('Socio');
       }
 
       

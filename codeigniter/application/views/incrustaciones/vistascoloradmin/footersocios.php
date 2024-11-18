@@ -45,7 +45,7 @@
                                     </tr>
                                     <tr>
                                         <td><strong style="font-weight: 600;">Tarifa Vigente:</strong> <span class="text-secondary" id="modal-tarifa-vigente"></span></td>
-                                        <!-- <td><strong style="font-weight: 600;">Tarifa Mínima:</strong> <span class="text-secondary" id="modal-tarifa-minima"></span></td> -->
+                                        <td><strong style="font-weight: 600;">Tarifa Mínima:</strong> <span class="text-secondary" id="modal-tarifa-minima"></span></td>
                                     </tr>
                                     <tr>
                                         <td><strong style="font-weight: 700; color: #343a40;">Total:</strong> <span class="fw-bold text-dark" id="modal-total"></span></td>
@@ -103,6 +103,23 @@
             </div>
         </div>
     </div>
+    
+    <!-- Modal para visualizar el PDF -->
+    <div class="modal fade" id="pdfModal" tabindex="-1" aria-labelledby="pdfModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="pdfModalLabel">Aviso de Cobranza</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <!-- Aquí cargaremos el PDF -->
+                    <iframe id="pdfFrame" src="" style="width: 100%; height: 500px;" frameborder="0"></iframe>
+                </div>
+            </div>
+        </div>
+    </div>
+
 
     <!-- jQuery primero -->
     <script src="<?php echo base_url(); ?>coloradmin/assets/js/jquery.min.js"></script>
@@ -365,7 +382,7 @@ $(document).ready(function() {
 
 
 <!-- para buscador de avisos por mes -->
-<script>
+<!-- <script>
     document.getElementById('searchButton').addEventListener('click', function() {
         var input = document.getElementById('searchInput').value.toLowerCase();
         var avisos = document.querySelectorAll('.result-item');
@@ -394,12 +411,12 @@ $(document).ready(function() {
             }
         });
     });
-</script>
+</script> -->
 
 <!-- pagos -->
 <script>
     function cargarDatos(codigoSocio, nombreSocio, mes, consumo, lecturaActual, lecturaAnterior, fechaLectura,
-                        fechaLecturaAnterior, tarifaVigente, total, fechaVencimiento, estado, fechaPago, saldo)
+                        fechaLecturaAnterior, tarifaVigente, tarifaMinima, total, fechaVencimiento, estado, fechaPago, saldo)
     {
         // Asignar los valores recibidos al modal
         document.getElementById('modal-codigo-socio').textContent = codigoSocio;
@@ -411,7 +428,7 @@ $(document).ready(function() {
         document.getElementById('modal-fecha-lectura').textContent = fechaLectura;
         document.getElementById('modal-fecha-lectura-anterior').textContent = fechaLecturaAnterior;
         document.getElementById('modal-tarifa-vigente').textContent = tarifaVigente;
-        // document.getElementById('modal-tarifa-minima').textContent = tarifaMinima;
+        document.getElementById('modal-tarifa-minima').textContent = tarifaMinima;
         document.getElementById('modal-total').textContent = "Bs. " + total;
         document.getElementById('modal-fecha-vencimiento').textContent = fechaVencimiento;
         document.getElementById('modal-estado').textContent = estado;
@@ -444,19 +461,24 @@ $(document).ready(function() {
 
         var baseUrl = '<?php echo base_url(); ?>';
         
-            if (estado == 'enviado') {
-                modalTitle.innerHTML = '<img src="' + baseUrl + 'coloradmin/assets/img/logo/logomenu.png" height="40" class="me-2" /> Avisos Pendiente';
-            } else if (estado == 'pagado') {
-                modalTitle.innerHTML = '<img src="' + baseUrl + 'coloradmin/assets/img/logo/logomenu.png" height="40" class="me-2" /> Detalle Recibo';
-            } else if (estado == 'vencido') {
-                modalTitle.innerHTML = '<img src="' + baseUrl + 'coloradmin/assets/img/logo/logomenu.png" height="40" class="me-2" /> Aviso Vencido';
-            } else if (estado == 'revision') {
-                modalTitle.innerHTML = '<img src="' + baseUrl + 'coloradmin/assets/img/logo/logomenu.png" height="40" class="me-2" /> Comprobante en Revisión';
-            } else if (estado == 'rechazado') {
-                modalTitle.innerHTML = '<img src="' + baseUrl + 'coloradmin/assets/img/logo/logomenu.png" height="40" class="me-2" /> Comprobante Denegado';
+            // if (estado == 'enviado') {
+            //     modalTitle.innerHTML = '<img src="' + baseUrl + 'coloradmin/assets/img/logo/logomenu.png" height="40" class="me-2" /> Aviso de cobranza';
+            // } else if (estado == 'pagado') {
+            //     modalTitle.innerHTML = '<img src="' + baseUrl + 'coloradmin/assets/img/logo/logomenu.png" height="40" class="me-2" /> Detalle Recibo';
+            // } else if (estado == 'vencido') {
+            //     modalTitle.innerHTML = '<img src="' + baseUrl + 'coloradmin/assets/img/logo/logomenu.png" height="40" class="me-2" /> Aviso Vencido';
+            // } else if (estado == 'revision') {
+            //     modalTitle.innerHTML = '<img src="' + baseUrl + 'coloradmin/assets/img/logo/logomenu.png" height="40" class="me-2" /> Comprobante en Revisión';
+            // } else if (estado == 'rechazado') {
+            //     modalTitle.innerHTML = '<img src="' + baseUrl + 'coloradmin/assets/img/logo/logomenu.png" height="40" class="me-2" /> Comprobante Denegado';
+            // } else {
+            //     modalTitle.textContent = "Detalle de Aviso";
+            // }
 
+            if (estado == 'pagado') {
+                modalTitle.innerHTML = '<img src="' + baseUrl + 'coloradmin/assets/img/logo/logomenu.png" height="40" class="me-2" /> Recibo';
             } else {
-                modalTitle.textContent = "Detalle de Aviso"; // Valor por defecto si el estado no es reconocido
+                modalTitle.textContent = "Aviso de cobranza";
             }
 
             // Lógica para mostrar el saldo solo si el estado es 'rechazado' y el saldo no es null o 0
@@ -479,41 +501,40 @@ $(document).ready(function() {
 
 
 
-<!-- actualiza la vista parcial de avisos -->
-<!-- <script>
-$(document).ready(function() {
-    // Este script escucha los mensajes JSON después de la subida del comprobante
-    // Asegúrate de que el controlador envía el mensaje JSON correctamente
-    
-    // Usamos una técnica global para capturar las respuestas de AJAX, sin interferir con el script de subida
-    $(document).ajaxSuccess(function(event, xhr, settings) {
-        try {
-            // Intentamos parsear la respuesta JSON del controlador
-            var response = JSON.parse(xhr.responseText);
+<script>
+function generarPDF(idUsuario, estado) {
+    console.log("Generando PDF...");
+    console.log("Datos enviados: ", { idUsuario, estado });
 
-            // Verificamos si es una respuesta exitosa de la subida de comprobante
-            if (response.status === 'success') {
-                alert(response.message);  // Mostrar el mensaje de éxito (esto es opcional)
-
-                // Hacemos una nueva solicitud AJAX para recargar la vista parcial de los avisos
-                $.ajax({
-                    url: '<?php echo base_url('index.php/socio/get_avisos'); ?>',  // Controlador que devuelve la vista parcial
-                    type: 'POST',
-                    data: { estado: 'enviado' },  // Filtrar por estado (ajusta según tu necesidad)
-                    success: function(response) {
-                        $('#avisos-container').html(response);  // Actualizar la vista parcial dentro del contenedor
-                    },
-                    error: function(xhr, status, error) {
-                        console.error('Error al recargar los avisos:', error);
-                    }
-                });
-            }
-        } catch (e) {
-            console.log("No es una respuesta JSON válida, se omite.");
+    // Enviar datos al backend mediante fetch
+    fetch('<?php echo base_url('index.php/socio/generarPdfAviso'); ?>', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: `idUsuario=${idUsuario}&estado=${estado}`
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error(`Error al generar el PDF: ${response.status} ${response.statusText}`);
         }
+        return response.blob(); // Recibir el PDF como blob
+    })
+    .then(blob => {
+        // Crear una URL temporal para el PDF
+        const pdfUrl = window.URL.createObjectURL(blob);
+
+        // Abrir el PDF en una nueva pestaña
+        window.open(pdfUrl, '_blank');
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('Hubo un problema al generar el PDF.');
     });
-});
-</script> -->
+}
+</script>
+
+
 
 </body>
 
