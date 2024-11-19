@@ -57,6 +57,15 @@ class Medidor_model extends CI_Model
 
         return $this->db->affected_rows() > 0;
 	}
+    public function modificar_ubicacion_medidor($idMedidor,$data)
+	{
+        $data['fechaActualizacion'] = date('Y-m-d H:i:s');
+        $data['idAutor'] = $this->session->userdata('idUsuario');
+		$this->db->where('idMedidor', $idMedidor);
+        $this->db->update('medidor',$data);
+
+        return $this->db->affected_rows() > 0;
+	}
     public function recuperarinfousuario($idMedidor)
 	{
 		$this->db->select('usuario.nombre, usuario.primerApellido');

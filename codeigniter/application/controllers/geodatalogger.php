@@ -228,7 +228,7 @@ class Geodatalogger extends CI_Controller
             return;
         }
 
-        $result = $this->medidor_model->modificar($idMedidor, $data);        
+        $result = $this->medidor_model->modificar_ubicacion_medidor($idMedidor, $data);        
         if ($result) 
         {
             echo json_encode(['status' => 'success']);
