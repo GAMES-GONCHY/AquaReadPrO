@@ -542,18 +542,11 @@ var handleVisitorsAreaChart = function() {
         success: function(response) {
             console.log("Datos obtenidos:", response);
 
-            // Crear dos series de datos: una para el "Consumo Mensual" y otra para los "Pagos Mensuales"
+            // Crear solo la serie de datos para los "Pagos Mensuales"
             var visitorAreaChartData = [
                 {
-                    'key': 'Consumo Mensual',
-                    'color': COLOR_AQUA,
-                    'values': response.map(function(item) {
-                        return [new Date(item.mes + "-01").getTime(), parseFloat(item.total_consumido)];
-                    })
-                },
-                {
                     'key': 'Pagos Mensuales',
-                    'color': COLOR_BLUE,
+                    'color': COLOR_BLUE, // Mantener solo el color azul
                     'values': response.map(function(item) {
                         return [new Date(item.mes + "-01").getTime(), parseFloat(item.total_pagado)];
                     })
@@ -584,14 +577,14 @@ var handleVisitorsAreaChart = function() {
                         })); // Mostrar solo los meses correspondientes a los datos
 
                     // Configuración del eje Y con el rango deseado (ajustado en el último paso)
-                    stackedAreaChart.yDomain([0, 1000]);
+                    stackedAreaChart.yDomain([0, 1000]); // Ajusta el rango según tus datos
                     stackedAreaChart.yAxis.tickFormat(d3.format(',.0f'));
 
                     // Renderizar el gráfico
                     d3.select('#visitors-line-chart').selectAll("*").remove();
                     d3.select('#visitors-line-chart')
                         .append('svg')
-                        .datum(visitorAreaChartData)
+                        .datum(visitorAreaChartData) // Usar solo "Pagos Mensuales"
                         .transition().duration(1000)
                         .call(stackedAreaChart);
 
@@ -605,6 +598,7 @@ var handleVisitorsAreaChart = function() {
         }
     });
 };
+
 
 
 

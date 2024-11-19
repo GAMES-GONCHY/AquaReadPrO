@@ -65,7 +65,7 @@
                                         }
                                         // $total = $vencido['tarifaVigente'] * $consumo;
 
-                                        $fechaLectura = date('Y-m-d', strtotime($vencido['fechaLectura']));
+                                        $fechaLectura = date('d-m-Y', strtotime($vencido['fechaLectura']));
                                     ?>
                                     <tr class="text-center">
                                         <td><?php echo $cont; ?></td>
@@ -74,10 +74,10 @@
                                         <td><?php echo $consumo ?> m³</td>
                                         <td><?php echo $fechaLectura ?></td>
                                         <td><?php echo ($vencido['lecturaAnterior'])*100; ?></td>
-                                        <td><?php echo date('Y-m-d', strtotime($vencido['fechaLecturaAnterior'])); ?></td>
+                                        <td><?php echo date('d-m-Y', strtotime($vencido['fechaLecturaAnterior'])); ?></td>
                                         <td><?php echo $vencido['tarifaVigente']; ?></td>
                                         <td><?php echo number_format($total, 2); ?></td>
-                                        <td><?php echo $vencido['fechaVencimiento']; ?></td>
+                                        <td><?php echo date('d-m-Y', strtotime($vencido['fechaVencimiento'])); ?></td>
                                         <!-- <td>
                                             <?php echo form_open_multipart("avisocobranza/aprobarbd", ['class' => 'auto-submit-form']); ?>
                                                 <input type="hidden" name="tab" value="vencidos">

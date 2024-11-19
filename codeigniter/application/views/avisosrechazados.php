@@ -68,7 +68,7 @@
                                         }
 
                                         // $total = $rechazado['tarifaVigente'] * $consumo;
-                                        $fechaPago = !empty($rechazado['fechaPago']) ? date('Y-m-d', strtotime($rechazado['fechaPago'])) : 'Sin Fecha';
+                                        $fechaPago = !empty($rechazado['fechaPago']) ? date('d-m-Y', strtotime($rechazado['fechaPago'])) : 'Sin Fecha';
                                         $saldo = !empty($rechazado['saldo']) ? $rechazado['saldo'] : 'Sin Saldo';
                                     ?>
                                     <tr class="text-center">
@@ -76,19 +76,19 @@
                                         <td><?php echo $rechazado['codigoSocio']; ?></td>
                                         <td><?php echo $rechazado['nombreSocio']; ?></td>
                                         <td><?php echo $consumo ?> m³</td>
-                                        <td><?php echo date('Y-m-d', strtotime($rechazado['fechaLectura'])); ?></td>
+                                        <td><?php echo date('d-m-Y', strtotime($rechazado['fechaLectura'])); ?></td>
                                         <td><?php echo $rechazado['tarifaVigente']; ?></td>
                                         <td><?php echo number_format($total, 2); ?></td>
 
                                         <td><?php echo $saldo; ?></td>
                                         <td><?php echo $fechaPago; ?></td>
                                         
-                                        <td><?php echo $rechazado['fechaVencimiento']; ?></td>
+                                        <td><?php echo date('d-m-Y', strtotime($rechazado['fechaVencimiento'])); ?></td>
                                         <td>
                                             <?php echo form_open_multipart("avisocobranza/revisarbd", ['class' => 'auto-submit-form']); ?>
                                             <input type="hidden" name="tab" value="rechazados">
                                             <input type="hidden" name="id" value="<?php echo $rechazado['idAviso']; ?>">
-                                            <select name="estado" onchange="this.form.submit()">
+                                            <select name="estado" onchange="this.form.submit()" class="form-select form-select-sm" style="color: white; background-color: #333;">
                                                 <option value="" selected disabled>Seleccionar</option>
                                                 <option value="revision">Revision</option>
                                             </select>

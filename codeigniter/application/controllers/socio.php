@@ -127,7 +127,10 @@ class Socio extends CI_Controller
         require_once APPPATH . 'third_party/FPDF_Extended.php';
     
         // Determinar el texto del título según el estado
-        $tituloDocumento = ($estado === 'pagado') ? 'Recibo' : 'Aviso de Cobranza';
+        $tituloDocumento = ($estado == 'revision') ? utf8_decode('Aviso de Cobranza - en Revisión') :
+        (($estado == 'vencido') ? 'Aviso de Cobranza - Vencido' :
+        (($estado == 'rechazado') ? 'Aviso de Cobranza - Rechazado' :
+        (($estado == 'pagado') ? 'Recibo' : 'Aviso de Cobranza')));
     
         // Calcular el período
         $fechaLectura = strtotime($avisos[0]['fechaLectura']);
@@ -185,7 +188,7 @@ class Socio extends CI_Controller
     
         // Título
         $pdf->SetFont('Arial', 'B', 12);
-        $pdf->Cell(0, 5, 'AquaReadPro - ' . $tituloDocumento, 0, 1, 'C');
+        $pdf->Cell(0, 5,$tituloDocumento, 0, 1, 'C');
         $pdf->Ln(3);
     
         // Agregar el período
@@ -199,11 +202,17 @@ class Socio extends CI_Controller
     
         // Datos del cliente
         $pdf->SetFont('Arial', '', 8);
-        $pdf->Cell(30, 4, 'CODIGO CLIENTE:', 0, 0);
-        $pdf->Cell(60, 4, $avisos[0]['codigoSocio'], 0, 1);
-    
         $pdf->Cell(30, 4, 'NOMBRE:', 0, 0);
         $pdf->Cell(60, 4, $avisos[0]['nombreSocio'], 0, 1);
+
+        $pdf->Cell(30, 4, utf8_decode('COD. SOCIO:'), 0, 0);
+        $pdf->Cell(60, 4, $avisos[0]['codigoSocio'], 0, 1);
+    
+        $pdf->Cell(30, 4, 'COD. MEDIDOR:', 0, 0);
+        $pdf->Cell(60, 4, $avisos[0]['codigoMedidor'], 0, 1);
+
+        $pdf->Cell(30, 4, 'COD. DATALOGGER:', 0, 0);
+        $pdf->Cell(60, 4, $avisos[0]['codigoDatalogger'], 0, 1);
         $pdf->Ln(3);
     
         // Lectura Actual y Fecha
@@ -263,12 +272,12 @@ class Socio extends CI_Controller
     
         // Nota al cliente
         $pdf->SetFont('Arial', 'I', 7);
-        $pdf->MultiCell(0, 4, 'Estimado Cliente: Se le recomienda pagar su factura antes de la fecha de vencimiento para evitar recargos adicionales.');
+        $pdf->MultiCell(0, 4, 'Estimad@ Socio: Se le recomienda pagar sus avisos pendientes antes de la fecha de vencimiento.');
         $pdf->Ln(2);
     
         // Pie de página
         $pdf->SetFont('Arial', '', 7);
-        $pdf->Cell(0, 8, 'Gracias por confiar en AquaReadPro.', 0, 1, 'C');
+        $pdf->Cell(0, 8, 'AquaReadPro.', 0, 1, 'C');
     
         // Enviar el PDF
         header('Content-Type: application/pdf');

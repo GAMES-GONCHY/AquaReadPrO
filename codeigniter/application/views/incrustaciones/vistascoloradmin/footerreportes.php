@@ -35,7 +35,7 @@
 
                   <!-- Selector de opciones (MENSUAL, ANUAL, GLOBAL) -->
                   <div class="form-group row" id="options-selector-container" style="display: none;">
-                    <label class="form-label col-form-label col-lg-4" style="padding: 10px;">Opciones</label>
+                    <label class="form-label col-form-label col-lg-4" style="padding: 10px;">Opciones*</label>
                     <div class="col-lg-8" style="padding: 10px;">
                       <select id="opcionesRanking" name="opcionesRanking" class="form-select custom-select" style="width: 100%; padding: 10px; font-size: 16px; color: #333;">
                         <option value="MENSUAL">MENSUAL</option>
@@ -46,7 +46,7 @@
                   </div>
                   <!-- Selector de Mes y Año -->
                   <div class="form-group row" id="month-year-picker-container" style="display: none;">
-                      <label id="monthYearLabel" class="form-label col-form-label col-lg-4" style="padding: 10px;">Mes / Año</label>
+                      <label id="monthYearLabel" class="form-label col-form-label col-lg-4" style="padding: 10px;">Mes / Año *</label>
                       <div class="col-lg-8" style="padding: 10px;">
                           <!-- Selector de Mes -->
                           <select id="monthPicker" class="form-select" style="width: 45%; display: inline-block;">
@@ -74,7 +74,7 @@
 
                 <!-- Rango de Fechas -->
                 <div class="form-group row" id="range-datepicker-container">
-                  <label class="form-label col-form-label col-lg-4" style="padding: 10px;">Rango de Fechas</label>
+                  <label class="form-label col-form-label col-lg-4" style="padding: 10px;">Rango de Fechas*</label>
                   <div class="col-lg-8" style="padding: 10px;">
                     <div id="advance-daterange" class="btn btn-default d-flex text-start align-items-center" style="padding: 10px;">
                       <span class="flex-1">Seleccionar rango de fechas</span>
@@ -400,11 +400,11 @@ $(document).ready(function() {
       console.log('Opción seleccionada:', selectedOption);
 
       if (selectedOption === 'MENSUAL') {
-          $('#monthYearLabel').text('Mes / Año');
+          $('#monthYearLabel').text('Mes / Año*');
           $('#month-year-picker-container').show();
           $('#monthPicker').show();
       } else if (selectedOption === 'ANUAL') {
-          $('#monthYearLabel').text('Año');
+          $('#monthYearLabel').text('Año*');
           $('#month-year-picker-container').show();
           $('#monthPicker').hide();
       } else {
@@ -448,7 +448,7 @@ $(document).ready(function() {
           $('#options-selector-container').hide();
           $('#month-year-picker-container').hide();
           // Restablecer el texto del label a "Socio"
-          $('#labelSocio').text('Socio');
+          $('#labelSocio').text('Socio*');
       }
 
       

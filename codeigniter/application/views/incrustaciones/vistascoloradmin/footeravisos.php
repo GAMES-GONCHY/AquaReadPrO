@@ -72,18 +72,20 @@
 
 <!-- modal para renderizar el comprobante en tamaño real -->
 <div class="modal fade" id="comprobanteModal" tabindex="-1" aria-labelledby="comprobanteModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="comprobanteModalLabel">Ver Comprobante</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body text-center">
-                <img id="modalComprobanteImage" src="" alt="Comprobante" class="img-fluid" style="width: 100%; height: auto;">
+            <div class="modal-body text-center p-0">
+                <img id="modalComprobanteImage" src="" alt="Comprobante" class="img-fluid" style="max-width: 100%; height: auto;">
             </div>
         </div>
     </div>
 </div>
+
+
 
 
 

@@ -66,15 +66,15 @@
                                             $total = $revisado['tarifaVigente'] * $consumo;
                                         }
                                         // $total = $revisado['tarifaVigente'] * $consumo;
-                                        $fechaPago = !empty($revisado['fechaPago']) ? date('Y-m-d', strtotime($revisado['fechaPago'])) : 'Sin Fecha';
-                                        $fechaLectura = date('Y-m-d', strtotime($revisado['fechaLectura']));
+                                        $fechaPago = !empty($revisado['fechaPago']) ? date('d-m-Y', strtotime($revisado['fechaPago'])) : 'Sin Fecha';
+                                        $fechaLectura = date('d-m-Y', strtotime($revisado['fechaLectura']));
                                     ?>
                                     <tr class="text-center">
                                         <td><?php echo $cont; ?></td>
                                         <td><?php echo $revisado['codigoSocio']; ?></td>
                                         <td><?php echo $revisado['nombreSocio']; ?></td>
                                         <td><?php echo $consumo; ?> m³</td>
-                                        <td><?php echo $fechaLectura; ?></td>
+                                        <td><?php echo date('d-m-Y', strtotime($fechaLectura)); ?></td>
                                         <!-- <td><?php echo ($revisado['lecturaActual'])*100; ?></td>
                                         <td><?php echo ($revisado['lecturaAnterior'])*100; ?></td> -->
                                         <td><?php echo $revisado['tarifaVigente']; ?></td>
@@ -82,19 +82,22 @@
                                         <td><?php echo $fechaPago; ?></td>
                                         <td>
                                             <a href="#" data-bs-toggle="modal" data-bs-target="#comprobanteModal" onclick="cargarImagenModal('<?php echo base_url('uploads/comprobantes/' . trim($revisado['codigoSocio']) . '/' . $revisado['comprobante']); ?>')">
-                                                <img src="<?php echo base_url('uploads/comprobantes/' . trim($revisado['codigoSocio']) . '/' . $revisado['comprobante']); ?>" alt="Comprobante" style="width: 50px; height: auto;">
+                                                <img 
+                                                    src="<?php echo base_url('uploads/comprobantes/' . trim($revisado['codigoSocio']) . '/' . $revisado['comprobante']); ?>" 
+                                                    alt="Comprobante" 
+                                                    style="max-width: 100%; max-height: 50px; object-fit: cover;">
                                             </a>
                                         </td>
                                         <td>
-                                          <?php echo form_open_multipart("avisocobranza/revisarbd", ['class' => 'auto-submit-form']); ?>
-                                            <input type="hidden" name="tab" value="revision">
-                                            <input type="hidden" name="id" value="<?php echo $revisado['idAviso']; ?>">
-                                            <select name="estado" onchange="this.form.submit()">
-                                                <option value="" selected disabled>Seleccionar</option>
-                                                <option value="pagado">Pagado</option>
-                                                <option value="rechazado">Rechazado</option>
-                                            </select>
-                                          <?php echo form_close(); ?>
+                                            <?php echo form_open_multipart("avisocobranza/revisarbd", ['class' => 'auto-submit-form']); ?>
+                                                <input type="hidden" name="tab" value="revision">
+                                                <input type="hidden" name="id" value="<?php echo $revisado['idAviso']; ?>">
+                                                <select name="estado" onchange="this.form.submit()" class="form-select form-select-sm" style="color: white; background-color: #333;">
+                                                    <option value="" selected disabled>Seleccionar</option>
+                                                    <option value="pagado">Pagado</option>
+                                                    <option value="rechazado">Rechazado</option>
+                                                </select>
+                                            <?php echo form_close(); ?>
                                         </td>
                                     </tr>
                                     <?php $cont++; } ?>

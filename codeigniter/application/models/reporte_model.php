@@ -112,8 +112,8 @@ class Reporte_model extends CI_Model
 		}
 		$this->db->where_in('A.estado', $estados);
 
-		$this->db->where('L.fechaLectura >=', $data['fechaInicio']);
-		$this->db->where('L.fechaLectura <=', $data['fechaFin']);
+		$this->db->where('A.fechaVencimiento >=', $data['fechaInicio']);
+		$this->db->where('A.fechaVencimiento <=', $data['fechaFin']);
 
 		// Ordenar primero por codigoSocio y luego por fechaLectura en orden descendente
 		$this->db->order_by('ME.codigoSocio', 'ASC');
@@ -178,15 +178,14 @@ class Reporte_model extends CI_Model
 			return [];
 		}
 	}
-	public function total_vencidos_rechazados()
+	public function total_vencidos()
 	{
 		$this->db->select('COUNT(A.idAviso) AS cantidad');
 		$this->db->from('avisocobranza A');
-		$this->db->join('lectura L', 'A.idLectura = L.idLectura', 'inner');
-		$this->db->where_in('A.estado', ['vencido', 'rechazado']);
-		$this->db->where("DATE_FORMAT(L.fechaLectura, '%Y,%m') = (SELECT DATE_FORMAT(MAX(fechaLectura), '%Y,%m') FROM lectura WHERE estado <> 0)", null, false);
+		//$this->db->join('lectura L', 'A.idLectura = L.idLectura', 'inner');
+		$this->db->where_in('A.estado','vencido');
+		// $this->db->where("DATE_FORMAT(L.fechaLectura, '%Y,%m') = (SELECT DATE_FORMAT(MAX(fechaLectura), '%Y,%m') FROM lectura WHERE estado <> 0)", null, false);
 
-	
 		$query = $this->db->get();
 	
 		// Devolver el valor directamente como un número
@@ -208,7 +207,9 @@ class Reporte_model extends CI_Model
 	{
 		$this->db->select('ME.codigoSocio AS codigo');
 		$this->db->select('L.fechaLectura AS fechaLectura');
+		$this->db->select("CONCAT_WS(' ', U.nombre, U.primerApellido) AS socio", FALSE);
 		$this->db->from('membresia ME');
+		$this->db->join('usuario U', 'ME.idUsuario = U.idUsuario', 'inner');
 		$this->db->join('medidor M', 'ME.idMembresia = M.idMembresia', 'inner');
 		$this->db->join('lectura L', 'M.idMedidor = L.idMedidor', 'inner');
 		$this->db->join('avisocobranza A', 'A.idLectura = L.idLectura', 'inner');
@@ -220,7 +221,7 @@ class Reporte_model extends CI_Model
 		$result = $query->row();
 	
 		// Retorna el resultado de ambas columnas o `null` si no hay resultado
-		return $result ? ['codigo' => $result->codigo, 'fechaLectura' => $result->fechaLectura] : null;
+		return $result ? ['socio' => $result->socio, 'fechaLectura' => $result->fechaLectura] : null;
 	}
 
 	public function consumo_total_ultima_lectura()
@@ -234,7 +235,7 @@ class Reporte_model extends CI_Model
 		// Retorna el resultado o null si no hay datos
 		return $result ? $result : null;
 	}
-	public function obtener_consumo_x_tiempo()
+	public function obtener_consumo_x_tiempo()//grafica dashboard pagos y consumos vs tiempo
 	{
 		$this->db->select("DATE_FORMAT(L.fechaLectura, '%Y-%m') AS mes", false);
 		$this->db->select("SUM((L.lecturaActual - L.lecturaAnterior) / 100) AS total_consumido", false);
@@ -258,16 +259,5 @@ class Reporte_model extends CI_Model
 		// Retornar los resultados en formato de arreglo
 		return $query->result_array();
 	}
-
-	// $this->db->select("DATE_FORMAT(L.fechaLectura, '%Y-%m') AS mes", false);
-	// $this->db->select("SUM((L.lecturaActual - L.lecturaAnterior) / 100) AS total_consumido", false);
-	// $this->db->select("SUM(CASE WHEN A.estado = 'pagado' THEN (L.lecturaActual - L.lecturaAnterior) * T.tarifaVigente / 100 ELSE 0 END) AS total_pagado", false);
-	// $this->db->from('lectura L');
-	// $this->db->join('avisocobranza A', 'L.idLectura = A.idLectura');
-	// $this->db->join('tarifa T', 'A.idTarifa = T.idTarifa');
-	// $this->db->where("L.estado", 1);
-	// $this->db->where("DATE_FORMAT(L.fechaLectura, '%Y-%m') >= DATE_FORMAT(DATE_SUB(CURDATE(), INTERVAL 7 MONTH), '%Y-%m')", null, false);
-	// $this->db->group_by("mes");
-	// $this->db->order_by("mes", "ASC");
 
 }

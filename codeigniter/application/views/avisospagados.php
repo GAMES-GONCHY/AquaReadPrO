@@ -73,22 +73,22 @@
                                         <td><?php echo $pagado['codigoSocio']; ?></td>
                                         <td><?php echo $pagado['nombreSocio']; ?></td>
                                         <td><?php echo $consumo ?> m³</td>
-                                        <td><?php echo date('Y-m-d', strtotime($pagado['fechaLectura'])); ?></td>
+                                        <td><?php echo date('d-m-Y', strtotime($pagado['fechaLectura'])); ?></td>
                                         <td><?php echo ($pagado['lecturaAnterior'])*100; ?></td>
-                                        <td><?php echo date('Y-m-d', strtotime($pagado['fechaLecturaAnterior'])); ?></td>
+                                        <td><?php echo date('d-m-Y', strtotime($pagado['fechaLecturaAnterior'])); ?></td>
                                       
                                         <td><?php echo $pagado['tarifaVigente']; ?></td>
                                         <td><?php echo number_format($total, 2); ?></td>
-                                        <td><?php echo date('Y-m-d', strtotime($pagado['fechaPago'])); ?></td>
+                                        <td><?php echo date('d-m-Y', strtotime($pagado['fechaPago'])); ?></td>
                                         <td>
-                                          <?php echo form_open_multipart("avisocobranza/revisarbd", ['class' => 'auto-submit-form']); ?>
-                                            <input type="hidden" name="tab" value="pagados">
-                                            <input type="hidden" name="id" value="<?php echo $pagado['idAviso']; ?>">
-                                            <select name="estado" onchange="this.form.submit()">
-                                              <option value="" selected disabled>Seleccionar</option>
-                                              <option value="revision">Revisión</option>
-                                            </select>
-                                          <?php echo form_close(); ?>
+                                            <?php echo form_open_multipart("avisocobranza/revisarbd", ['class' => 'auto-submit-form']); ?>
+                                                <input type="hidden" name="tab" value="pagados">
+                                                <input type="hidden" name="id" value="<?php echo $pagado['idAviso']; ?>">
+                                                <select name="estado" onchange="this.form.submit()" class="form-select form-select-sm" style="color: white; background-color: #333;">
+                                                    <option value="" selected disabled>Seleccionar</option>
+                                                    <option value="revision">Revisión</option>
+                                                </select>
+                                            <?php echo form_close(); ?>
                                         </td>
                                     </tr>
                                     <?php $cont++; } ?>

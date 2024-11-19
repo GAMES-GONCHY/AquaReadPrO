@@ -180,7 +180,7 @@
                     <!-- Submenú de Reportes para 'reporte/historialpagos' -->
                     <div class="menu-item <?php echo ($this->uri->segment(1) === 'reporte' && $this->uri->segment(2) === 'historialpagos') ? 'active' : ''; ?>">
                         <a href="<?php echo base_url('index.php/reporte/historialpagos'); ?>" class="menu-link">
-                            <div class="menu-text">Configurar reportes</div>
+                            <div class="menu-text">Generar Reportes</div>
                         </a>
                     </div>
                 </div>

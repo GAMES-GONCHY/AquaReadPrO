@@ -43,7 +43,7 @@
 
   <!-- variable para script dashboard-v31,js -->
   <script>
-    var obtenerConsumoUrl = '<?php echo base_url("index.php/usuario/obtenerConsumoMensual"); ?>';
+    var obtenerConsumoUrl = '<?php echo base_url("index.php/usuario/obtenerPagosMensual"); ?>';
   </script>
 
   <script src="<?php echo base_url(); ?>coloradmin/assets/js/demo/dashboard-v31.js"></script>
@@ -153,6 +153,7 @@
   });
 </script>
 
+<!-- para calendario de dashboard -->
 <script>
 $(document).ready(function() {
     // Verificar si el datepicker acepta el cambio manual de idioma
@@ -180,6 +181,94 @@ $(document).ready(function() {
     }).datepicker("setDate", new Date());  // Establecer la fecha actual
 });
 </script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', async function () {
+        try {
+            // Obtener los datos del backend
+            const response = await fetch('<?php echo base_url(); ?>index.php/usuario/obtenerConsumoMensual');
+            const data = await response.json();
+
+            // Función para formatear fechas a "MMM YYYY"
+            const formatMonth = (dateString) => {
+                const [year, month] = dateString.split('-'); // Separar año y mes
+                const date = new Date(year, month - 1); // Crear una fecha válida
+                return date.toLocaleString('en-US', { month: 'short', year: 'numeric' }); // Ejemplo: "Oct 2024"
+            };
+
+            // Procesar los datos
+            const categories = data.map(item => formatMonth(item.mes)); // Convertir los meses al formato literal
+            const seriesData = data.map(item => parseFloat(item.total_consumido)); // Extraer los consumos
+
+            // Configuración del gráfico
+            var options = {
+                chart: {
+                    type: 'bar',
+                    height: 254,
+                    toolbar: {
+                        show: false // Deshabilitar el menú
+                    }
+                },
+                series: [{
+                    name: 'Consumo (m3)',
+                    data: seriesData // Usar los datos del modelo
+                }],
+                xaxis: {
+                    categories: categories, // Usar los meses en formato literal
+                    labels: {
+                        style: {
+                            colors: '#FFFFFF', // Color blanco para las etiquetas del eje X
+                            fontSize: '12px'
+                        }
+                    },
+                    title: {
+                        text: 'Mes',
+                        style: {
+                            color: '#FFFFFF', // Color blanco para el título del eje X
+                            fontSize: '14px'
+                        }
+                    }
+                },
+                yaxis: {
+                    labels: {
+                        style: {
+                            colors: '#FFFFFF', // Color blanco para las etiquetas del eje Y
+                            fontSize: '12px'
+                        }
+                    },
+                    title: {
+                        text: 'Consumo [m3]',
+                        style: {
+                            color: '#FFFFFF', // Color blanco para el título del eje Y
+                            fontSize: '14px'
+                        }
+                    }
+                },
+                colors: ['#34c38f'], // Color de las barras
+                grid: {
+                    borderColor: '#444', // Ajustar el color del grid
+                },
+                legend: {
+                    labels: {
+                        colors: '#FFFFFF', // Color blanco para las etiquetas de la leyenda
+                    }
+                }
+            };
+
+            // Renderizar el gráfico
+            var chart = new ApexCharts(document.querySelector("#consumoBarChart"), options);
+            chart.render();
+        } catch (error) {
+            console.error('Error al cargar los datos:', error);
+        }
+    });
+</script>
+
+
+
+
+
+
   </body>
 
   </html>

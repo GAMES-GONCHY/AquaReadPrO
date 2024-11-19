@@ -748,7 +748,7 @@ class Reporte extends CI_Controller
     }
     public function obtener_avisos_vencidos_rechazados()
     {
-        $total = $this->reporte_model->total_vencidos_rechazados();
+        $total = $this->reporte_model->total_vencidos();
         
         echo json_encode(['cantidad' => $total]);
     }

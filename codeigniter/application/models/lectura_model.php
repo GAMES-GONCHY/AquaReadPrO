@@ -5,15 +5,6 @@ class Lectura_model extends CI_Model
 {
     public function obtenerLecturas()
     {
-        // $this->db->select('l.*, m.codigoMedidor, m.puerto, d.codigoDatalogger');
-        // $this->db->from('lectura l');
-        // $this->db->join('medidor m', 'm.idMedidor = l.idMedidor', 'inner');
-        // $this->db->join('datalogger d', 'd.idDatalogger = m.idDatalogger', 'inner');
-        // $this->db->where('l.estado', 1);
-        // $this->db->order_by('l.fechaLectura', 'DESC'); 
-        // $query = $this->db->get();
-        // return $query->result_array();
-
         $this->db->select('l.*, m.codigoMedidor, d.puerto, d.codigoDatalogger, CONCAT(u.nombre, " ", u.primerApellido, " ", IFNULL(u.segundoApellido,"")) AS nombreSocio, mb.codigoSocio');
         $this->db->from('lectura l');
         $this->db->join('medidor m', 'm.idMedidor = l.idMedidor', 'inner');

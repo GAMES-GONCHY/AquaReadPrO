@@ -68,17 +68,21 @@
 									</a>
 								<?php endif; ?>
 								<div class="result-info">
-									<h3 class="desc">Periodo: <?php echo $mes.'-'.$anio; ?></h3>
-									<h4 class="desc">Consumo: <?php echo $consumo; ?> m³</h4>
-									<h4 class="desc">Tarifa Vigente: <?php echo $aviso['tarifaVigente']; ?></h4>
-									<!-- <h4 class="desc">Fecha Vencimiento: <?php echo $aviso['fechaVencimiento']; ?></h4> -->
-									<h4 class="desc">
+									<h3 class="desc" style="line-height: 0.5;">Periodo: <?php echo $mes.'-'.$anio; ?></h3>
+									<h3 class="desc" style="line-height: 0.5;">Consumo: <?php echo $consumo; ?> m³</h3>
+									<h3 class="desc" style="line-height: 0.5;">Tarifa Vigente: <?php echo $aviso['tarifaVigente']; ?></h3>
+
+									<!-- <h4 class="desc" style="line-height: 1.2;">Fecha Vencimiento: <?php echo $aviso['fechaVencimiento']; ?></h4> -->
+									<h3 class="desc" style="line-height: 0.5;">
 										<?php if ($aviso['estado'] == 'pagado'): ?>
 											Fecha de Pago: <?php echo date('Y-m-d', strtotime($aviso['fechaPago'])); ?>
 										<?php else: ?>
 											Fecha de Vencimiento: <?php echo $aviso['fechaVencimiento']; ?>
 										<?php endif; ?>
-									</h4>
+									</h3>
+									<h3 class="desc" style="line-height: 0.5;">
+										Estado: <?php echo ($aviso['estado'] == 'revision') ? 'Revisión' : ucfirst($aviso['estado']); ?>
+									</h3>
 								</div>
 								<div class="result-price">
 									<?php echo 'Bs. ' . number_format($total, 2); ?>

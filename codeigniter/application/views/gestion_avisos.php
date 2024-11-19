@@ -53,11 +53,11 @@
                                     <th>Periodo</th>
                                     <th>Lectura Actual</th>
                                     <th>Lectura Anterior</th>
-                                    <th>Fecha Lectura Anterior</th>
-                                    <th>Tarifa Aplicada [Bs/m3]</th>
+                                    <!-- <th>Fecha Lectura Anterior</th> -->
+                                    <th>Tarifa Vigente [Bs/m3]</th>
                                     <th>Total [Bs.]</th>
                                     <th>Fecha Vencimiento</th>
-                                    <!-- <th>Eliminar</th> -->
+                                    <th>Detalle</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -79,23 +79,16 @@
                                     <td><?php echo $enviado['codigoSocio']; ?></td>
                                     <td><?php echo $enviado['nombreSocio']; ?></td>
                                     <td><?php echo $consumo ?> m³</td>
-                                    <td><?php echo date('Y-m-d', strtotime($enviado['fechaLectura'])); ?></td>
+                                    <td><?php echo date('d-m-Y', strtotime($enviado['fechaLectura'])); ?></td>
                                     <td><?php echo ($enviado['lecturaActual'])*100; ?></td>
                                     <td><?php echo ($enviado['lecturaAnterior'])*100; ?></td>
-                                    <td><?php echo date('Y-m-d', strtotime($enviado['fechaLecturaAnterior'])); ?></td>
+                                    <!-- <td><?php echo date('d-m-Y', strtotime($enviado['fechaLecturaAnterior'])); ?></td> -->
                                     <td><?php echo $enviado['tarifaVigente']; ?></td>
                                     <td><?php echo number_format($total, 2); ?></td>
-                                    <td><?php echo $enviado['fechaVencimiento']; ?></td>
-                                    <!-- <td>
-                                      <?php echo form_open_multipart("avisocobranza/revisarbd"); ?>
-                                        <input type="hidden" name="tab" value="gestion">
-                                        <input type="hidden" name="estado" value="deshabilitado">
-                                        <input type="hidden" name="id" value="<?php echo $enviado['idAviso']; ?>">
-                                        <button type="submit" class="btn btn-danger btn-sm" title="Eliminar">
-                                          <i class="fas fa-trash-alt"></i>
-                                        </button>
-                                      <?php echo form_close(); ?>
-                                    </td> -->
+                                    <td><?php echo date('d-m-Y', strtotime($enviado['fechaVencimiento'])); ?></td>
+                                    <td>
+                                      
+                                    </td>
                                 </tr>
                                 <?php $cont++; } ?>
                             </tbody>
@@ -108,11 +101,11 @@
                                     <th>Periodo</th>
                                     <th>Lectura Actual</th>
                                     <th>Lectura Anterior</th>
-                                    <th>Fecha Lectura Anterior</th>
-                                    <th>Tarifa Aplicada [Bs/m3]</th>
+                                    <!-- <th>Fecha Lectura Anterior</th> -->
+                                    <th>Tarifa Vigente [Bs/m3]</th>
                                     <th>Total [Bs.]</th>
                                     <th>Fecha Vencimiento</th>
-                                    <!-- <th>Eliminar</th> -->
+                                    <th>Detalle</th>
                                 </tr>
                             </tfoot>
                         </table>

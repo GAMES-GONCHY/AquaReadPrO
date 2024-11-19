@@ -38,19 +38,19 @@
       </a>
     </div>
 
-    <!-- Button 4: Historial de Avisos vencidos o rechazados -->
+    <!-- Button 4: Historial de Avisos vencidos -->
     <div class="col-xl-3 col-md-6">
       <a href="#" data-bs-toggle="modal" data-bs-target="#modalPosBooking" data-reporte="avisos" data-title="Historial de avisos Vencidos - Rechazados" class="table-booking">
         <div class="widget widget-stats bg-gradient-green">
           <div class="stats-icon stats-icon-lg"><i class="fa fa-exclamation-circle fa-fw"></i></div>
 
           <div class="stats-content">
-            <div class="stats-title">AVISOS VENCIDOS - RECHAZADOS</div>
+            <div class="stats-title">AVISOS VENCIDOS</div>
             <div class="stats-number" id="totalVencidosRechazados">0</div>
             <div class="stats-progress progress">
               <div class="progress-bar" style="width: <?php echo $porcentaje; ?>%;"></div>
             </div>
-            <div class="stats-desc"> (<?php echo $porcentaje; ?>%). Periodo: <?php echo $top1['fechaLectura']; ?></div>
+            <div class="stats-desc"> (<?php echo $porcentaje; ?>%). Del total</div>
           </div>
         </div>
       </a>
@@ -63,7 +63,7 @@
           <div class="stats-icon stats-icon-lg"><i class="fa fa-trophy fa-fw"></i></div>
           <div class="stats-content">
             <div class="stats-title">TOP 5 CONSUMIDORES</div>
-            <div class="stats-number">Top 1: <span style="color: gold;"> <?php echo $top1['codigo']; ?></span></div>
+            <div class="stats-number">(1) <span style="color: gold; font-size: 14px;"><?php echo trim($top1['socio']); ?></span></div>
             
             <div class="stats-progress progress">
               <div class="progress-bar" style="width: 100.0%;"></div>

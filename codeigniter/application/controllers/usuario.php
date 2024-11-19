@@ -120,7 +120,7 @@ class Usuario extends CI_Controller
 		}
 		redirect('usuario/panel','refresh');
 	}
-	public function obtenerConsumoMensual()//funcion para obtener datos para el grafico consumo y pagos vs tiempo
+	public function obtenerPagosMensual()//funcion para obtener datos para el grafico pagos vs tiempo
 	{
 		// Verificar que el usuario esté autenticado y autorizado
 		if ($this->session->userdata('nickName') && ($this->session->userdata('estado')) == 1 && ($this->session->userdata('rol')) == 2) {
@@ -135,5 +135,14 @@ class Usuario extends CI_Controller
 			// Si no está autorizado, envía un error o redirige
 			show_error('No autorizado', 403);
 		}
+	}
+	public function obtenerConsumoMensual()//funcion para obtener datos para el grafico consumo vs tiempo
+	{
+
+		// Obtener los datos desde el modelo
+		$data = $this->reporte_model->obtener_consumo_x_tiempo();
+
+		// Devolver los datos como JSON
+		echo json_encode($data);
 	}
 }
