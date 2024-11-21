@@ -14,7 +14,7 @@
         <!-- Botón "Atrás" con el mismo estilo de los otros botones -->
         <div class="card text-center shadow-sm" style="width: 7rem; margin: 0;"> <!-- Reduce el ancho aquí -->
           <div class="card-body" style="padding: 5px;"> <!-- Reduce el padding aquí -->
-            <a href="javascript:history.back();" class="text-info text-decoration-none hover-atras" style="display: block; padding: 5px; border-radius: 8px; transition: 0.3s;">
+            <a href="<?php echo base_url(); ?>index.php/tarifa/habilitados" class="text-info text-decoration-none hover-atras" style="display: block; padding: 5px; border-radius: 8px; transition: 0.3s;">
               <i class="fas fa-arrow-left fa-1x mb-1"></i><br> <!-- Reduce el tamaño del icono -->
             </a>
           </div>
@@ -39,10 +39,9 @@
                 <tr>
                   <th width="1%">No.</th>
                   <th>Tarifa vigente</th>
-                  <th>Inicio de vigencia</th>
                   <th>Tarifa mínima</th>
-                  <th>Fecha Modificacion</th>
-                  <th>Restaurar</th>
+                  <th>Conclusión de vigencia</th>
+                  <!-- <th>Restaurar</th> -->
                 </tr>
               </thead>
               <tbody>
@@ -50,23 +49,22 @@
                 $cont = 1;
                 foreach ($tarifas->result() as $row) {
                 ?>
-                  <tr>
+                  <tr style="text-align: center;">
                     <td><?php echo $cont ?></td>
                     <td><?php echo $row->tarifaVigente ?></td>
-                    <td><?php echo $row->fechaInicioVigencia ?></td>
                     <td><?php echo $row->tarifaMinima ?></td>
                     <td><?php echo $row->fechaActualizacion ?></td>
 
-                    <td>
+                    <!-- <td>
                       <div class="btn-group" role="group">
                           <?php echo form_open_multipart("tarifa/habilitar"); ?>
                           <input type="hidden" name="id" value="<?php echo $row->idTarifa; ?>">
                           <button type="submit" class="btn btn-success btn-sm" title="Restaurar">
-                              <i class="fas fa-recycle"></i> <!-- Ícono de reciclaje para restauración -->
+                              <i class="fas fa-recycle"></i>
                           </button>
                           <?php echo form_close(); ?>
                       </div>
-                  </td>
+                    </td> -->
 
                   </tr>
                 <?php
@@ -78,10 +76,9 @@
                 <tr>
                   <th width="1%">No.</th>
                   <th>Tarifa vigente</th>
-                  <th>Inicio de vigencia</th>
                   <th>Tarifa mínima</th>
-                  <th>Fecha Modificacion</th>
-                  <th>Restaurar</th>
+                  <th>Conclusión de vigencia</th>
+                  <!-- <th>Restaurar</th> -->
                 </tr>
               </tfoot>
             </table>

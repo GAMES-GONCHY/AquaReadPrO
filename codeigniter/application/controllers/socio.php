@@ -255,18 +255,21 @@ class Socio extends CI_Controller
 
         $pdf->Ln(5);
 
-
-    
         // Totales con Fecha de Pago o Vencimiento
         $pdf->SetFont('Arial', 'B', 8);
         $pdf->Cell(40, 4, 'TOTAL:', 0, 0);
         $pdf->Cell(30, 4, 'Bs. ' . number_format($totalPagar, 2), 0, 0);
-        if ($estado === 'pagado') {
+        if ($estado == 'pagado') {
             $pdf->Cell(40, 4, 'Fecha de Pago:', 0, 0);
             $pdf->Cell(30, 4, date('d-m-Y', strtotime($avisos[0]['fechaPago'])), 0, 1);
         } else {
             $pdf->Cell(40, 4, 'Fecha de Vencimiento:', 0, 0);
             $pdf->Cell(30, 4, date('d-m-Y', strtotime($avisos[0]['fechaVencimiento'])), 0, 1);
+        }
+        // Agregar saldo si el estado es 'rechazado' y el saldo no es null o 0
+        if ($estado == 'rechazado' && (!is_null($avisos[0]['saldo']) || $avisos[0]['saldo'] != 0)) {
+            $pdf->Cell(40, 4, 'Saldo:', 0, 0);
+            $pdf->Cell(30, 4, 'Bs. ' . number_format($avisos[0]['saldo'], 2), 0, 1);
         }
         $pdf->Ln(5);
     

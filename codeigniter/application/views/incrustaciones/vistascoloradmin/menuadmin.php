@@ -243,6 +243,24 @@
                     <div class="menu-text">Medidores</div>
                 </a>
             </div>
+
+            <!-- Tarifa -->
+            <div class="menu-item has-sub <?php echo ($this->uri->segment(1) === 'tarifa') ? 'active' : ''; ?>">
+                <a href="javascript:;" class="menu-link">
+                    <div class="menu-icon"><i class="fa fa-dollar-sign"></i></div>
+
+
+                    <div class="menu-text">Tarifas</div>
+                    <div class="menu-caret"></div>
+                </a>
+                <div class="menu-submenu">
+                    <div class="menu-item <?php echo ($this->uri->segment(2) === 'habilitados') ? 'active' : ''; ?>">
+                        <a href="<?php echo base_url('index.php/tarifa/habilitados'); ?>" class="menu-link">
+                            <div class="menu-text">Historial de tarifas</div>
+                        </a>
+                    </div>
+                </div>
+            </div>
             
             <!-- Lecturas -->
             <div class="menu-item has-sub <?php echo ($this->uri->segment(1) === 'lecturadl') ? 'active' : ''; ?>">
@@ -264,26 +282,6 @@
                     <div class="menu-item <?php echo ($this->uri->segment(2) === 'mostrarlectura') ? 'active' : ''; ?>">
                         <a href="<?php echo base_url('index.php/lecturadl/mostrarlectura'); ?>" class="menu-link">
                             <div class="menu-text">Historial</div>
-                        </a>
-                    </div>
-                </div>
-            </div>
-
-            
-            
-            <!-- Tarifa -->
-            <div class="menu-item has-sub <?php echo ($this->uri->segment(1) === 'tarifa') ? 'active' : ''; ?>">
-                <a href="javascript:;" class="menu-link">
-                    <div class="menu-icon"><i class="fa fa-dollar-sign"></i></div>
-
-
-                    <div class="menu-text">Tarifas</div>
-                    <div class="menu-caret"></div>
-                </a>
-                <div class="menu-submenu">
-                    <div class="menu-item <?php echo ($this->uri->segment(2) === 'habilitados') ? 'active' : ''; ?>">
-                        <a href="<?php echo base_url('index.php/tarifa/habilitados'); ?>" class="menu-link">
-                            <div class="menu-text">Historial de tarifas</div>
                         </a>
                     </div>
                 </div>

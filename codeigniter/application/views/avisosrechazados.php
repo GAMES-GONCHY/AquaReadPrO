@@ -69,7 +69,8 @@
 
                                         // $total = $rechazado['tarifaVigente'] * $consumo;
                                         $fechaPago = !empty($rechazado['fechaPago']) ? date('d-m-Y', strtotime($rechazado['fechaPago'])) : 'Sin Fecha';
-                                        $saldo = !empty($rechazado['saldo']) ? $rechazado['saldo'] : 'Sin Saldo';
+                                        // $saldo = !empty($rechazado['saldo']) ? $rechazado['saldo'] : 0;
+                                        $saldo = !empty($rechazado['saldo']) ? round($rechazado['saldo'], 2) : 0;
                                     ?>
                                     <tr class="text-center">
                                         <td><?php echo $cont; ?></td>
@@ -106,7 +107,7 @@
                                                 '<?php echo number_format($total, 2); ?>',
                                                 '<?php echo $rechazado['estado']; ?>',
                                                 '<?php echo $fechaPago; ?>',
-                                                '<?php echo $rechazado['saldo']; ?>')">
+                                                '<?php echo $saldo; ?>')">
                                             Notificar
                                         </button>
 

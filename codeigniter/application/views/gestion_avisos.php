@@ -57,12 +57,26 @@
                                     <th>Tarifa Vigente [Bs/m3]</th>
                                     <th>Total [Bs.]</th>
                                     <th>Fecha Vencimiento</th>
-                                    <th>Detalle</th>
+                                    <th>Ver</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <?php
                                 $cont = 1;
+                                $meses = [
+                                  'January' => 'Enero',
+                                  'February' => 'Febrero',
+                                  'March' => 'Marzo',
+                                  'April' => 'Abril',
+                                  'May' => 'Mayo',
+                                  'June' => 'Junio',
+                                  'July' => 'Julio',
+                                  'August' => 'Agosto',
+                                  'September' => 'Septiembre',
+                                  'October' => 'Octubre',
+                                  'November' => 'Noviembre',
+                                  'December' => 'Diciembre'
+                                ];
                                 foreach ($enviados as $enviado) {
                                     $consumo = round($enviado['lecturaActual'] - $enviado['lecturaAnterior'],2);
                                     if($consumo<10)//si el consumo es menor q 10 m3 aplicar tarifado mínimo
@@ -72,6 +86,20 @@
                                     else
                                     {
                                       $total = $enviado['tarifaVigente'] * $consumo;
+                                    }
+                                    // Verificar si la fecha de lectura está presente y es válida
+                                    if (!empty($enviado['fechaLectura'])) {
+                                      // Crear el objeto DateTime solo si el valor no es nulo o vacío
+                                      $fechaLectura = new DateTime($enviado['fechaLectura']);
+                                      $mes = $meses[$fechaLectura->format('F')];  // Obtener el nombre del mes
+                                      // $anio = $fechaLectura->format('Y');  // Obtener el año
+                                      $fechaLectura = $fechaLectura->format('d-m-Y');
+                                      $fechaLecturaAnterior = date('d-m-Y', strtotime($enviado['fechaLecturaAnterior']));
+                                    }
+                                    else
+                                    {
+                                      $fechaLectura = null;
+                                      $mes = "Mes no disponible"; // Mensaje alternativo si no hay fecha de lectura
                                     }
                                 ?>
                                 <tr class="text-center">
@@ -87,7 +115,27 @@
                                     <td><?php echo number_format($total, 2); ?></td>
                                     <td><?php echo date('d-m-Y', strtotime($enviado['fechaVencimiento'])); ?></td>
                                     <td>
-                                      
+                                      <button 
+                                          class="btn btn-success btn-sm mx-1" 
+                                          data-bs-toggle="modal" 
+                                          data-bs-target="#modalPosBooking1"
+                                          onclick="cargarDetalle('<?php echo $enviado['codigoSocio']; ?>',
+                                              '<?php echo $enviado['nombreSocio']; ?>',
+                                              '<?php echo $mes; ?>',
+                                              '<?php echo $consumo; ?>',
+                                              '<?php echo ($enviado['lecturaActual'])*100; ?>',
+                                              '<?php echo ($enviado['lecturaAnterior'])*100; ?>',
+                                              '<?php echo $fechaLectura; ?>',
+                                              '<?php echo $fechaLecturaAnterior; ?>',
+                                              '<?php echo $enviado['tarifaVigente']; ?>',
+                                              '<?php echo $enviado['tarifaMinima']; ?>',
+                                              '<?php echo number_format($total, 2); ?>',
+                                              '<?php echo $enviado['fechaVencimiento']; ?>',
+                                              '<?php echo $enviado['estado']; ?>',
+                                              '<?php echo $enviado['fechaPago']; ?>',
+                                              <?php echo $enviado['saldo']; ?>)">
+                                          <i class="fas fa-eye"></i> <!-- Ícono de "ver detalles" -->
+                                      </button>
                                     </td>
                                 </tr>
                                 <?php $cont++; } ?>
@@ -105,7 +153,7 @@
                                     <th>Tarifa Vigente [Bs/m3]</th>
                                     <th>Total [Bs.]</th>
                                     <th>Fecha Vencimiento</th>
-                                    <th>Detalle</th>
+                                    <th>Ver</th>
                                 </tr>
                             </tfoot>
                         </table>

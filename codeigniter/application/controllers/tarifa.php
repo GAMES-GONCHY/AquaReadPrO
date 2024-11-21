@@ -10,7 +10,7 @@ class Tarifa extends CI_Controller
 
 		$this->load->view('incrustaciones/vistascoloradmin/head');
         $this->load->view('incrustaciones/vistascoloradmin/menuadmin');
-        $this->load->view('tarifashabilitadas', $data); // Mostrar las lecturas fallidas
+        $this->load->view('tarifashabilitadas', $data);
         $this->load->view('incrustaciones/vistascoloradmin/footerlecturas');
 		
 	}
@@ -29,9 +29,12 @@ class Tarifa extends CI_Controller
 	{
 		$data['tarifaMinima'] = $_POST['tarifaMinima1'];
 		$data['tarifaVigente'] = $_POST['tarifaVigente1'];
-		$data['fechaInicioVigencia'] = $_POST['fechaInicioVigencia1'];
+		// $data['fechaInicioVigencia'] = $_POST['fechaInicioVigencia1'];
 
 		$this->tarifa_model->agregar($data);
+
+
+
 		redirect('tarifa/habilitados');
 	}
 
@@ -52,9 +55,9 @@ class Tarifa extends CI_Controller
 		// Recibir los datos del formulario
 		$id = $_POST['idTarifa'];
 
-		// $data['tarifaMinima'] = $_POST['tarifaMinima'];
+		$data['tarifaMinima'] = $_POST['tarifaMinima'];
 		$data['tarifaVigente'] = $_POST['tarifaVigente'];
-		$data['fechaInicioVigencia'] = $_POST['fechaInicioVigencia'];
+		// $data['fechaInicioVigencia'] = $_POST['fechaInicioVigencia'];
 		// Llamar al modelo para modificar los datos
 
 		if($this->tarifa_model->consultarregistrosdelectura($id))

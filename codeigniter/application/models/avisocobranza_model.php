@@ -15,13 +15,14 @@ class Avisocobranza_model extends CI_Model
                         AND YEAR(L2.fechaLectura) = YEAR(DATE_SUB(L.fechaLectura, INTERVAL 1 MONTH)) 
                         AND MONTH(L2.fechaLectura) = MONTH(DATE_SUB(L.fechaLectura, INTERVAL 1 MONTH))), 
                         L.fechaLectura) AS fechaLecturaAnterior, 
-                ME.codigoSocio, 
+                ME.codigoSocio, M.codigoMedidor, D.codigoDatalogger,
                 CONCAT(U.nombre, " ", U.primerApellido, " ", IFNULL(U.segundoApellido, "")) AS nombreSocio',FALSE);
         $this->db->from('avisoCobranza A');
         $this->db->join('qr Q', 'A.idQr = Q.idQr', 'inner');
         $this->db->join('tarifa T', 'A.idTarifa = T.idTarifa', 'inner');
         $this->db->join('lectura L', 'A.idLectura = L.idLectura', 'inner');
         $this->db->join('medidor M', 'L.idMedidor = M.idMedidor', 'inner');
+        $this->db->join('datalogger D', 'M.idDatalogger = D.idDatalogger', 'inner');
         $this->db->join('membresia ME', 'M.idMembresia = ME.idMembresia', 'inner');
         $this->db->join('usuario U', 'ME.idUsuario = U.idUsuario', 'inner');
         $this->db->where('A.estado', $estado);

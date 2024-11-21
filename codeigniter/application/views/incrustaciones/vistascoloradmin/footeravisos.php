@@ -15,7 +15,7 @@
 <div class="modal modal-pos-booking fade" id="modalPosBooking">
     <div class="modal-dialog modal-lg modal-dialog-centered">
         <div class="modal-content border-0">
-            <form id="form-notificar-saldo" action="<?php echo base_url(); ?>index.php/avisocobranza/notificarsaldo" method="post">
+            <form id="form-notificar-saldo" action="<?php echo base_url(); ?>index.php/avisocobranza/notificarsaldo" method="post" data-parsley-validate>
                 <div class="modal-body">
                     <div class="d-flex align-items-center mb-3">
                         <h4 class="modal-title d-flex align-items-center" style="font-size: 1.5rem; font-weight: bold;">
@@ -37,7 +37,7 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td><strong style="font-weight: 600; color: #343a40;">Total:</strong>
+                                        <td><strong style="font-weight: 600; color: #343a40;">Total (Bs.):</strong>
                                             <span class="text-secondary" style="color: #343a40;" id="modal-total"></span>
                                         </td>
                                         <td><strong style="font-weight: 600; color: #343a40;">Estado:</strong> 
@@ -45,8 +45,12 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td><strong style="font-weight: 600; color: #343a40;">Notificar Saldo:</strong> 
-                                            <input type="text" name="saldoPendiente" id="modal-notificar-saldo" class="form-control" value="" required> <!-- Campo editable vacío por defecto -->
+                                        <td><strong style="font-weight: 600; color: #343a40;">Notificar Saldo (Bs.):</strong> 
+                                            <input type="text" name="saldoPendiente" id="modal-notificar-saldo" class="form-control" value=""
+                                            data-parsley-required="true" 
+                                            data-parsley-type="number" 
+                                            data-parsley-min="0.1" 
+                                            data-parsley-trigger="input">
                                         </td>
                                         <td><strong style="font-weight: 600; color: #343a40;">Fecha de Pago:</strong> 
                                             <span class="text-secondary" style="color: #343a40;" id="modal-fecha-pago"></span>
@@ -84,6 +88,63 @@
         </div>
     </div>
 </div>
+
+  <!-- modal para mostrar el detalle de avisos -->
+  <div class="modal modal-pos-booking fade" id="modalPosBooking1">
+      <div class="modal-dialog modal-lg">
+          <div class="modal-content border-0">
+              <div class="modal-body">
+                  <div class="d-flex align-items-center mb-3">
+                      <h4 class="modal-title d-flex align-items-center" style="font-size: 1.5rem; font-weight: bold; color: black;">
+                          <img src="<?php echo base_url(); ?>coloradmin/assets/img/logo/logomenu.png" height="40" class="me-2" />
+                          Detalle del Aviso
+                      </h4>
+                      <a href="#" data-bs-dismiss="modal" class="ms-auto btn-close"></a>
+                  </div>
+                  <div class="row p-4 rounded" style="background-color: #f8f9fa;">
+                      <div class="col-lg-12">
+                          <table class="table table-borderless mb-0" style="font-size: 1.1rem; color: black;">
+                              <tbody>
+                                  <tr>
+                                      <td><strong style="font-weight: 600; color: black;">Código del Socio:</strong> <span class="text-secondary" style="color: black;" id="codigo-socio"></span></td>
+                                      <td><strong style="font-weight: 600; color: black;">Nombre del Socio:</strong> <span class="text-secondary" style="color: black;" id="nombre-socio"></span></td>
+                                  </tr>
+                                  <tr>
+                                      <td><strong style="font-weight: 600; color: black;">Periodo:</strong> <span class="text-secondary" style="color: black;" id="periodo"></span></td>
+                                      <td><strong style="font-weight: 600; color: black;">Consumo:</strong> <span class="text-secondary" style="color: black;" id="consumo"></span></td>
+                                  </tr>
+                                  <tr>
+                                      <td><strong style="font-weight: 600; color: black;">Lectura Actual:</strong> <span class="text-secondary" style="color: black;" id="lectura-actual"></span></td>
+                                      <td><strong style="font-weight: 600; color: black;">Lectura Anterior:</strong> <span class="text-secondary" style="color: black;" id="lectura-anterior"></span></td>
+                                  </tr>
+                                  <tr>
+                                      <td><strong style="font-weight: 600; color: black;">Fecha Lectura Actual:</strong> <span class="text-secondary" style="color: black;" id="fecha-lectura"></span></td>
+                                      <td><strong style="font-weight: 600; color: black;">Fecha Lectura Anterior:</strong> <span class="text-secondary" style="color: black;" id="fecha-lectura-anterior"></span></td>
+                                  </tr>
+                                  <tr>
+                                      <td><strong style="font-weight: 600; color: black;">Tarifa Vigente:</strong> <span class="text-secondary" style="color: black;" id="tarifa-vigente"></span></td>
+                                      <td><strong style="font-weight: 600; color: black;">Tarifa Mínima:</strong> <span class="text-secondary" style="color: black;" id="tarifa-minima"></span></td>
+                                  </tr>
+                                  <tr>
+                                      <td><strong style="font-weight: 700; color: black;">Total:</strong> <span class="fw-bold text-dark" style="color: black;" id="total"></span></td>
+                                      <td><strong id="titulo-fecha" style="font-weight: 600; color: black;">Fecha de Vencimiento:</strong> <span class="text-danger" style="color: black;" id="fecha-vencimiento"></span></td>
+                                  </tr>
+                                  <tr>
+                                      <td><strong style="font-weight: 600; color: black;">Estado:</strong> <span class="badge bg-success text-uppercase" style="color: black;" id="estado"></span></td>
+                                      <td><strong id="saldoLabel" style="font-weight: 700; color: black;">Saldo: </strong><span class="fw-bold text-dark" style="color: black;" id="saldoAvisos"></span></td>
+                                  </tr>
+                              </tbody>
+                          </table>
+                      </div>
+                  </div>
+              </div>
+              <div class="modal-footer" style="padding: 15px;">
+                  <a href="#" class="btn btn-success w-100px" data-bs-dismiss="modal" style="font-size: 0.9rem; padding: 5px 10px;">Ok!</a>
+              </div>
+          </div>
+      </div>
+  </div>
+
 
 
 
@@ -263,6 +324,11 @@
   <!-- modal para notificacion de saldos de avisos rechazados-->
   <script>
     function cargarDatos(codigoSocio, nombreSocio, idAviso, total, estado, fechaPago, saldo) {
+        // Resetear el formulario y Parsley antes de cargar nuevos datos
+        var form = $('#form-notificar-saldo').parsley();
+        form.reset(); // Resetea el estado de validación de Parsley
+        document.getElementById('modal-notificar-saldo').classList.remove('parsley-error'); // Elimina la clase de error si quedó activa
+        
         document.getElementById('modal-codigo-socio').textContent = codigoSocio;
         document.getElementById('modal-nombre-socio').textContent = nombreSocio;
         document.getElementById('modal-total').textContent = total;
@@ -295,7 +361,11 @@
 
         // Verificar si el valor de saldo es null o vacío y asignar el valor correspondiente
         if (saldo == null || saldo == 0) {
-            document.getElementById('modal-notificar-saldo').value = '';  // Campo vacío por defecto
+          document.getElementById('modal-notificar-saldo').value = '';  // Campo vacío por defecto
+        }
+        else
+        {
+          document.getElementById('modal-notificar-saldo').value = saldo;
         }
     }
   </script>
@@ -347,6 +417,73 @@
     }
   </script>
 
+<script>
+  function cargarDetalle(codigoSocio, nombreSocio, mes, consumo, lecturaActual, lecturaAnterior, fechaLectura,
+                      fechaLecturaAnterior, tarifaVigente, tarifaMinima, total, fechaVencimiento, estado, fechaPago, saldo) {
+    // Asignar los valores recibidos
+    document.getElementById('codigo-socio').textContent = codigoSocio;
+    document.getElementById('nombre-socio').textContent = nombreSocio;
+    document.getElementById('periodo').textContent = mes;
+    document.getElementById('consumo').textContent = consumo + " m³";
+    document.getElementById('lectura-actual').textContent = lecturaActual;
+    document.getElementById('lectura-anterior').textContent = lecturaAnterior;
+    document.getElementById('fecha-lectura').textContent = fechaLectura;
+    document.getElementById('fecha-lectura-anterior').textContent = fechaLecturaAnterior;
+    document.getElementById('tarifa-vigente').textContent = tarifaVigente;
+    document.getElementById('tarifa-minima').textContent = tarifaMinima;
+    document.getElementById('total').textContent = "Bs. " + total;
+    document.getElementById('fecha-vencimiento').textContent = fechaVencimiento;
+
+    // Cambiar el color del estado dependiendo de su valor
+    var estadoElement = document.getElementById('estado'); // Correcto ID en HTML
+    if (estadoElement) {
+        estadoElement.textContent = estado;
+        if (estado === 'vencido' || estado === 'rechazado') {
+            estadoElement.classList.remove('bg-success');
+            estadoElement.classList.add('bg-danger');
+        } else {
+            estadoElement.classList.remove('bg-danger');
+            estadoElement.classList.add('bg-success');
+        }
+    }
+
+    // Verificar si el estado es 'pagado' para mostrar solo la fechaPago y cambiar el título
+    if (estado == 'pagado')
+    {
+        document.getElementById('fecha-vencimiento').textContent = fechaPago;
+        document.getElementById('titulo-fecha').textContent = "Fecha de Pago:";
+    }
+    else
+    {
+        document.getElementById('fecha-vencimiento').textContent = fechaVencimiento;
+        document.getElementById('titulo-fecha').textContent = "Fecha de Vencimiento:";
+    }
+
+    // Cambiar título del modal según el estado
+    var modalTitle = document.querySelector('.modal-title');
+    if (modalTitle) {
+        modalTitle.innerHTML = estado === 'pagado'
+            ? '<img src="<?php echo base_url(); ?>coloradmin/assets/img/logo/logomenu.png" height="40" class="me-2" /> Recibo'
+            : "Aviso de cobranza";
+    }
+
+    // Mostrar el saldo solo si el estado es 'rechazado' y el saldo no es null o 0
+    var saldoElement = document.getElementById('saldoAvisos');
+    var saldoLabel = document.getElementById('saldoLabel'); // Cambiar selector a ID para mayor precisión
+
+        if (estado === 'rechazado' && saldo !== null && saldo != 0) {
+            saldoElement.textContent = saldo + ' Bs.'; // Mostrar saldo
+            saldoElement.parentElement.style.display = ''; // Mostrar la celda del saldo
+            saldoLabel.style.display = ''; // Mostrar la etiqueta del saldo
+        } else {
+            saldoElement.textContent = ''; // Limpiar contenido del saldo
+            saldoElement.parentElement.style.display = 'none'; // Ocultar la celda del saldo
+            saldoLabel.style.display = 'none'; // Ocultar la etiqueta del saldo
+        }
+  
+}
+
+</script>
 
   </body>
 

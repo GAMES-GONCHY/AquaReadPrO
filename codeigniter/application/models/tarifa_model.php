@@ -20,28 +20,31 @@ class Tarifa_model extends CI_Model
     public function agregar($data) 
     {
         // Verificamos que los datos se reciben correctamente
-        print_r($data); // Asegúrate de que los datos llegan correctamente aquí
-        echo "<br>";
+        // print_r($data); // Asegúrate de que los datos llegan correctamente aquí
+        // echo "<br>";
 
-        // Intentar insertar los datos en la tabla tarifa
-        $this->db->insert('tarifa', $data);
+        // // Intentar insertar los datos en la tabla tarifa
+        // $this->db->insert('tarifa', $data);
 
-        // Verificar si se realizó la inserción correctamente
-        if ($this->db->affected_rows() > 0) {
-            echo "Inserción exitosa";
-            return true;
-        } else {
-            echo "Fallo en la inserción";
-            echo $this->db->last_query(); // Imprime la última consulta SQL para depuración
-            return false;
-        }
+        // // Verificar si se realizó la inserción correctamente
+        // if ($this->db->affected_rows() > 0) {
+        //     echo "Inserción exitosa";
+        //     return true;
+        // } else {
+        //     echo "Fallo en la inserción";
+        //     echo $this->db->last_query(); // Imprime la última consulta SQL para depuración
+        //     return false;
+        // }
+        // Llamar al procedimiento almacenado con los datos proporcionados
+        $data['idAutor']=$this->session->userdata('idUsuario');
+        $this->db->query("CALL uspDarBajaTarifaAlInsertar(?, ?, ?)", array($data['tarifaMinima'], $data['tarifaVigente'], $data['idAutor']));
     }
 
     
     public function deshabilitar($id) 
     {
         $data['idAutor']=$this->session->userdata('idUsuario');
-		$data['fechaActualizacion']=date('Y-m-d H:i:s');
+		$data['fechaActualizacion']=date('Y-m-d');
         $data['estado'] ='vencido';
 		$this->db->where('idTarifa', $id);
 		$this->db->update('tarifa', $data);
