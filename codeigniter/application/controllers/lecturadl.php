@@ -131,7 +131,7 @@ class Lecturadl extends CI_Controller
                     // Almacenar la lectura actual
                     $lecturaTemporal = [
                         'lecturaAnterior' => $lecturaAnterior,
-                        'lecturaActual' => ($pulsos+97),
+                        'lecturaActual' => ($pulsos+117),
                         'fechaLectura' => date('Y-m-d H:i:s'),
                         'codigoMedidor' => $codigoMedidor,
                         'codigoDatalogger' => $codigoDatalogger,

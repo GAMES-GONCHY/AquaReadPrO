@@ -22,13 +22,23 @@
     min-height: 400px; /* Tamaño mínimo para evitar problemas de renderización */
 }
 </style>
-
+<!-- Estilo para cambiar de backgroud -->
+	<style>
+		.app-cover.new-background 
+		{
+			background: 
+			linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 1)), /* Capa de oscurecimiento */
+			url('<?php echo base_url(); ?>coloradmin/assets/img/login-bg/fondo3.jpg'); /* Nueva imagen */
+			background-size: cover; /* Ajusta la imagen al contenedor */
+			background-position: center; /* Centra la imagen */
+		}
+	</style>
 
 </head>
 
 <body>
 
-	<div class="app-cover"></div>
+	<div class="aapp-cover new-background "></div>
 
 
 	<div id="loader" class="app-loader">

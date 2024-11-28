@@ -148,7 +148,7 @@ class Socio extends CI_Controller
         // Calcular el consumo
         $lecturaActual = $avisos[0]['lecturaActual'];
         $lecturaAnterior = $avisos[0]['lecturaAnterior'];
-        $consumo = $lecturaActual - $lecturaAnterior;
+        $consumo = ($lecturaActual - $lecturaAnterior)/100;
     
         // Clasificar el consumo
         if ($consumo < 10) {
@@ -217,13 +217,13 @@ class Socio extends CI_Controller
     
         // Lectura Actual y Fecha
         $pdf->Cell(40, 4, 'Lectura Actual:', 0, 0);
-        $pdf->Cell(30, 4, number_format($lecturaActual, 2) . utf8_decode(' m³'), 0, 0);
+        $pdf->Cell(30, 4, $lecturaActual, 0, 0);
         $pdf->Cell(40, 4, 'Fecha Lectura Act:', 0, 0);
         $pdf->Cell(30, 4, date('d-m-Y', $fechaLectura), 0, 1);
     
         // Lectura Anterior y Fecha Anterior
         $pdf->Cell(40, 4, 'Lectura Anterior:', 0, 0);
-        $pdf->Cell(30, 4, number_format($lecturaAnterior, 2) . utf8_decode(' m³'), 0, 0);
+        $pdf->Cell(30, 4, $lecturaAnterior, 0, 0);
         $pdf->Cell(40, 4, 'Fecha Lectura Ant:', 0, 0);
         $pdf->Cell(30, 4, date('d-m-Y', strtotime($avisos[0]['fechaLecturaAnterior'])), 0, 1);
         $pdf->Ln(3);
@@ -244,16 +244,7 @@ class Socio extends CI_Controller
     
         // Tipos de Clasificación
         $pdf->SetFont('Arial', 'I', 7);
-        $pdf->Ln(5);
-
-        // Imprimir cada línea con alineación controlada
-        $pdf->Cell(0, 4, utf8_decode('- Consumo Mínimo: Menor a 10 m³ -> Tarifa mínima'), 0, 1, 'L');
-        $pdf->Cell(0, 4, utf8_decode('- Consumo Moderado: Menor a 20 m³ -> Tarifa vigente'), 0, 1, 'L');
-        $pdf->Cell(0, 4, utf8_decode('- Consumo Estándar: Menor a 30 m³ -> Tarifa vigente'), 0, 1, 'L');
-        $pdf->Cell(0, 4, utf8_decode('- Consumo Elevado: Menor a 40 m³ -> Tarifa vigente'), 0, 1, 'L');
-        $pdf->Cell(0, 4, utf8_decode('- Consumo Muy Elevado: Mayor o igual a 40 m³ -> Tarifa vigente'), 0, 1, 'L');
-
-        $pdf->Ln(5);
+        $pdf->Ln(3);
 
         // Totales con Fecha de Pago o Vencimiento
         $pdf->SetFont('Arial', 'B', 8);
@@ -272,14 +263,24 @@ class Socio extends CI_Controller
             $pdf->Cell(30, 4, 'Bs. ' . number_format($avisos[0]['saldo'], 2), 0, 1);
         }
         $pdf->Ln(5);
+
+        $pdf->SetFont('Arial', '', 8);
+        // Imprimir cada línea con alineación controlada
+        $pdf->Cell(0, 4, utf8_decode('- Consumo Mínimo: Menor a 10 m³ -> Tarifa mínima'), 0, 1, 'L');
+        $pdf->Cell(0, 4, utf8_decode('- Consumo Moderado: Menor a 20 m³ -> Tarifa vigente'), 0, 1, 'L');
+        $pdf->Cell(0, 4, utf8_decode('- Consumo Estándar: Menor a 30 m³ -> Tarifa vigente'), 0, 1, 'L');
+        $pdf->Cell(0, 4, utf8_decode('- Consumo Elevado: Menor a 40 m³ -> Tarifa vigente'), 0, 1, 'L');
+        $pdf->Cell(0, 4, utf8_decode('- Consumo Muy Elevado: Mayor o igual a 40 m³ -> Tarifa vigente'), 0, 1, 'L');
+
+        $pdf->Ln(7);
     
         // Nota al cliente
-        $pdf->SetFont('Arial', 'I', 7);
+        $pdf->SetFont('Arial', 'I', 8);
         $pdf->MultiCell(0, 4, 'Estimad@ Socio: Se le recomienda pagar sus avisos pendientes antes de la fecha de vencimiento.');
-        $pdf->Ln(2);
+        $pdf->Ln(3);
     
         // Pie de página
-        $pdf->SetFont('Arial', '', 7);
+        $pdf->SetFont('Arial', '', 8);
         $pdf->Cell(0, 8, 'AquaReadPro.', 0, 1, 'C');
     
         // Enviar el PDF
@@ -287,28 +288,5 @@ class Socio extends CI_Controller
         header('Content-Disposition: inline; filename="Aviso_Cobranza.pdf"');
         $pdf->Output('I');
     }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
     
 }

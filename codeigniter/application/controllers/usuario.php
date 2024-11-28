@@ -75,9 +75,7 @@ class Usuario extends CI_Controller
 					// $this->load->view('incrustaciones/vistascoloradmin/menusocio');
 					// $this->load->view('panelsocio1.php');
 					// $this->load->view('incrustaciones/vistascoloradmin/footersocios');
-
 					redirect('socio/pagaraviso');//verificar aqui cierre automatico de sesion
-
 				}
 				
 			}

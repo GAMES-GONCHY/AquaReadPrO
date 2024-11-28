@@ -75,12 +75,12 @@
 
 
 <!-- modal para renderizar el comprobante en tamaño real -->
-<div class="modal fade" id="comprobanteModal" tabindex="-1" aria-labelledby="comprobanteModalLabel" aria-hidden="true">
+<div class="modal fade" id="comprobanteModal" tabindex="-1">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="comprobanteModalLabel">Ver Comprobante</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <h5 class="modal-title">Ver Comprobante</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body text-center p-0">
                 <img id="modalComprobanteImage" src="" alt="Comprobante" class="img-fluid" style="max-width: 100%; height: auto;">
@@ -408,14 +408,54 @@
   });
 </script>
 
+<!-- script para eliminar el error generado por el aria-hidden -->
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Elimina aria-hidden de todos los modales al cargar la página
+        document.querySelectorAll('.modal').forEach(modal => {
+            modal.removeAttribute('aria-hidden'); // Eliminar si está presente
+        });
 
-<!-- script para mostrar el comprobante -->
-  <script>
-    function cargarImagenModal(src)
-    {
-        document.getElementById('modalComprobanteImage').src = src;
-    }
-  </script>
+        // Controlar la visibilidad y accesibilidad de los modales
+        document.querySelectorAll('.modal').forEach(modal => {
+            modal.addEventListener('show.bs.modal', function () {
+                // Asegurar que aria-hidden se elimine al mostrar el modal
+                this.removeAttribute('aria-hidden');
+            });
+
+            modal.addEventListener('hidden.bs.modal', function () {
+                // Eliminar también aria-hidden al ocultar para evitar conflictos
+                this.removeAttribute('aria-hidden');
+            });
+        });
+
+        // Detectar si algún script externo intenta añadir aria-hidden
+        const observer = new MutationObserver(mutations => {
+            mutations.forEach(mutation => {
+                if (mutation.attributeName === 'aria-hidden') {
+                    console.warn('aria-hidden modificado en:', mutation.target);
+                    mutation.target.removeAttribute('aria-hidden');
+                }
+            });
+        });
+
+        // Observa los cambios en los atributos de los modales
+        document.querySelectorAll('.modal').forEach(modal => {
+            observer.observe(modal, { attributes: true });
+        });
+    });
+</script>
+
+    <!-- script para mostrar el comprobante -->
+    <script>
+        function cargarImagenModal(src)
+        {
+            document.getElementById('modalComprobanteImage').src = src;
+        }
+    </script>
+
+
+
 
 <script>
   function cargarDetalle(codigoSocio, nombreSocio, mes, consumo, lecturaActual, lecturaAnterior, fechaLectura,

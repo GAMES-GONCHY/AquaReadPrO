@@ -65,7 +65,7 @@ class Avisocobranza_model extends CI_Model
     public function avisos_por_estado_id($estado, $idUsuario)
     {
         $this->db->select('A.fechaVencimiento, A.idAviso, A.estado, A.fechaPago, A.saldo, T.tarifaVigente, T.tarifaMinima, Q.img,
-                (L.lecturaAnterior)/100 AS lecturaAnterior, (L.lecturaActual)/100 AS lecturaActual, L.fechaLectura, 
+                L.lecturaAnterior AS lecturaAnterior, L.lecturaActual AS lecturaActual, L.fechaLectura, 
                 IFNULL((SELECT L2.fechaLectura 
                         FROM lectura L2 
                         INNER JOIN medidor M2 ON L2.idMedidor = M2.idMedidor

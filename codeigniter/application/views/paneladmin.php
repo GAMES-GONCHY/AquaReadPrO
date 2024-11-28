@@ -1,12 +1,5 @@
 <!-- START PAGE CONTENT -->
 		<div id="content" class="app-content">
-
-			<!-- <ol class="breadcrumb float-xl-end">
-				<li class="breadcrumb-item"><a href="javascript:;">Inicio</a></li>
-				<li class="breadcrumb-item active">Reportes</li>
-			</ol> -->
-
-
 			<h1 class="page-header mb-3">Bienvenido 
 				<?php if ($this->session->userdata('rol') == 0) : ?>
 					Socio
@@ -17,14 +10,6 @@
 				<?php endif; ?>
 			</h1>
 
-			<!-- <div class="d-sm-flex align-items-center mb-3">
-				<a href="#" class="btn btn-default me-2 text-truncate" id="daterange-filter">
-					<i class="fa fa-calendar fa-fw text-white-transparent-5 ms-n1"></i>
-					<span>1 Jun 2021 - 7 Jun 2021</span>
-					<b class="caret ms-1 opacity-5"></b>
-				</a>
-				<div class="text-muted fw-bold mt-2 mt-sm-0">Comprarar <span id="daterange-prev-date">24 Mar-30 Apr 2021</span></div>
-			</div> -->
 
 
 			<div class="row">
@@ -82,17 +67,6 @@
 
 			<div class="row" style="display: flex;">
 				<div class="col-xl-6 col-lg-6" style="flex: 1; display: flex; flex-direction: column; color: white;">
-					<!-- GRAFICO PAGOS VS TIEMPO -->
-					<div class="card border-0 mb-3" style="flex: 1; display: flex; flex-direction: column; color: white;">
-						<div class="card-body">
-							<div class="mb-3" style="color: white;"><b>PAGOS VS TIEMPO</b><br><br> [Bs] VS [mes]</div>
-						</div>
-						<div class="card-body p-0" style="flex-grow: 1;">
-							<div id="visitors-line-chart" class="widget-chart-full-width" style="height: 100%;"></div>
-						</div>
-					</div>
-				</div>
-				<div class="col-xl-6 col-lg-6" style="flex: 1; display: flex; flex-direction: column; color: white;">
 					<!-- GRAFICO CONSUMO VS TIEMPO -->
 					<div class="card border-0 mb-3" style="flex: 1; display: flex; flex-direction: column; color: white;">
 						<div class="card-body">
@@ -100,6 +74,17 @@
 						</div>
 						<div class="card-body p-0" style="flex-grow: 1;">
 							<div id="consumoBarChart" class="widget-chart-full-width" style="height: 100%;"></div>
+						</div>
+					</div>
+				</div>
+				<div class="col-xl-6 col-lg-6" style="flex: 1; display: flex; flex-direction: column; color: white;">
+					<!-- GRAFICO PAGOS VS TIEMPO -->
+					<div class="card border-0 mb-3" style="flex: 1; display: flex; flex-direction: column; color: white;">
+						<div class="card-body">
+							<div class="mb-3" style="color: white;"><b>PAGOS VS TIEMPO</b><br><br> [Bs] VS [mes]</div>
+						</div>
+						<div class="card-body p-0" style="flex-grow: 1;">
+							<div id="pagosBarChart" class="widget-chart-full-width" style="height: 100%;"></div>
 						</div>
 					</div>
 				</div>

@@ -42,11 +42,11 @@
   <script src="<?php echo base_url(); ?>coloradmin/assets/plugins/bootstrap-datepicker/dist/js/bootstrap-datepicker.js"></script>
 
   <!-- variable para script dashboard-v31,js -->
-  <script>
+  <!-- <script>
     var obtenerConsumoUrl = '<?php echo base_url("index.php/usuario/obtenerPagosMensual"); ?>';
-  </script>
+  </script> -->
 
-  <script src="<?php echo base_url(); ?>coloradmin/assets/js/demo/dashboard-v31.js"></script>
+  <!-- <script src="<?php echo base_url(); ?>coloradmin/assets/js/demo/dashboard-v31.js"></script> -->
 
 
   <!-- forms validations -->
@@ -182,6 +182,7 @@ $(document).ready(function() {
 });
 </script>
 
+<!-- grafico conusmo vs tiempo -->
 <script>
     document.addEventListener('DOMContentLoaded', async function () {
         try {
@@ -189,21 +190,21 @@ $(document).ready(function() {
             const response = await fetch('<?php echo base_url(); ?>index.php/usuario/obtenerConsumoMensual');
             const data = await response.json();
 
-            // Función para formatear fechas a "MMM YYYY"
+            // Función para formatear fechas a "MMM YYYY" en español
             const formatMonth = (dateString) => {
                 const [year, month] = dateString.split('-'); // Separar año y mes
                 const date = new Date(year, month - 1); // Crear una fecha válida
-                return date.toLocaleString('en-US', { month: 'short', year: 'numeric' }); // Ejemplo: "Oct 2024"
+                return date.toLocaleString('es-ES', { month: 'short', year: 'numeric' }); // Ejemplo: "may. 2024"
             };
 
-            // Procesar los datos
+            // Procesar los datos para consumo
             const categories = data.map(item => formatMonth(item.mes)); // Convertir los meses al formato literal
-            const seriesData = data.map(item => parseFloat(item.total_consumido)); // Extraer los consumos
+            const seriesDataConsumo = data.map(item => parseFloat(item.total_consumido)); // Extraer los consumos
 
-            // Configuración del gráfico
-            var options = {
+            // Configuración del gráfico de área
+            var optionsConsumo = {
                 chart: {
-                    type: 'bar',
+                    type: 'area', // Cambiar a área
                     height: 254,
                     toolbar: {
                         show: false // Deshabilitar el menú
@@ -211,7 +212,7 @@ $(document).ready(function() {
                 },
                 series: [{
                     name: 'Consumo (m3)',
-                    data: seriesData // Usar los datos del modelo
+                    data: seriesDataConsumo // Usar los datos de consumo
                 }],
                 xaxis: {
                     categories: categories, // Usar los meses en formato literal
@@ -244,7 +245,20 @@ $(document).ready(function() {
                         }
                     }
                 },
-                colors: ['#34c38f'], // Color de las barras
+                colors: ['#ff6347'], // Color de la línea y el área
+                stroke: {
+                    curve: 'smooth', // Suavizar la línea
+                    width: 2 // Grosor de la línea
+                },
+                fill: {
+                    type: 'gradient', // Usar relleno con degradado
+                    gradient: {
+                        shadeIntensity: 1,
+                        opacityFrom: 0.7, // Opacidad en la parte superior
+                        opacityTo: 0.2, // Opacidad en la parte inferior
+                        stops: [0, 90, 100]
+                    }
+                },
                 grid: {
                     borderColor: '#444', // Ajustar el color del grid
                 },
@@ -255,20 +269,100 @@ $(document).ready(function() {
                 }
             };
 
-            // Renderizar el gráfico
-            var chart = new ApexCharts(document.querySelector("#consumoBarChart"), options);
-            chart.render();
+            // Renderizar el gráfico de área
+            var chartConsumo = new ApexCharts(document.querySelector("#consumoBarChart"), optionsConsumo);
+            chartConsumo.render();
         } catch (error) {
-            console.error('Error al cargar los datos:', error);
+            console.error('Error al cargar los datos de consumo:', error);
         }
     });
 </script>
 
 
+<!-- grafico pagos vs tiempo -->
+<script>
+    document.addEventListener('DOMContentLoaded', async function () {
+        try {
+            // Obtener los datos del backend
+            const response = await fetch('<?php echo base_url(); ?>index.php/usuario/obtenerPagosMensual');
+            const data = await response.json();
+
+            // Función para formatear fechas a "MMM YYYY"
+            const formatMonth = (dateString) => {
+                const [year, month] = dateString.split('-'); // Separar año y mes
+                const date = new Date(year, month - 1); // Crear una fecha válida
+                return date.toLocaleString('es-ES', { month: 'short', year: 'numeric' }); // Ejemplo: "may. 2024"
+            };
+
+            // Procesar los datos para pagos
+            const categories = data.map(item => formatMonth(item.mes)); // Convertir los meses al formato literal
+            const seriesDataPagos = data.map(item => parseFloat(item.total_pagado)); // Extraer los pagos
+
+            // Configuración del gráfico de barras
+            var optionsPagos = {
+                chart: {
+                    type: 'bar', // Cambiar a barras
+                    height: 254,
+                    toolbar: {
+                        show: false // Deshabilitar el menú
+                    }
+                },
+                series: [{
+                    name: 'Pagos (Bs)',
+                    data: seriesDataPagos // Usar los datos de pagos
+                }],
+                xaxis: {
+                    categories: categories, // Usar los meses en formato literal
+                    labels: {
+                        style: {
+                            colors: '#FFFFFF', // Color blanco para las etiquetas del eje X
+                            fontSize: '12px'
+                        }
+                    },
+                    title: {
+                        text: 'Mes',
+                        style: {
+                            color: '#FFFFFF', // Color blanco para el título del eje X
+                            fontSize: '14px'
+                        }
+                    }
+                },
+                yaxis: {
+                    labels: {
+                        style: {
+                            colors: '#FFFFFF', // Color blanco para las etiquetas del eje Y
+                            fontSize: '12px'
+                        }
+                    },
+                    title: {
+                        text: 'Pagos [Bs]',
+                        style: {
+                            color: '#FFFFFF', // Color blanco para el título del eje Y
+                            fontSize: '14px'
+                        }
+                    }
+                },
+                colors: ['#02bdbd'], // Color de las barras
+                grid: {
+                    borderColor: '#444', // Ajustar el color del grid
+                },
+                legend: {
+                    labels: {
+                        colors: '#FFFFFF', // Color blanco para las etiquetas de la leyenda
+                    }
+                }
+            };
+
+            // Renderizar el gráfico de barras
+            var chartPagos = new ApexCharts(document.querySelector("#pagosBarChart"), optionsPagos);
+            chartPagos.render();
+        } catch (error) {
+            console.error('Error al cargar los datos de pagos:', error);
+        }
+    });
+</script>
 
 
+</body>
 
-
-  </body>
-
-  </html>
+</html>

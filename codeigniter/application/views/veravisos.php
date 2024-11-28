@@ -65,8 +65,8 @@
 								}
 
 								// Calcular el consumo
+								// $consumo = ($aviso['lecturaActual'] - $aviso['lecturaAnterior']);
 								$consumo = round($aviso['lecturaActual'] - $aviso['lecturaAnterior'], 2);
-
 								if($consumo<10)//si el consumo es menor q 10 m3 aplicar tarifado mínimo
 								{
 									$total = $aviso['tarifaMinima'];
@@ -84,7 +84,7 @@
 										<a href="#" class="result-image" style="background-image: url('<?php echo base_url('uploads/qr/' . $qrmax); ?>')" 
 											data-bs-toggle="modal" 
 											data-bs-target="#qrModal" 
-											onclick="cargarImagenModal('<?php echo base_url('uploads/qr/'. $qrmax); ?>', 
+											onclick="cargarImagenModal('<?php echo base_url('uploads/qr/' . $qrmax); ?>', 
 																	'<?php echo $aviso['codigoSocio']; ?>',
 																	'<?php echo $aviso['fechaLectura']; ?>',
 																	<?php echo $aviso['idAviso']; ?>,
@@ -111,8 +111,34 @@
 											Fecha de Vencimiento: <?php echo $aviso['fechaVencimiento']; ?>
 										<?php endif; ?>
 									</h3>
-									<h3 class="desc" style="line-height: 0.5;">
+									<!-- <h3 class="desc" style="line-height: 0.5;">
 										Estado: <?php echo ($aviso['estado'] == 'revision') ? 'Revisión' : ucfirst($aviso['estado']); ?>
+									</h3> -->
+									<?php
+										$estado = $aviso['estado'];
+										$estadoClase = '';
+
+										// Determinar la clase según el estado
+										switch ($aviso['estado']) {
+											case 'pagado':
+												$estadoClase = 'estado-pagado';
+												break;
+											case 'revision':
+												$estadoClase = 'estado-revision';
+												break;
+											case 'rechazado':
+												$estadoClase = 'estado-rechazado';
+												break;
+											case 'enviado':
+												$estadoClase = 'estado-enviado';
+												break;
+											default:
+												$estadoClase = 'estado-vencido';
+												break;
+										}
+									?>
+									<h3 class="desc" style="line-height: 0.5;">
+										Estado: <span class="estado <?php echo $estadoClase; ?>"><?php echo ucfirst($aviso['estado']); ?></span>
 									</h3>
 								</div>
 								<div class="result-price">
@@ -126,8 +152,8 @@
 											'<?php echo $aviso['nombreSocio']; ?>',
 											'<?php echo $mes; ?>',
 											'<?php echo $consumo; ?>',
-											'<?php echo ($aviso['lecturaActual'])*100; ?>',
-											'<?php echo ($aviso['lecturaAnterior'])*100; ?>',
+											'<?php echo ($aviso['lecturaActual']*100); ?>',
+											'<?php echo ($aviso['lecturaAnterior']*100); ?>',
 											'<?php echo $fechaLectura; ?>',
 											'<?php echo $fechaLecturaAnterior; ?>',
 											'<?php echo $aviso['tarifaVigente']; ?>',

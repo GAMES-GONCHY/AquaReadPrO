@@ -31,7 +31,7 @@
                 </a>
               </div>
             </div>
-            <table id="datatable" class="table table-hover table-bordered align-middle">
+            <table id="datatable" class="table table-hover table-striped align-middle">
               <thead>
                 <tr>
                   <th width="1%">No.</th>
@@ -94,7 +94,7 @@
                       echo form_open_multipart("geodatalogger/redireccionar"); // <form>
                       ?>
                         <input type="hidden" name="idSocio" value="<?php echo $row->idUsuario ?>">
-                        <button type="submit" class="btn btn-outline-primary me-1 mb-1">Datalogger</button>
+                        <button type="submit" class="btn btn-outline-lime me-1 mb-1">Datalogger</button>
                       <?php
                       echo form_close(); // </form>
                       ?>

@@ -33,7 +33,7 @@
                 </a>
               </div>
             </div>
-            <table id="datatable" class="table table-striped table-bordered align-middle">
+            <table id="datatable" class="table table-hover table-striped align-middle">
               <thead>
                 <tr>
                   <th width="1%">No.</th>

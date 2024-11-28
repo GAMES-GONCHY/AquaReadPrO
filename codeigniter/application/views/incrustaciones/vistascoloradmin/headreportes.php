@@ -192,19 +192,43 @@
         width: 50px !important; /* Fuerza el ancho reducido en móviles */
     }
 }
- </style>
+  </style>
 
+  <!-- Estilo para cambiar de backgroud -->
+  <style>
+		.app-cover.new-background 
+		{
+			background: 
+			linear-gradient(rgba(0.5, 0.5, 0.5, 0), rgba(0, 0, 0, 0.7)), /* Capa de oscurecimiento */
+			url('<?php echo base_url(); ?>coloradmin/assets/img/login-bg/agua2.png'); /* Nueva imagen */
+			background-size: cover; /* Ajusta la imagen al contenedor */
+			background-position: center; /* Centra la imagen */
+		}
+	</style>
 
+  <!-- stilos para hover de datatables -->
+  <style>
+    /* Estilo base para texto blanco en toda la tabla */
+      .table-striped tbody tr td, 
+      .table-striped thead tr th {
+          color: #ffffff !important; /* Texto blanco */
+      }
+      .table-striped tbody tr {
+          transition: background-color 0.3s ease, color 0.3s ease; /* Transición suave */
+      }
 
-
-
+      .table-striped tbody tr:hover {
+          background-color: #007bff; /* Azul claro */
+          color: #ffffff !important; /* Texto blanco */
+      }
+  </style>
 
 
 </head>
 
 <body>
 
-    <div class="app-cover"></div>
+    <div class="app-cover new-background "></div>
 
 
     <div id="loader" class="app-loader">

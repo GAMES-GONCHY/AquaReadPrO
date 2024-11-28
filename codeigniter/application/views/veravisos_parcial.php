@@ -1,5 +1,5 @@
 <!-- Contenedor de los avisos -->
-<div id="avisos-container">
+			<div id="avisos-container">
 				<div class="result-list">
 					<?php if (!empty($avisos)): ?>
 						<?php foreach ($avisos as $aviso): ?>
@@ -80,8 +80,33 @@
 											Fecha de Vencimiento: <?php echo $aviso['fechaVencimiento']; ?>
 										<?php endif; ?>
 									</h3>
-									<h3 class="desc" style="line-height: 0.5;">
+									<!-- <h3 class="desc" style="line-height: 0.5;">
 										Estado: <?php echo ($aviso['estado'] == 'revision') ? 'Revisión' : ucfirst($aviso['estado']); ?>
+									</h3> -->
+									<?php
+										$estado = $aviso['estado'];
+										$estadoClase = '';
+										// Determinar la clase según el estado
+										switch ($aviso['estado']) {
+											case 'pagado':
+												$estadoClase = 'estado-pagado';
+												break;
+											case 'revision':
+												$estadoClase = 'estado-revision';
+												break;
+											case 'rechazado':
+												$estadoClase = 'estado-rechazado';
+												break;
+											case 'enviado':
+												$estadoClase = 'estado-enviado';
+												break;
+											default:
+												$estadoClase = 'estado-vencido';
+												break;
+										}
+									?>
+									<h3 class="desc" style="line-height: 0.5;">
+										Estado: <span class="estado <?php echo $estadoClase; ?>"><?php echo ucfirst($aviso['estado']); ?></span>
 									</h3>
 								</div>
 								<div class="result-price">

@@ -57,7 +57,7 @@
             </div>
           </div>
           <div class="panel-body">
-              <table id="datatable" class="table table-hover table-bordered align-middle">
+              <table id="datatable" class="table table-hover table-striped align-middle" style="text-align: center;">
                 <thead>
                     <tr>
                         <th width="1%">No.</th>
@@ -113,7 +113,7 @@
                         <!-- <th>Eliminar</th> -->
                     </tr>
                 </tfoot>
-            </table>
+              </table>
 
           </div>
         </div>

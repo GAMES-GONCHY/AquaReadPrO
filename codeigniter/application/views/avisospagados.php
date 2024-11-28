@@ -36,7 +36,7 @@
                             <h4 class="panel-title">Avisos Pagados</h4>
                         </div>
                         <div class="panel-body">
-                            <table id="pendientes" class="table table-hover table-bordered align-middle">
+                            <table id="pendientes" class="table table-hover table-striped align-middle">
                                 <thead>
                                     <tr>
                                         <th>No.</th>

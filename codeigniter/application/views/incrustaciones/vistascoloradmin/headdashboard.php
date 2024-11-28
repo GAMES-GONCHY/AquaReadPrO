@@ -19,6 +19,7 @@
 
 
 
+
     
     <!-- Dashboard / Apecharts -->
     <!-- <link rel="stylesheet" href="<?php echo base_url(); ?>coloradmin/assets/css/transparent/theme/orange.min.css">
@@ -41,13 +42,7 @@
   
 
     
-    <!-- Estilo para cambiar de backgroud -->
-    <style>
-        .app-cover.new-background 
-        {
-            background-image: url('<?php echo base_url(); ?>coloradmin/assets/img/login-bg/login-bg-15.jpg'); /* Nueva imagen */
-        }
-    </style>
+    
     <!-- ESTILOS PARA EL POPOVER -->
     <style>
     .popover-body
@@ -60,12 +55,25 @@
     }
     </style>
 
+    <!-- Estilo para cambiar de backgroud -->
+    <style>
+		.app-cover.new-background 
+		{
+			background: 
+			linear-gradient(rgba(0.5, 0.5, 0.5, 0), rgba(0, 0, 0, 0.7)), /* Capa de oscurecimiento */
+			url('<?php echo base_url(); ?>coloradmin/assets/img/login-bg/agua2.png'); /* Nueva imagen */
+			background-size: cover; /* Ajusta la imagen al contenedor */
+			background-position: center; /* Centra la imagen */
+		}
+	</style>
+
+
 
 </head>
 
 <body>
 
-    <div class="app-cover"></div>
+    <div class="app-cover new-background"></div>
 
 
     <div id="loader" class="app-loader">
