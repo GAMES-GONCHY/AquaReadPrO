@@ -42,7 +42,7 @@
                         </div>
                     </div>
                     
-                    <div class="panel-body">
+                    <div class="panel-body" >
                         <table id="pendientes" class="table table-hover table-striped align-middle">
                             <thead>
                                 <tr>

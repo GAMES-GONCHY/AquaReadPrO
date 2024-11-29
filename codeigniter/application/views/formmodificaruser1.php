@@ -38,7 +38,7 @@
           <br>
 
           <?php if (!empty($info)): ?>
-          <form class="form-horizontal" data-parsley-validate="true" name="demo-form" method="post" action="<?php echo base_url(); ?>index.php/crudusers/modificarbd">
+          <form class="form-horizontal" data-parsley-validate="true" name="demo-form" method="post" action="<?php echo base_url(); ?>index.php/crudusers/modificarbd" style="color: white;">
             <div class="form-group">
               <input type="hidden" class="form-control" name="id" value="<?php echo $info['idUsuario']; ?>">
             </div>

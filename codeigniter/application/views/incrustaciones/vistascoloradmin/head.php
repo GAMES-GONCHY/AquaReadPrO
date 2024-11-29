@@ -358,7 +358,25 @@ div.pt-2 .parsley-errors-list li {
           color: #ffffff !important; /* Texto blanco */
       }
   </style>
+  <!-- estilos hover para los navpills avisos de cobranza-->
+  <style>
+    .nav-pills .nav-link {
+      transition: all 0.3s ease; /* Suaviza el efecto de hover */
+    }
 
+    .nav-pills .nav-link:hover {
+      background-color: #009bff; /* Color de fondo en hover */
+      color: white; /* Color del texto en hover */
+      font-weight: bold; /* Hace el texto más grueso */
+      box-shadow: 0px 4px 6px rgba(0, 123, 255, 0.4); /* Agrega un ligero efecto de sombra */
+      transform: scale(1.05); /* Aumenta ligeramente el tamaño */
+    }
+
+    .nav-pills .nav-link.active {
+      background-color: #006aff; /* Color más oscuro para el activo */
+      color: white; /* Asegura que el texto sea visible */
+    }
+  </style>
 
 </head>
 

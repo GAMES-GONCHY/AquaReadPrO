@@ -45,14 +45,14 @@
             </div>
             
             <div class="form-group row mb-3">
-              <label class="col-lg-4 col-form-label form-label" for="nickname">Nickname :</label>
+              <label class="col-lg-4 col-form-label form-label" for="nickname" style="color: white;">Nickname :</label>
               <div class="col-lg-8">
                 <input class="form-control" type="text" id="nickname" name="nickname" placeholder="Nickname" value="<?php echo $info['nickName']; ?>" readonly />
               </div>
             </div>
           
             <div class="form-group row mb-3">
-              <label class="col-lg-4 col-form-label form-label" for="nombre">Nombre :</label>
+              <label class="col-lg-4 col-form-label form-label" for="nombre" style="color: white;">Nombre :</label>
               <div class="col-lg-8">
                 <!-- <input class="form-control" type="text" id="nombre" name="nombre" placeholder="Nombre" data-parsley-required="true" value="<?php echo $info['nombre']; ?>" /> -->
                 <input class="form-control" type="text" id="nombre" name="nombre" 
@@ -64,20 +64,20 @@
               </div>
             </div>
             <div class="form-group row mb-3">
-              <label class="col-lg-4 col-form-label form-label" for="primerapellido">Primer Apellido :</label>
+              <label class="col-lg-4 col-form-label form-label" for="primerapellido" style="color: white;">Primer Apellido :</label>
               <div class="col-lg-8">
                 <input class="form-control" type="text" id="primerapellido" name="primerapellido" placeholder="Primer Apellido" data-parsley-required="true" value="<?php echo $info['primerApellido']; ?>" />
               </div>
             </div>
             <div class="form-group row mb-3">
-              <label class="col-lg-4 col-form-label form-label" for="segundoapellido">Segundo Apellido :</label>
+              <label class="col-lg-4 col-form-label form-label" for="segundoapellido" style="color: white;">Segundo Apellido :</label>
               <div class="col-lg-8">
                 <input class="form-control" type="text" id="segundoapellido" name="segundoapellido" placeholder="Segundo Apellido" value="<?php echo $info['segundoApellido'] ?>" />
               </div>
             </div>
 
             <div class="form-group row mb-3">
-              <label class="col-lg-4 col-form-label form-label" for="email">Email :</label>
+              <label class="col-lg-4 col-form-label form-label" for="email" style="color: white;">Email :</label>
               <div class="col-lg-8">
                 <!-- <input class="form-control" type="email" id="email" name="email" data-parsley-type="email" placeholder="Email" data-parsley-required="true" value="<?php echo $info['email'] ?>" /> -->
                 <input class="form-control" type="email" id="email" name="email" 
@@ -91,7 +91,7 @@
             </div>
 
             <div class="form-group row mb-3 d-none">
-              <label class="col-lg-4 col-form-label form-label">Tipo usuario :</label>
+              <label class="col-lg-4 col-form-label form-label" style="color: white;">Tipo usuario :</label>
               <div class="col-lg-8">
                 <select class="form-select" id="select-required" name="rol" data-parsley-required="true" style="color: black;">
                   <option value="0" <?php echo ($info['rol'] == 0) ? 'selected' : ''; ?>>SOCIO</option>
@@ -102,7 +102,7 @@
             </div>
 
             <div class="form-group row mb-3">
-              <label class="col-lg-4 col-form-label form-label" for="fono">Fono :</label>
+              <label class="col-lg-4 col-form-label form-label" for="fono" style="color: white;">Fono :</label>
               <div class="col-lg-8">
                 <!-- <input class="form-control" type="number" id="fono" name="fono" data-parsley-type="number" placeholder="Number" data-parsley-required="true" data-parsley-error-message="Este valor no puede estar vacio" value="<?php echo $info['fono'] ?>" /> -->
                 <input class="form-control" type="number" id="fono" name="fono" 
@@ -120,15 +120,15 @@
               </div>
             </div>
             <div class="form-group row mb-3 d-none">
-              <label class="col-lg-4 col-form-label form-label">Genero * :</label>
+              <label class="col-lg-4 col-form-label form-label" style="color: white;">Genero * :</label>
               <div class="col-lg-8 pt-2">
                 <div class="form-check">
                   <input type="radio" class="form-check-input" name="genero" id="radioRequired1" data-parsley-required="true" value="M" <?php echo ($info['sexo'] == 'M') ? 'checked' : ''; ?> />
-                  <label class="form-check-label" for="radioRequired1">Masculino</label>
+                  <label class="form-check-label" for="radioRequired1" style="color: white;">Masculino</label>
                 </div>
                 <div class="form-check mt-2">
                   <input type="radio" class="form-check-input" name="genero" id="radioRequired2" value="F" <?php echo ($info['sexo'] == 'F') ? 'checked' : ''; ?> />
-                  <label class="form-check-label" for="radioRequired2">Femenino</label>
+                  <label class="form-check-label" for="radioRequired2" style="color: white;">Femenino</label>
                 </div>
                 <!-- <div class="form-check mt-2">
                   <input type="radio" class="form-check-input" name="radiorequired" id="radioRequired3" value="key" />
@@ -180,11 +180,11 @@
           <br>
 
           <?php if (!empty($info)): ?>
-          <form class="form-horizontal" data-parsley-validate="true" name="demo-form" method="post" action="<?php echo base_url(); ?>index.php/crudusers/cambiarpassword">
+          <form class="form-horizontal" data-parsley-validate="true" name="demo-form" method="post" action="<?php echo base_url(); ?>index.php/crudusers/cambiarpassword" style="color: white;">
             <div class="form-group">                                                                
               <input type="hidden" class="form-control" name="id" value="<?php echo $info['idUsuario']; ?>">
             </div>
-            <h3 class="text-center">Cambiar contraseña</h3>
+            <h3 class="text-center" style="color: white;">Cambiar contraseña</h3>
             <hr>
             <div class="form-group row mb-3">
               <label class="col-lg-4 col-form-label form-label" for="fono">Contraseña Actual :</label>
