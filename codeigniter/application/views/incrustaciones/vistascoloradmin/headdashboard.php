@@ -55,8 +55,8 @@
     }
     </style>
 
-    <!-- Estilo para cambiar de backgroud -->
-    <style>
+    	<!-- Estilo para cambiar de backgroud -->
+	<style>
 		.app-cover.new-background 
 		{
 			background: 

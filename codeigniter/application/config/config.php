@@ -109,7 +109,7 @@ $config['charset'] = 'UTF-8';
 | setting this variable to TRUE (boolean).  See the user guide for details.
 |
 */
-$config['enable_hooks'] = FALSE;
+$config['enable_hooks'] = TRUE;
 
 /*
 |--------------------------------------------------------------------------
@@ -393,11 +393,13 @@ $config['encryption_key'] = 'Decode';//definicion de una llave de encriptacion
 $config['sess_driver'] = 'files';
 $config['sess_cookie_name'] = 'ci_session';
 $config['sess_samesite'] = 'Lax';
-$config['sess_expiration'] = 1000;//duracion de la sesion
-$config['sess_save_path'] = NULL;
+$config['sess_expiration'] = 900;//duracion de la sesion
+$config['sess_save_path'] = sys_get_temp_dir(); // O una carpeta válida en tu servidor
 $config['sess_match_ip'] = FALSE;
-$config['sess_time_to_update'] = 300;
+$config['sess_time_to_update'] = 0;
 $config['sess_regenerate_destroy'] = FALSE;
+
+
 
 /*
 |--------------------------------------------------------------------------

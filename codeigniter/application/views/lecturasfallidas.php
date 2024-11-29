@@ -50,8 +50,8 @@
                     <td><?php echo $cont; ?></td>
                     <td><?php echo $fallida['codigoMedidor'] !== null ? $fallida['codigoMedidor'] : 'Sin código'; ?></td>
                     <td><?php echo $fallida['codigoDatalogger'] !== null ? $fallida['codigoDatalogger'] : 'Sin código'; ?></td>
-                    <td><?php echo $fallida['socio'] !== null ? $fallida['socio'] : 'Sin nombre'; ?></td>
                     <td><?php echo $fallida['codigoSocio'] !== null ? $fallida['codigoSocio'] : 'Sin código'; ?></td>
+                    <td><?php echo $fallida['socio'] !== null ? $fallida['socio'] : 'Sin nombre'; ?></td>
                     <td><?php echo $fallida['IP'] !== null ? $fallida['IP'] : 'Sin IP'; ?></td>
                     <td><?php echo $fallida['puerto'] !== null ? $fallida['puerto'] : 'Sin puerto'; ?></td>
                   </tr>
