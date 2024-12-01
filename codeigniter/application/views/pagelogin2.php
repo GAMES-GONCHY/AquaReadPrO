@@ -77,7 +77,7 @@
 					</div>
 					<div class="form-floating mb-20px">
 						<input type="password" name="password" class="form-control fs-13px h-45px border-0" placeholder="Password" autocomplete="new-password" />
-						<label for="password" name="password" class="d-flex align-items-center text-gray-300 fs-13px">Password</label>
+						<label for="password" name="password" class="d-flex align-items-center text-gray-300 fs-13px">Contraseña</label>
 					</div>
 					<!-- <div class="form-check mb-20px">
 						<input class="form-check-input border-0" type="checkbox" value="1" id="rememberMe" />
@@ -88,9 +88,9 @@
 					<div class="mb-20px">
 						<button type="submit" class="btn btn-success d-block w-100 h-45px btn-lg">Iniciar sesión</button>
 					</div>
-					<div class="text-gray-400">
+					<!-- <div class="text-gray-400">
 						<h7>No tienes una cuenta aún? Solicita una</h7> <a href="https://mail.google.com/mail/u/0/#inbox:;" class="text-white">aqui.</a>
-					</div>
+					</div> -->
 					<?php
 					echo form_close();
 					?>

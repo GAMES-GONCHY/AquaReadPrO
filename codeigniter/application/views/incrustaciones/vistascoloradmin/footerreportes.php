@@ -906,166 +906,158 @@ $(document).ready(function() {
 });
 </script>
 
-
-<!-- configuracion del tipo reporte ranking -->
+<!-- script para generar pdf reportes -->
 <script>
+  // Función para habilitar o deshabilitar el botón según los datos en la tabla
+  function toggleGenerarPDFButton() {
+    const tableBody = document.querySelector('#datatable tbody'); // Selecciona el cuerpo de la tabla
+    const rows = tableBody.querySelectorAll('tr'); // Obtén las filas de la tabla
+    const generarPDFBtn = document.getElementById('generarPDFBtn'); // Botón Generar PDF
 
-</script>
+    // Verifica si hay filas en la tabla y si no incluye "Ningún dato disponible"
+    if (rows.length > 0 && !tableBody.innerText.includes('Ningún dato disponible')) {
+      generarPDFBtn.disabled = false; // Habilitar botón
+    } else {
+      generarPDFBtn.disabled = true; // Deshabilitar botón
+    }
+  }
 
+  // Ejecutar la función al cargar la página
+  document.addEventListener('DOMContentLoaded', function () {
+    toggleGenerarPDFButton();
 
+    // Si usas DataTables, actualiza el estado del botón cuando la tabla cambie
+    $('#datatable').on('draw.dt', function () {
+      toggleGenerarPDFButton();
+    });
+  });
 
-
-
-
-
-
-<!-- script para generar pdf -->
-<script>
-  document.getElementById('generarPDFBtn').addEventListener('click', function () {
-
-      // Obtener los valores de los parámetros
-      const codigoSocio = document.getElementById('codigoSocioSeleccionado').value;
-      const socio = document.getElementById('nombreSocioSeleccionado').value;
-      const idMembresia = document.getElementById('idMembresiaSeleccionado').value;
-      const nombreSocio = document.getElementById('nombreSocioSeleccionado').value;
-
-      console.log('codigo Seleccionado:', codigoSocio);
-      console.log('idMembresia Seleccionado:', idMembresia);
-
-      const fechaInicio = document.getElementById('fechaInicio').value;
-      const fechaFin = document.getElementById('fechaFin').value;
-      const tipoReporte = window.tipoReporte;
-
-      // Variable para almacenar la opción de "ranking" seleccionada
-      let opcionRanking = document.getElementById('opcionesRanking').value;
-      
-
-      console.log('opcion ranking:', opcionRanking);
-
-      let mes = null;
-      let anio = null;
-
-      // Determinar la función a usar para cada tipo de reporte
-      let funcion;
-      if (tipoReporte == 'pagos')
-      {
-        funcion = 'generar_pdf_pago';
-      }
-      else if (tipoReporte == 'consumos')
-      {
-        funcion = 'generar_pdf_consumo';
-      }
-      else if (tipoReporte == 'avisos')
-      {
-        funcion = 'generar_pdf_avisos';
-      }
-      else if (tipoReporte == 'ranking')
-      {
-        funcion = 'generar_pdf_ranking';
-        
-        if (opcionRanking === 'MENSUAL')
-        {
-            mes = document.getElementById('monthPicker').value;
-            anio = document.getElementById('yearPicker').value;
-        }
-        else if (opcionRanking === 'ANUAL')
-        {
-            anio = document.getElementById('yearPicker').value;
-        }
-      }
-      else
-      {
-        //alert('Tipo de reporte no reconocido.');
-        $.gritter.add({
-          title: 'Configure el reporte antes de generar el pdf',
-          sticky: false,
-          time: 2000,
-          class_name: 'my-sticky-class gritter-light',
-          before_open: function(){ },
-          after_open: function(e){ },
-          before_close: function(manual_close) { },
-          after_close: function(manual_close){ } 
-        });
-        return;
-      }
-
-      console.log('Tipo de reporte:', tipoReporte); // Log para depuración
-      
-
-      // Validación de datos según el tipo de reporte
-      if (['pagos', 'consumos'].includes(tipoReporte) && (!codigoSocio || !fechaInicio || !fechaFin || !idMembresia || !tipoReporte)) {
-          //alert('Por favor, configura el reporte para generar el PDF.');
-          $.gritter.add({
-          title: 'Por favor, complete los campos y seleccione un socio',
-          sticky: false,
-          time: 2000,
-          class_name: 'my-sticky-class gritter-dark',
-          before_open: function(){ },
-          after_open: function(e){ },
-          before_close: function(manual_close) { },
-          after_close: function(manual_close){ } 
-        });
-          return;
-      } else if (tipoReporte == 'avisos' && (!fechaInicio || !fechaFin)) {
-          //alert('Por favor, selecciona el rango de fechas para el reporte de ' + tipoReporte + '.');
-            $.gritter.add({
-            title: 'Por favor, seleccione el rango de fechas',
-            sticky: false,
-            time: 2000,
-            class_name: 'my-sticky-class gritter-dark',
-            before_open: function(){ },
-            after_open: function(e){ },
-            before_close: function(manual_close) { },
-            after_close: function(manual_close){ } 
-          });
-          return;
-      } else if (tipoReporte == 'ranking' && opcionRanking !== 'GLOBAL' && (!anio || (opcionRanking === 'MENSUAL' && !mes))) {
-          $.gritter.add({
-            title: 'Por favor, complete los datos necesarios para el reporte ranking.',
-            sticky: false,
-            time: 2000,
-            class_name: 'my-sticky-class gritter-dark'
-          });
-          return;
-      }
-
-      // Crear un formulario en JavaScript
-      const form = document.createElement('form');
-      form.method = 'POST';
-      form.action = '<?php echo base_url('index.php/reporte/'); ?>' + funcion;
-      form.target = '_blank';
-
-      // Crear inputs ocultos para enviar los datos
-      const inputs = [
-          { name: 'codigoSocio', value:  (tipoReporte == 'ranking') ? '' : codigoSocio },
-          { name: 'socio', value: (tipoReporte == 'ranking') ? '' : socio },
-          { name: 'idMembresia', value: (tipoReporte == 'ranking') ? '' : idMembresia },
-          { name: 'fechaInicio', value: (tipoReporte == 'ranking') ? '' : fechaInicio },
-          { name: 'fechaFin', value: (tipoReporte == 'ranking') ? '' : fechaFin },
-          { name: 'tipoReporte', value: tipoReporte },
-          { name: 'mes', value: mes },
-          { name: 'anio', value: anio },
-          { name: 'opcionRanking', value: opcionRanking }
-      ];
-      inputs.forEach(inputData => {
-          const input = document.createElement('input');
-          input.type = 'hidden';
-          input.name = inputData.name;
-          input.value = inputData.value;
-          form.appendChild(input);
+  // Evento para el botón de generar PDF
+  document.getElementById('generarPDFBtn').addEventListener('click', function (e) {
+    // Verificar si el botón está deshabilitado (por seguridad adicional)
+    if (this.disabled) {
+      e.preventDefault(); // Bloquear la acción por completo
+      $.gritter.add({
+        title: 'Configure el reporte antes de generar el pdf',
+        sticky: false,
+        time: 2000,
+        class_name: 'my-sticky-class gritter-light',
       });
+      return;
+    }
 
-      // Agregar el formulario al documento y enviarlo
-      document.body.appendChild(form);
-      form.submit();
+    // Obtener los valores de los parámetros
+    const codigoSocio = document.getElementById('codigoSocioSeleccionado').value;
+    const socio = document.getElementById('nombreSocioSeleccionado').value;
+    const idMembresia = document.getElementById('idMembresiaSeleccionado').value;
+    const nombreSocio = document.getElementById('nombreSocioSeleccionado').value;
 
-      // Eliminar el formulario después de enviarlo
-      document.body.removeChild(form);
+    console.log('codigo Seleccionado:', codigoSocio);
+    console.log('idMembresia Seleccionado:', idMembresia);
 
-      // Vaciar los valores de los inputs ocultos después de enviar el formulario
+    const fechaInicio = document.getElementById('fechaInicio').value;
+    const fechaFin = document.getElementById('fechaFin').value;
+    const tipoReporte = window.tipoReporte;
 
+    // Variable para almacenar la opción de "ranking" seleccionada
+    let opcionRanking = document.getElementById('opcionesRanking').value;
+
+    console.log('opcion ranking:', opcionRanking);
+
+    let mes = null;
+    let anio = null;
+
+    // Determinar la función a usar para cada tipo de reporte
+    let funcion;
+    if (tipoReporte == 'pagos') {
+      funcion = 'generar_pdf_pago';
+    } else if (tipoReporte == 'consumos') {
+      funcion = 'generar_pdf_consumo';
+    } else if (tipoReporte == 'avisos') {
+      funcion = 'generar_pdf_avisos';
+    } else if (tipoReporte == 'ranking') {
+      funcion = 'generar_pdf_ranking';
+
+      if (opcionRanking === 'MENSUAL') {
+        mes = document.getElementById('monthPicker').value;
+        anio = document.getElementById('yearPicker').value;
+      } else if (opcionRanking === 'ANUAL') {
+        anio = document.getElementById('yearPicker').value;
+      }
+    } else {
+      $.gritter.add({
+        title: 'Configure el reporte antes de generar el pdf',
+        sticky: false,
+        time: 2000,
+        class_name: 'my-sticky-class gritter-light',
+      });
+      return;
+    }
+
+    console.log('Tipo de reporte:', tipoReporte); // Log para depuración
+
+    // Validación de datos según el tipo de reporte
+    if (['pagos', 'consumos'].includes(tipoReporte) && (!codigoSocio || !fechaInicio || !fechaFin || !idMembresia || !tipoReporte)) {
+      $.gritter.add({
+        title: 'Por favor, complete los campos y seleccione un socio',
+        sticky: false,
+        time: 2000,
+        class_name: 'my-sticky-class gritter-dark',
+      });
+      return;
+    } else if (tipoReporte == 'avisos' && (!fechaInicio || !fechaFin)) {
+      $.gritter.add({
+        title: 'Por favor, seleccione el rango de fechas',
+        sticky: false,
+        time: 2000,
+        class_name: 'my-sticky-class gritter-dark',
+      });
+      return;
+    } else if (tipoReporte == 'ranking' && opcionRanking !== 'GLOBAL' && (!anio || (opcionRanking === 'MENSUAL' && !mes))) {
+      $.gritter.add({
+        title: 'Por favor, complete los datos necesarios para el reporte ranking.',
+        sticky: false,
+        time: 2000,
+        class_name: 'my-sticky-class gritter-dark',
+      });
+      return;
+    }
+
+    // Crear un formulario en JavaScript
+    const form = document.createElement('form');
+    form.method = 'POST';
+    form.action = '<?php echo base_url('index.php/reporte/'); ?>' + funcion;
+    form.target = '_blank';
+
+    // Crear inputs ocultos para enviar los datos
+    const inputs = [
+      { name: 'codigoSocio', value: (tipoReporte == 'ranking') ? '' : codigoSocio },
+      { name: 'socio', value: (tipoReporte == 'ranking') ? '' : socio },
+      { name: 'idMembresia', value: (tipoReporte == 'ranking') ? '' : idMembresia },
+      { name: 'fechaInicio', value: (tipoReporte == 'ranking') ? '' : fechaInicio },
+      { name: 'fechaFin', value: (tipoReporte == 'ranking') ? '' : fechaFin },
+      { name: 'tipoReporte', value: tipoReporte },
+      { name: 'mes', value: mes },
+      { name: 'anio', value: anio },
+      { name: 'opcionRanking', value: opcionRanking },
+    ];
+    inputs.forEach(inputData => {
+      const input = document.createElement('input');
+      input.type = 'hidden';
+      input.name = inputData.name;
+      input.value = inputData.value;
+      form.appendChild(input);
+    });
+
+    // Agregar el formulario al documento y enviarlo
+    document.body.appendChild(form);
+    form.submit();
+
+    // Eliminar el formulario después de enviarlo
+    document.body.removeChild(form);
   });
 </script>
+
 
 <!-- para escribir sobre la tarjeta de avisos vencidos -->
 <script>

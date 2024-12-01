@@ -109,20 +109,36 @@ class Socio extends CI_Controller
     }
     public function generarPdfAviso()
     {
-        $idUsuario = $this->input->post('idUsuario');
+        $codigoSocio = $this->input->post('codigoSocio');
+        $nombreSocio = $this->input->post('nombreSocio');
+        $codigoMedidor = $this->input->post('codigoMedidor');
+        
+        $codigoDatalogger = $this->input->post('codigoDatalogger');
+        $lecturaActual = $this->input->post('lecturaActual');
+        $lecturaAnterior = $this->input->post('lecturaAnterior');
+        $fechaLectura = $this->input->post('fechaLectura');
+        $fechaLecturaAnterior = $this->input->post('fechaLecturaAnterior');
+
+        $tarifaVigente = $this->input->post('tarifaVigente');
+        $tarifaMinima = $this->input->post('tarifaMinima');
+        $fechaVencimiento = $this->input->post('fechaVencimiento');
+
         $estado = $this->input->post('estado');
+        $fechaPago = $this->input->post('fechaPago');
+        $saldo = $this->input->post('saldo');
+
     
-        if (!$idUsuario || !$estado) {
-            show_error('Datos incompletos.', 400);
-            return;
-        }
+        // if (!$idUsuario || !$estado) {
+        //     show_error('Datos incompletos.', 400);
+        //     return;
+        // }
     
-        $avisos = $this->avisocobranza_model->avisos_por_estado_id($estado, $idUsuario);
+        // $avisos = $this->avisocobranza_model->avisos_por_estado_id($estado, $idUsuario);
     
-        if (empty($avisos)) {
-            show_error('No se encontraron avisos.', 404);
-            return;
-        }
+        // if (empty($avisos)) {
+        //     show_error('No se encontraron avisos.', 404);
+        //     return;
+        // }
     
         require_once APPPATH . 'third_party/FPDF_Extended.php';
     
@@ -133,7 +149,7 @@ class Socio extends CI_Controller
         (($estado == 'pagado') ? 'Recibo' : 'Aviso de Cobranza')));
     
         // Calcular el período
-        $fechaLectura = strtotime($avisos[0]['fechaLectura']);
+        $fechaLectura = strtotime($fechaLectura);
         $mes = date('F', $fechaLectura);
         $mesEspañol = [
             'January' => 'Enero', 'February' => 'Febrero', 'March' => 'Marzo',
@@ -146,26 +162,24 @@ class Socio extends CI_Controller
         $periodo = "Periodo: $mesFormateado - $año";
     
         // Calcular el consumo
-        $lecturaActual = $avisos[0]['lecturaActual'];
-        $lecturaAnterior = $avisos[0]['lecturaAnterior'];
         $consumo = ($lecturaActual - $lecturaAnterior)/100;
     
         // Clasificar el consumo
         if ($consumo < 10) {
             $clasificacionConsumo = utf8_decode("Consumo Mínimo");
-            $totalPagar = $avisos[0]['tarifaMinima'];
+            $totalPagar = $tarifaMinima;
         } elseif ($consumo < 20) {
-            $clasificacionConsumo = "Consumo Moderado";
-            $totalPagar = $consumo * $avisos[0]['tarifaVigente'];
+            $clasificacionConsumo = utf8_decode("Consumo Moderado");
+            $totalPagar = $consumo * $tarifaVigente;
         } elseif ($consumo < 30) {
-            $clasificacionConsumo = "Consumo Estándar";
-            $totalPagar = $consumo * $avisos[0]['tarifaVigente'];
+            $clasificacionConsumo = utf8_decode("Consumo Estándar");
+            $totalPagar = $consumo * $tarifaVigente;
         } elseif ($consumo < 40) {
             $clasificacionConsumo = "Consumo Elevado";
-            $totalPagar = $consumo * $avisos[0]['tarifaVigente'];
+            $totalPagar = $consumo * $tarifaVigente;
         } else {
             $clasificacionConsumo = "Consumo Muy Elevado";
-            $totalPagar = $consumo * $avisos[0]['tarifaVigente'];
+            $totalPagar = $consumo * $tarifaVigente;
         }
     
         // Crear el PDF
@@ -203,16 +217,16 @@ class Socio extends CI_Controller
         // Datos del cliente
         $pdf->SetFont('Arial', '', 8);
         $pdf->Cell(30, 4, 'NOMBRE:', 0, 0);
-        $pdf->Cell(60, 4, $avisos[0]['nombreSocio'], 0, 1);
+        $pdf->Cell(60, 4, $nombreSocio, 0, 1);
 
         $pdf->Cell(30, 4, utf8_decode('COD. SOCIO:'), 0, 0);
-        $pdf->Cell(60, 4, $avisos[0]['codigoSocio'], 0, 1);
+        $pdf->Cell(60, 4, $codigoSocio, 0, 1);
     
         $pdf->Cell(30, 4, 'COD. MEDIDOR:', 0, 0);
-        $pdf->Cell(60, 4, $avisos[0]['codigoMedidor'], 0, 1);
+        $pdf->Cell(60, 4, $codigoMedidor, 0, 1);
 
         $pdf->Cell(30, 4, 'COD. DATALOGGER:', 0, 0);
-        $pdf->Cell(60, 4, $avisos[0]['codigoDatalogger'], 0, 1);
+        $pdf->Cell(60, 4, $codigoDatalogger, 0, 1);
         $pdf->Ln(3);
     
         // Lectura Actual y Fecha
@@ -225,7 +239,7 @@ class Socio extends CI_Controller
         $pdf->Cell(40, 4, 'Lectura Anterior:', 0, 0);
         $pdf->Cell(30, 4, $lecturaAnterior, 0, 0);
         $pdf->Cell(40, 4, 'Fecha Lectura Ant:', 0, 0);
-        $pdf->Cell(30, 4, date('d-m-Y', strtotime($avisos[0]['fechaLecturaAnterior'])), 0, 1);
+        $pdf->Cell(30, 4, date('d-m-Y', strtotime($fechaLecturaAnterior)), 0, 1);
         $pdf->Ln(3);
     
         // Consumo y Clasificación
@@ -237,9 +251,9 @@ class Socio extends CI_Controller
         // Tarifas
         $pdf->SetFont('Arial', '', 8);
         $pdf->Cell(40, 4, 'Tarifa Vigente:', 0, 0);
-        $pdf->Cell(30, 4, 'Bs. ' . number_format($avisos[0]['tarifaVigente'], 2), 0, 0);
+        $pdf->Cell(30, 4, 'Bs. ' . number_format($tarifaVigente, 2), 0, 0);
         $pdf->Cell(40, 4, 'Tarifa Minima:', 0, 0);
-        $pdf->Cell(30, 4, 'Bs. ' . number_format($avisos[0]['tarifaMinima'], 2), 0, 1);
+        $pdf->Cell(30, 4, 'Bs. ' . number_format($tarifaMinima, 2), 0, 1);
         $pdf->Ln(2);
     
         // Tipos de Clasificación
@@ -252,15 +266,15 @@ class Socio extends CI_Controller
         $pdf->Cell(30, 4, 'Bs. ' . number_format($totalPagar, 2), 0, 0);
         if ($estado == 'pagado') {
             $pdf->Cell(40, 4, 'Fecha de Pago:', 0, 0);
-            $pdf->Cell(30, 4, date('d-m-Y', strtotime($avisos[0]['fechaPago'])), 0, 1);
+            $pdf->Cell(30, 4, date('d-m-Y', strtotime($fechaPago)), 0, 1);
         } else {
             $pdf->Cell(40, 4, 'Fecha de Vencimiento:', 0, 0);
-            $pdf->Cell(30, 4, date('d-m-Y', strtotime($avisos[0]['fechaVencimiento'])), 0, 1);
+            $pdf->Cell(30, 4, date('d-m-Y', strtotime($fechaVencimiento)), 0, 1);
         }
         // Agregar saldo si el estado es 'rechazado' y el saldo no es null o 0
-        if ($estado == 'rechazado' && (!is_null($avisos[0]['saldo']) || $avisos[0]['saldo'] != 0)) {
+        if ($estado == 'rechazado' && (!is_null($saldo) || $saldo != 0)) {
             $pdf->Cell(40, 4, 'Saldo:', 0, 0);
-            $pdf->Cell(30, 4, 'Bs. ' . number_format($avisos[0]['saldo'], 2), 0, 1);
+            $pdf->Cell(30, 4, 'Bs. ' . number_format($saldo, 2), 0, 1);
         }
         $pdf->Ln(5);
 

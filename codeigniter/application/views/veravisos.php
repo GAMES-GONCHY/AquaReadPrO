@@ -66,7 +66,7 @@
 
 								// Calcular el consumo
 								// $consumo = ($aviso['lecturaActual'] - $aviso['lecturaAnterior']);
-								$consumo = round($aviso['lecturaActual'] - $aviso['lecturaAnterior'], 2);
+								$consumo = round($aviso['lecturaActual']/100 - $aviso['lecturaAnterior']/100, 2);
 								if($consumo<10)//si el consumo es menor q 10 m3 aplicar tarifado mínimo
 								{
 									$total = $aviso['tarifaMinima'];
@@ -101,14 +101,14 @@
 								<div class="result-info">
 									<h3 class="desc" style="line-height: 0.5;">Periodo: <?php echo $mes.'-'.$anio; ?></h3>
 									<h3 class="desc" style="line-height: 0.5;">Consumo: <?php echo $consumo; ?> m³</h3>
-									<h3 class="desc" style="line-height: 0.5;">Tarifa Vigente: <?php echo $aviso['tarifaVigente']; ?></h3>
+									<h3 class="desc" style="line-height: 0.5;">Tarifa Vigente: <?php echo $aviso['tarifaVigente']; ?> Bs.</h3>
 
 									<!-- <h4 class="desc" style="line-height: 1.2;">Fecha Vencimiento: <?php echo $aviso['fechaVencimiento']; ?></h4> -->
 									<h3 class="desc" style="line-height: 0.5;">
 										<?php if ($aviso['estado'] == 'pagado'): ?>
-											Fecha de Pago: <?php echo date('Y-m-d', strtotime($aviso['fechaPago'])); ?>
+											Fecha de Pago: <?php echo date('d-m-Y', strtotime($aviso['fechaPago'])); ?>
 										<?php else: ?>
-											Fecha de Vencimiento: <?php echo $aviso['fechaVencimiento']; ?>
+											Fecha de Vencimiento: <?php echo date('d-m-Y', strtotime($aviso['fechaVencimiento'])); ?>
 										<?php endif; ?>
 									</h3>
 									<!-- <h3 class="desc" style="line-height: 0.5;">
@@ -168,7 +168,20 @@
 									<button 
 										type="button" 
 										class="table-booking btn btn-yellow d-block w-100" 
-										onclick="generarPDF('<?php echo $aviso['idUsuario']; ?>', '<?php echo $aviso['estado']; ?>')">
+										onclick="generarPDF('<?php echo $aviso['codigoSocio']; ?>',
+															'<?php echo $aviso['nombreSocio']; ?>',
+															'<?php echo $aviso['codigoMedidor']; ?>',
+															'<?php echo $aviso['codigoDatalogger']; ?>',
+															'<?php echo $aviso['lecturaActual']; ?>',
+															'<?php echo $aviso['lecturaAnterior']; ?>',
+															'<?php echo $aviso['fechaLectura']; ?>',
+															'<?php echo $aviso['fechaLecturaAnterior']; ?>',
+															'<?php echo $aviso['tarifaVigente']; ?>',
+															'<?php echo $aviso['tarifaMinima']; ?>',
+															'<?php echo $aviso['fechaVencimiento']; ?>',
+															'<?php echo $aviso['estado']; ?>',
+															'<?php echo $aviso['fechaPago']; ?>',
+															<?php echo $aviso['saldo']; ?>)">
 										Ver Detalle
 									</button>
 								</div>

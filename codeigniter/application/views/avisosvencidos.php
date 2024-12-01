@@ -68,7 +68,7 @@
                                         'December' => 'Diciembre'
                                     ];
                                     foreach ($vencidos as $vencido) {
-                                        $consumo = $vencido['lecturaActual'] - $vencido['lecturaAnterior'];
+                                        $consumo = round(($vencido['lecturaActual'] - $vencido['lecturaAnterior']),2);
 
                                         if($consumo<10)//si el consumo es menor q 10 m3 aplicar tarifado mínimo
                                         {

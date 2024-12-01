@@ -502,36 +502,55 @@ $(document).ready(function() {
 
 
 <script>
-function generarPDF(idUsuario, estado) {
-    console.log("Generando PDF...");
-    console.log("Datos enviados: ", { idUsuario, estado });
+    function generarPDF(codigoSocio, nombreSocio, codigoMedidor, codigoDatalogger, lecturaActual, lecturaAnterior, fechaLectura, fechaLecturaAnterior, tarifaVigente, tarifaMinima, fechaVencimiento, estado, fechaPago, saldo)
+    {
+        console.log("Generando PDF...");
+        //console.log("Datos enviados: ", { idUsuario, estado });
 
-    // Enviar datos al backend mediante fetch
-    fetch('<?php echo base_url('index.php/socio/generarPdfAviso'); ?>', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-        },
-        body: `idUsuario=${idUsuario}&estado=${estado}`
-    })
-    .then(response => {
-        if (!response.ok) {
-            throw new Error(`Error al generar el PDF: ${response.status} ${response.statusText}`);
-        }
-        return response.blob(); // Recibir el PDF como blob
-    })
-    .then(blob => {
-        // Crear una URL temporal para el PDF
-        const pdfUrl = window.URL.createObjectURL(blob);
+        // Crear el cuerpo de la solicitud en formato x-www-form-urlencoded
+        const body = new URLSearchParams({
+            codigoSocio,
+            nombreSocio,
+            codigoMedidor,
+            codigoDatalogger,
+            lecturaActual,
+            lecturaAnterior,
+            fechaLectura,
+            fechaLecturaAnterior,
+            tarifaVigente,
+            tarifaMinima,
+            fechaVencimiento,
+            estado,
+            fechaPago,
+            saldo
+        }).toString();
 
-        // Abrir el PDF en una nueva pestaña
-        window.open(pdfUrl, '_blank');
-    })
-    .catch(error => {
-        console.error('Error:', error);
-        alert('Hubo un problema al generar el PDF.');
-    });
-}
+        // Enviar datos al backend mediante fetch
+        fetch('<?php echo base_url('index.php/socio/generarPdfAviso'); ?>', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: body
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`Error al generar el PDF: ${response.status} ${response.statusText}`);
+            }
+            return response.blob(); // Recibir el PDF como blob
+        })
+        .then(blob => {
+            // Crear una URL temporal para el PDF
+            const pdfUrl = window.URL.createObjectURL(blob);
+
+            // Abrir el PDF en una nueva pestaña
+            window.open(pdfUrl, '_blank');
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Hubo un problema al generar el PDF.');
+        });
+    }
 </script>
 
 
