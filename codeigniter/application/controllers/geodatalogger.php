@@ -3,13 +3,16 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 class Geodatalogger extends CI_Controller
 {
-	public function geolocalizar()
+    public function redireccionar()
 	{
-		$data['dataloggers'] = $this->datalogger_model->habilitados()->result_array();
+        $idSocio = $this->input->post('idSocio'); 
+        redirect('geodatalogger/geolocalizar/' . $idSocio);
+    }
+	public function geolocalizar($idSocio)
+	{
+		$data['dataloggers'] = $this->datalogger_model->nuevos_y_habilitados()->result_array();
         $data['medidores'] = $this->medidor_model->habilitados()->result_array();
 
-        $idSocio = $this->input->post('idSocio');
-        
         $idMembresia = $this->membresia_model->membresia($idSocio);
         
 
@@ -20,9 +23,6 @@ class Geodatalogger extends CI_Controller
         $data['medidores'] = json_encode($data['medidores']);
         $data['idMembresia'] = json_encode($data['idMembresia']);
 
-
-        
-        
 		$this->load->view('incrustaciones/vistascoloradmin/headmap');
 		$this->load->view('incrustaciones/vistascoloradmin/menuadmin');
         $this->load->view('geomap');
@@ -31,7 +31,7 @@ class Geodatalogger extends CI_Controller
 	}
     public function visualizar()
 	{
-		$data['dataloggers'] = $this->datalogger_model->habilitados()->result_array();
+		$data['dataloggers'] = $this->datalogger_model->nuevos_y_habilitados()->result_array();
         $data['medidores'] = $this->medidor_model->habilitados()->result_array();
 
         $idMembresia = $this->session->userdata('idMembresia');
@@ -88,7 +88,7 @@ class Geodatalogger extends CI_Controller
             log_message('error', 'Error en la inserción de datalogger: ' . json_encode($error));
             // echo json_encode(['status' => 'error', 'message' => $error]);
         }
-        redirect('geodatalogger/geolocalizar');
+        //redirect('geodatalogger/geolocalizar');
     }
     public function asignarcodigodatalogger($idDatalogger)
     {
@@ -228,7 +228,7 @@ class Geodatalogger extends CI_Controller
             return;
         }
 
-        $result = $this->medidor_model->modificar($idMedidor, $data);        
+        $result = $this->medidor_model->modificar_ubicacion_medidor($idMedidor, $data);        
         if ($result) 
         {
             echo json_encode(['status' => 'success']);

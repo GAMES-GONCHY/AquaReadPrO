@@ -6,7 +6,7 @@
       <div class="d-inline-flex" style="gap: 0;">
         <div class="card text-center shadow-sm" style="width: 8rem; margin: 0;"> <!-- Reduce el ancho aquí -->
           <div class="card-body" style="padding: 5px;"> <!-- Reduce el padding aquí -->
-            <a href="javascript:history.back();" class="text-info text-decoration-none hover-atras" style="display: block; padding: 5px; border-radius: 8px; transition: 0.3s;">
+            <a href="<?php echo base_url(); ?>index.php/lecturadl/actualizarlecturas/0" class="text-info text-decoration-none hover-atras" style="display: block; padding: 5px; border-radius: 8px; transition: 0.3s;">
               <i class="fas fa-arrow-left fa-1x mb-1"></i><br> <!-- Reduce el tamaño del icono -->
               <span class="h6" style="font-size: 0.8rem;">Atrás</span> <!-- Ajusta el tamaño del texto -->
             </a>
@@ -29,14 +29,16 @@
             </div>
           </div>
           <div class="panel-body">
-            <table id="datatable" class="table table-hover table-bordered align-middle">
+            <table id="datatable" class="table table-hover table-striped align-middle">
               <thead>
                 <tr>
                   <th>No.</th>
+                  <th>Cod. Medidor</th>
+                  <th>Cod. Datalogger</th>
+                  <th>Cod. Socio </th>
+                  <th>Socio</th>
                   <th>IP</th>
-                  <th>Código Medidor</th>
                   <th>Puerto</th>
-                  <th>Código Datalogger</th>
                 </tr>
               </thead>
               <tbody id="lecturas-body">
@@ -46,10 +48,12 @@
                 ?>
                   <tr>
                     <td><?php echo $cont; ?></td>
-                    <td><?php echo $fallida['IP'] !== null ? $fallida['IP'] : 'sin IP'; ?></td>
-                    <td><?php echo $fallida['puerto'] !== null ? $fallida['puerto'] : 'sin puerto'; ?></td>
-                    <td><?php echo $fallida['codigoMedidor'] !== null ? $fallida['codigoMedidor'] : 'sin código'; ?></td>
-                    <td><?php echo $fallida['codigoDatalogger'] !== null ? $fallida['codigoDatalogger'] : 'sin código'; ?></td>
+                    <td><?php echo $fallida['codigoMedidor'] !== null ? $fallida['codigoMedidor'] : 'Sin código'; ?></td>
+                    <td><?php echo $fallida['codigoDatalogger'] !== null ? $fallida['codigoDatalogger'] : 'Sin código'; ?></td>
+                    <td><?php echo $fallida['codigoSocio'] !== null ? $fallida['codigoSocio'] : 'Sin código'; ?></td>
+                    <td><?php echo $fallida['socio'] !== null ? $fallida['socio'] : 'Sin nombre'; ?></td>
+                    <td><?php echo $fallida['IP'] !== null ? $fallida['IP'] : 'Sin IP'; ?></td>
+                    <td><?php echo $fallida['puerto'] !== null ? $fallida['puerto'] : 'Sin puerto'; ?></td>
                   </tr>
                 <?php
                   $cont++;
@@ -59,10 +63,12 @@
               <tfoot>
                 <tr>
                   <th>No.</th>
+                  <th>Cod. Medidor</th>
+                  <th>Cod. Datalogger</th>
+                  <th>Cod. Socio </th>
+                  <th>Socio</th>
                   <th>IP</th>
-                  <th>Código Medidor</th>
                   <th>Puerto</th>
-                  <th>Código Datalogger</th>
                 </tr>
               </tfoot>
             </table>

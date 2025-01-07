@@ -517,4 +517,3 @@ function updateMedidorMarkerPosition(medidorMarker)
         }
     });
 }
-

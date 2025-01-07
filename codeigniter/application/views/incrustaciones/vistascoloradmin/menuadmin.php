@@ -1,5 +1,5 @@
 <div class="navbar-header">
-    <a href="index.html" class="navbar-brand">
+    <a href="#" class="navbar-brand">
         <span class="navbar-logo"></span> <b>Aqua</b>ReadPro <img src="<?php echo base_url(); ?>coloradmin/assets/img/logo/logomenu.png" alt="" width="50" />
     </a>
     
@@ -12,77 +12,6 @@
 
 
 <div class="navbar-nav">
-    <!-- <div class="navbar-item navbar-form">
-        <form action="" method="POST" name="search">
-            <div class="form-group">
-                <input type="text" class="form-control" placeholder="Buscar" />
-                <button type="submit" class="btn btn-search"><i class="fa fa-search"></i></button>
-            </div>
-        </form>
-    </div> -->
-    <div class="navbar-item dropdown">
-        <a href="#" data-bs-toggle="dropdown" class="navbar-link dropdown-toggle icon">
-            <i class="fa fa-bell"></i>
-            <span class="badge">5</span>
-        </a>
-        <div class="dropdown-menu media-list dropdown-menu-end">
-            <div class="dropdown-header">NOTIFICACIONES (5)</div>
-            <a href="javascript:;" class="dropdown-item media">
-                <div class="media-left">
-                    <i class="fa fa-bug media-object bg-gray-500"></i>
-                </div>
-                <div class="media-body">
-                    <h6 class="media-heading">Errores de servidor <i class="fa fa-exclamation-circle text-danger"></i></h6>
-                    <div class="text-muted fs-10px">hace 3 minutos</div>
-                </div>
-            </a>
-            <a href="javascript:;" class="dropdown-item media">
-                <div class="media-left">
-                <img src="<?php echo base_url('uploads/usersphoto/' . $this->session->userdata('foto')); ?>" onerror="this.onerror=null; this.src='<?php echo base_url('uploads/usersphoto/perfil.jpg'); ?>';" width="50" height="50">
-                    <i class="fab fa-facebook-messenger text-blue media-object-icon"></i>
-                </div>
-                <div class="media-body">
-                    <h6 class="media-heading">John Smith</h6>
-                    <p>Quisque pulvinar tellus sit amet sem scelerisque tincidunt.</p>
-                    <div class="text-muted fs-10px">25 minutes ago</div>
-                </div>
-            </a>
-            <a href="javascript:;" class="dropdown-item media">
-                <div class="media-left">
-                <img src="<?php echo base_url('uploads/usersphoto/' . $this->session->userdata('foto')); ?>" onerror="this.onerror=null; this.src='<?php echo base_url('uploads/usersphoto/perfil.jpg'); ?>';" width="50" height="50">
-                    <i class="fab fa-facebook-messenger text-blue media-object-icon"></i>
-                </div>
-                <div class="media-body">
-                    <h6 class="media-heading">Olivia</h6>
-                    <p>Quisque pulvinar tellus sit amet sem scelerisque tincidunt.</p>
-                    <div class="text-muted fs-10px">35 minutes ago</div>
-                </div>
-            </a>
-            <a href="javascript:;" class="dropdown-item media">
-                <div class="media-left">
-                    <i class="fa fa-plus media-object bg-gray-500"></i>
-                </div>
-                <div class="media-body">
-                    <h6 class="media-heading"> New User Registered</h6>
-                    <div class="text-muted fs-10px">1 hour ago</div>
-                </div>
-            </a>
-            <a href="javascript:;" class="dropdown-item media">
-                <div class="media-left">
-                    <i class="fa fa-envelope media-object bg-gray-500"></i>
-                    <i class="fab fa-google text-warning media-object-icon fs-14px"></i>
-                </div>
-                <div class="media-body">
-                    <h6 class="media-heading"> New Email From John</h6>
-                    <div class="text-muted fs-10px">2 hour ago</div>
-                </div>
-            </a>
-
-            <div class="dropdown-footer text-center">
-                <a href="javascript:;" class="text-decoration-none">View more</a>
-            </div>
-        </div>
-    </div>
     <div class="navbar-item navbar-user dropdown">
         <a href="#" class="navbar-link dropdown-toggle d-flex align-items-center" data-bs-toggle="dropdown">
         <img src="<?php echo base_url('uploads/usersphoto/' . $this->session->userdata('foto')); ?>" onerror="this.onerror=null; this.src='<?php echo base_url('uploads/usersphoto/perfil.jpg'); ?>';" width="50" height="50">
@@ -93,14 +22,18 @@
         </a>
         <div class="dropdown-menu dropdown-menu-end me-1">
             <a href="<?php echo base_url(); ?>index.php/crudusers/editarperfil" class="dropdown-item">Editar Perfil</a>
-            <a href="javascript:;" class="dropdown-item"><span class="badge bg-danger float-end rounded-pill">3</span> Mensajes</a>
+            <!-- <a href="javascript:;" class="dropdown-item"><span class="badge bg-danger float-end rounded-pill">3</span> Mensajes</a>
             <a href="javascript:;" class="dropdown-item">Calendario</a>
-            <a href="javascript:;" class="dropdown-item">Configuraciones</a>
+            <a href="javascript:;" class="dropdown-item">Configuraciones</a> -->
             <div class="dropdown-divider"></div>
 
             <a href="javascript:;" id="showAlert" data-bs-toggle="modal" data-bs-target="#modal-dialog" class="dropdown-item">Cerrar sesion</a>
         </div>
     </div>
+    
+    
+
+
 </div>
 
 </div>
@@ -124,7 +57,7 @@
                             <div class="flex-grow-1">
                                 <?php echo ($this->session->userdata('nombre')) . " " . $this->session->userdata('primerApellido') . " " . $this->session->userdata('segundoApellido'); ?>
                             </div>
-                            <div class="menu-caret ms-auto"></div>
+                            <div class="menu ms-auto"></div>
                         </div>
                         <small>
                             <?php if ($this->session->userdata('rol') == 0) : ?>
@@ -138,7 +71,7 @@
                     </div>
                 </a>
             </div>
-            <div id="appSidebarProfileMenu" class="collapse">
+            <!-- <div id="appSidebarProfileMenu" class="collapse">
                 <div class="menu-item pt-5px">
                     <a href="javascript:;" class="menu-link">
                         <div class="menu-icon"><i class="fa fa-cog"></i></div>
@@ -158,30 +91,39 @@
                     </a>
                 </div>
                 <div class="menu-divider m-0"></div>
-            </div>
+            </div> -->
 
-            <div class="menu-header">Navigation</div>
+            <div class="menu-header">Menú de navegación</div>
 
             <!-- Reportes -->
-            <div class="menu-item has-sub <?php echo ($this->uri->segment(2) === 'panel') ? 'active' : ''; ?>">
+            <div class="menu-item has-sub <?php echo ($this->uri->segment(1) === 'usuario' || $this->uri->segment(1) === 'reporte') ? 'active' : ''; ?>">
                 <a href="javascript:;" class="menu-link">
                     <div class="menu-icon"><i class="fa fa-th-large"></i></div>
                     <div class="menu-text">Reportes</div>
                     <div class="menu-caret"></div>
                 </a>
                 <div class="menu-submenu">
-                    <div class="menu-item <?php echo ($this->uri->segment(2) === 'panel') ? 'active' : ''; ?>">
+                    <!-- Submenú de Dashboard para 'usuario/panel' -->
+                    <div class="menu-item <?php echo ($this->uri->segment(1) === 'usuario' && $this->uri->segment(2) === 'panel') ? 'active' : ''; ?>">
                         <a href="<?php echo base_url('index.php/usuario/panel'); ?>" class="menu-link">
-                            <div class="menu-text">Ver Reportes</div>
+                            <div class="menu-text">Dashboard</div>
+                        </a>
+                    </div>
+
+                    <!-- Submenú de Reportes para 'reporte/historialpagos' -->
+                    <div class="menu-item <?php echo ($this->uri->segment(1) === 'reporte' && $this->uri->segment(2) === 'historialpagos') ? 'active' : ''; ?>">
+                        <a href="<?php echo base_url('index.php/reporte/historialpagos'); ?>" class="menu-link">
+                            <div class="menu-text">Generar Reportes</div>
                         </a>
                     </div>
                 </div>
             </div>
 
+
            <!-- Usuarios -->
             <div class="menu-item has-sub <?php echo ($this->uri->segment(1) === 'crudusers' && $this->uri->segment(2) === 'habilitados') ? 'active' : ''; ?>">
                 <a href="javascript:;" class="menu-link">
-                    <div class="menu-icon"><i class="fa fa-table"></i></div>
+                    <div class="menu-icon"><i class="fa fa-users"></i></div>
                     <div class="menu-text">Usuarios</div>
                     <div class="menu-caret"></div>
                 </a>
@@ -206,7 +148,7 @@
             <!-- Geolocalización -->
             <div class="menu-item has-sub <?php echo ($this->uri->segment(1) === 'geodatalogger') ? 'active' : ''; ?>">
                 <a href="javascript:;" class="menu-link">
-                    <div class="menu-icon"><i class="fa fa-map"></i></div>
+                    <div class="menu-icon"><i class="fa fa-map-marker"></i></div>
                     <div class="menu-text">Geolocalización</div>
                     <div class="menu-caret"></div>
                 </a>
@@ -218,11 +160,46 @@
                     </div>
                 </div>
             </div>
+            
+            <!-- Dispositivos -->
+            <div class="menu-item <?php echo ($this->uri->segment(1) === 'datalogger' && $this->uri->segment(2) === 'habilitados') ? 'active' : ''; ?>">
+                <a href="<?php echo base_url('index.php/datalogger/habilitados'); ?>" class="menu-link">
+                    <div class="menu-icon"><i class="fa fa-microchip"></i></div>
+                    <div class="menu-text">Datalogger</div>
+                </a>
+            </div>
 
+            <div class="menu-item <?php echo ($this->uri->segment(1) === 'medidor' && $this->uri->segment(2) === 'habilitados') ? 'active' : ''; ?>">
+                <a href="<?php echo base_url('index.php/medidor/habilitados'); ?>" class="menu-link">
+                    <div class="menu-icon"><i class="fa fa-tachometer-alt"></i></div>
+
+                    <div class="menu-text">Medidores</div>
+                </a>
+            </div>
+
+            <!-- Tarifa -->
+            <div class="menu-item has-sub <?php echo ($this->uri->segment(1) === 'tarifa') ? 'active' : ''; ?>">
+                <a href="javascript:;" class="menu-link">
+                    <div class="menu-icon"><i class="fa fa-dollar-sign"></i></div>
+
+
+                    <div class="menu-text">Tarifas</div>
+                    <div class="menu-caret"></div>
+                </a>
+                <div class="menu-submenu">
+                    <div class="menu-item <?php echo ($this->uri->segment(2) === 'habilitados') ? 'active' : ''; ?>">
+                        <a href="<?php echo base_url('index.php/tarifa/habilitados'); ?>" class="menu-link">
+                            <div class="menu-text">Historial de tarifas</div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
             <!-- Lecturas -->
             <div class="menu-item has-sub <?php echo ($this->uri->segment(1) === 'lecturadl') ? 'active' : ''; ?>">
                 <a href="javascript:;" class="menu-link">
-                    <div class="menu-icon"><i class="fa fa-list-ol"></i></div>
+                    <!-- <div class="menu-icon"><i class="fa fa-list-ol"></i></div> -->
+                    <div class="menu-icon"><i class="fa fa-broadcast-tower"></i></div>
                     <div class="menu-text">Lecturas</div>
                     <div class="menu-caret"></div>
                 </a>
@@ -243,41 +220,11 @@
                 </div>
             </div>
 
-            <!-- Dispositivos -->
-            <div class="menu-item <?php echo ($this->uri->segment(1) === 'datalogger' && $this->uri->segment(2) === 'habilitados') ? 'active' : ''; ?>">
-                <a href="<?php echo base_url('index.php/datalogger/habilitados'); ?>" class="menu-link">
-                    <div class="menu-icon"><i class="fa fa-gift"></i></div>
-                    <div class="menu-text">Datalogger</div>
-                </a>
-            </div>
-
-            <div class="menu-item <?php echo ($this->uri->segment(1) === 'medidor' && $this->uri->segment(2) === 'habilitados') ? 'active' : ''; ?>">
-                <a href="<?php echo base_url('index.php/medidor/habilitados'); ?>" class="menu-link">
-                    <div class="menu-icon"><i class="fab fa-simplybuilt"></i></div>
-                    <div class="menu-text">Medidores</div>
-                </a>
-            </div>
-            
-            <!-- Tarifa -->
-            <div class="menu-item has-sub <?php echo ($this->uri->segment(1) === 'tarifa') ? 'active' : ''; ?>">
-                <a href="javascript:;" class="menu-link">
-                    <div class="menu-icon"><i class="fa fa-envelope"></i></div>
-                    <div class="menu-text">Tarifas</div>
-                    <div class="menu-caret"></div>
-                </a>
-                <div class="menu-submenu">
-                    <div class="menu-item <?php echo ($this->uri->segment(2) === 'habilitados') ? 'active' : ''; ?>">
-                        <a href="<?php echo base_url('index.php/tarifa/habilitados'); ?>" class="menu-link">
-                            <div class="menu-text">Historial de tarifas</div>
-                        </a>
-                    </div>
-                </div>
-            </div>
-
             <!-- Avisos de Cobranza -->
             <div class="menu-item has-sub <?php echo ($this->uri->segment(1) === 'avisocobranza') ? 'active' : ''; ?>">
                 <a href="javascript:;" class="menu-link">
-                    <div class="menu-icon"><i class="fa fa-envelope"></i></div>
+                    <div class="menu-icon"><i class="fa fa-file-invoice"></i></div>
+
                     <div class="menu-text">Avisos de cobranza</div>
                     <div class="menu-caret"></div>
                 </a>

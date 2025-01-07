@@ -16,13 +16,17 @@
   <link href="<?php echo base_url(); ?>coloradmin/assets/css/transparent/app.min.css" rel="stylesheet" />
 
 
-<!-- Estilo para cambiar de backgroud -->
-<style>
-	.app-cover.new-background 
-	{
-		background-image: url('<?php echo base_url(); ?>coloradmin/assets/img/login-bg/login-bg-15.jpg'); /* Nueva imagen */
-	}
-</style>
+    <!-- Estilo para cambiar de backgroud -->
+    <style>
+        .app-cover.new-background 
+        {
+            background: 
+            linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 1)), /* Capa de oscurecimiento */
+            url('<?php echo base_url(); ?>coloradmin/assets/img/login-bg/fondo3.jpg'); /* Nueva imagen */
+            background-size: cover; /* Ajusta la imagen al contenedor */
+            background-position: center; /* Centra la imagen */
+        }
+    </style>
 
 <!-- stilos para modal -->
 <style>
@@ -87,12 +91,61 @@
 }
 </style>
 
+<!-- colores de fondo para los estados en la vista de avisos de cobranza del socio -->
+<style>
+.estado {
+    color: white; /* Texto blanco por defecto */
+    display: inline; /* Fondo ajustado únicamente al texto */
+    padding: 2px 4px; /* Espaciado preciso */
+    border-radius: 3px; /* Bordes ligeramente redondeados */
+    font-weight: bold; /* Texto en negrita */
+    line-height: 1; /* Alineación perfecta con el texto */
+}
+
+.estado-pagado {
+    background-color: #28a745; /* Verde para pagado */
+    color: white;
+}
+
+.estado-revision {
+    background-color: #ffc107; /* Amarillo para revisión */
+    color: #343a40;
+}
+
+.estado-rechazado {
+    background-color: #dc3545; /* Rojo para rechazado */
+    color: white;
+}
+
+.estado-vencido {
+    background-color: #343a40; /* Gris más oscuro */
+    color: white;
+}
+
+.estado-enviado {
+    background-color: #28a745; /* Verde */
+    color: white;
+}
+
+</style>
+
+<!-- Estilo para cambiar de backgroud -->
+<style>
+		.app-cover.new-background 
+		{
+			background: 
+			linear-gradient(rgba(0.5, 0.5, 0.5, 0), rgba(0, 0, 0, 0.7)), /* Capa de oscurecimiento */
+			url('<?php echo base_url(); ?>coloradmin/assets/img/login-bg/agua2.png'); /* Nueva imagen */
+			background-size: cover; /* Ajusta la imagen al contenedor */
+			background-position: center; /* Centra la imagen */
+		}
+	</style>
 
 </head>
 
 <body>
 
-	<div class="app-cover"></div>
+	<div class="app-cover new-background"></div>
 
 
 	<div id="loader" class="app-loader">

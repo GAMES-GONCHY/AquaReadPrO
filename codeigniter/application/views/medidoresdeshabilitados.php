@@ -1,12 +1,12 @@
 <!-- START CONTENT PAGE -->
 <div id="content" class="app-content">
 
-  <ol class="breadcrumb float-xl-end">
+  <!-- <ol class="breadcrumb float-xl-end">
     <li class="breadcrumb-item"><a href="javascript:;">Home</a></li>
     <li class="breadcrumb-item"><a href="javascript:;">Tables</a></li>
     <li class="breadcrumb-item"><a href="javascript:;">Managed Tables</a></li>
     <li class="breadcrumb-item active">Extension Combination</li>
-  </ol>
+  </ol> -->
 
   <h1 class="page-header">Medidores</h1>
 
@@ -32,14 +32,15 @@
               </div>
               
             </div>
-            <table id="datatable" class="table table-hover table-bordered align-middle">
+            <table id="datatable" class="table table-hover table-striped align-middle">
               <thead>
                 <tr>
                   <th width="1%">No.</th>
-                  <th>Latitud</th>
-                  <th>Longitud</th>
-                  <th>Fecha instalación</th>
+                  <th>Cod. Medidor</th>
+                  <th>Cod. Datalogger</th>
                   <th>Cod. Socio</th>
+                  <th>Socio</th>
+                  <th>Fecha Registro</th>
                   <th>Habilitar</th>
                 </tr>
               </thead>
@@ -48,21 +49,19 @@
                 $cont = 1;
                 foreach ($medidor->result() as $row) {
                 ?>
-                  <tr>
+                  <tr data-id="<?php echo $row->idMedidor; ?>">
                     <td><?php echo $cont; ?></td>
-                    <td><?php echo $row->latitud; ?></td>
-                    <td><?php echo $row->longitud; ?></td>
+                    <td><?php echo $row->codigoMedidor; ?></td>
+                    <td><?php echo $row->codigoDatalogger; ?></td>
+                    <td><?php echo $row->codigoSocio; ?></td>
+                    <td><?php echo $row->nombreSocio; ?></td>
                     <td><?php echo $row->fechaRegistro; ?></td>
-                    <td><?php echo $row->idMembresia; ?></td>
                     <td>
-                      <?php
-                      echo form_open_multipart("medidor/habilitarbd"); // <form>
-                      ?>
-                      <input type="hidden" name="id" value="<?php echo $row->idMedidor ?>">
-                      <button type="submit" class="btn btn-indigo me-1 mb-1">Restaurar</button>
-                      <?php
-                      echo form_close(); // </form>
-                      ?>
+                      <div class="d-flex justify-content-center align-items-center">
+                          <button class="btn btn-success btn-sm mx-1" onclick="habilitarMedidor('<?php echo $row->idMedidor; ?>')">
+                            <i class="fas fa-redo"></i>
+                          </button>
+                      </div>
                     </td>
                   </tr>
                 <?php
@@ -73,10 +72,11 @@
               <tfoot>
                 <tr>
                   <th width="1%">No.</th>
-                  <th>Latitud</th>
-                  <th>Longitud</th>
-                  <th>Fecha instalación</th>
+                  <th>Cod. Medidor</th>
+                  <th>Cod. Datalogger</th>
                   <th>Cod. Socio</th>
+                  <th>Socio</th>
+                  <th>Fecha Registro</th>
                   <th>Habilitar</th>
                 </tr>
               </tfoot>

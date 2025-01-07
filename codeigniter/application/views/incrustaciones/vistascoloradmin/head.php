@@ -19,7 +19,6 @@
     <!-- Gritter CSS -->
     <link href="<?php echo base_url(); ?>coloradmin/assets/plugins/gritter/css/jquery.gritter.css" rel="stylesheet" />
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 
 
 
@@ -34,19 +33,8 @@
     <link href="<?php echo base_url(); ?>coloradmin/assets/plugins/datatables.net-select-bs4/css/select.bootstrap4.min.css" rel="stylesheet" />
 
 
-    <!-- Dashboard / Apecharts -->
-    <!-- <link rel="stylesheet" href="<?php echo base_url(); ?>coloradmin/assets/css/transparent/theme/orange.min.css">
-    <link rel="stylesheet" href="<?php echo base_url(); ?>coloradmin/assets/css/transparent/theme/lime.min.css">
-    <link rel="stylesheet" href="<?php echo base_url(); ?>coloradmin/assets/css/transparent/theme/teal.min.css">
-    <link rel="stylesheet" href="<?php echo base_url(); ?>coloradmin/assets/css/transparent/theme/cyan.min.css">
-    <link rel="stylesheet" href="<?php echo base_url(); ?>coloradmin/assets/css/transparent/theme/red.min.css">
-    <link rel="stylesheet" href="<?php echo base_url(); ?>coloradmin/assets/css/transparent/theme/pink.min.css">
-    <link rel="stylesheet" href="<?php echo base_url(); ?>coloradmin/assets/css/transparent/theme/yellow.min.css">
-    <link rel="stylesheet" href="<?php echo base_url(); ?>coloradmin/assets/css/transparent/theme/green.min.css">
-    <link rel="stylesheet" href="<?php echo base_url(); ?>coloradmin/assets/css/transparent/theme/purple.min.css">
-    <link rel="stylesheet" href="<?php echo base_url(); ?>coloradmin/assets/css/transparent/theme/indigo.min.css">
-    <link rel="stylesheet" href="<?php echo base_url(); ?>coloradmin/assets/css/transparent/theme/black.min.css">
-    <link rel="stylesheet" href="<?php echo base_url(); ?>coloradmin/assets/css/transparent/theme/blue.min.css"> -->
+
+    
     <link href="<?php echo base_url(); ?>coloradmin/assets/plugins/jvectormap-next/jquery-jvectormap.css" rel="stylesheet" />
     <link href="<?php echo base_url(); ?>coloradmin/assets/plugins/nvd3/build/nv.d3.css" rel="stylesheet" />
     <link href="<?php echo base_url(); ?>coloradmin/assets/plugins/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet" />
@@ -59,18 +47,17 @@
     <!-- Panel Socio -->
     <link href="<?php echo base_url(); ?>coloradmin/assets/plugins/superbox/superbox.min.css" rel="stylesheet" />
     <link href="<?php echo base_url(); ?>coloradmin/assets/plugins/lity/dist/lity.min.css" rel="stylesheet" />
+
+    <!-- toast -->
+    <link href="<?php echo base_url(); ?>coloradmin/assets/plugins/toastr/toastr.min.css" rel="stylesheet"/>
     
-    <!-- switches -->
-    <link href="<?php echo base_url(); ?>coloradmin/assets/plugins/switchery/dist/switchery.min.css" rel="stylesheet" />
+    <!-- sweet alert2 CDN -->
+    <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css"> -->
     
 
     
   <!-- Estilo para cambiar de backgroud -->
   <style>
-      .app-cover.new-background 
-      {
-          background-image: url('<?php echo base_url(); ?>coloradmin/assets/img/login-bg/login-bg-15.jpg'); /* Nueva imagen */
-      }
               /* Aplicar a todos los modales */
       .modal {
           z-index: auto !important; /* Revertir cualquier cambio de z-index */  
@@ -130,7 +117,7 @@ body.modal-open {
 
 <style>
   .modal-backdrop {
-    background-color: transparent !important; /* Elimina el color de fondo oscuro */
+    background-color: transparent !important; 
 }
 </style>
 
@@ -298,12 +285,104 @@ ul li {
 }
 
 </style>
+<!-- estilos de mensajes de error validaciones -->
+<style>
+div.pt-2 .parsley-errors-list li {
+    color: red !important;
+}
+</style>
+
+<!-- boton de configuraciones datalogger y modal -->
+<style>
+.btn-black:hover {
+    background-color: #b08d57; /* Dorado suave */
+    color: white;
+}
+
+.modern-input {
+    background-color: #f9fbfd;
+    border: none;
+    border-bottom: 2px solid #ced4da;
+    border-radius: 8px;
+    padding: 15px;
+    font-size: 1rem;
+    color: #495057;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease-in-out;
+}
+
+.modern-input:focus {
+    background-color: #ffffff;
+    border-color: #007bff;
+    outline: none;
+    box-shadow: 0px 4px 12px rgba(0, 123, 255, 0.2);
+}
+
+.form-floating label {
+    font-size: 0.9rem;
+    color: #6c757d;
+    padding-left: 8px;
+    transition: all 0.3s ease;
+}
+
+.modern-input:focus ~ label {
+    color: #007bff;
+}
+</style>
+
+	<!-- Estilo para cambiar de backgroud -->
+	<style>
+		.app-cover.new-background 
+		{
+			background: 
+			linear-gradient(rgba(0.5, 0.5, 0.5, 0), rgba(0, 0, 0, 0.7)), /* Capa de oscurecimiento */
+			url('<?php echo base_url(); ?>coloradmin/assets/img/login-bg/agua2.png'); /* Nueva imagen */
+			background-size: cover; /* Ajusta la imagen al contenedor */
+			background-position: center; /* Centra la imagen */
+		}
+	</style>
+
+  <!-- stilos para hover de datatables -->
+  <style>
+    /* Estilo base para texto blanco en toda la tabla */
+      .table-striped tbody tr td, 
+      .table-striped thead tr th {
+          color: #ffffff !important; /* Texto blanco */
+      }
+      .table-striped tbody tr {
+          transition: background-color 0.3s ease, color 0.3s ease; /* Transición suave */
+      }
+
+      .table-striped tbody tr:hover {
+          background-color: #007bff; /* Azul claro */
+          color: #ffffff !important; /* Texto blanco */
+      }
+  </style>
+  <!-- estilos hover para los navpills avisos de cobranza-->
+  <style>
+    .nav-pills .nav-link {
+      transition: all 0.3s ease; /* Suaviza el efecto de hover */
+    }
+
+    .nav-pills .nav-link:hover {
+      background-color: #009bff; /* Color de fondo en hover */
+      color: white; /* Color del texto en hover */
+      font-weight: bold; /* Hace el texto más grueso */
+      box-shadow: 0px 4px 6px rgba(0, 123, 255, 0.4); /* Agrega un ligero efecto de sombra */
+      transform: scale(1.05); /* Aumenta ligeramente el tamaño */
+    }
+
+    .nav-pills .nav-link.active {
+      background-color: #006aff; /* Color más oscuro para el activo */
+      color: white; /* Asegura que el texto sea visible */
+    }
+  </style>
 
 </head>
 
 <body>
 
-    <div class="app-cover"></div>
+    <div class="app-cover new-background"></div>
 
 
     <div id="loader" class="app-loader">

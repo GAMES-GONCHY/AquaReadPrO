@@ -12,14 +12,14 @@
 
     <div class="navbar-nav">
         <div class="navbar-item navbar-form">
-            <form action="" method="POST" name="search">
+            <!-- <form action="" method="POST" name="search">
                 <div class="form-group">
                     <input type="text" class="form-control" placeholder="Buscar" />
                     <button type="submit" class="btn btn-search"><i class="fa fa-search"></i></button>
                 </div>
-            </form>
+            </form> -->
         </div>
-        <div class="navbar-item dropdown">
+        <!-- <div class="navbar-item dropdown">
             <a href="#" data-bs-toggle="dropdown" class="navbar-link dropdown-toggle icon">
                 <i class="fa fa-bell"></i>
                 <span class="badge">5</span>
@@ -81,7 +81,7 @@
                     <a href="javascript:;" class="text-decoration-none">View more</a>
                 </div>
             </div>
-        </div>
+        </div> -->
         <div class="navbar-item navbar-user dropdown">
             <a href="#" class="navbar-link dropdown-toggle d-flex align-items-center" data-bs-toggle="dropdown">
             <img src="<?php echo base_url('uploads/usersphoto/' . $this->session->userdata('foto')); ?>" onerror="this.onerror=null; this.src='<?php echo base_url('uploads/usersphoto/perfil.jpg'); ?>';">
@@ -91,10 +91,10 @@
                 </span>
             </a>
             <div class="dropdown-menu dropdown-menu-end me-1">
-                <a href="javascript:;" class="dropdown-item">Editar Perfil</a>
-                <a href="javascript:;" class="dropdown-item"><span class="badge bg-danger float-end rounded-pill">3</span> Mesanjes</a>
+                <!-- <a href="javascript:;" class="dropdown-item">Editar Perfil</a> -->
+                <!-- <a href="javascript:;" class="dropdown-item"><span class="badge bg-danger float-end rounded-pill">3</span> Mesanjes</a>
                 <a href="javascript:;" class="dropdown-item">Calendario</a>
-                <a href="javascript:;" class="dropdown-item">Configuraciones</a>
+                <a href="javascript:;" class="dropdown-item">Configuraciones</a> -->
                 <div class="dropdown-divider"></div>
 
                 <a href="javascript:;" id="showAlert" data-bs-toggle="modal" data-bs-target="#modal-dialog" class="dropdown-item">Cerrar sesion</a>
@@ -128,7 +128,7 @@
                             <div class="flex-grow-1">
                                 <?php echo ($this->session->userdata('nombre')) . " " . $this->session->userdata('primerApellido') . " " . $this->session->userdata('segundoApellido'); ?>
                             </div>
-                            <div class="menu-caret ms-auto"></div>
+                            <div class="menu ms-auto"></div>
                         </div>
                         <small>
                             Socio
@@ -136,7 +136,7 @@
                     </div>
                 </a>
             </div>
-            <div id="appSidebarProfileMenu" class="collapse">
+            <!-- <div id="appSidebarProfileMenu" class="collapse">
                 <div class="menu-item pt-5px">
                     <a href="javascript:;" class="menu-link">
                         <div class="menu-icon"><i class="fa fa-cog"></i></div>
@@ -156,10 +156,10 @@
                     </a>
                 </div>
                 <div class="menu-divider m-0"></div>
-            </div>
-            <div class="menu-header">Navigation</div>
+            </div> -->
+            <div class="menu-header">Menú de navegación</div>
 
-            <div class="menu-item has-sub active">
+            <!-- <div class="menu-item has-sub active">
                 <a href="javascript:;" class="menu-link">
                     <div class="menu-icon">
                         <i class="fa fa-th-large"></i>
@@ -174,8 +174,8 @@
                         </a>
                     </div>
                 </div>
-            </div>
-            <div class="menu-item has-sub">
+            </div> -->
+            <!-- <div class="menu-item has-sub">
                 <a href="javascript:;" class="menu-link">
                     <div class="menu-icon">
                         <i class="fa fa-map"></i>
@@ -195,7 +195,7 @@
                         </a>
                     </div>
                 </div>
-            </div>
+            </div> -->
 
             <!-- Avisos de Cobranza -->
             <div class="menu-item has-sub <?php echo ($this->uri->segment(1) === 'socio') ? 'active' : ''; ?>">

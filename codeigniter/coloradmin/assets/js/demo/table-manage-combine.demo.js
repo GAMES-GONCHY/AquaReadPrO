@@ -11,19 +11,37 @@ var handleDataTableCombinationSetting = function() {
 	if ($('#datatable').length !== 0) {
 		var options = {
 			dom: '<"dataTables_wrapper dt-bootstrap"<"row"<"col-xl-7 d-block d-sm-flex d-xl-block justify-content-center"<"d-block d-lg-inline-flex me-0 me-md-3"l><"d-block d-lg-inline-flex"B>><"col-xl-5 d-flex d-xl-block justify-content-center"fr>>t<"row"<"col-md-5"i><"col-md-7"p>>>',
-			buttons: [
-				{ extend: 'copy', className: 'btn-sm' },
-				{ extend: 'csv', className: 'btn-sm' },
-				{ extend: 'excel', className: 'btn-sm' },
-				{ extend: 'pdf', className: 'btn-sm' },
-				{ extend: 'print', className: 'btn-sm' }
-			],
+			buttons: [],
 			responsive: true,
 			colReorder: true,
-			autoWidth: false, // <--- Añadir esta línea
+			autoWidth: false,
 			keys: true,
 			rowReorder: true,
-			select: true
+			select: true,
+			language: {
+				"sProcessing":     "Procesando...",
+				"sLengthMenu":     "Mostrar _MENU_ registros",
+				"sZeroRecords":    "No se encontraron resultados",
+				"sEmptyTable":     "Ningún dato disponible en esta tabla",
+				"sInfo":           "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+				"sInfoEmpty":      "Mostrando registros del 0 al 0 de un total de 0 registros",
+				"sInfoFiltered":   "(filtrado de un total de _MAX_ registros)",
+				"sInfoPostFix":    "",
+				"sSearch":         "Buscar:",
+				"sUrl":            "",
+				"sInfoThousands":  ",",
+				"sLoadingRecords": "Cargando...",
+				"oPaginate": {
+					"sFirst":    "Primero",
+					"sLast":     "Último",
+					"sNext":     "Siguiente",
+					"sPrevious": "Anterior"
+				},
+				"oAria": {
+					"sSortAscending":  ": Activar para ordenar la columna de manera ascendente",
+					"sSortDescending": ": Activar para ordenar la columna de manera descendente"
+				}
+			}
 		};
 
 		if ($(window).width() <= 1500) {

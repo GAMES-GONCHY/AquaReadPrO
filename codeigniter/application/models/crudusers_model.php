@@ -11,14 +11,16 @@ class Crudusers_model extends CI_Model
 			$this->db->from('usuario');
 			$this->db->where('estado', 1);
 			$this->db->where('rol', $rol);
+			$this->db->order_by('fechaRegistro', 'DESC');
 		}
 		else
 		{
-			$this->db->select('usuario.*, membresia.idMembresia');
+			$this->db->select('usuario.*, membresia.idMembresia, membresia.codigoSocio');
 			$this->db->from('usuario');
 			$this->db->join('membresia', 'membresia.idUsuario = usuario.idUsuario', 'inner');
 			$this->db->where('usuario.estado', 1);
 			$this->db->where('usuario.rol', $rol);
+			$this->db->order_by('usuario.fechaRegistro', 'DESC');
 		}
 		return $this->db->get();
 

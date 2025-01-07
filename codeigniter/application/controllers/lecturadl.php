@@ -61,6 +61,7 @@ class Lecturadl extends CI_Controller
             //log_message('debug', 'Dataloggers encontrados: ' . json_encode($ipDataloggers));
             $this->actualizaryregistrar($ipDataloggers,$clave);
 
+            
             // if (!empty($lecturas)) {
             //     log_message('debug', 'Lecturas recuperadas exitosamente: ' . json_encode($lecturas));
             // } else {
@@ -72,9 +73,10 @@ class Lecturadl extends CI_Controller
         {
             log_message('error', 'No se encontraron dataloggers activos.');
             // Si no hay dataloggers disponibles, retornar una tabla vacía
-            $this->session->set_flashdata('mensaje', 'No se encontraron medidores activos');
-			$this->session->set_flashdata('alert_type', 'error');
+            // $this->session->set_flashdata('mensaje', 'No se encontraron medidores activos');
+			// $this->session->set_flashdata('alert_type', 'error');
             return [];
+
         }
     }
 
@@ -108,7 +110,6 @@ class Lecturadl extends CI_Controller
                 // Leer el registro del puerto
                 $request = new ReadHoldingRegistersRequest($puerto, 1);
                 $response = $connection->sendAndReceive($request);
-
                 // Decodificar la respuesta
                 $pulsos = unpack('n', substr($response, 9, 2))[1];
                 
@@ -119,7 +120,7 @@ class Lecturadl extends CI_Controller
                         // Insertar la lectura en la tabla 'lectura'
                         $dataLectura = [
                             'lecturaAnterior' => $lecturaAnterior,
-                            'lecturaActual' => ($pulsos+97),
+                            'lecturaActual' => ($pulsos+117),
                             'idMedidor' => $idMedidor
                         ];
                         $this->lectura_model->insertarLectura($dataLectura); // Insertar la lectura en la base de datos
@@ -130,7 +131,7 @@ class Lecturadl extends CI_Controller
                     // Almacenar la lectura actual
                     $lecturaTemporal = [
                         'lecturaAnterior' => $lecturaAnterior,
-                        'lecturaActual' => ($pulsos+97),
+                        'lecturaActual' => ($pulsos+117),
                         'fechaLectura' => date('Y-m-d H:i:s'),
                         'codigoMedidor' => $codigoMedidor,
                         'codigoDatalogger' => $codigoDatalogger,
@@ -149,7 +150,9 @@ class Lecturadl extends CI_Controller
                     'puerto' => $puerto,
                     'idMedidor' => $idMedidor,
                     'codigoMedidor' => $codigoMedidor,
-                    'codigoDatalogger' => $codigoDatalogger
+                    'codigoDatalogger' => $codigoDatalogger,
+                    'codigoSocio' => $codigoSocio,
+                    'socio' => $socio
                 ];
             }
             finally 
@@ -188,12 +191,9 @@ class Lecturadl extends CI_Controller
         //$data['lecturas'] = $this->recuperarIp($clave); // Realiza la lectura de los dataloggers
         $this->recuperarIp($clave);
 
-        // Verifica si hay lecturas
-        // if (!empty($data['lecturas'])) {  
-        //     echo json_encode(['status' => 'success', 'message' => 'Lectura realizada correctamente.']); 
-        // } else {
-        //     echo json_encode(['status' => 'error', 'message' => 'No se encontraron lecturas.']);
-        // }
+        // $this->session->set_flashdata('mensaje', 'Lectura exitosa');
+        // $this->session->set_flashdata('alert_type', 'success');
+
         redirect('lecturadl/mostrarlectura');
     }
     public function mostrarlecturasfallidas()
@@ -207,12 +207,10 @@ class Lecturadl extends CI_Controller
     }
     public function actualizarlecturas($clave)//clave = 0 ->actualizar lecturas en tiempo real
     {
-        //$data['lecturas'] = $this->recuperarIp($clave);
         $this->lectura_model->truncarLecturasTemporales();
         $this->recuperarIp($clave);
         $data['lecturas']=$this->lectura_model->lecturastiemporeal();
         //$this->lectura_model->truncarLecturasTemporales();
-
         $this->load->view('incrustaciones/vistascoloradmin/head');
         $this->load->view('incrustaciones/vistascoloradmin/menuadmin');
         $this->load->view('lecturastiemporeal', $data);
@@ -223,8 +221,14 @@ class Lecturadl extends CI_Controller
     {
         $id = $_POST['id'];
 		$data['estado'] = 0;
-
-		$this->lectura_model->deshabilitar($id, $data);
+		$this->lectura_model->modificar($id, $data);
 		redirect('lecturadl/mostrarlectura');
+    }
+    public function habilitarbd()
+    {
+        $id = $_POST['id'];
+		$data['estado'] = 1;
+		$this->lectura_model->modificar($id, $data);
+		redirect('lecturadl/deshabilitados');
     }
 }

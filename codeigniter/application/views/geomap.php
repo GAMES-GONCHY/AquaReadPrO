@@ -8,7 +8,7 @@
             Agregar Datalogger
         </button>
         
-        <button id="addMedidorBtn" class="btn btn-yellow position-absolute" style="top: 60px; left: 20px; z-index: 3;">
+        <button id="addMedidorBtn" class="btn btn-yellow position-absolute" style="top: 60px; left: 20px; z-index: 3;" hidden>
             Agregar Medidor
         </button>
     <!-- Contenedor para la interfaz, colocada por encima del mapa -->
