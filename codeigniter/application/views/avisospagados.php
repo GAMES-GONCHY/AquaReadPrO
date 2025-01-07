@@ -76,9 +76,32 @@
                                         if($consumo<10)//si el consumo es menor q 10 m3 aplicar tarifado mínimo
                                         {
                                             $total = $pagado['tarifaMinima'];
+                                            $clasificacion = "Consumo mínimo";
                                         }
                                         else
                                         {
+                                            if($consumo>=10 && $consumo<20)
+                                            {
+                                                $clasificacion = "Consumo moderado";
+                                            }
+                                            else
+                                            {
+                                                if($consumo>=20 && $consumo<30)
+                                                {
+                                                    $clasificacion = "Consumo estándar";
+                                                }
+                                                else
+                                                {
+                                                    if($consumo >=30 && $consumo <40)
+                                                    {
+                                                        $clasificacion = "Consumo elevado";
+                                                    }
+                                                    else
+                                                    {
+                                                        $clasificacion = "Consumo muy elevado";
+                                                    }
+                                                }
+                                            }
                                             $total = $pagado['tarifaVigente'] * $consumo;
                                         }
                                         // $total = $pagado['tarifaVigente'] * $consumo;
@@ -130,6 +153,7 @@
                                                     '<?php echo $pagado['nombreSocio']; ?>',
                                                     '<?php echo $mes; ?>',
                                                     '<?php echo $consumo; ?>',
+                                                    '<?php echo $clasificacion; ?>',
                                                     '<?php echo ($pagado['lecturaActual'])*100; ?>',
                                                     '<?php echo ($pagado['lecturaAnterior'])*100; ?>',
                                                     '<?php echo $fechaLectura; ?>',

@@ -456,15 +456,15 @@
 
 
 
-
+<!--  -->
 <script>
-  function cargarDetalle(codigoSocio, nombreSocio, mes, consumo, lecturaActual, lecturaAnterior, fechaLectura,
+  function cargarDetalle(codigoSocio, nombreSocio, mes, consumo, clasificacion, lecturaActual, lecturaAnterior, fechaLectura,
                       fechaLecturaAnterior, tarifaVigente, tarifaMinima, total, fechaVencimiento, estado, fechaPago, saldo) {
     // Asignar los valores recibidos
     document.getElementById('codigo-socio').textContent = codigoSocio;
     document.getElementById('nombre-socio').textContent = nombreSocio;
     document.getElementById('periodo').textContent = mes;
-    document.getElementById('consumo').textContent = consumo + " m³";
+    document.getElementById('consumo').textContent = consumo + " m³ " + "("+clasificacion+")";
     document.getElementById('lectura-actual').textContent = lecturaActual;
     document.getElementById('lectura-anterior').textContent = lecturaAnterior;
     document.getElementById('fecha-lectura').textContent = fechaLectura;

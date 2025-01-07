@@ -484,7 +484,7 @@ class Reporte extends CI_Controller
     
         // Título del reporte
         $pdf->SetX($margenIzquierdo);
-        $pdf->Cell($anchoDisponible, 15, utf8_decode('Historial de Avisos Vencidos / Rechazados'), 0, 1, 'C', true);
+        $pdf->Cell($anchoDisponible, 15, utf8_decode('Historial de Avisos Vencidos'), 0, 1, 'C', true);
         $pdf->Ln(5);
     
         // Subtítulo "AquaReadPro"

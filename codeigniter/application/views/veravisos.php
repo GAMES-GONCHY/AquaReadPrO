@@ -98,7 +98,7 @@
 									style="pointer-events: none; opacity: 0.5;">
 									</a>
 								<?php endif; ?>
-								<div class="result-info">
+								<div class="result-info" style="color: white;">
 									<h3 class="desc" style="line-height: 0.5;">Periodo: <?php echo $mes.'-'.$anio; ?></h3>
 									<h3 class="desc" style="line-height: 0.5;">Consumo: <?php echo $consumo; ?> m³</h3>
 									<h3 class="desc" style="line-height: 0.5;">Tarifa Vigente: <?php echo $aviso['tarifaVigente']; ?> Bs.</h3>

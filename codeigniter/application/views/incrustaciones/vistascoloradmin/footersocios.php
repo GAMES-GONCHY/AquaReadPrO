@@ -500,7 +500,7 @@ $(document).ready(function() {
 
 
 
-
+<!-- script para generar detalle en pdf del aviso de cobranza en panel socio -->
 <script>
     function generarPDF(codigoSocio, nombreSocio, codigoMedidor, codigoDatalogger, lecturaActual, lecturaAnterior, fechaLectura, fechaLecturaAnterior, tarifaVigente, tarifaMinima, fechaVencimiento, estado, fechaPago, saldo)
     {

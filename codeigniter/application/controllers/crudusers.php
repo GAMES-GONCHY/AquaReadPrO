@@ -220,12 +220,23 @@ class Crudusers extends CI_Controller
 					$this->session->set_flashdata('alert_type', 'error');
 				}
 			}
-			if($_POST['formeditperfil'])
-			{
+
+			// if($_POST['formeditperfil'])
+			// {
+			//  redirect('crudusers/editarperfil', 'refresh');
+			// }
+			// else
+			// {
+			// 	redirect('crudusers/modificar', 'refresh');
+			// }
+
+			if (isset($_POST['formeditperfil'])) {
 				redirect('crudusers/editarperfil', 'refresh');
 			}
 			else
 			{
+				$this->session->set_flashdata('mensaje', 'ERROR al modificar el registro');
+				$this->session->set_flashdata('alert_type', 'error');
 				redirect('crudusers/modificar', 'refresh');
 			}
 		} 

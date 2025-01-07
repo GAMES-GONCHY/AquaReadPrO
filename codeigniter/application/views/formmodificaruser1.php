@@ -94,8 +94,8 @@
               <div class="col-lg-8">
                 <select class="form-select" id="select-required" name="rol" data-parsley-required="true">
                   <option value="0" <?php echo ($info['rol'] == 0) ? 'selected' : ''; ?>>SOCIO</option>
-                  <option value="1" <?php echo ($info['rol'] == 1) ? 'selected' : ''; ?>>AUXILIAR</option>
-                  <option value="2" <?php echo ($info['rol'] == 2) ? 'selected' : ''; ?>>ADMINISTRADOR</option>
+                  <!-- <option value="1" <?php echo ($info['rol'] == 1) ? 'selected' : ''; ?>>AUXILIAR</option>
+                  <option value="2" <?php echo ($info['rol'] == 2) ? 'selected' : ''; ?>>ADMINISTRADOR</option> -->
                 </select>
               </div>
             </div>

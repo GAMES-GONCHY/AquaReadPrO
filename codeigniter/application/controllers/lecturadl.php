@@ -120,7 +120,7 @@ class Lecturadl extends CI_Controller
                         // Insertar la lectura en la tabla 'lectura'
                         $dataLectura = [
                             'lecturaAnterior' => $lecturaAnterior,
-                            'lecturaActual' => ($pulsos+97),
+                            'lecturaActual' => ($pulsos+117),
                             'idMedidor' => $idMedidor
                         ];
                         $this->lectura_model->insertarLectura($dataLectura); // Insertar la lectura en la base de datos
